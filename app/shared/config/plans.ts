@@ -1,4 +1,3 @@
-/** Itens comparados entre os pacotes, na ordem em que aparecem. */
 export const planFeatures = [
 	"Oferta em leilão",
 	"Histórico de roubo e furto",

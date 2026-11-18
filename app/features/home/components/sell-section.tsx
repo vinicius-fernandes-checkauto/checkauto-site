@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import ticks from "~/assets/brand/symbol-ticks.webp";
 import sellCarBlue from "~/assets/home/sell-car-blue.webp";
 import sellCarGreen from "~/assets/home/sell-car-green.webp";
 import sellCarTop from "~/assets/home/sell-car-top.webp";
@@ -26,7 +27,6 @@ const benefits: { icon: LucideIcon; title: string }[] = [
 	{ icon: MegaphoneIcon, title: "Torne seu anúncio mais atrativo" },
 ];
 
-/** Quilometragem acumulada por ano no gráfico de exemplo (dados fictícios). */
 const mileage = [
 	{ year: "2021", label: "12,3 mil", height: "19%" },
 	{ year: "2022", label: "25,8 mil", height: "41%" },
@@ -81,12 +81,13 @@ export function SellSection() {
 		<section
 			id="hora-de-vender"
 			aria-labelledby="hora-de-vender-titulo"
-			// Faixa no Azul Checkauto: os tokens são redefinidos só aqui,
-			// e os cartões brancos usam card/card-foreground.
-			className="w-full overflow-hidden bg-background text-foreground [--background:var(--color-brand-blue)] [--card-foreground:var(--color-brand-blue)] [--card:#ffffff] [--foreground:#ffffff] [--heading:#ffffff] [--highlight:var(--color-brand-green)] [--muted-foreground:rgb(255_255_255/0.82)]"
+			className="relative isolate w-full overflow-hidden bg-background text-foreground [--background:var(--color-brand-blue)] [--card-foreground:var(--color-brand-blue)] [--card:#ffffff] [--foreground:#ffffff] [--heading:#ffffff] [--highlight:var(--color-brand-green)] [--muted-foreground:rgb(255_255_255/0.82)]"
 		>
-			{/* De ponta a ponta: o texto alinha com o container da página e as
-			    imagens encostam nas bordas da tela. */}
+			<span
+				aria-hidden="true"
+				style={{ maskImage: `url(${ticks})` }}
+				className="pointer-events-none absolute -top-16 -right-24 -z-10 aspect-878/389 w-80 rotate-180 bg-white/8 mask-contain mask-no-repeat lg:-top-24 lg:right-[24%] lg:w-120"
+			/>
 			<div className="grid grid-cols-1 px-(--gut) pt-18 pb-12 [--gut:1rem] sm:[--gut:max(2rem,calc((100vw_-_80rem)/2_+_2rem))] lg:grid-cols-12 lg:items-end lg:gap-x-4 lg:pt-26 lg:pr-0 lg:pb-0">
 				<div className="flex flex-col gap-5.5 pb-10 lg:col-span-8 lg:row-start-1 lg:self-start lg:pb-16">
 					<SectionEyebrow>Hora de vender?</SectionEyebrow>
@@ -117,8 +118,6 @@ export function SellSection() {
 					</div>
 				</div>
 
-				{/* Celular: só três figuras, a do meio inteira e as laterais
-				    cortadas pelas bordas da tela. */}
 				<div className="-mx-(--gut) grid grid-cols-[1fr_minmax(0,16rem)_1fr] items-center gap-3 lg:hidden">
 					<div className="relative h-52 overflow-hidden rounded-r-3xl bg-white">
 						<img
@@ -145,7 +144,6 @@ export function SellSection() {
 					</div>
 				</div>
 
-				{/* Desktop, coluna da direita: anúncio e carro até o fim da seção. */}
 				<div className="hidden flex-col gap-4 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-1 lg:flex lg:self-stretch">
 					<AdCard className="rounded-r-none" />
 					<div
@@ -164,7 +162,6 @@ export function SellSection() {
 					</div>
 				</div>
 
-				{/* Desktop, faixa de baixo: cartões cortados pela borda da seção. */}
 				<div className="hidden items-end gap-4 lg:col-span-9 lg:row-start-2 lg:grid lg:grid-cols-9">
 					<div
 						data-tile

@@ -31,7 +31,6 @@ const linkClassName = cn(
 const headingClassName =
 	"mb-2 text-base/relaxed font-medium text-foreground lg:mb-4";
 
-/** Escudo com cadeado: selo discreto de conexão segura. */
 function SecureSeal() {
 	return (
 		<svg

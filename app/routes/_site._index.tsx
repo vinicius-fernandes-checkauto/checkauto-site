@@ -1,5 +1,6 @@
 import { type ReactNode, useRef } from "react";
 
+import { ClientsSection } from "~/features/home/components/clients-section";
 import { CtaSection } from "~/features/home/components/cta-section";
 import { DataSection } from "~/features/home/components/data-section";
 import { FaqSection } from "~/features/home/components/faq-section";
@@ -109,9 +110,8 @@ export default function Home() {
 			<Band tone="white">
 				<DataSection />
 			</Band>
-			<Band tone="tint">
-				<HowSection />
-			</Band>
+			<HowSection />
+			<ClientsSection />
 			<Band tone="white">
 				<PlansSection />
 			</Band>
