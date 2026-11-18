@@ -5,11 +5,11 @@ import type * as React from "react";
 import { cn } from "~/shared/lib/utils";
 
 const buttonVariants = cva(
-	"group/button inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-button whitespace-nowrap transition-colors select-none disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+	"group/button inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-base font-semibold whitespace-nowrap transition-colors select-none disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
 	{
 		variants: {
 			variant: {
-				default: "bg-primary text-primary-foreground hover:bg-green-600",
+				default: "bg-primary text-primary-foreground hover:bg-primary/90",
 				secondary:
 					"bg-secondary text-secondary-foreground hover:bg-secondary/90",
 				outline:

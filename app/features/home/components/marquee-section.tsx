@@ -31,7 +31,7 @@ export function MarqueeSection() {
 						{items.map((item) => (
 							<li
 								key={item}
-								className="flex items-center gap-3 pr-10 text-h4 font-medium whitespace-nowrap text-heading lg:pr-14 lg:text-h3"
+								className="flex items-center gap-3 pr-10 text-xl font-medium whitespace-nowrap text-heading lg:pr-14 lg:text-2xl"
 							>
 								<CircleCheckIcon
 									aria-hidden="true"

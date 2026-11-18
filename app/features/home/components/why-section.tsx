@@ -68,7 +68,10 @@ export function WhySection() {
 			<div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:items-end lg:gap-x-4">
 				<div className="flex flex-col gap-3 lg:col-span-2 lg:pr-10">
 					<SectionEyebrow>Por que Checkauto</SectionEyebrow>
-					<h2 id="por-que-checkauto-titulo" className="text-h2-sm lg:text-h2">
+					<h2
+						id="por-que-checkauto-titulo"
+						className="text-3xl/tight font-semibold tracking-tight lg:text-4xl/tight"
+					>
 						Consulte o histórico e compre com tranquilidade
 					</h2>
 				</div>
@@ -94,11 +97,13 @@ export function WhySection() {
 					</div>
 
 					<div className="flex flex-col justify-center gap-2 p-6 lg:flex-1 lg:p-8">
-						<h3 className="text-h4">Negociação mais justa</h3>
+						<h3 className="text-xl font-semibold">Negociação mais justa</h3>
 
 						<p className="mt-1 flex items-baseline gap-2">
-							<span className="text-stat text-heading">18%</span>{" "}
-							<span className="text-small text-muted-foreground">
+							<span className="text-5xl/none font-semibold tracking-tight text-heading">
+								18%
+							</span>{" "}
+							<span className="text-sm/5.5 text-muted-foreground">
 								das consultas
 							</span>
 						</p>
@@ -138,7 +143,7 @@ export function WhySection() {
 							</div>
 
 							<div className={cn("flex flex-col gap-2", contentClassName)}>
-								<h3 className="text-h5">{title}</h3>
+								<h3 className="text-lg/6 font-semibold">{title}</h3>
 								<p className="text-muted-foreground">{description}</p>
 							</div>
 						</li>
@@ -156,7 +161,7 @@ export function WhySection() {
 					</span>
 
 					<div className="flex flex-col gap-1 lg:flex-1">
-						<h3 className="text-h5">Fácil e rápido</h3>
+						<h3 className="text-lg/6 font-semibold">Fácil e rápido</h3>
 
 						<p className="text-muted-foreground">
 							100% online, a consulta do histórico é rápida e fácil, oferecendo

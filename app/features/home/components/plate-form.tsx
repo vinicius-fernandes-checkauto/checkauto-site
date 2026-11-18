@@ -101,7 +101,7 @@ export function PlateForm({
 						}}
 						aria-invalid={error ? true : undefined}
 						aria-describedby={messageId}
-						className="h-12 min-w-0 flex-1 bg-transparent px-1 text-body font-semibold tracking-[0.12em] text-heading uppercase outline-none placeholder:font-normal placeholder:tracking-normal placeholder:text-muted-foreground placeholder:normal-case focus-visible:outline-none"
+						className="h-12 min-w-0 flex-1 bg-transparent px-1 text-base/relaxed font-semibold tracking-[0.12em] text-heading uppercase outline-none placeholder:font-normal placeholder:tracking-normal placeholder:text-muted-foreground placeholder:normal-case focus-visible:outline-none"
 					/>
 				</div>
 				<Button
@@ -114,7 +114,7 @@ export function PlateForm({
 			<p
 				id={messageId}
 				aria-live="polite"
-				className="px-5 text-small font-medium text-destructive empty:hidden"
+				className="px-5 text-sm/5.5 font-medium text-destructive empty:hidden"
 			>
 				{error}
 			</p>

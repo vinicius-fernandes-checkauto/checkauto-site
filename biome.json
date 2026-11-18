@@ -29,7 +29,7 @@
 					"options": {
 						"paths": {
 							"lucide-react": "Importe ícones de ~/shared/components/icons.",
-							"cn": "Importe cn de ~/shared/lib/utils, que conhece os tokens do tema."
+							"cn": "Importe cn de ~/shared/lib/utils."
 						}
 					}
 				}
@@ -38,7 +38,10 @@
 	},
 	"overrides": [
 		{
-			"includes": ["app/shared/components/icons.tsx"],
+			"includes": [
+				"app/shared/components/icons.tsx",
+				"app/shared/lib/utils.ts"
+			],
 			"linter": {
 				"rules": {
 					"style": {
@@ -54,7 +57,7 @@
 		}
 	},
 	"tailwind": {
-		"stylesheet": "./app/shared/styles/app.css"
+		"stylesheet": "./app/app.css"
 	},
 	"assist": {
 		"enabled": true,

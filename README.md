@@ -22,6 +22,7 @@ No VS Code, instale as extensões recomendadas (Biome e EditorConfig): o arquivo
 ```
 app/
   root.tsx                 HTML base, metadados globais, página de erro
+  app.css                  tema do Tailwind e do shadcn
   routes.ts                rotas geradas a partir de app/routes (flatRoutes)
   routes/                  uma rota por arquivo; só compõe o que vem de features e shared
     _site.tsx              layout das páginas do site (cabeçalho e rodapé)
@@ -40,7 +41,6 @@ app/
     hooks/
     lib/                   integrações e helpers de bibliotecas (cn)
     services/              cliente HTTP e chamadas à API usadas por vários módulos
-    styles/app.css         tema do Tailwind e do shadcn
     types/
     utils/                 funções puras, sem chamadas externas
 ```
@@ -57,7 +57,8 @@ As pastas são criadas quando o primeiro arquivo entra nelas; não deixe pastas 
 - **Do módulo para o `shared`, nunca o contrário.** Um módulo pode importar de `shared`. O `shared` não importa de `features`. Quando algo de um módulo passa a ser usado por outro, ele sobe para `shared`.
 - **Componentes do shadcn.** `npx shadcn add <componente>` instala em `shared/components/ui`. Depois de instalar, ajuste ao tema: altura mínima de 44px, anel de foco sem opacidade, sem classes `dark:` e sem `"use client"` (diretiva do Next). Troque também `import { cn } from "cn"` por `import { cn } from "~/shared/lib/utils"`.
 - **Ícones só de `~/shared/components/icons`.** Todo ícone usado no site é re-exportado do `lucide-react` nesse arquivo; para usar um ícone novo, acrescente-o lá. O Biome bloqueia import direto de `lucide-react` em qualquer outro arquivo.
-- **`cn` do projeto.** Use o `cn` de `~/shared/lib/utils`. Ao criar tokens próprios de tamanho de texto (`text-*`) ou sombra (`shadow-*`) no tema, inclua-os em `createCn`: o pacote `cn` puro não os conhece e, ao juntar um tamanho próprio com uma cor, descarta o tamanho.
+- **`cn` do projeto.** Use o `cn` de `~/shared/lib/utils`.
+- **Tipografia com as classes do Tailwind.** Tamanho, peso, entrelinha e espaçamento vão direto no componente (`text-4xl/tight font-semibold tracking-tight`). Não há tokens de texto próprios no tema; um estilo global só entra quando se repete em vários lugares e depois de combinado.
 
 ### Tema (manual de marca 2026)
 

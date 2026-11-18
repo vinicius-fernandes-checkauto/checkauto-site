@@ -3,7 +3,7 @@ import path from "node:path";
 import { __unstable__loadDesignSystem } from "@tailwindcss/node";
 
 const fix = process.argv.includes("--fix");
-const cssPath = path.resolve("app/shared/styles/app.css");
+const cssPath = path.resolve("app/app.css");
 const ds = await __unstable__loadDesignSystem(await readFile(cssPath, "utf8"), {
 	base: path.dirname(cssPath),
 });

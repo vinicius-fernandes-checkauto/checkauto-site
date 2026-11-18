@@ -34,8 +34,8 @@ export function HeaderAccount({
 					<UserRoundIcon className="size-5" />
 				</span>
 				<span className="flex flex-col leading-tight whitespace-nowrap">
-					<span className="text-caption text-muted-foreground">Entre ou</span>
-					<span className="text-small font-semibold text-heading">
+					<span className="text-xs/4.5 text-muted-foreground">Entre ou</span>
+					<span className="text-sm/5.5 font-semibold text-heading">
 						Cadastre-se
 					</span>
 				</span>
