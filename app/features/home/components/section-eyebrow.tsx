@@ -6,7 +6,10 @@ type SectionEyebrowProps = {
 
 export function SectionEyebrow({ children }: SectionEyebrowProps) {
 	return (
-		<p className="text-eyebrow tracking-widest text-highlight uppercase">
+		<p
+			data-slot="eyebrow"
+			className="text-base/5 font-semibold tracking-widest text-highlight uppercase"
+		>
 			{children}
 		</p>
 	);

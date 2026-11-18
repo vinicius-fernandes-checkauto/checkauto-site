@@ -7,6 +7,22 @@
 
 @theme {
 	--animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+	/* Extrato no "Como funciona": lê o topo, desce até o histórico e volta. */
+	--animate-pdf-scroll: pdf-scroll 9s ease-in-out 1.6s infinite;
+
+	@keyframes pdf-scroll {
+		0%,
+		12% {
+			transform: translateY(0);
+		}
+		45%,
+		75% {
+			transform: translateY(calc(-100% + 23rem));
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
 
 	@keyframes marquee {
 		to {
@@ -62,56 +78,6 @@
 	--color-amber-50: #fbf5dc;
 	--color-amber-300: #e9c46a;
 	--color-amber-700: #7a6000;
-
-	--text-display: 3.5rem;
-	--text-display--line-height: 3.875rem;
-	--text-display--letter-spacing: -0.025em;
-	--text-display--font-weight: 600;
-	--text-display-sm: 2.25rem;
-	--text-display-sm--line-height: 2.625rem;
-	--text-display-sm--letter-spacing: -0.025em;
-	--text-display-sm--font-weight: 600;
-	--text-h2: 2.5rem;
-	--text-h2--line-height: 3rem;
-	--text-h2--letter-spacing: -0.02em;
-	--text-h2--font-weight: 600;
-	--text-h2-sm: 1.75rem;
-	--text-h2-sm--line-height: 2.25rem;
-	--text-h2-sm--letter-spacing: -0.02em;
-	--text-h2-sm--font-weight: 600;
-	--text-h3: 1.5rem;
-	--text-h3--line-height: 2rem;
-	--text-h3--letter-spacing: -0.015em;
-	--text-h3--font-weight: 600;
-	--text-h4: 1.25rem;
-	--text-h4--line-height: 1.75rem;
-	--text-h4--letter-spacing: -0.01em;
-	--text-h4--font-weight: 600;
-	--text-h5: 1.125rem;
-	--text-h5--line-height: 1.5rem;
-	--text-h5--font-weight: 600;
-	--text-stat: 2.75rem;
-	--text-stat--line-height: 3rem;
-	--text-stat--letter-spacing: -0.03em;
-	--text-stat--font-weight: 600;
-	--text-eyebrow: 1rem;
-	--text-eyebrow--line-height: 1.25rem;
-	--text-eyebrow--letter-spacing: 0.02em;
-	--text-eyebrow--font-weight: 600;
-	--text-button: 1rem;
-	--text-button--line-height: 1.5rem;
-	--text-button--font-weight: 600;
-	--text-lead: 1.125rem;
-	--text-lead--line-height: 1.75rem;
-	--text-body: 1rem;
-	--text-body--line-height: 1.625rem;
-	--text-small: 0.875rem;
-	--text-small--line-height: 1.375rem;
-	--text-label: 0.875rem;
-	--text-label--line-height: 1.25rem;
-	--text-label--font-weight: 500;
-	--text-caption: 0.75rem;
-	--text-caption--line-height: 1.125rem;
 }
 
 @theme inline {
@@ -165,18 +131,18 @@
 
 :root {
 	--radius: 1rem;
-	--background: #ffffff;
-	--foreground: var(--color-slate-900);
+	--background: #f3f5f2;
+	--foreground: var(--color-brand-blue-dark);
 	--heading: var(--color-brand-blue);
-	--card: #ffffff;
+	--card: #fbfcfa;
 	--card-foreground: var(--color-brand-blue);
-	--popover: #ffffff;
-	--popover-foreground: var(--color-slate-900);
-	--primary: var(--color-brand-green);
+	--popover: #fbfcfa;
+	--popover-foreground: var(--color-brand-blue-dark);
+	--primary: var(--color-brand-green-dark);
 	--primary-foreground: #ffffff;
 	--secondary: var(--color-brand-blue);
 	--secondary-foreground: #ffffff;
-	--muted: var(--color-slate-50);
+	--muted: #ebeeea;
 	--muted-foreground: var(--color-slate-600);
 	--accent: var(--color-green-50);
 	--accent-foreground: var(--color-brand-blue);
@@ -188,7 +154,7 @@
 	--warning: var(--color-amber-700);
 	--warning-foreground: #ffffff;
 	--info: var(--color-navy-500);
-	--border: var(--color-slate-200);
+	--border: #e0e4df;
 	--input: var(--color-control);
 	--ring: var(--color-brand-blue);
 	--chart-1: var(--color-brand-green);
@@ -266,7 +232,7 @@
 		@apply border-border;
 	}
 	body {
-		@apply bg-background font-sans text-body text-foreground antialiased;
+		@apply bg-background font-sans text-base/relaxed text-foreground antialiased;
 	}
 	h1,
 	h2,

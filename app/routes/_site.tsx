@@ -8,7 +8,7 @@ export default function SiteLayout() {
 		<div className="flex min-h-dvh flex-col bg-muted">
 			<a
 				href="#conteudo"
-				className="sr-only rounded-full bg-primary px-5 py-3 text-button text-primary-foreground focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+				className="sr-only rounded-full bg-primary px-5 py-3 text-base font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
 			>
 				Pular para o conteúdo
 			</a>

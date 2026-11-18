@@ -1,55 +1,61 @@
+import { Link } from "react-router";
+
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "~/shared/components/ui/accordion";
+import { Button } from "~/shared/components/ui/button";
 import { faq } from "~/shared/config/faq";
-
-import { SectionEyebrow } from "./section-eyebrow";
 
 export function FaqSection() {
 	return (
 		<section
 			id="faq"
 			aria-labelledby="faq-titulo"
-			className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-8 lg:py-24"
+			className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-7 px-4 py-16 sm:px-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-18 lg:py-28"
 		>
-			<div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-16">
-				<div className="flex flex-col gap-3 lg:sticky lg:top-8 lg:self-start">
-					<SectionEyebrow>FAQ</SectionEyebrow>
-					<h2 id="faq-titulo" className="text-h2-sm lg:text-h2">
-						Perguntas frequentes
-					</h2>
-					<p className="max-w-[44ch] text-muted-foreground">
-						Tire suas dúvidas sobre a consulta veicular CheckAuto. Se ainda
-						precisar de ajuda, fale com a gente pelos nossos canais de
-						atendimento.
-					</p>
-				</div>
-
-				<Accordion
-					type="single"
-					collapsible
-					defaultValue="faq-0"
-					className="gap-3 overflow-visible rounded-none border-0"
+			<div className="contents lg:sticky lg:top-28 lg:flex lg:flex-col lg:gap-10 lg:self-start">
+				<h2
+					id="faq-titulo"
+					className="order-1 max-w-[15ch] text-3xl/tight font-medium tracking-tight text-balance text-foreground lg:text-5xl/tight"
 				>
-					{faq.map(({ question, answer }, index) => (
-						<AccordionItem
-							key={question}
-							value={`faq-${index}`}
-							className="rounded-2xl border border-border bg-card not-last:border-b data-open:bg-card"
-						>
-							<AccordionTrigger className="items-center rounded-2xl p-5 text-body font-semibold text-heading hover:no-underline lg:px-6">
-								{question}
-							</AccordionTrigger>
-							<AccordionContent className="px-1 text-body text-muted-foreground lg:px-2">
-								{answer}
-							</AccordionContent>
-						</AccordionItem>
-					))}
-				</Accordion>
+					Dúvidas frequentes sobre a consulta.
+				</h2>
+
+				<div className="order-3 flex flex-col items-start gap-5">
+					<p className="max-w-[38ch] text-muted-foreground">
+						Não encontrou o que procurava? Nossa equipe atende por telefone e
+						e-mail e responde rápido.
+					</p>
+					<Button asChild variant="secondary" size="lg">
+						<Link to="/contato">Falar com o atendimento</Link>
+					</Button>
+				</div>
 			</div>
+
+			<Accordion
+				type="single"
+				collapsible
+				defaultValue="faq-0"
+				className="order-2 gap-2.5 overflow-visible rounded-none border-0"
+			>
+				{faq.map(({ question, answer }, index) => (
+					<AccordionItem
+						key={question}
+						value={`faq-${index}`}
+						className="rounded-2xl bg-card not-last:border-b-0 data-open:bg-card"
+					>
+						<AccordionTrigger className="items-center gap-6 rounded-2xl p-5 text-base/6 font-medium text-foreground hover:no-underline **:data-[slot=accordion-trigger-icon]:size-5 lg:px-6 lg:py-5.5 lg:text-lg/7">
+							{question}
+						</AccordionTrigger>
+						<AccordionContent className="px-1 pr-10 text-base/relaxed text-muted-foreground lg:px-2 lg:pr-16">
+							{answer}
+						</AccordionContent>
+					</AccordionItem>
+				))}
+			</Accordion>
 		</section>
 	);
 }
