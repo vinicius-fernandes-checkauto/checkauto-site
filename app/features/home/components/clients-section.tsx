@@ -49,7 +49,7 @@ export function ClientsSection() {
 			<span
 				aria-hidden="true"
 				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -top-20 -left-24 -z-10 aspect-896/900 w-80 bg-white/20 mask-contain mask-no-repeat lg:-top-36 lg:-left-28 lg:w-120"
+				className="pointer-events-none absolute -top-20 -left-24 -z-10 aspect-896/900 w-80 bg-white/20 mask-contain mask-no-repeat max-lg:hidden lg:-top-36 lg:-left-28 lg:w-120"
 			/>
 			<div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-4 px-4 py-6 sm:px-8 lg:py-7">
 				<h2

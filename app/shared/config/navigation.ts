@@ -8,8 +8,8 @@ export const headerNav: NavLink[] = [
 	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
 	{ label: "Como funciona", to: "/#como-funciona" },
 	{ label: "Pacotes", to: "/#pacotes" },
+	{ label: "Lojista", to: "/#hora-de-vender" },
 	{ label: "FAQ", to: "/#faq" },
-	{ label: "Lojista", to: "/lojista" },
 ];
 
 export const accountLink: NavLink = {
@@ -35,7 +35,7 @@ export const footerNav: FooterGroup[] = [
 			{ label: "Como funciona", to: "/#como-funciona" },
 			{ label: "Dados da consulta", to: "/#dados-da-consulta" },
 			// { label: "Ainda não tenho a placa", to: "/ainda-nao-tenho-placa" },
-			{ label: "Para lojistas", to: "/lojista" },
+			{ label: "Para lojistas", to: "/#hora-de-vender" },
 		],
 	},
 	{

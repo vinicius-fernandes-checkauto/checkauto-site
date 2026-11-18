@@ -1,4 +1,4 @@
-import { CircleCheckIcon } from "~/shared/components/icons";
+import { BadgeCheckIcon } from "~/shared/components/icons";
 import { cn } from "~/shared/lib/utils";
 
 const items = [
@@ -33,9 +33,9 @@ export function MarqueeSection() {
 								key={item}
 								className="flex items-center gap-3 pr-10 text-xl font-medium whitespace-nowrap text-heading lg:pr-14 lg:text-2xl"
 							>
-								<CircleCheckIcon
+								<BadgeCheckIcon
 									aria-hidden="true"
-									className="size-6 shrink-0 text-highlight"
+									className="size-7 shrink-0 fill-highlight text-background"
 								/>
 								{item}
 							</li>

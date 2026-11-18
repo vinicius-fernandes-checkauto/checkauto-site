@@ -81,12 +81,12 @@ export function SellSection() {
 		<section
 			id="hora-de-vender"
 			aria-labelledby="hora-de-vender-titulo"
-			className="relative isolate w-full overflow-hidden bg-background text-foreground [--background:var(--color-brand-blue)] [--card-foreground:var(--color-brand-blue)] [--card:#ffffff] [--foreground:#ffffff] [--heading:#ffffff] [--highlight:var(--color-brand-green)] [--muted-foreground:rgb(255_255_255/0.82)]"
+			className="relative isolate w-full overflow-hidden border-b-8 border-highlight bg-background text-foreground [--background:var(--color-brand-blue)] [--card-foreground:var(--color-brand-blue)] [--card:#ffffff] [--foreground:#ffffff] [--heading:#ffffff] [--highlight:var(--color-brand-green)] [--muted-foreground:rgb(255_255_255/0.82)]"
 		>
 			<span
 				aria-hidden="true"
 				style={{ maskImage: `url(${ticks})` }}
-				className="pointer-events-none absolute -top-16 -right-24 -z-10 aspect-878/389 w-80 rotate-180 bg-white/8 mask-contain mask-no-repeat lg:-top-24 lg:right-[24%] lg:w-120"
+				className="pointer-events-none absolute -top-16 -left-24 -z-10 aspect-878/389 w-80 rotate-180 bg-white/8 mask-contain mask-no-repeat max-lg:hidden lg:-top-24 lg:left-[10%] lg:w-120"
 			/>
 			<div className="grid grid-cols-1 px-(--gut) pt-18 pb-12 [--gut:1rem] sm:[--gut:max(2rem,calc((100vw_-_80rem)/2_+_2rem))] lg:grid-cols-12 lg:items-end lg:gap-x-4 lg:pt-26 lg:pr-0 lg:pb-0">
 				<div className="flex flex-col gap-5.5 pb-10 lg:col-span-8 lg:row-start-1 lg:self-start lg:pb-16">

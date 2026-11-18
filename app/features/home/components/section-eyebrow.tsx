@@ -8,7 +8,7 @@ export function SectionEyebrow({ children }: SectionEyebrowProps) {
 	return (
 		<p
 			data-slot="eyebrow"
-			className="text-base/5 font-semibold tracking-widest text-highlight uppercase"
+			className="text-base/5 font-semibold tracking-widest text-brand-green uppercase"
 		>
 			{children}
 		</p>

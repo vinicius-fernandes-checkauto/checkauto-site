@@ -174,7 +174,7 @@ export function SiteFooter() {
 				</div>
 			</div>
 
-			<div className="bg-background lg:border-t lg:border-border lg:bg-card">
+			<div className="surface-inverse">
 				<div className="mx-auto flex w-full max-w-7xl flex-col-reverse gap-4 px-5 pt-5 pb-8 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:py-6">
 					<div className="flex flex-col gap-1 text-xs/4.5 text-muted-foreground">
 						<p>

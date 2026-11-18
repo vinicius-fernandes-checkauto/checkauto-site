@@ -14,7 +14,7 @@ export function CtaSection() {
 				<span
 					aria-hidden="true"
 					style={{ maskImage: `url(${ring})` }}
-					className="pointer-events-none absolute -bottom-40 -left-32 -z-10 aspect-896/900 w-104 bg-brand-green/10 mask-contain mask-no-repeat lg:-bottom-64 lg:w-160"
+					className="pointer-events-none absolute -bottom-40 -left-32 -z-10 aspect-896/900 w-104 bg-brand-green/10 mask-contain mask-no-repeat max-lg:hidden lg:-bottom-64 lg:w-160"
 				/>
 				<h2
 					id="cta-titulo"

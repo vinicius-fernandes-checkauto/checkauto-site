@@ -1,32 +1,128 @@
-import { useRef } from "react";
+import { type CSSProperties, type PointerEvent, useRef, useState } from "react";
 import { Link } from "react-router";
 
 import ring from "~/assets/brand/symbol-ring-blue.webp";
-import heroCar640 from "~/assets/home/hero-car-640.webp";
-import heroCar1000 from "~/assets/home/hero-car-1000.webp";
-import socialPeople from "~/assets/home/social-people.webp";
+import ticks from "~/assets/brand/symbol-ticks.webp";
+import avatar1 from "~/assets/home/avatars/avatar-1.webp";
+import avatar2 from "~/assets/home/avatars/avatar-2.webp";
+import avatar3 from "~/assets/home/avatars/avatar-3.webp";
+import avatar4 from "~/assets/home/avatars/avatar-4.webp";
+import heroCarFront from "~/assets/home/hero-car-front.webp";
+import heroCarFront640 from "~/assets/home/hero-car-front-640.webp";
 import {
+	BanIcon,
 	ChevronDownIcon,
-	CircleCheckIcon,
+	FileTextIcon,
+	GavelIcon,
+	LockIcon,
+	type LucideIcon,
+	ReceiptTextIcon,
+	ShieldAlertIcon,
 	TriangleAlertIcon,
+	WrenchIcon,
 } from "~/shared/components/icons";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 import { cn } from "~/shared/lib/utils";
 
 import { HERO_PLATE_INPUT_ID, PlateForm } from "./plate-form";
 
-const trust = [
-	"Resultado na hora",
-	"Bases oficiais e privadas",
-	"Extrato em PDF",
+type Feature = {
+	title: string;
+	description: string;
+	icon: LucideIcon;
+	x: number;
+	y: number;
+};
+
+const features: Feature[] = [
+	{
+		title: "Dados cadastrais e documentação",
+		description:
+			"Marca, modelo, ano, chassi e situação do documento conferidos com a base oficial.",
+		icon: FileTextIcon,
+		x: 0.27,
+		y: 0.5,
+	},
+	{
+		title: "Oferta em leilão",
+		description:
+			"Mostra se o veículo já foi ofertado em leilão, com comitente, lote, data e status de avaria.",
+		icon: GavelIcon,
+		x: 0.42,
+		y: 0.42,
+	},
+	{
+		title: "Indício de sinistro",
+		description:
+			"Aponta registros de batida, enchente ou perda total informados por seguradoras.",
+		icon: TriangleAlertIcon,
+		x: 0.17,
+		y: 0.13,
+	},
+	{
+		title: "Débitos e multas",
+		description:
+			"IPVA, licenciamento e multas em aberto antes de você assumir a conta.",
+		icon: ReceiptTextIcon,
+		x: 0.09,
+		y: 0.34,
+	},
+	{
+		title: "Restrições e impedimentos",
+		description:
+			"Bloqueios judiciais, administrativos e de furto que podem travar a transferência.",
+		icon: BanIcon,
+		x: 0.35,
+		y: 0.08,
+	},
+	{
+		title: "Gravame",
+		description:
+			"Indica se o carro ainda está alienado a um banco ou financeira.",
+		icon: LockIcon,
+		x: 0.44,
+		y: 0.88,
+	},
+	{
+		title: "Roubo e furto",
+		description:
+			"Histórico de ocorrências de roubo e furto, inclusive as já recuperadas.",
+		icon: ShieldAlertIcon,
+		x: 0.35,
+		y: 0.93,
+	},
+	{
+		title: "Recall",
+		description:
+			"Chamados de recall do fabricante e se ainda existe reparo pendente.",
+		icon: WrenchIcon,
+		x: 0.05,
+		y: 0.72,
+	},
 ];
 
-/** Prévia do extrato: o mesmo resumo que o cliente recebe (dados fictícios). */
-const preview = [
-	{ label: "Oferta em leilão", status: "1 registro", warn: true },
-	{ label: "Indício de sinistro", status: "Nada consta" },
-	{ label: "Roubo e furto", status: "Nada consta" },
-	{ label: "Gravame", status: "Baixado" },
+const points = features.map(({ x, y }) => ({
+	left: x * 200,
+	top: y * 100,
+	delay: 1100 + x * 2400,
+}));
+
+const stats = [
+	{
+		value: "1 em 4",
+		label: "carros consultados têm restrição",
+		className: "surface-inverse bg-background [&_strong]:text-highlight",
+	},
+	{
+		value: "18%",
+		label: "das consultas mudam o preço",
+		className: "bg-brand-green text-foreground",
+	},
+	{
+		value: "+40",
+		label: "informações em cada extrato",
+		className: "border border-border bg-card text-heading",
+	},
 ];
 
 /** Entrada escalonada só com CSS: pinta certo desde o primeiro quadro. */
@@ -35,77 +131,99 @@ const enter =
 
 export function HeroSection() {
 	const scope = useRef<HTMLElement>(null);
+	const [active, setActive] = useState(1);
+	const feature = features[active];
+	const point = points[active];
+	const FeatureIcon = feature.icon;
 
-	// Parallax leve: o carro e o extrato andam em velocidades diferentes.
 	useGSAP(
 		() => {
 			const mm = gsap.matchMedia();
 
-			mm.add(`(min-width: 1024px) and ${MOTION_OK}`, () => {
-				const scrollTrigger = {
-					trigger: scope.current,
-					start: "top top",
-					end: "bottom top",
-					scrub: true,
-				};
-
-				gsap.to("[data-hero-car]", {
-					yPercent: 10,
-					ease: "none",
-					scrollTrigger,
-				});
-				gsap.to("[data-hero-statement]", {
-					yPercent: -35,
-					ease: "none",
-					scrollTrigger,
-				});
-				gsap.to("[data-hero-ring]", {
-					rotate: 25,
-					ease: "none",
-					scrollTrigger,
-				});
+			mm.add(MOTION_OK, () => {
+				gsap.fromTo(
+					"[data-hero-scan]",
+					{ left: "0%", autoAlpha: 0 },
+					{
+						keyframes: [
+							{ autoAlpha: 1, duration: 0.15 },
+							{ left: "100%", duration: 1.1, ease: "power2.inOut" },
+							{ autoAlpha: 0, duration: 0.2 },
+						],
+						delay: 1,
+					},
+				);
 			});
 		},
 		{ scope },
 	);
 
+	function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
+		if (event.pointerType !== "mouse") return;
+
+		const rect = event.currentTarget.getBoundingClientRect();
+		const x = ((event.clientX - rect.left) / rect.width) * 100;
+		const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+		let nearest = active;
+		let shortest = Number.POSITIVE_INFINITY;
+
+		points.forEach(({ left, top }, index) => {
+			const dx = (left - x) * rect.width;
+			const dy = (top - y) * rect.height;
+			const distance = dx * dx + dy * dy;
+
+			if (distance < shortest) {
+				shortest = distance;
+				nearest = index;
+			}
+		});
+
+		if (nearest !== active) setActive(nearest);
+	}
+
 	return (
 		<section
 			ref={scope}
 			aria-labelledby="hero-titulo"
-			className="relative isolate overflow-hidden surface-inverse"
+			className="relative isolate overflow-hidden bg-background [--mh:calc(var(--mw)/1.0946)] [--mw:min(38vw,40rem,calc((100svh-9rem)*1.0946))]"
 		>
-			{/* Fundo: brilho verde atrás do carro + arco da marca. */}
 			<span
 				aria-hidden="true"
-				className="absolute -right-40 bottom-0 -z-10 size-160 rounded-full bg-brand-green/15 blur-[120px] lg:right-0"
+				style={{ maskImage: `url(${ring})` }}
+				className="pointer-events-none absolute -top-48 -left-56 -z-10 aspect-896/900 w-136 bg-brand-blue/6 mask-contain mask-no-repeat max-lg:hidden lg:-top-72 lg:-left-72 lg:w-200"
 			/>
-			<img
-				data-hero-ring
-				src={ring}
-				alt=""
+			<span
 				aria-hidden="true"
-				width={896}
-				height={900}
-				className="pointer-events-none absolute -top-56 -left-64 -z-10 w-180 opacity-[0.08] invert"
+				style={{ maskImage: `url(${ring})` }}
+				className="pointer-events-none absolute -right-40 -bottom-56 -z-10 hidden aspect-896/900 w-176 rotate-150 bg-brand-blue/5 mask-contain mask-no-repeat lg:block"
+			/>
+			<span
+				aria-hidden="true"
+				style={{ maskImage: `url(${ticks})` }}
+				className="pointer-events-none absolute bottom-6 -left-24 -z-10 aspect-878/389 w-96 rotate-180 bg-brand-blue/7 mask-contain mask-no-repeat max-lg:hidden lg:bottom-10 lg:left-[8%] lg:w-120"
 			/>
 
-			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-12 pb-6 sm:px-8 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8 lg:py-16">
-				<div className="flex min-w-0 flex-col gap-6 lg:gap-7">
+			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-10 pb-6 sm:px-8 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-2 lg:py-12">
+				<div className="relative z-10 flex min-w-0 flex-col gap-6 lg:gap-7">
 					<p
 						className={cn(
 							enter,
-							"flex w-fit items-center gap-3 rounded-full border border-border bg-accent py-1.5 pr-4 pl-1.5 text-sm/5.5 text-muted-foreground",
+							"flex w-fit items-center gap-3 rounded-full border border-border py-1.5 pr-4 pl-1.5 text-sm/5.5 text-muted-foreground",
 						)}
 					>
-						<img
-							src={socialPeople}
-							alt=""
-							aria-hidden="true"
-							width={314}
-							height={86}
-							className="h-8 w-auto"
-						/>
+						<span aria-hidden="true" className="flex -space-x-2">
+							{[avatar1, avatar2, avatar3, avatar4].map((src) => (
+								<img
+									key={src}
+									src={src}
+									alt=""
+									width={96}
+									height={96}
+									className="size-8 rounded-full object-cover ring-2 ring-background"
+								/>
+							))}
+						</span>
 						<span>
 							<strong className="font-semibold text-heading">+250.000</strong>{" "}
 							consultas já realizadas
@@ -117,16 +235,16 @@ export function HeroSection() {
 						style={{ animationDelay: "120ms" }}
 						className={cn(
 							enter,
-							"text-4xl/tight font-semibold tracking-tight text-balance text-heading xl:text-5xl/tight",
+							"text-4xl/[1.12] font-normal tracking-tighter text-balance text-heading sm:text-5xl/[1.08] xl:text-6xl/[1.07]",
 						)}
 					>
 						Antes de comprar, confira o{" "}
-						<span className="text-highlight">histórico completo</span> do carro
+						<span className="text-highlight">histórico completo</span> do carro.
 					</h1>
 
 					<p
 						style={{ animationDelay: "240ms" }}
-						className={cn(enter, "max-w-[46ch] text-lg text-muted-foreground")}
+						className={cn(enter, "max-w-[42ch] text-lg text-muted-foreground")}
 					>
 						Leilão, sinistro, roubo e furto, gravame e mais de 40 informações em
 						um extrato só. Digite a placa e veja na hora.
@@ -139,7 +257,7 @@ export function HeroSection() {
 						<PlateForm inputId={HERO_PLATE_INPUT_ID} />
 						<Link
 							to="/ainda-nao-tenho-placa"
-							className="-mt-1 inline-flex min-h-11 w-fit items-center self-center px-5 text-sm/5.5 font-medium text-muted-foreground underline decoration-1 underline-offset-4 hover:text-heading hover:decoration-2 sm:self-start"
+							className="-mt-1 inline-flex min-h-11 w-fit items-center self-center px-5 text-sm/5.5 font-medium text-heading underline decoration-1 underline-offset-4 hover:text-highlight hover:decoration-2 sm:self-start"
 						>
 							Ainda não tenho a placa
 						</Link>
@@ -149,80 +267,131 @@ export function HeroSection() {
 						style={{ animationDelay: "480ms" }}
 						className={cn(
 							enter,
-							"flex flex-wrap gap-x-6 gap-y-2 text-sm/5.5 text-muted-foreground",
+							"grid max-w-md auto-rows-fr grid-cols-3 gap-2.5",
 						)}
 					>
-						{trust.map((item) => (
-							<li key={item} className="flex items-center gap-2">
-								<CircleCheckIcon
-									aria-hidden="true"
-									className="size-4.5 text-highlight"
-								/>
-								{item}
+						{stats.map(({ value, label, className }) => (
+							<li
+								key={value}
+								className={cn(
+									"flex min-h-32 flex-col justify-between gap-3 rounded-2xl p-3.5 sm:min-h-36 sm:p-4",
+									className,
+								)}
+							>
+								<strong className="text-2xl/none sm:text-3xl/none font-medium tracking-tighter">
+									{value}
+								</strong>
+								<span className="text-xs/4 font-medium sm:text-[0.8125rem]/4.5">
+									{label}
+								</span>
 							</li>
 						))}
 					</ul>
 				</div>
 
-				<div className="relative">
-					<div
-						style={{ animationDelay: "200ms" }}
-						className="animate-in duration-1000 fill-mode-both fade-in slide-in-from-right-16 motion-reduce:animate-none"
-					>
-						<img
-							data-hero-car
-							src={heroCar1000}
-							srcSet={`${heroCar640} 640w, ${heroCar1000} 1000w`}
-							sizes="(min-width: 1024px) 55vw, 100vw"
-							alt="SUV azul com destaques do relatório: restrições, indício de sinistro, oferta em leilão e mais de 40 informações"
-							width={1000}
-							height={851}
-							fetchPriority="high"
-							className="relative -mr-4 ml-auto w-[calc(100%+1rem)] max-w-xl mask-r-from-90% mask-r-to-100% sm:-mr-8 lg:-mr-20 lg:w-[calc(100%+5rem)] lg:max-w-none"
+				<div className="flex min-w-0 flex-col gap-3 lg:static">
+					<p className="flex items-center gap-2 text-sm text-muted-foreground lg:absolute lg:top-[calc(50%+var(--mh)/2+0.75rem)] lg:right-[calc(var(--mw)/2)] lg:translate-x-1/2 lg:whitespace-nowrap">
+						<span
+							aria-hidden="true"
+							className="size-2 shrink-0 rounded-full bg-brand-green shadow-[0_0_0_4px_--alpha(var(--color-brand-green)/20%)]"
 						/>
-					</div>
+						<span className="pointer-coarse:hidden">
+							Passe o mouse pelo carro e veja o que a consulta revela
+						</span>
+						<span className="hidden pointer-coarse:inline">
+							Toque nos pontos e veja o que a consulta revela
+						</span>
+					</p>
 
-					{/* Mini extrato: liga a hero ao que o cliente recebe. */}
 					<div
-						data-hero-statement
-						aria-hidden="true"
-						style={{ animationDelay: "700ms" }}
-						className="absolute right-0 -bottom-2 hidden w-64 animate-in flex-col gap-2.5 rounded-2xl bg-white p-4 text-slate-900 shadow-[0_32px_64px_-24px_rgb(0_0_0/0.55)] duration-700 fill-mode-both zoom-in-90 fade-in motion-reduce:animate-none sm:flex lg:-right-4 lg:-bottom-8 xl:w-72"
+						onPointerMove={handlePointerMove}
+						className="relative -mr-4 ml-auto aspect-949/867 w-[88%] touch-manipulation sm:-mr-8 sm:w-[64%] lg:absolute lg:top-[calc(50%-var(--mh)/2)] lg:right-0 lg:mr-0 lg:w-(--mw) lg:cursor-crosshair"
 					>
-						<div className="flex items-center justify-between">
-							<p className="text-xs/4.5 font-semibold text-brand-blue">
-								Extrato do veículo
-							</p>
-							<span className="rounded-md bg-brand-blue px-2 py-0.5 text-[0.6875rem] font-semibold tracking-[0.12em] text-white">
-								ABC1D23
+						<span
+							aria-hidden="true"
+							className="absolute inset-y-[4%] right-0 left-[-12%] bg-[radial-gradient(circle,--alpha(var(--color-brand-blue)/12%)_1.2px,transparent_1.6px)] mask-radial-[60%_50%] mask-radial-from-30% mask-radial-to-75% mask-radial-at-[60%_50%] bg-size-[22px_22px]"
+						/>
+						<img
+							src={heroCarFront}
+							srcSet={`${heroCarFront640} 640w, ${heroCarFront} 949w`}
+							sizes="(min-width: 1024px) 38vw, 88vw"
+							alt="Frente de um carro verde visto de cima, com pontos de informação em cada parte"
+							width={949}
+							height={867}
+							fetchPriority="high"
+							className="relative size-full animate-in drop-shadow-[0_30px_34px_--alpha(var(--color-brand-blue-dark)/30%)] duration-1200 ease-out fill-mode-both fade-in slide-in-from-right-[60%] motion-reduce:animate-none"
+						/>
+						<span
+							aria-hidden="true"
+							data-hero-scan
+							className="invisible absolute inset-y-[-4%] left-0 w-0.75 rounded-full bg-brand-blue shadow-[0_0_18px_4px_--alpha(var(--color-brand-blue)/45%)] before:absolute before:inset-y-0 before:right-0.75 before:w-35 before:bg-linear-to-r before:from-transparent before:to-brand-blue/16"
+						/>
+
+						{features.map(({ title }, index) => {
+							const isActive = index === active;
+
+							return (
+								<button
+									key={title}
+									type="button"
+									aria-label={title}
+									aria-pressed={isActive}
+									onClick={() => setActive(index)}
+									onFocus={() => setActive(index)}
+									style={{
+										left: `${points[index].left}%`,
+										top: `${points[index].top}%`,
+										animationDelay: `${points[index].delay}ms`,
+									}}
+									className="group absolute flex size-9 -translate-1/2 animate-in items-center justify-center rounded-full duration-500 fill-mode-both zoom-in-25 fade-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight motion-reduce:animate-none"
+								>
+									<span
+										aria-hidden="true"
+										className="absolute inset-1.5 animate-ping rounded-full border-2 border-brand-blue motion-reduce:animate-none"
+									/>
+									<span
+										aria-hidden="true"
+										className={cn(
+											"relative size-3 rounded-full transition-all duration-300",
+											isActive
+												? "scale-135 bg-white shadow-[0_0_0_4px_var(--color-brand-blue),0_0_22px_6px_--alpha(var(--color-brand-blue)/45%)]"
+												: "bg-brand-blue shadow-[0_0_0_3px_white,0_2px_8px_--alpha(var(--color-brand-blue-dark)/35%)]",
+										)}
+									/>
+								</button>
+							);
+						})}
+						<div
+							aria-live="polite"
+							style={
+								{
+									"--px": point.left / 100,
+									"--py": point.top / 100,
+								} as CSSProperties
+							}
+							className={cn(
+								"pointer-events-none absolute z-10 flex w-60 animate-in items-start gap-3 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 shadow-[0_24px_48px_-20px_--alpha(var(--color-brand-blue-dark)/45%)] transition-[left,top,translate] delay-2600 duration-500 ease-out fill-mode-both fade-in motion-reduce:animate-none max-lg:left-[clamp(-2.5rem,calc(var(--px)*100%-7.5rem),calc(100%-16rem))] lg:top-[calc(var(--py)*100%)] lg:left-[calc(var(--px)*100%)] lg:w-72 lg:-translate-y-1/2",
+								point.left > 46
+									? "lg:-translate-x-[calc(100%+1.625rem)]"
+									: "lg:translate-x-6.5",
+							)}
+						>
+							<span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-highlight">
+								<FeatureIcon aria-hidden="true" className="size-5" />
+							</span>
+							<span className="flex min-w-0 flex-col gap-0.5 pr-8">
+								<b className="text-[0.9375rem]/5 font-semibold text-heading">
+									{feature.title}
+								</b>
+								<span className="text-[0.8125rem]/4.5 text-muted-foreground">
+									{feature.description}
+								</span>
+							</span>
+							<span className="absolute top-3 right-3.5 text-[0.625rem] font-semibold tracking-wider text-muted-foreground tabular-nums">
+								{String(active + 1).padStart(2, "0")} /{" "}
+								{String(features.length).padStart(2, "0")}
 							</span>
 						</div>
-						<ul className="flex flex-col divide-y divide-slate-200">
-							{preview.map(({ label, status, warn }, index) => (
-								<li
-									key={label}
-									style={{ animationDelay: `${1000 + index * 180}ms` }}
-									className="flex animate-in items-center gap-2 py-1.5 text-xs/4.5 duration-500 fill-mode-both fade-in slide-in-from-left-2 motion-reduce:animate-none"
-								>
-									{warn ? (
-										<TriangleAlertIcon className="size-4 shrink-0 text-amber-700" />
-									) : (
-										<CircleCheckIcon className="size-4 shrink-0 text-brand-green-dark" />
-									)}
-									<span className="text-slate-700">{label}</span>
-									<span
-										className={cn(
-											"ml-auto rounded-full px-2 py-0.5 text-[0.625rem] font-semibold whitespace-nowrap",
-											warn
-												? "bg-amber-50 text-amber-700"
-												: "bg-green-50 text-brand-green-dark",
-										)}
-									>
-										{status}
-									</span>
-								</li>
-							))}
-						</ul>
 					</div>
 				</div>
 			</div>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 import { MenuIcon, UserRoundIcon } from "~/shared/components/icons";
@@ -13,6 +14,7 @@ import {
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
 import { accountLink, headerNav } from "~/shared/config/navigation";
+import { cn } from "~/shared/lib/utils";
 
 function HeaderNav() {
 	return (
@@ -22,7 +24,7 @@ function HeaderNav() {
 					<li key={link.to}>
 						<Link
 							to={link.to}
-							className="relative inline-flex min-h-11 items-center px-3 text-sm/5.5 font-semibold whitespace-nowrap text-heading transition-colors after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform hover:text-highlight hover:after:scale-x-100"
+							className="relative inline-flex min-h-11 items-center px-3 text-sm/5.5 font-medium whitespace-nowrap text-heading transition-colors after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform hover:text-highlight hover:after:scale-x-100"
 						>
 							{link.label}
 						</Link>
@@ -57,7 +59,7 @@ function MobileMenu() {
 								<SheetClose asChild>
 									<Link
 										to={link.to}
-										className="flex min-h-12 items-center rounded-full px-4 font-semibold text-heading transition-colors hover:bg-muted hover:text-highlight"
+										className="flex min-h-12 items-center rounded-full px-4 font-medium text-heading transition-colors hover:bg-muted hover:text-highlight"
 									>
 										{link.label}
 									</Link>
@@ -84,9 +86,28 @@ function MobileMenu() {
 }
 
 export function SiteHeader() {
+	const [scrolled, setScrolled] = useState(false);
+
+	useEffect(() => {
+		function update() {
+			setScrolled(window.scrollY > 8);
+		}
+
+		update();
+		window.addEventListener("scroll", update, { passive: true });
+		return () => window.removeEventListener("scroll", update);
+	}, []);
+
 	return (
-		<header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
-			<div className="mx-auto flex min-h-19 w-full max-w-7xl items-center gap-1.5 px-4 sm:gap-2 sm:px-8">
+		<header
+			className={cn(
+				"sticky top-0 z-40 border-b transition-colors duration-300",
+				scrolled
+					? "border-border bg-background/90 backdrop-blur-md"
+					: "border-transparent bg-background",
+			)}
+		>
+			<div className="relative mx-auto flex min-h-19 w-full max-w-7xl items-center gap-1.5 px-4 sm:gap-2 sm:px-8">
 				<Logo className="h-6 sm:h-7" />
 				<HeaderNav />
 				<HeaderAccount className="ml-auto xl:ml-0" />

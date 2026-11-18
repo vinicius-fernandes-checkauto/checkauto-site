@@ -164,7 +164,7 @@ export function PlansSection() {
 			<span
 				aria-hidden="true"
 				style={{ maskImage: `url(${ticks})` }}
-				className="pointer-events-none absolute -right-24 -bottom-12 -z-10 aspect-878/389 w-80 bg-brand-green/15 mask-contain mask-no-repeat lg:-right-20 lg:-bottom-16 lg:w-136"
+				className="pointer-events-none absolute -right-24 -bottom-12 -z-10 aspect-878/389 w-80 bg-brand-green/15 mask-contain mask-no-repeat max-lg:hidden lg:-right-20 lg:-bottom-16 lg:w-136"
 			/>
 			<section
 				id="pacotes"
