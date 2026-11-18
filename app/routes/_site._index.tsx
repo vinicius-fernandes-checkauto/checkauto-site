@@ -52,7 +52,7 @@ function Band({
 }
 
 const REVEAL_GROUPS = [
-	"#por-que-checkauto > ul > li",
+	"#por-que-checkauto [data-tile]",
 	"#pacotes [data-plan]",
 	"#faq [data-slot=accordion-item]",
 	"#hora-de-vender [data-tile]",

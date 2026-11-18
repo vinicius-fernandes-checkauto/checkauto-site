@@ -6,6 +6,7 @@ export {
 	BadgeCheckIcon,
 	BanIcon,
 	CarFrontIcon,
+	CarIcon,
 	CheckIcon,
 	ChevronDownIcon,
 	ChevronUpIcon,
