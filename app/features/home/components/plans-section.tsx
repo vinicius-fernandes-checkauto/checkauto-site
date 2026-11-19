@@ -367,7 +367,7 @@ export function PlansSection() {
 							{corporatePlan.description}
 						</p>
 					</div>
-					<ul className="flex flex-col gap-2.5 py-1.5 lg:flex-row lg:flex-wrap lg:gap-x-6">
+					<ul className="grid grid-cols-1 gap-x-8 gap-y-2.5 py-1.5 sm:grid-cols-2">
 						{corporatePlan.segments.map((segment) => (
 							<li key={segment} className="flex items-center gap-2.5 text-sm">
 								<CheckIcon

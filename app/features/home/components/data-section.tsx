@@ -1,5 +1,4 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { Link } from "react-router";
 
 import carDiagram960 from "~/assets/home/car-diagram-960.webp";
 import carDiagram1600 from "~/assets/home/car-diagram-1600.webp";
@@ -15,7 +14,6 @@ import {
 	WrenchIcon,
 	XIcon,
 } from "~/shared/components/icons";
-import { Button } from "~/shared/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -148,13 +146,13 @@ export function DataSection() {
 		<section
 			id="dados-da-consulta"
 			aria-labelledby="dados-da-consulta-titulo"
-			className="mx-auto flex w-full max-w-7xl flex-col items-center gap-10 px-4 py-16 sm:px-8 lg:py-24"
+			className="mx-auto flex w-full max-w-7xl flex-col items-center gap-8 px-4 py-16 sm:px-8 lg:gap-6 lg:py-10 xl:min-h-svh xl:justify-center"
 		>
-			<div className="flex max-w-2xl flex-col items-center gap-3 text-center">
+			<div className="flex max-w-4xl flex-col items-center gap-3 text-center">
 				<SectionEyebrow>Dados da consulta</SectionEyebrow>
 				<h2
 					id="dados-da-consulta-titulo"
-					className="text-3xl/tight font-semibold tracking-tight lg:text-4xl/tight"
+					className="text-3xl/tight font-semibold tracking-tight lg:text-[2rem]/tight"
 				>
 					Transparência total para uma compra sem surpresas
 				</h2>
@@ -162,7 +160,7 @@ export function DataSection() {
 
 			<div
 				ref={diagramRef}
-				className="flex w-full flex-col gap-6 xl:relative xl:mx-auto xl:block xl:max-w-[min(72rem,calc((100svh-6rem)*1.786))]"
+				className="flex w-full flex-col gap-6 xl:relative xl:mx-auto xl:block xl:max-w-[min(72rem,calc((100svh-12rem)*1.786))]"
 			>
 				<img
 					src={carDiagram1600}
@@ -264,10 +262,6 @@ export function DataSection() {
 					</DialogContent>
 				</Dialog>
 			</div>
-
-			<Button asChild size="lg">
-				<Link to="/#pacotes">Confira nossos planos</Link>
-			</Button>
 		</section>
 	);
 }

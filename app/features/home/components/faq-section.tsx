@@ -7,7 +7,7 @@ import {
 	AccordionTrigger,
 } from "~/shared/components/ui/accordion";
 import { Button } from "~/shared/components/ui/button";
-import { faq } from "~/shared/config/faq";
+import { homeFaq } from "~/shared/config/faq";
 
 export function FaqSection() {
 	return (
@@ -30,7 +30,7 @@ export function FaqSection() {
 						e-mail e responde rápido.
 					</p>
 					<Button asChild size="lg">
-						<Link to="/contato">Falar com o atendimento</Link>
+						<Link to="/faq">Ver todas as dúvidas</Link>
 					</Button>
 				</div>
 			</div>
@@ -41,7 +41,7 @@ export function FaqSection() {
 				defaultValue="faq-0"
 				className="order-2 gap-2.5 overflow-visible rounded-none border-0"
 			>
-				{faq.map(({ question, answer }, index) => (
+				{homeFaq.map(({ question, answer }, index) => (
 					<AccordionItem
 						key={question}
 						value={`faq-${index}`}

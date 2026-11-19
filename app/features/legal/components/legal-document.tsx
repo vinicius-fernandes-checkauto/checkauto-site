@@ -90,7 +90,7 @@ function LegalSection({ section }: { section: LegalSectionContent }) {
 		<section
 			id={section.id}
 			aria-labelledby={`${section.id}-titulo`}
-			className="flex scroll-mt-28 flex-col gap-4"
+			className="flex flex-col gap-4 max-lg:scroll-mt-28 lg:scroll-mt-6"
 		>
 			<h2
 				id={`${section.id}-titulo`}

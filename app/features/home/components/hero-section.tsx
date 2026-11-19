@@ -11,7 +11,6 @@ import heroCarFront from "~/assets/home/hero-car-front.webp";
 import heroCarFront640 from "~/assets/home/hero-car-front-640.webp";
 import {
 	BanIcon,
-	ChevronDownIcon,
 	FileTextIcon,
 	GavelIcon,
 	LockIcon,
@@ -109,8 +108,8 @@ const points = features.map(({ x, y }) => ({
 
 const stats = [
 	{
-		value: "1 em 4",
-		label: "carros consultados têm restrição",
+		value: "+25",
+		label: "anos de pioneirismo em histórico veicular",
 		className: "bg-brand-blue text-white [&_strong]:text-brand-green",
 	},
 	{
@@ -119,8 +118,8 @@ const stats = [
 		className: "bg-brand-green text-foreground",
 	},
 	{
-		value: "+40",
-		label: "informações em cada extrato",
+		value: "1 em 4",
+		label: "carros consultados têm restrição",
 		className: "border border-border bg-card text-heading",
 	},
 ];
@@ -161,7 +160,7 @@ export function HeroSection() {
 		<section
 			ref={scope}
 			aria-labelledby="hero-titulo"
-			className="relative isolate overflow-hidden bg-background [--mh:calc(var(--mw)/1.0946)] [--mw:min(38vw,40rem,calc((100svh-9rem)*1.0946))]"
+			className="relative isolate overflow-hidden bg-background [--mh:calc(var(--mw)/1.0946)] [--mw:min(38vw,40rem,calc((100svh-9rem)*1.0946))] lg:flex lg:min-h-[calc(100svh-4.75rem-1px)] lg:flex-col"
 		>
 			<span
 				aria-hidden="true"
@@ -179,8 +178,8 @@ export function HeroSection() {
 				className="pointer-events-none absolute bottom-6 -left-24 -z-10 aspect-878/389 w-96 rotate-180 bg-brand-blue/7 mask-contain mask-no-repeat max-lg:hidden lg:bottom-10 lg:left-[8%] lg:w-120"
 			/>
 
-			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-10 pb-6 sm:px-8 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-2 lg:py-12">
-				<div className="relative z-10 flex min-w-0 flex-col gap-6 lg:gap-7">
+			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-10 pb-6 sm:px-8 lg:flex-1 lg:grid-cols-2 lg:pt-8 lg:pb-18 lg:[@media(max-height:620px)]:pb-6 lg:[@media(max-height:660px)]:pt-2 lg:[@media(min-height:621px)_and_(max-height:820px)]:pb-16 lg:[@media(min-height:661px)_and_(max-height:820px)]:pt-4">
+				<div className="relative z-10 flex min-w-0 flex-col gap-6 lg:gap-7 lg:[@media(max-height:660px)]:gap-2.5 lg:[@media(min-height:661px)_and_(max-height:760px)]:gap-3 lg:[@media(min-height:761px)_and_(max-height:820px)]:gap-4">
 					<p
 						className={cn(
 							enter,
@@ -200,8 +199,10 @@ export function HeroSection() {
 							))}
 						</span>
 						<span>
-							<strong className="font-semibold text-heading">+250.000</strong>{" "}
-							consultas já realizadas
+							Quem compra carro{" "}
+							<strong className="font-semibold text-heading">
+								confia na Checkauto
+							</strong>
 						</span>
 					</p>
 
@@ -210,19 +211,23 @@ export function HeroSection() {
 						style={{ animationDelay: "120ms" }}
 						className={cn(
 							enter,
-							"text-4xl/[1.12] font-normal tracking-tighter text-balance text-heading sm:text-5xl/[1.08] xl:text-6xl/[1.07]",
+							"text-4xl/[1.12] font-normal tracking-tighter text-balance text-heading sm:text-5xl/[1.08] xl:text-6xl/[1.07] lg:[@media(max-height:660px)]:text-[2.25rem]/[1.1] lg:[@media(min-height:661px)_and_(max-height:760px)]:text-[2.5rem]/[1.1] lg:[@media(min-height:761px)_and_(max-height:820px)]:text-5xl/[1.08]",
 						)}
 					>
 						Antes de comprar, confira o{" "}
-						<span className="text-highlight">histórico completo</span> do carro.
+						<span className="text-highlight">histórico completo</span> do
+						veículo.
 					</h1>
 
 					<p
 						style={{ animationDelay: "240ms" }}
-						className={cn(enter, "max-w-[42ch] text-lg text-muted-foreground")}
+						className={cn(
+							enter,
+							"max-w-[42ch] text-lg text-muted-foreground lg:[@media(max-height:660px)]:text-sm lg:[@media(min-height:661px)_and_(max-height:820px)]:text-base",
+						)}
 					>
-						Leilão, sinistro, roubo e furto, gravame e mais de 40 informações em
-						um extrato só. Digite a placa e veja na hora.
+						Leilão, indício de ocorrência, roubo e furto, gravame e mais de 40
+						informações em um extrato só. Digite a placa e veja na hora.
 					</p>
 
 					<div
@@ -249,7 +254,7 @@ export function HeroSection() {
 							<li
 								key={value}
 								className={cn(
-									"flex min-h-32 flex-col justify-between gap-3 rounded-2xl p-3.5 sm:min-h-36 sm:p-4",
+									"flex min-h-32 flex-col justify-between gap-3 rounded-2xl p-3.5 sm:min-h-36 sm:p-4 lg:[@media(max-height:660px)]:min-h-20 lg:[@media(min-height:661px)_and_(max-height:760px)]:min-h-24 lg:[@media(min-height:761px)_and_(max-height:820px)]:min-h-28",
 									className,
 								)}
 							>
@@ -380,19 +385,6 @@ export function HeroSection() {
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div className="flex justify-center pb-6">
-				<Link
-					to="/#dados-da-consulta"
-					aria-label="Ir para Dados da consulta"
-					className="flex size-12 items-center justify-center rounded-full border border-border text-heading transition-colors hover:bg-accent"
-				>
-					<ChevronDownIcon
-						aria-hidden="true"
-						className="size-5 animate-bounce motion-reduce:animate-none"
-					/>
-				</Link>
 			</div>
 		</section>
 	);

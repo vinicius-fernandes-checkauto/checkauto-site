@@ -1,5 +1,13 @@
 import type { NavLink } from "~/shared/types";
 
+export const headerNav: NavLink[] = [
+	{ label: "Por que Checkauto", to: "/#por-que-checkauto" },
+	{ label: "Como funciona", to: "/#como-funciona" },
+	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
+	{ label: "Pacotes", to: "/#pacotes" },
+	{ label: "FAQ", to: "/#faq" },
+];
+
 export const footerNav: { title: string; links: NavLink[] }[] = [
 	{
 		title: "Consultas",
@@ -7,7 +15,6 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
 			{ label: "Pacotes", to: "/#pacotes" },
 			{ label: "Como funciona", to: "/#como-funciona" },
 			{ label: "Dados da consulta", to: "/#dados-da-consulta" },
-			{ label: "Para lojistas", to: "/#hora-de-vender" },
 		],
 	},
 	{
@@ -21,7 +28,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
 	{
 		title: "Ajuda",
 		links: [
-			{ label: "Perguntas frequentes", to: "/#faq" },
+			{ label: "Perguntas frequentes", to: "/faq" },
 			{ label: "Fale conosco", to: "/contato" },
 			{ label: "Minhas consultas", to: "/entrar" },
 		],

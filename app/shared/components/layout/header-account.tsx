@@ -12,6 +12,7 @@ import {
 	UserRoundIcon,
 	WalletIcon,
 } from "~/shared/components/icons";
+import { Button } from "~/shared/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -40,23 +41,14 @@ const accountMenu = [
 
 function SignInLink() {
 	return (
-		<Link
-			to="/entrar"
-			className="hidden min-h-11 items-center gap-3 rounded-full pr-4 transition-colors hover:bg-muted sm:flex"
+		<Button
+			asChild
+			variant="secondary"
+			size="sm"
+			className="hidden px-6 sm:inline-flex"
 		>
-			<span
-				aria-hidden="true"
-				className="flex size-11 items-center justify-center rounded-full bg-accent text-highlight"
-			>
-				<UserRoundIcon className="size-5" />
-			</span>
-			<span className="flex flex-col leading-tight whitespace-nowrap">
-				<span className="text-xs/4.5 text-muted-foreground">Entre ou</span>
-				<span className="text-sm/5.5 font-semibold text-heading">
-					Cadastre-se
-				</span>
-			</span>
-		</Link>
+			<Link to="/entrar">Entrar</Link>
+		</Button>
 	);
 }
 
@@ -128,7 +120,10 @@ export function HeaderAccount({
 	return (
 		<div
 			className={cn(
-				"flex shrink-0 items-center gap-1.5 sm:gap-1 sm:rounded-full sm:border sm:border-border sm:bg-card sm:p-1",
+				"flex shrink-0 items-center gap-1.5",
+				user
+					? "sm:gap-1 sm:rounded-full sm:border sm:border-border sm:bg-card sm:p-1"
+					: "sm:gap-2",
 				className,
 			)}
 		>
@@ -136,7 +131,7 @@ export function HeaderAccount({
 			<Link
 				to="/carrinho"
 				aria-label={`Carrinho, ${cartCount} ${itemsLabel}`}
-				className="relative flex size-11 items-center justify-center rounded-full border border-border bg-card text-heading transition-colors hover:border-slate-300 sm:border-0 sm:bg-accent sm:text-highlight sm:hover:bg-green-100"
+				className="relative flex size-11 items-center justify-center rounded-full border border-border bg-card text-heading transition-colors hover:bg-brand-blue/6 sm:border-0 sm:bg-brand-blue/6 sm:hover:bg-brand-blue/10"
 			>
 				<ShoppingBagIcon aria-hidden="true" className="size-5" />
 				<span
