@@ -28,7 +28,7 @@ const topics = [
 
 const card = "relative flex flex-col justify-end gap-4 rounded-4xl p-5";
 
-const cornerIcon = "absolute top-5 right-5";
+const cornerIcon = "lg:absolute lg:top-5 lg:right-5";
 
 const whiteCard = cn(
 	card,
@@ -149,7 +149,7 @@ export function WhyReasons() {
 							<ShieldCheckIcon aria-hidden="true" className="size-5" />
 						</span>
 						<div className="flex flex-col gap-3">
-							<h3 className="pr-12 font-semibold text-heading">
+							<h3 className="font-semibold text-heading lg:pr-12">
 								Fontes oficiais, em tempo real
 							</h3>
 							<ul className="flex flex-wrap gap-1.5">
@@ -182,7 +182,7 @@ export function WhyReasons() {
 							<LandmarkIcon aria-hidden="true" className="size-5" />
 						</span>
 						<div className="flex flex-col gap-1.5">
-							<h3 className="pr-12 text-lg/6 font-semibold tracking-tight">
+							<h3 className="text-lg/6 font-semibold tracking-tight lg:pr-12">
 								Confiança de grandes empresas
 							</h3>
 							<p className="text-sm/5">
@@ -234,7 +234,7 @@ export function WhyReasons() {
 							<Building2Icon aria-hidden="true" className="size-5" />
 						</span>
 						<div className="flex flex-col gap-2">
-							<h3 className="pr-12 font-semibold text-heading">
+							<h3 className="font-semibold text-heading lg:pr-12">
 								Grupo ForRisk
 							</h3>
 							<p className="text-sm/5 text-muted-foreground">

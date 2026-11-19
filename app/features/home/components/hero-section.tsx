@@ -186,7 +186,7 @@ export function HeroSection() {
 							"flex w-fit items-center gap-3 rounded-full border border-border py-1.5 pr-4 pl-1.5 text-sm/5.5 text-muted-foreground",
 						)}
 					>
-						<span aria-hidden="true" className="flex -space-x-2">
+						<span aria-hidden="true" className="flex shrink-0 -space-x-2">
 							{[avatar1, avatar2, avatar3, avatar4].map((src) => (
 								<img
 									key={src}
@@ -363,7 +363,10 @@ export function HeroSection() {
 										} as CSSProperties
 									}
 									className={cn(
-										"pointer-events-none absolute z-30 flex w-60 animate-in items-start gap-3 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 shadow-[0_24px_48px_-20px_--alpha(var(--color-brand-blue-dark)/45%)] duration-200 ease-out zoom-in-95 fade-in motion-reduce:animate-none max-lg:top-[calc(var(--py)*100%+1.75rem)] max-lg:left-[clamp(-2.5rem,calc(var(--px)*100%-7.5rem),calc(100%-16rem))] lg:top-[calc(var(--py)*100%)] lg:left-[calc(var(--px)*100%)] lg:w-72 lg:-translate-y-1/2",
+										"pointer-events-none absolute z-30 flex w-60 animate-in items-start gap-3 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 shadow-[0_24px_48px_-20px_--alpha(var(--color-brand-blue-dark)/45%)] duration-200 ease-out zoom-in-95 fade-in motion-reduce:animate-none max-lg:left-[clamp(-2.5rem,calc(var(--px)*100%-7.5rem),calc(100%-16rem))] lg:top-[calc(var(--py)*100%)] lg:left-[calc(var(--px)*100%)] lg:w-72 lg:-translate-y-1/2",
+										point.top > 55
+											? "max-lg:bottom-[calc((1-var(--py))*100%+1.75rem)]"
+											: "max-lg:top-[calc(var(--py)*100%+1.75rem)]",
 										point.left > 46
 											? "lg:-translate-x-[calc(100%+1.625rem)]"
 											: "lg:translate-x-6.5",
