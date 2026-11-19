@@ -119,3 +119,27 @@ export function YoutubeIcon({ className, ...props }: BrandIconProps) {
 		</svg>
 	);
 }
+
+export function SecureSealIcon() {
+	return (
+		<svg
+			aria-hidden="true"
+			width={16}
+			height={18}
+			viewBox="0 0 32 36"
+			className="shrink-0"
+		>
+			<path
+				d="M16 1 3 6v10c0 8.6 5.6 15.6 13 18 7.4-2.4 13-9.4 13-18V6L16 1z"
+				className="fill-brand-green"
+			/>
+			<rect x="10.5" y="16" width="11" height="9" rx="2" fill="#fff" />
+			<path
+				d="M12.75 16v-2.6a3.25 3.25 0 0 1 6.5 0V16"
+				fill="none"
+				stroke="#fff"
+				strokeWidth={2.4}
+			/>
+		</svg>
+	);
+}

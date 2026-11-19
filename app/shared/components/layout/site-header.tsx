@@ -1,30 +1,22 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 import type { AccountUser } from "~/features/account/lib/account";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
-import { MenuIcon, UserRoundIcon } from "~/shared/components/icons";
+import { MenuIcon } from "~/shared/components/icons";
 import { HeaderAccount } from "~/shared/components/layout/header-account";
 import { Button } from "~/shared/components/ui/button";
 import {
 	Sheet,
 	SheetClose,
 	SheetContent,
+	SheetFooter,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
+import { headerNav } from "~/shared/config/navigation";
+import { useScrolled } from "~/shared/hooks/use-scrolled";
 import { cn } from "~/shared/lib/utils";
-import type { NavLink } from "~/shared/types";
-
-export const headerNav: NavLink[] = [
-	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
-	{ label: "Por que Checkauto", to: "/#por-que-checkauto" },
-	{ label: "Como funciona", to: "/#como-funciona" },
-	{ label: "Pacotes", to: "/#pacotes" },
-	{ label: "Lojista", to: "/#hora-de-vender" },
-	{ label: "FAQ", to: "/#faq" },
-];
 
 function HeaderNav() {
 	return (
@@ -45,7 +37,7 @@ function HeaderNav() {
 	);
 }
 
-function MobileMenu() {
+function MobileMenu({ user }: { user?: AccountUser }) {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -58,11 +50,15 @@ function MobileMenu() {
 					<span className="sr-only">Abrir menu</span>
 				</Button>
 			</SheetTrigger>
-			<SheetContent side="right" aria-describedby={undefined}>
+			<SheetContent
+				side="top"
+				aria-describedby={undefined}
+				className="max-h-dvh overflow-y-auto data-[side=top]:rounded-b-none"
+			>
 				<SheetHeader className="pr-20">
 					<SheetTitle>Menu</SheetTitle>
 				</SheetHeader>
-				<nav aria-label="Menu" className="px-3 pb-6">
+				<nav aria-label="Menu" className="px-3 pb-4">
 					<ul className="flex flex-col gap-1">
 						{headerNav.map((link) => (
 							<li key={link.to}>
@@ -77,36 +73,28 @@ function MobileMenu() {
 							</li>
 						))}
 					</ul>
-					<SheetClose asChild>
-						<Link
-							to="/conta"
-							className="mt-4 flex min-h-12 items-center gap-3 rounded-full bg-accent px-4 font-semibold text-heading transition-colors hover:bg-green-100 sm:hidden"
-						>
-							<UserRoundIcon
-								aria-hidden="true"
-								className="size-5 text-highlight"
-							/>
-							Minha conta
-						</Link>
-					</SheetClose>
 				</nav>
+				<SheetFooter>
+					<SheetClose asChild>
+						<Button asChild className="w-full">
+							<Link to="/conta">Minha conta</Link>
+						</Button>
+					</SheetClose>
+					{!user && (
+						<SheetClose asChild>
+							<Button asChild variant="ghost" className="w-full">
+								<Link to="/conta/pedidos">Meus pedidos</Link>
+							</Button>
+						</SheetClose>
+					)}
+				</SheetFooter>
 			</SheetContent>
 		</Sheet>
 	);
 }
 
 export function SiteHeader({ user }: { user?: AccountUser }) {
-	const [scrolled, setScrolled] = useState(false);
-
-	useEffect(() => {
-		function update() {
-			setScrolled(window.scrollY > 8);
-		}
-
-		update();
-		window.addEventListener("scroll", update, { passive: true });
-		return () => window.removeEventListener("scroll", update);
-	}, []);
+	const scrolled = useScrolled();
 
 	return (
 		<header
@@ -121,7 +109,7 @@ export function SiteHeader({ user }: { user?: AccountUser }) {
 				<CheckautoLogo className="h-6 sm:h-7" />
 				<HeaderNav />
 				<HeaderAccount user={user} className="ml-auto xl:ml-0" />
-				<MobileMenu />
+				<MobileMenu user={user} />
 			</div>
 		</header>
 	);

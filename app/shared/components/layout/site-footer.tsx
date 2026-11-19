@@ -6,6 +6,7 @@ import {
 	InstagramIcon,
 	MailIcon,
 	PhoneIcon,
+	SecureSealIcon,
 	YoutubeIcon,
 } from "~/shared/components/icons";
 import { company, contact, socialLinks } from "~/shared/config/company";
@@ -30,30 +31,6 @@ const linkClassName = cn(
 
 const headingClassName =
 	"mb-2 text-base/relaxed font-medium text-foreground lg:mb-4";
-
-function SecureSeal() {
-	return (
-		<svg
-			aria-hidden="true"
-			width={16}
-			height={18}
-			viewBox="0 0 32 36"
-			className="shrink-0"
-		>
-			<path
-				d="M16 1 3 6v10c0 8.6 5.6 15.6 13 18 7.4-2.4 13-9.4 13-18V6L16 1z"
-				className="fill-brand-green"
-			/>
-			<rect x="10.5" y="16" width="11" height="9" rx="2" fill="#fff" />
-			<path
-				d="M12.75 16v-2.6a3.25 3.25 0 0 1 6.5 0V16"
-				fill="none"
-				stroke="#fff"
-				strokeWidth={2.4}
-			/>
-		</svg>
-	);
-}
 
 function FooterLinks({ title, links }: (typeof footerNav)[number]) {
 	const id = `rodape-${title.toLowerCase()}`;
@@ -145,7 +122,7 @@ export function SiteFooter() {
 								<a href={href} className={cn(linkClassName, "text-foreground")}>
 									<PhoneIcon
 										aria-hidden="true"
-										className="size-4.5 shrink-0 text-brand-green"
+										className="size-4.5 shrink-0 text-brand-green-dark"
 									/>
 									{label}
 								</a>
@@ -161,14 +138,14 @@ export function SiteFooter() {
 							>
 								<MailIcon
 									aria-hidden="true"
-									className="size-4.5 shrink-0 text-brand-green"
+									className="size-4.5 shrink-0 text-brand-green-dark"
 								/>
 								{contact.email}
 							</a>
 						</li>
 					</ul>
 					<p className="mt-2 flex items-center justify-center gap-2 pt-2 pb-7 text-xs/4.5 text-muted-foreground lg:mt-6 lg:justify-start lg:border-t lg:border-border lg:pt-5 lg:pb-0">
-						<SecureSeal />
+						<SecureSealIcon />
 						Site seguro · Certificado SSL
 					</p>
 				</div>
@@ -179,7 +156,7 @@ export function SiteFooter() {
 					<div className="flex flex-col gap-1 text-xs/4.5 text-mist">
 						<p>
 							<strong className="font-medium text-white">
-								© {year} Checkauto.
+								© {year} {company.name}.
 							</strong>{" "}
 							Todos os direitos reservados.
 						</p>

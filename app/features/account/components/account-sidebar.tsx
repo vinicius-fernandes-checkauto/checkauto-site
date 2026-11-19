@@ -10,15 +10,19 @@ import {
 	UserRoundIcon,
 	WalletIcon,
 } from "~/shared/components/icons";
-import { accountNav } from "~/shared/config/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const sections = [
-	{ ...accountNav.home, icon: HouseIcon, end: true },
-	{ ...accountNav.orders, icon: FileTextIcon, end: false },
-	{ ...accountNav.credits, icon: WalletIcon, end: false },
-	{ ...accountNav.profile, icon: UserRoundIcon, end: false },
-	{ ...accountNav.addresses, icon: MapPinIcon, end: false },
+	{ label: "Início", to: "/conta", icon: HouseIcon, end: true },
+	{ label: "Pedidos", to: "/conta/pedidos", icon: FileTextIcon, end: false },
+	{ label: "Créditos", to: "/conta/creditos", icon: WalletIcon, end: false },
+	{
+		label: "Meus dados",
+		to: "/conta/meus-dados",
+		icon: UserRoundIcon,
+		end: false,
+	},
+	{ label: "Endereços", to: "/conta/enderecos", icon: MapPinIcon, end: false },
 ];
 
 export function AccountSidebar({ user }: { user: AccountUser }) {
@@ -61,13 +65,12 @@ export function AccountSidebar({ user }: { user: AccountUser }) {
 									className="hidden size-4.5 group-aria-[current=page]:text-highlight lg:block"
 								/>
 								{section.label}
-								{section.to === accountNav.orders.to &&
-									user.pendingOrders > 0 && (
-										<span className="ml-0.5 rounded-full bg-accent px-1.5 text-[0.6875rem]/5 font-semibold text-highlight lg:ml-auto lg:bg-secondary lg:px-2 lg:text-secondary-foreground">
-											{user.pendingOrders}
-											<span className="sr-only"> aguardando pagamento</span>
-										</span>
-									)}
+								{section.to === "/conta/pedidos" && user.pendingOrders > 0 && (
+									<span className="ml-0.5 rounded-full bg-accent px-1.5 text-[0.6875rem]/5 font-semibold text-highlight lg:ml-auto lg:bg-secondary lg:px-2 lg:text-secondary-foreground">
+										{user.pendingOrders}
+										<span className="sr-only"> aguardando pagamento</span>
+									</span>
+								)}
 							</NavLink>
 						</li>
 					))}

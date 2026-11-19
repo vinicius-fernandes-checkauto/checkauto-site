@@ -21,7 +21,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "~/shared/components/ui/dropdown-menu";
-import { accountNav } from "~/shared/config/navigation";
 import { cn } from "~/shared/lib/utils";
 
 type HeaderAccountProps = {
@@ -31,11 +30,11 @@ type HeaderAccountProps = {
 };
 
 const accountMenu = [
-	{ ...accountNav.home, icon: HouseIcon },
-	{ ...accountNav.orders, icon: FileTextIcon },
-	{ ...accountNav.credits, icon: WalletIcon },
-	{ ...accountNav.profile, icon: UserRoundIcon },
-	{ ...accountNav.addresses, icon: MapPinIcon },
+	{ label: "Início", to: "/conta", icon: HouseIcon },
+	{ label: "Pedidos", to: "/conta/pedidos", icon: FileTextIcon },
+	{ label: "Créditos", to: "/conta/creditos", icon: WalletIcon },
+	{ label: "Meus dados", to: "/conta/meus-dados", icon: UserRoundIcon },
+	{ label: "Endereços", to: "/conta/enderecos", icon: MapPinIcon },
 ];
 
 function SignInLink() {
@@ -95,7 +94,7 @@ function AccountMenu({ user }: { user: AccountUser }) {
 							<Link to={link.to}>
 								<Icon aria-hidden="true" className="text-muted-foreground" />
 								{link.label}
-								{link.to === accountNav.orders.to && user.pendingOrders > 0 && (
+								{link.to === "/conta/pedidos" && user.pendingOrders > 0 && (
 									<span className="ml-auto rounded-full bg-secondary px-2 text-[0.6875rem]/5 font-semibold text-secondary-foreground">
 										{user.pendingOrders}
 										<span className="sr-only"> aguardando pagamento</span>

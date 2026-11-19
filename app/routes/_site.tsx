@@ -6,7 +6,7 @@ import { SkipLink } from "~/shared/components/layout/skip-link";
 
 export default function SiteLayout() {
 	return (
-		<div className="flex min-h-dvh flex-col bg-muted">
+		<div className="flex min-h-dvh flex-col bg-background">
 			<SkipLink />
 			<SiteHeader />
 			<main id="conteudo" tabIndex={-1} className="flex-1 outline-none">
