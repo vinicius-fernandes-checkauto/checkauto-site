@@ -3,7 +3,7 @@ export const planFeatures = [
 	"Histórico de roubo e furto",
 	"Recall",
 	"Restrições",
-	"Indício de sinistro",
+	"Indício de ocorrência",
 	"Gravame",
 ] as const;
 
@@ -52,7 +52,7 @@ export const plans: Plan[] = [
 			"Histórico de roubo e furto",
 			"Recall",
 			"Restrições",
-			"Indício de sinistro",
+			"Indício de ocorrência",
 		],
 		moreUrl: "/produto/checkauto-master-150135",
 		detailsUrl: "/checkauto-master-150135",

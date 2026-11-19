@@ -29,7 +29,7 @@ export function FaqSection() {
 						Não encontrou o que procurava? Nossa equipe atende por telefone e
 						e-mail e responde rápido.
 					</p>
-					<Button asChild variant="secondary" size="lg">
+					<Button asChild size="lg">
 						<Link to="/contato">Falar com o atendimento</Link>
 					</Button>
 				</div>

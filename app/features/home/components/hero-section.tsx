@@ -1,4 +1,4 @@
-import { type CSSProperties, type PointerEvent, useRef, useState } from "react";
+import { type CSSProperties, useRef, useState } from "react";
 import { Link } from "react-router";
 
 import ring from "~/assets/brand/symbol-ring-blue.webp";
@@ -52,7 +52,7 @@ const features: Feature[] = [
 		y: 0.42,
 	},
 	{
-		title: "Indício de sinistro",
+		title: "Indício de ocorrência",
 		description:
 			"Aponta registros de batida, enchente ou perda total informados por seguradoras.",
 		icon: TriangleAlertIcon,
@@ -111,7 +111,7 @@ const stats = [
 	{
 		value: "1 em 4",
 		label: "carros consultados têm restrição",
-		className: "surface-inverse bg-background [&_strong]:text-highlight",
+		className: "bg-brand-blue text-white [&_strong]:text-brand-green",
 	},
 	{
 		value: "18%",
@@ -131,10 +131,9 @@ const enter =
 
 export function HeroSection() {
 	const scope = useRef<HTMLElement>(null);
-	const [active, setActive] = useState(1);
-	const feature = features[active];
-	const point = points[active];
-	const FeatureIcon = feature.icon;
+	const [active, setActive] = useState<number | null>(null);
+	const feature = active === null ? null : features[active];
+	const point = active === null ? null : points[active];
 
 	useGSAP(
 		() => {
@@ -157,30 +156,6 @@ export function HeroSection() {
 		},
 		{ scope },
 	);
-
-	function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
-		if (event.pointerType !== "mouse") return;
-
-		const rect = event.currentTarget.getBoundingClientRect();
-		const x = ((event.clientX - rect.left) / rect.width) * 100;
-		const y = ((event.clientY - rect.top) / rect.height) * 100;
-
-		let nearest = active;
-		let shortest = Number.POSITIVE_INFINITY;
-
-		points.forEach(({ left, top }, index) => {
-			const dx = (left - x) * rect.width;
-			const dy = (top - y) * rect.height;
-			const distance = dx * dx + dy * dy;
-
-			if (distance < shortest) {
-				shortest = distance;
-				nearest = index;
-			}
-		});
-
-		if (nearest !== active) setActive(nearest);
-	}
 
 	return (
 		<section
@@ -290,13 +265,13 @@ export function HeroSection() {
 				</div>
 
 				<div className="flex min-w-0 flex-col gap-3 lg:static">
-					<p className="flex items-center gap-2 text-sm text-muted-foreground lg:absolute lg:top-[calc(50%+var(--mh)/2+0.75rem)] lg:right-[calc(var(--mw)/2)] lg:translate-x-1/2 lg:whitespace-nowrap">
+					<p className="flex items-center gap-2 text-sm font-medium text-heading lg:absolute lg:top-[calc(50%+var(--mh)/2+0.75rem)] lg:right-[calc(var(--mw)/2)] lg:translate-x-1/2 lg:whitespace-nowrap">
 						<span
 							aria-hidden="true"
 							className="size-2 shrink-0 rounded-full bg-brand-green shadow-[0_0_0_4px_--alpha(var(--color-brand-green)/20%)]"
 						/>
 						<span className="pointer-coarse:hidden">
-							Passe o mouse pelo carro e veja o que a consulta revela
+							Passe o mouse nos pontos e veja o que a consulta revela
 						</span>
 						<span className="hidden pointer-coarse:inline">
 							Toque nos pontos e veja o que a consulta revela
@@ -304,8 +279,12 @@ export function HeroSection() {
 					</p>
 
 					<div
-						onPointerMove={handlePointerMove}
-						className="relative -mr-4 ml-auto aspect-949/867 w-[88%] touch-manipulation sm:-mr-8 sm:w-[64%] lg:absolute lg:top-[calc(50%-var(--mh)/2)] lg:right-0 lg:mr-0 lg:w-(--mw) lg:cursor-crosshair"
+						onPointerDown={(event) => {
+							if (!(event.target as HTMLElement).closest("button")) {
+								setActive(null);
+							}
+						}}
+						className="relative -mr-4 ml-auto aspect-949/867 w-[88%] touch-manipulation sm:-mr-8 sm:w-[64%] lg:absolute lg:top-[calc(50%-var(--mh)/2)] lg:right-0 lg:mr-0 lg:w-(--mw)"
 					>
 						<span
 							aria-hidden="true"
@@ -315,7 +294,7 @@ export function HeroSection() {
 							src={heroCarFront}
 							srcSet={`${heroCarFront640} 640w, ${heroCarFront} 949w`}
 							sizes="(min-width: 1024px) 38vw, 88vw"
-							alt="Frente de um carro verde visto de cima, com pontos de informação em cada parte"
+							alt="Frente de um carro prata visto de cima, com pontos de informação em cada parte"
 							width={949}
 							height={867}
 							fetchPriority="high"
@@ -336,14 +315,21 @@ export function HeroSection() {
 									type="button"
 									aria-label={title}
 									aria-pressed={isActive}
+									onPointerEnter={(event) => {
+										if (event.pointerType === "mouse") setActive(index);
+									}}
+									onPointerLeave={(event) => {
+										if (event.pointerType === "mouse") setActive(null);
+									}}
 									onClick={() => setActive(index)}
 									onFocus={() => setActive(index)}
+									onBlur={() => setActive(null)}
 									style={{
 										left: `${points[index].left}%`,
 										top: `${points[index].top}%`,
 										animationDelay: `${points[index].delay}ms`,
 									}}
-									className="group absolute flex size-9 -translate-1/2 animate-in items-center justify-center rounded-full duration-500 fill-mode-both zoom-in-25 fade-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight motion-reduce:animate-none"
+									className="group absolute z-20 flex size-11 -translate-1/2 animate-in items-center justify-center rounded-full duration-500 fill-mode-both zoom-in-25 fade-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight motion-reduce:animate-none"
 								>
 									<span
 										aria-hidden="true"
@@ -361,36 +347,36 @@ export function HeroSection() {
 								</button>
 							);
 						})}
-						<div
-							aria-live="polite"
-							style={
-								{
-									"--px": point.left / 100,
-									"--py": point.top / 100,
-								} as CSSProperties
-							}
-							className={cn(
-								"pointer-events-none absolute z-10 flex w-60 animate-in items-start gap-3 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 shadow-[0_24px_48px_-20px_--alpha(var(--color-brand-blue-dark)/45%)] transition-[left,top,translate] delay-2600 duration-500 ease-out fill-mode-both fade-in motion-reduce:animate-none max-lg:left-[clamp(-2.5rem,calc(var(--px)*100%-7.5rem),calc(100%-16rem))] lg:top-[calc(var(--py)*100%)] lg:left-[calc(var(--px)*100%)] lg:w-72 lg:-translate-y-1/2",
-								point.left > 46
-									? "lg:-translate-x-[calc(100%+1.625rem)]"
-									: "lg:translate-x-6.5",
+						<div aria-live="polite" className="contents">
+							{feature && point && (
+								<div
+									key={feature.title}
+									style={
+										{
+											"--px": point.left / 100,
+											"--py": point.top / 100,
+										} as CSSProperties
+									}
+									className={cn(
+										"pointer-events-none absolute z-30 flex w-60 animate-in items-start gap-3 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 shadow-[0_24px_48px_-20px_--alpha(var(--color-brand-blue-dark)/45%)] duration-200 ease-out zoom-in-95 fade-in motion-reduce:animate-none max-lg:top-[calc(var(--py)*100%+1.75rem)] max-lg:left-[clamp(-2.5rem,calc(var(--px)*100%-7.5rem),calc(100%-16rem))] lg:top-[calc(var(--py)*100%)] lg:left-[calc(var(--px)*100%)] lg:w-72 lg:-translate-y-1/2",
+										point.left > 46
+											? "lg:-translate-x-[calc(100%+1.625rem)]"
+											: "lg:translate-x-6.5",
+									)}
+								>
+									<span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-highlight">
+										<feature.icon aria-hidden="true" className="size-5" />
+									</span>
+									<span className="flex min-w-0 flex-col gap-0.5">
+										<b className="text-[0.9375rem]/5 font-semibold text-heading">
+											{feature.title}
+										</b>
+										<span className="text-[0.8125rem]/4.5 text-muted-foreground">
+											{feature.description}
+										</span>
+									</span>
+								</div>
 							)}
-						>
-							<span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-highlight">
-								<FeatureIcon aria-hidden="true" className="size-5" />
-							</span>
-							<span className="flex min-w-0 flex-col gap-0.5 pr-8">
-								<b className="text-[0.9375rem]/5 font-semibold text-heading">
-									{feature.title}
-								</b>
-								<span className="text-[0.8125rem]/4.5 text-muted-foreground">
-									{feature.description}
-								</span>
-							</span>
-							<span className="absolute top-3 right-3.5 text-[0.625rem] font-semibold tracking-wider text-muted-foreground tabular-nums">
-								{String(active + 1).padStart(2, "0")} /{" "}
-								{String(features.length).padStart(2, "0")}
-							</span>
 						</div>
 					</div>
 				</div>
@@ -398,8 +384,8 @@ export function HeroSection() {
 
 			<div className="flex justify-center pb-6">
 				<Link
-					to="/#por-que-checkauto"
-					aria-label="Ir para Por que Checkauto"
+					to="/#dados-da-consulta"
+					aria-label="Ir para Dados da consulta"
 					className="flex size-12 items-center justify-center rounded-full border border-border text-heading transition-colors hover:bg-accent"
 				>
 					<ChevronDownIcon

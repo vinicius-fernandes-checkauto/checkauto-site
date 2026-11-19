@@ -3,11 +3,11 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "react-router build",
+		"build": "react-router build && cp build/client/__spa-fallback.html build/client/404.html",
 		"dev": "react-router dev --host",
 		"typecheck": "react-router typegen && tsc",
-		"lint": "biome check . && node scripts/tw-canonical.mjs",
-		"format": "node scripts/tw-canonical.mjs --fix && biome check --write .",
+		"lint": "biome check .",
+		"format": "biome check --write .",
 		"test": "vitest run"
 	},
 	"dependencies": {
@@ -31,7 +31,6 @@
 		"@biomejs/biome": "2.6.8",
 		"@react-router/dev": "^8.5.1",
 		"@react-router/fs-routes": "^8.5.1",
-		"@tailwindcss/node": "^4.3.5",
 		"@tailwindcss/vite": "^4.2.2",
 		"@types/node": "^22",
 		"@types/react": "^19.2.18",

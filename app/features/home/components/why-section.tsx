@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 
 import whyInspection from "~/assets/home/why-inspection.webp";
-import whyPhone from "~/assets/home/why-phone.webp";
+import whySearch from "~/assets/home/why-search.webp";
 import whyVehicleBreakdown from "~/assets/home/why-vehicle-breakdown.webp";
 import { CarIcon, CheckIcon, ShieldCheckIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
@@ -55,16 +55,16 @@ export function WhySection() {
 					data-tile
 					className={cn(
 						tile,
-						"col-span-2 flex flex-col justify-end gap-1.5 surface-inverse bg-background p-5.5 text-foreground lg:col-span-3 lg:row-span-3",
+						"col-span-2 flex flex-col justify-end gap-1.5 bg-brand-blue p-5.5 text-white lg:col-span-3 lg:row-span-3",
 					)}
 				>
-					<strong className="text-6xl/none mb-1.5 font-medium tracking-tighter text-highlight">
+					<strong className="text-6xl/none mb-1.5 font-medium tracking-tighter text-brand-green">
 						18%
 					</strong>
-					<h3 className="font-semibold">Negociação mais justa</h3>
-					<p className="text-sm/5 text-muted-foreground">
-						das consultas retornam com informações que interferem no valor do
-						veículo.
+					<h3 className="font-semibold text-white">Negociação mais justa</h3>
+					<p className="text-sm/5 text-mist">
+						Em quase 1 a cada 5 consultas aparece algo que muda o preço do
+						carro.
 					</p>
 				</div>
 
@@ -91,10 +91,10 @@ export function WhySection() {
 					)}
 				>
 					<img
-						src={whyPhone}
-						alt="Homem consultando o celular ao lado de um carro"
-						width={800}
-						height={450}
+						src={whySearch}
+						alt="Homem pesquisando no celular ao lado de um carro prata"
+						width={750}
+						height={1000}
 						loading="lazy"
 						decoding="async"
 						className="size-full object-cover"

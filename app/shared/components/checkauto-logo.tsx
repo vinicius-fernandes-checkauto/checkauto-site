@@ -3,11 +3,11 @@ import { Link } from "react-router";
 import logo from "~/assets/brand/checkauto-logo.png";
 import { cn } from "~/shared/lib/utils";
 
-type LogoProps = {
+type CheckautoLogoProps = {
 	className?: string;
 };
 
-export function Logo({ className }: LogoProps) {
+export function CheckautoLogo({ className }: CheckautoLogoProps) {
 	return (
 		<Link
 			to="/"

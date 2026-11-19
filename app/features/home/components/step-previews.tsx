@@ -54,7 +54,7 @@ export function PlateTypingPreview() {
 		<div
 			role="img"
 			aria-label="Animação do campo de placa sendo preenchido com ABC1D23 e o botão Consultar sendo acionado"
-			className="flex flex-col gap-3 rounded-3xl bg-white p-4 surface-default text-secondary"
+			className="flex flex-col gap-3 rounded-3xl bg-white p-4 text-secondary"
 		>
 			<p className="flex items-center gap-2 text-xs text-muted-foreground">
 				<span className="size-2 rounded-full bg-brand-green" />
@@ -107,7 +107,7 @@ export function PlansPickingPreview() {
 		<div
 			role="img"
 			aria-label="Animação da escolha de pacote, parando no Checkauto Plus"
-			className="flex flex-col gap-3 rounded-3xl bg-white p-4 surface-default text-secondary"
+			className="flex flex-col gap-3 rounded-3xl bg-white p-4 text-secondary"
 		>
 			<p className="px-1 text-sm font-semibold">
 				Escolha o pacote para a placa ABC1D23

@@ -174,11 +174,11 @@ export function SiteFooter() {
 				</div>
 			</div>
 
-			<div className="surface-inverse">
+			<div className="bg-brand-blue text-white">
 				<div className="mx-auto flex w-full max-w-7xl flex-col-reverse gap-4 px-5 pt-5 pb-8 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:py-6">
-					<div className="flex flex-col gap-1 text-xs/4.5 text-muted-foreground">
+					<div className="flex flex-col gap-1 text-xs/4.5 text-mist">
 						<p>
-							<strong className="font-medium text-foreground">
+							<strong className="font-medium text-white">
 								© {year} Checkauto.
 							</strong>{" "}
 							Todos os direitos reservados.
@@ -197,8 +197,9 @@ export function SiteFooter() {
 								key={label}
 								to={to}
 								className={cn(
-									"inline-flex min-h-11 items-center rounded-md text-sm/5.5 text-foreground underline decoration-1 underline-offset-4 lg:min-h-9 lg:no-underline lg:hover:underline",
+									"inline-flex min-h-11 items-center rounded-md text-sm/5.5 text-white underline decoration-1 underline-offset-4 lg:min-h-9 lg:no-underline lg:hover:underline",
 									focusRing,
+									"focus-visible:ring-brand-green/60",
 								)}
 							>
 								{label}

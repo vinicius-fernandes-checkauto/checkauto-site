@@ -7,7 +7,6 @@
 
 @theme {
 	--animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
-	/* Prévia do extrato: lê o topo, desce até o histórico e volta. */
 	--animate-pdf-scroll: pdf-scroll 9s ease-in-out 1.6s infinite;
 
 	@keyframes pdf-scroll {
@@ -169,61 +168,6 @@
 	--sidebar-accent-foreground: var(--color-brand-blue);
 	--sidebar-border: var(--color-slate-200);
 	--sidebar-ring: var(--color-brand-blue);
-}
-
-@utility surface-inverse {
-	--background: var(--color-brand-blue);
-	--foreground: #ffffff;
-	--heading: #ffffff;
-	--card: var(--color-brand-blue-dark);
-	--card-foreground: #ffffff;
-	--secondary: #ffffff;
-	--secondary-foreground: var(--color-brand-blue);
-	--muted: var(--color-brand-blue-dark);
-	--muted-foreground: var(--color-mist);
-	--accent: rgb(255 255 255 / 0.08);
-	--accent-foreground: #ffffff;
-	--highlight: var(--color-brand-green);
-	--destructive: var(--color-red-300);
-	--destructive-foreground: var(--color-brand-blue);
-	--success: var(--color-brand-green);
-	--success-foreground: var(--color-brand-blue);
-	--warning: var(--color-amber-300);
-	--warning-foreground: var(--color-brand-blue);
-	--info: var(--color-navy-200);
-	--border: rgb(255 255 255 / 0.16);
-	--input: var(--color-navy-300);
-	--ring: var(--color-brand-green);
-
-	background-color: var(--background);
-	color: var(--foreground);
-}
-
-@utility surface-default {
-	--background: #ffffff;
-	--foreground: var(--color-slate-900);
-	--heading: var(--color-brand-blue);
-	--card: #ffffff;
-	--card-foreground: var(--color-brand-blue);
-	--secondary: var(--color-brand-blue);
-	--secondary-foreground: #ffffff;
-	--muted: var(--color-slate-50);
-	--muted-foreground: var(--color-slate-600);
-	--accent: var(--color-green-50);
-	--accent-foreground: var(--color-brand-blue);
-	--highlight: var(--color-brand-green-dark);
-	--destructive: var(--color-red-600);
-	--destructive-foreground: #ffffff;
-	--success: var(--color-brand-green-dark);
-	--success-foreground: #ffffff;
-	--warning: var(--color-amber-700);
-	--warning-foreground: #ffffff;
-	--info: var(--color-navy-500);
-	--border: var(--color-slate-200);
-	--input: var(--color-control);
-	--ring: var(--color-brand-blue);
-
-	color: var(--foreground);
 }
 
 @layer base {

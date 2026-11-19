@@ -38,7 +38,6 @@ export const meta: Route.MetaFunction = () => [
 const bandTone = {
 	white: "bg-background",
 	tint: "bg-navy-100/70",
-	blue: "surface-inverse",
 } as const;
 
 function Band({
@@ -101,14 +100,14 @@ export default function Home() {
 	return (
 		<div ref={scope}>
 			<HeroSection />
-			<Band tone="blue">
+			<Band tone="white">
 				<MarqueeSection />
-			</Band>
-			<Band tone="tint">
-				<WhySection />
 			</Band>
 			<Band tone="white">
 				<DataSection />
+			</Band>
+			<Band tone="tint">
+				<WhySection />
 			</Band>
 			<HowSection />
 			<ClientsSection />

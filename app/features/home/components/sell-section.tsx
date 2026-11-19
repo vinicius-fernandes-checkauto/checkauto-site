@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 
 import ticks from "~/assets/brand/symbol-ticks.webp";
-import sellCarBlue from "~/assets/home/sell-car-blue.webp";
-import sellCarGreen from "~/assets/home/sell-car-green.webp";
+import sellCarSilver from "~/assets/home/sell-car-silver.webp";
 import sellCarTop from "~/assets/home/sell-car-top.webp";
+import sellCarWheel from "~/assets/home/sell-car-wheel.webp";
 import {
 	CircleCheckIcon,
 	EyeIcon,
@@ -51,8 +51,8 @@ function AdCard({ className }: { className?: string }) {
 			)}
 		>
 			<img
-				src={sellCarBlue}
-				alt="Detalhe da roda de um SUV azul"
+				src={sellCarWheel}
+				alt="Detalhe da roda de um SUV prata"
 				width={315}
 				height={258}
 				loading="lazy"
@@ -81,15 +81,15 @@ export function SellSection() {
 		<section
 			id="hora-de-vender"
 			aria-labelledby="hora-de-vender-titulo"
-			className="relative isolate w-full overflow-hidden border-b-8 border-highlight bg-background text-foreground [--background:var(--color-brand-blue)] [--card-foreground:var(--color-brand-blue)] [--card:#ffffff] [--foreground:#ffffff] [--heading:#ffffff] [--highlight:var(--color-brand-green)] [--muted-foreground:rgb(255_255_255/0.82)]"
+			className="relative isolate w-full overflow-hidden border-highlight bg-background text-foreground [--background:var(--color-brand-blue)] [--card-foreground:var(--color-brand-blue)] [--card:#ffffff] [--foreground:#ffffff] [--heading:#ffffff] [--highlight:var(--color-brand-green)] [--muted-foreground:rgb(255_255_255/0.82)]"
 		>
 			<span
 				aria-hidden="true"
 				style={{ maskImage: `url(${ticks})` }}
-				className="pointer-events-none absolute -top-16 -left-24 -z-10 aspect-878/389 w-80 rotate-180 bg-white/8 mask-contain mask-no-repeat max-lg:hidden lg:-top-24 lg:left-[10%] lg:w-120"
+				className="pointer-events-none absolute -top-16 -left-24 -z-10 aspect-878/389 w-80 rotate-180 bg-white/8 mask-contain mask-no-repeat max-lg:hidden lg:-top-24 lg:-left-28 lg:w-120"
 			/>
 			<div className="grid grid-cols-1 px-(--gut) pt-18 pb-12 [--gut:1rem] sm:[--gut:max(2rem,calc((100vw_-_80rem)/2_+_2rem))] lg:grid-cols-12 lg:items-end lg:gap-x-4 lg:pt-26 lg:pr-0 lg:pb-0">
-				<div className="flex flex-col gap-5.5 pb-10 lg:col-span-8 lg:row-start-1 lg:self-start lg:pb-16">
+				<div className="flex flex-col gap-5.5 pb-10 lg:col-span-5 lg:row-start-1 lg:self-start lg:pb-16">
 					<SectionEyebrow>Hora de vender?</SectionEyebrow>
 					<h2
 						id="hora-de-vender-titulo"
@@ -133,7 +133,7 @@ export function SellSection() {
 					<AdCard />
 					<div className="relative h-52 overflow-hidden rounded-l-3xl">
 						<img
-							src={sellCarGreen}
+							src={sellCarSilver}
 							alt=""
 							width={223}
 							height={487}
@@ -144,15 +144,39 @@ export function SellSection() {
 					</div>
 				</div>
 
-				<div className="hidden flex-col gap-4 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-1 lg:flex lg:self-stretch">
-					<AdCard className="rounded-r-none" />
+				<div className="relative hidden lg:col-span-4 lg:col-start-6 lg:row-start-1 lg:flex lg:flex-col lg:self-center lg:pb-16 lg:pl-6 xl:pl-10">
+					<div className="relative w-full max-w-80">
+						<AdCard className="-rotate-2" />
+						<div
+							data-tile
+							className="absolute -top-6 -right-10 z-10 flex items-center gap-3 rounded-2xl bg-card py-2.5 pr-4 pl-2.5 text-card-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.5)]"
+						>
+							<span
+								aria-hidden="true"
+								className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-highlight"
+							>
+								<EyeIcon className="size-4.5" />
+							</span>
+							<span className="flex flex-col">
+								<b className="text-sm font-semibold">
+									3 interessados viram o histórico
+								</b>
+								<span className="text-xs text-card-foreground/70">
+									Hoje · exemplo
+								</span>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div className="hidden lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-1 lg:flex lg:self-stretch">
 					<div
 						data-tile
 						className="relative min-h-70 flex-1 overflow-hidden rounded-tl-3xl"
 					>
 						<img
-							src={sellCarGreen}
-							alt="Frente de um SUV verde"
+							src={sellCarSilver}
+							alt="Frente de um SUV prata"
 							width={223}
 							height={487}
 							loading="lazy"

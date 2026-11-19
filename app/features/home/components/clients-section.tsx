@@ -1,4 +1,3 @@
-import ring from "~/assets/brand/symbol-ring-blue.webp";
 import caixa from "~/assets/clients/caixa.webp";
 import randoncorp from "~/assets/clients/randoncorp.webp";
 import rodobens from "~/assets/clients/rodobens.webp";
@@ -44,13 +43,8 @@ export function ClientsSection() {
 	return (
 		<section
 			aria-labelledby="clientes-titulo"
-			className="relative isolate w-full overflow-hidden bg-background text-foreground [--background:var(--color-brand-green)] [--foreground:var(--color-brand-blue-dark)]"
+			className="relative isolate w-full overflow-hidden bg-brand-blue/10 text-heading"
 		>
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -top-20 -left-24 -z-10 aspect-896/900 w-80 bg-white/20 mask-contain mask-no-repeat max-lg:hidden lg:-top-36 lg:-left-28 lg:w-120"
-			/>
 			<div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-4 px-4 py-6 sm:px-8 lg:py-7">
 				<h2
 					id="clientes-titulo"
@@ -72,14 +66,17 @@ export function ClientsSection() {
 						>
 							{clients.map((client) => (
 								<li key={client.name} className="pr-12 lg:pr-16">
-									<img
-										src={client.src}
-										alt={copy === 0 ? client.name : ""}
-										width={client.width}
-										height={client.height}
-										loading="lazy"
-										decoding="async"
-										className={cn(client.className, "w-auto max-w-none")}
+									<span
+										role="img"
+										aria-label={client.name}
+										style={{
+											maskImage: `url(${client.src})`,
+											aspectRatio: `${client.width} / ${client.height}`,
+										}}
+										className={cn(
+											client.className,
+											"block bg-heading mask-contain mask-center mask-no-repeat",
+										)}
 									/>
 								</li>
 							))}

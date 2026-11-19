@@ -7,12 +7,12 @@ As páginas são geradas como HTML estático no build (`ssr: false` e `prerender
 ## Comandos
 
 ```bash
-yarn install    # instala as dependências
-yarn dev        # servidor de desenvolvimento em http://localhost:5173
-yarn typecheck  # gera os tipos das rotas e roda o TypeScript
-yarn build      # gera o site estático em build/client
-yarn lint       # Biome: formatação, lint, ordem dos imports e das classes do Tailwind
-yarn format     # Biome: corrige o que for possível
+npm install        # instala as dependências
+npm run dev        # servidor de desenvolvimento em http://localhost:5173
+npm run typecheck  # gera os tipos das rotas e roda o TypeScript
+npm run build      # gera o site estático em build/client
+npm run lint       # Biome: formatação, lint e ordem dos imports e das classes do Tailwind
+npm run format     # Biome: corrige o que for possível
 ```
 
 No VS Code, instale as extensões recomendadas (Biome e EditorConfig): o arquivo é formatado ao salvar.

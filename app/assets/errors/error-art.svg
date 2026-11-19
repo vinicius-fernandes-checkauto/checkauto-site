@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" fill="none">
+  <title>Placa de veículo com lupa</title>
+  <circle cx="240" cy="240" r="210" fill="#dce6ee" fill-opacity=".55"/>
+  <circle cx="240" cy="240" r="226" stroke="#002e55" stroke-opacity=".16" stroke-width="10" stroke-dasharray="2 9.8"/>
+  <circle cx="240" cy="240" r="150" stroke="#002e55" stroke-opacity=".12" stroke-dasharray="6 8"/>
+  <path d="M240 14a226 226 0 0 1 195.7 113" stroke="#66c61c" stroke-width="10" stroke-dasharray="2 9.8"/>
+  <g transform="rotate(-6 220 228)">
+    <rect x="90" y="172" width="260" height="112" rx="14" fill="#002647" fill-opacity=".14" transform="translate(6 14)"/>
+    <rect x="90" y="172" width="260" height="112" rx="14" fill="#fff" stroke="#002647" stroke-width="5"/>
+    <path d="M90 186a14 14 0 0 1 14-14h232a14 14 0 0 1 14 14v12H90z" fill="#002e55"/>
+    <rect x="114" y="220" width="26" height="40" rx="5" fill="#b7c9d8"/>
+    <rect x="150" y="220" width="26" height="40" rx="5" fill="#b7c9d8"/>
+    <rect x="186" y="220" width="26" height="40" rx="5" fill="#b7c9d8"/>
+    <rect x="228" y="220" width="26" height="40" rx="5" fill="#b7c9d8"/>
+    <rect x="264" y="220" width="26" height="40" rx="5" fill="#b7c9d8"/>
+    <rect x="300" y="220" width="26" height="40" rx="5" fill="#b7c9d8"/>
+  </g>
+  <path d="m352 352 54 54" stroke="#002647" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="310" cy="310" r="62" fill="#fff" fill-opacity=".7" stroke="#002e55" stroke-width="14"/>
+  <path d="m292 292 36 36m0-36-36 36" stroke="#66c61c" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="96" cy="118" r="7" fill="#66c61c"/>
+  <circle cx="404" cy="168" r="5" fill="#002e55" fill-opacity=".35"/>
+  <circle cx="120" cy="372" r="5" fill="#002e55" fill-opacity=".25"/>
+</svg>

@@ -9,15 +9,21 @@ export {
 	CarIcon,
 	CheckIcon,
 	ChevronDownIcon,
+	ChevronRightIcon,
 	ChevronUpIcon,
 	CircleCheckIcon,
 	EyeIcon,
+	EyeOffIcon,
 	FileTextIcon,
 	GaugeIcon,
 	GavelIcon,
+	HouseIcon,
 	LandmarkIcon,
+	LightbulbIcon,
 	LockIcon,
+	LogOutIcon,
 	MailIcon,
+	MapPinIcon,
 	MegaphoneIcon,
 	MenuIcon,
 	MinusIcon,
@@ -28,8 +34,13 @@ export {
 	ShieldCheckIcon,
 	ShieldIcon,
 	ShoppingBagIcon,
+	SmartphoneIcon,
+	StoreIcon,
+	Trash2Icon,
 	TriangleAlertIcon,
 	UserRoundIcon,
+	UsersRoundIcon,
+	WalletIcon,
 	WrenchIcon,
 	XIcon,
 	ZapIcon,
@@ -47,6 +58,34 @@ export function FacebookIcon({ className, ...props }: BrandIconProps) {
 			{...props}
 		>
 			<path d="M18 9C18 4.02943 13.9706 0 9 0C4.02943 0 0 4.02943 0 9C0 13.4921 3.29115 17.2155 7.59375 17.8907V11.6016H5.30859V9H7.59375V7.01719C7.59375 4.76156 8.93742 3.51562 10.9932 3.51562C11.9776 3.51562 13.0078 3.69141 13.0078 3.69141V5.90625H11.873C10.755 5.90625 10.4062 6.60006 10.4062 7.3125V9H12.9023L12.5033 11.6016H10.4062V17.8907C14.7088 17.2155 18 13.4921 18 9Z" />
+		</svg>
+	);
+}
+
+export function GoogleIcon({ className, ...props }: BrandIconProps) {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+			className={className}
+			{...props}
+		>
+			<path
+				fill="#4285F4"
+				d="M22.6 12.2c0-.8-.1-1.4-.2-2H12v3.9h6c-.1 1-.8 2.4-2.2 3.4v2.8h3.6c2-1.9 3.2-4.7 3.2-8.1z"
+			/>
+			<path
+				fill="#34A853"
+				d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.8c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.9C3.9 20.6 7.7 23 12 23z"
+			/>
+			<path
+				fill="#FBBC05"
+				d="M5.8 14.1c-.2-.7-.4-1.4-.4-2.1s.1-1.4.4-2.1V7H2.1C1.4 8.5 1 10.2 1 12s.4 3.5 1.1 5l3.7-2.9z"
+			/>
+			<path
+				fill="#EA4335"
+				d="M12 5.4c1.6 0 2.8.7 3.4 1.3l2.6-2.5C16.4 2.7 14.4 1.8 12 1.8 7.7 1.8 3.9 4.2 2.1 7.9l3.7 2.9c.9-2.7 3.3-5.4 6.2-5.4z"
+			/>
 		</svg>
 	);
 }

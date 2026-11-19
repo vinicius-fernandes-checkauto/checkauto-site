@@ -4,7 +4,7 @@ import { cn } from "~/shared/lib/utils";
 const items = [
 	"Restrições",
 	"Recall",
-	"Indício de Sinistro",
+	"Indício de Ocorrência",
 	"Histórico de Roubo e Furto",
 ];
 

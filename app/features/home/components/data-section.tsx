@@ -23,7 +23,6 @@ import {
 	DialogTitle,
 } from "~/shared/components/ui/dialog";
 import { useMediaQuery } from "~/shared/hooks/use-media-query";
-import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 import { cn } from "~/shared/lib/utils";
 
 import { SectionEyebrow } from "./section-eyebrow";
@@ -66,10 +65,10 @@ const topics: Topic[] = [
 		id: "sinistro",
 		position: "xl:top-[4%] xl:left-[60.5%]",
 		reversed: true,
-		title: "Indício de sinistro",
+		title: "Indício de ocorrência",
 		icon: TriangleAlertIcon,
 		description:
-			"Verifique a possibilidade de indícios de sinistro no veículo, com informações provenientes de fontes públicas e privadas, como órgãos administrativos e seguradoras. Essas informações podem não ser divulgadas pelo informante e não garantem a ausência de sinistros. Recomendamos uma vistoria física para avaliação completa e conclusiva sobre alterações que possam afetar a integridade do veículo.",
+			"Verifique a possibilidade de indícios de ocorrência no veículo, com informações provenientes de fontes públicas e privadas, como órgãos administrativos e seguradoras. Essas informações podem não ser divulgadas pelo informante e não garantem a ausência de sinistros. Recomendamos uma vistoria física para avaliação completa e conclusiva sobre alterações que possam afetar a integridade do veículo.",
 	},
 	{
 		id: "gravame",
@@ -108,18 +107,6 @@ const topics: Topic[] = [
 	},
 ];
 
-/** Ordem em que o scan (da esquerda para a direita) revela cada item. */
-const scanOrder: Record<string, number> = {
-	"dados-cadastrais": 0,
-	restricoes: 1,
-	leilao: 2,
-	gravame: 3,
-	sinistro: 4,
-	"roubo-e-furto": 5,
-	"debitos-e-multas": 6,
-	recall: 7,
-};
-
 export function DataSection() {
 	const [openId, setOpenId] = useState<string | null>(null);
 	const isDesktop = useMediaQuery("(min-width: 1280px)");
@@ -131,82 +118,6 @@ export function DataSection() {
 	const panelId = (id: string) => `${baseId}-${id}`;
 
 	const diagramRef = useRef<HTMLDivElement>(null);
-	const counterRef = useRef<HTMLSpanElement>(null);
-
-	useGSAP(
-		() => {
-			const mm = gsap.matchMedia();
-			const items = () =>
-				gsap.utils
-					.toArray<HTMLElement>("[data-topic]", diagramRef.current)
-					.sort((a, b) => Number(a.dataset.topic) - Number(b.dataset.topic));
-
-			// Desktop: o diagrama fica fixo e o scroll "escaneia" o carro.
-			mm.add(`(min-width: 1280px) and ${MOTION_OK}`, () => {
-				const total = topics.length;
-				const tl = gsap.timeline({
-					defaults: { ease: "power2.out" },
-					scrollTrigger: {
-						trigger: diagramRef.current,
-						start: "center 55%",
-						end: "+=1600",
-						pin: true,
-						// O pai é flex: sem isso o GSAP não reserva o espaço do scroll.
-						pinSpacing: true,
-						scrub: 0.6,
-						onUpdate: ({ progress }) => {
-							if (!counterRef.current) return;
-							const done = Math.min(total, Math.round(progress * 1.15 * total));
-							counterRef.current.textContent =
-								done === total
-									? `${total} de ${total} itens verificados`
-									: `Verificando… ${done} de ${total}`;
-						},
-					},
-				});
-
-				tl.from("[data-car]", {
-					scale: 0.8,
-					autoAlpha: 0.2,
-					y: 40,
-					duration: 1,
-				})
-					.fromTo(
-						"[data-scan]",
-						{ left: "14%", autoAlpha: 0 },
-						{ left: "86%", autoAlpha: 1, duration: 4, ease: "none" },
-						0.6,
-					)
-					.from(
-						items(),
-						{
-							autoAlpha: 0,
-							scale: 0.5,
-							y: 16,
-							duration: 0.5,
-							stagger: 0.45,
-							ease: "back.out(2)",
-						},
-						0.9,
-					)
-					.to("[data-scan]", { autoAlpha: 0, duration: 0.4 })
-					.from("[data-counter]", { autoAlpha: 0, y: 8, duration: 0.4 }, 0.6);
-			});
-
-			// Mobile/tablet: os itens entram em sequência ao aparecer na tela.
-			mm.add(`(max-width: 1279px) and ${MOTION_OK}`, () => {
-				gsap.from(items(), {
-					autoAlpha: 0,
-					y: 24,
-					duration: 0.5,
-					stagger: 0.08,
-					ease: "power2.out",
-					scrollTrigger: { trigger: diagramRef.current, start: "top 75%" },
-				});
-			});
-		},
-		{ scope: diagramRef },
-	);
 
 	useEffect(() => {
 		const diagram = diagramRef.current;
@@ -263,33 +174,14 @@ export function DataSection() {
 					height={896}
 					loading="lazy"
 					decoding="async"
-					data-car
 					className="w-full mix-blend-multiply"
 				/>
-				<span
-					aria-hidden="true"
-					data-scan
-					className="pointer-events-none invisible absolute inset-y-[8%] w-0.5 -translate-x-1/2 rounded-full bg-linear-to-b from-transparent via-brand-green to-transparent shadow-[0_0_32px_8px_rgb(102_198_28/0.45)] max-xl:hidden"
-				/>
-				<span
-					ref={counterRef}
-					data-counter
-					aria-hidden="true"
-					className="absolute top-[3%] left-1/2 hidden -translate-x-1/2 items-center rounded-full bg-accent px-4 py-2 text-sm/5.5 font-medium whitespace-nowrap text-highlight tabular-nums xl:inline-flex"
-				>
-					{topics.length} de {topics.length} itens verificados
-				</span>
-
 				<ul className="grid grid-cols-1 gap-x-3 gap-y-4 min-[360px]:grid-cols-2 sm:grid-cols-4 xl:block">
 					{topics.map(({ id, title, icon: Icon, position, reversed }) => {
 						const isOpen = openId === id;
 
 						return (
-							<li
-								key={id}
-								data-topic={scanOrder[id]}
-								className={cn("xl:absolute", position)}
-							>
+							<li key={id} className={cn("xl:absolute", position)}>
 								<button
 									id={`${panelId(id)}-botao`}
 									type="button"
@@ -322,8 +214,12 @@ export function DataSection() {
 					<div
 						key={id}
 						id={panelId(id)}
-						hidden={openId !== id}
-						className="relative flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 pr-16 shadow-[0_24px_48px_-24px_rgb(0_46_85/0.35)] max-xl:hidden xl:absolute xl:top-1/2 xl:left-1/2 xl:w-104 xl:-translate-1/2 xl:p-7 xl:pr-16"
+						className={cn(
+							"relative flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 pr-16 shadow-[0_24px_48px_-24px_rgb(0_46_85/0.35)] transition-[opacity,translate,visibility] duration-300 ease-out motion-reduce:transition-none max-xl:hidden xl:absolute xl:top-1/2 xl:left-1/2 xl:w-104 xl:-translate-x-1/2 xl:p-7 xl:pr-16",
+							openId === id
+								? "visible opacity-100 xl:-translate-y-1/2"
+								: "invisible opacity-0 xl:-translate-y-[calc(50%-0.75rem)]",
+						)}
 					>
 						<button
 							type="button"

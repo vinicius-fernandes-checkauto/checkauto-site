@@ -1,40 +1,12 @@
-export type NavLink = {
-	label: string;
-	to: string;
-};
+import type { NavLink } from "~/shared/types";
 
-export const headerNav: NavLink[] = [
-	{ label: "Por que Checkauto", to: "/#por-que-checkauto" },
-	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
-	{ label: "Como funciona", to: "/#como-funciona" },
-	{ label: "Pacotes", to: "/#pacotes" },
-	{ label: "Lojista", to: "/#hora-de-vender" },
-	{ label: "FAQ", to: "/#faq" },
-];
-
-export const accountLink: NavLink = {
-	label: "Entre ou cadastre-se",
-	to: "/entrar",
-};
-
-export const cartLink: NavLink = {
-	label: "Carrinho",
-	to: "/carrinho",
-};
-
-export type FooterGroup = {
-	title: string;
-	links: NavLink[];
-};
-
-export const footerNav: FooterGroup[] = [
+export const footerNav: { title: string; links: NavLink[] }[] = [
 	{
 		title: "Consultas",
 		links: [
 			{ label: "Pacotes", to: "/#pacotes" },
 			{ label: "Como funciona", to: "/#como-funciona" },
 			{ label: "Dados da consulta", to: "/#dados-da-consulta" },
-			// { label: "Ainda não tenho a placa", to: "/ainda-nao-tenho-placa" },
 			{ label: "Para lojistas", to: "/#hora-de-vender" },
 		],
 	},
@@ -59,5 +31,12 @@ export const footerNav: FooterGroup[] = [
 export const legalNav: NavLink[] = [
 	{ label: "Política de privacidade", to: "/politica-de-privacidade" },
 	{ label: "Termos de compra", to: "/contrato" },
-	{ label: "Contrato", to: "/contrato" },
 ];
+
+export const accountNav = {
+	home: { label: "Início", to: "/conta" },
+	orders: { label: "Pedidos", to: "/conta/pedidos" },
+	credits: { label: "Créditos", to: "/conta/creditos" },
+	profile: { label: "Meus dados", to: "/conta/meus-dados" },
+	addresses: { label: "Endereços", to: "/conta/enderecos" },
+} as const satisfies Record<string, NavLink>;

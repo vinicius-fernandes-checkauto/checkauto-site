@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
+import type { AccountUser } from "~/features/account/lib/account";
+import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 import { MenuIcon, UserRoundIcon } from "~/shared/components/icons";
 import { HeaderAccount } from "~/shared/components/layout/header-account";
-import { Logo } from "~/shared/components/logo";
 import { Button } from "~/shared/components/ui/button";
 import {
 	Sheet,
@@ -13,8 +14,17 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
-import { accountLink, headerNav } from "~/shared/config/navigation";
 import { cn } from "~/shared/lib/utils";
+import type { NavLink } from "~/shared/types";
+
+export const headerNav: NavLink[] = [
+	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
+	{ label: "Por que Checkauto", to: "/#por-que-checkauto" },
+	{ label: "Como funciona", to: "/#como-funciona" },
+	{ label: "Pacotes", to: "/#pacotes" },
+	{ label: "Lojista", to: "/#hora-de-vender" },
+	{ label: "FAQ", to: "/#faq" },
+];
 
 function HeaderNav() {
 	return (
@@ -69,14 +79,14 @@ function MobileMenu() {
 					</ul>
 					<SheetClose asChild>
 						<Link
-							to={accountLink.to}
+							to="/conta"
 							className="mt-4 flex min-h-12 items-center gap-3 rounded-full bg-accent px-4 font-semibold text-heading transition-colors hover:bg-green-100 sm:hidden"
 						>
 							<UserRoundIcon
 								aria-hidden="true"
 								className="size-5 text-highlight"
 							/>
-							{accountLink.label}
+							Minha conta
 						</Link>
 					</SheetClose>
 				</nav>
@@ -85,7 +95,7 @@ function MobileMenu() {
 	);
 }
 
-export function SiteHeader() {
+export function SiteHeader({ user }: { user?: AccountUser }) {
 	const [scrolled, setScrolled] = useState(false);
 
 	useEffect(() => {
@@ -108,9 +118,9 @@ export function SiteHeader() {
 			)}
 		>
 			<div className="relative mx-auto flex min-h-19 w-full max-w-7xl items-center gap-1.5 px-4 sm:gap-2 sm:px-8">
-				<Logo className="h-6 sm:h-7" />
+				<CheckautoLogo className="h-6 sm:h-7" />
 				<HeaderNav />
-				<HeaderAccount className="ml-auto xl:ml-0" />
+				<HeaderAccount user={user} className="ml-auto xl:ml-0" />
 				<MobileMenu />
 			</div>
 		</header>

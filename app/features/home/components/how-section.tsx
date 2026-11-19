@@ -46,20 +46,22 @@ export function HowSection() {
 		<section
 			id="como-funciona"
 			aria-labelledby="como-funciona-titulo"
-			className="w-full surface-inverse bg-background text-foreground [--background:var(--color-brand-blue-dark)]"
+			className="w-full bg-brand-blue-dark text-white"
 		>
 			<div className="mx-auto w-full max-w-7xl px-4 sm:px-8">
 				<div className="flex flex-col gap-4 pt-18 pb-8 lg:grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end lg:gap-8 lg:pt-28 lg:pb-12">
 					<div className="flex flex-col gap-3">
-						<SectionEyebrow>Como funciona</SectionEyebrow>
+						<SectionEyebrow className="text-brand-green">
+							Como funciona
+						</SectionEyebrow>
 						<h2
 							id="como-funciona-titulo"
-							className="text-3xl/tight font-medium tracking-tight text-balance lg:text-4xl/tight"
+							className="text-3xl/tight font-medium tracking-tight text-balance text-white lg:text-4xl/tight"
 						>
 							Histórico veicular completo com apenas 3 passos simples
 						</h2>
 					</div>
-					<p className="text-sm/5.5 text-muted-foreground lg:text-right lg:text-base">
+					<p className="text-sm/5.5 text-mist lg:text-right lg:text-base">
 						Confiança e experiência da pioneira em informações veiculares no
 						Brasil.
 					</p>
@@ -69,11 +71,11 @@ export function HowSection() {
 					{steps.map((step, index) => (
 						<li
 							key={step.number}
-							className="sticky top-19 grid min-h-72 grid-cols-1 bg-background pt-6 pb-12 lg:min-h-100 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-12 lg:pb-16"
+							className="sticky top-19 grid min-h-72 grid-cols-1 bg-brand-blue-dark pt-6 pb-12 lg:min-h-100 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-12 lg:pb-16"
 						>
 							<span
 								aria-hidden="true"
-								className="hidden self-center justify-self-center text-[10rem]/[0.8] font-medium tracking-tighter text-highlight lg:block"
+								className="hidden self-center justify-self-center text-[10rem]/[0.8] font-medium tracking-tighter text-brand-green lg:block"
 							>
 								{step.number}
 							</span>
@@ -82,18 +84,16 @@ export function HowSection() {
 								className={cn(
 									"relative flex flex-col gap-3",
 									index > 0 &&
-										"border-t border-foreground/20 pt-6 before:absolute before:-top-px before:left-0 before:h-0.5 before:w-8 before:bg-foreground",
+										"border-t border-white/20 pt-6 before:absolute before:-top-px before:left-0 before:h-0.5 before:w-8 before:bg-white",
 								)}
 							>
-								<h3 className="flex items-baseline gap-3 text-2xl font-medium tracking-tight lg:text-[2rem]/tight">
-									<span className="text-highlight tabular-nums lg:hidden">
+								<h3 className="flex items-baseline gap-3 text-2xl font-medium tracking-tight text-white lg:text-[2rem]/tight">
+									<span className="text-brand-green tabular-nums lg:hidden">
 										{step.number}
 									</span>
 									{step.title}
 								</h3>
-								<p className="max-w-[52ch] text-muted-foreground">
-									{step.description}
-								</p>
+								<p className="max-w-[52ch] text-mist">{step.description}</p>
 								{step.cta && (
 									<Button asChild size="sm" className="mt-3 self-start">
 										<Link to={step.cta.to}>
@@ -102,7 +102,7 @@ export function HowSection() {
 										</Link>
 									</Button>
 								)}
-								<div className="mt-5 max-w-sm rounded-[2rem] bg-foreground/8 p-2.5 sm:p-3">
+								<div className="mt-5 max-w-sm rounded-[2rem] bg-white/8 p-2.5 sm:p-3">
 									{step.preview === "plate" && <PlateTypingPreview />}
 									{step.preview === "plans" && <PlansPickingPreview />}
 									{step.preview === "statement" && (

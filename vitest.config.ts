@@ -7,7 +7,4 @@ export default defineConfig({
 	test: {
 		include: ["app/**/*.test.ts"],
 	},
-	server: {
-		host: true,
-	},
 });
