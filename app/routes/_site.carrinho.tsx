@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
-import { AddPlateForm } from "~/features/cart/components/add-plate-form";
-import { CartItemRow } from "~/features/cart/components/cart-item";
-import { CartSummary } from "~/features/cart/components/cart-summary";
+import { AddPlateForm } from "~/features/site/components/add-plate-form";
+import { CartItemRow } from "~/features/site/components/cart-item";
+import { CartSummary } from "~/features/site/components/cart-summary";
 import {
 	type AppliedCoupon,
 	type CartItem,
@@ -11,7 +11,7 @@ import {
 	findPlan,
 	formatCents,
 	priceToCents,
-} from "~/features/cart/lib/cart";
+} from "~/features/site/lib/cart";
 import {
 	ChevronRightIcon,
 	ShoppingBagIcon,

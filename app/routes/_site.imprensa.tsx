@@ -1,5 +1,5 @@
+import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon } from "~/shared/components/icons";
-import { PageHeader } from "~/shared/components/layout/page-header";
 import { Button } from "~/shared/components/ui/button";
 import { contact } from "~/shared/config/company";
 

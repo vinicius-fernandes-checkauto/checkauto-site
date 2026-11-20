@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon, SearchIcon, XIcon } from "~/shared/components/icons";
-import { PageHeader } from "~/shared/components/layout/page-header";
 import {
 	Accordion,
 	AccordionContent,

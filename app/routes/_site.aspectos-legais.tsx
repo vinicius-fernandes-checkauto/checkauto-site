@@ -1,5 +1,5 @@
-import { LegalDocument } from "~/features/legal/components/legal-document";
-import { legalNotice } from "~/features/legal/content/legal-notice";
+import { LegalDocument } from "~/features/site/components/legal-document";
+import { legalNotice } from "~/features/site/content/legal-notice";
 
 import type { Route } from "./+types/_site.aspectos-legais";
 

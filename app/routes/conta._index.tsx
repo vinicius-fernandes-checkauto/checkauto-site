@@ -22,9 +22,11 @@ export default function Account() {
 
 	return (
 		<header className="flex flex-col gap-1.5 pt-1">
-			<p className="min-h-5 text-sm/5 text-muted-foreground">{today}</p>
+			{/* <p className="min-h-5 text-sm/5 text-muted-foreground">{today}</p> */}
+			<p className="min-h-5 text-sm/5 text-muted-foreground">Olá,</p>
 			<h1 className="text-3xl/tight font-medium tracking-tight text-heading lg:text-4xl/tight">
-				Olá, {getDisplayName(demoAccount.name)}
+				{/* Olá, {getDisplayName(demoAccount.name)} */}
+				{getDisplayName(demoAccount.name)}
 			</h1>
 		</header>
 	);

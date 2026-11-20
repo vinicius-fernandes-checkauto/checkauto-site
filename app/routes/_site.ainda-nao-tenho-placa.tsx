@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { PageHeader } from "~/features/site/components/page-header";
 import {
 	CheckIcon,
 	LightbulbIcon,
@@ -8,7 +9,6 @@ import {
 	StoreIcon,
 	UsersRoundIcon,
 } from "~/shared/components/icons";
-import { PageHeader } from "~/shared/components/layout/page-header";
 import { Button } from "~/shared/components/ui/button";
 
 import type { Route } from "./+types/_site.ainda-nao-tenho-placa";

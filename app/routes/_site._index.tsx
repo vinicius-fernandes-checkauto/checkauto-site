@@ -1,16 +1,15 @@
 import { type ReactNode, useRef } from "react";
 
-import { ClientsSection } from "~/features/home/components/clients-section";
-import { CtaSection } from "~/features/home/components/cta-section";
-import { DataSection } from "~/features/home/components/data-section";
-import { FaqSection } from "~/features/home/components/faq-section";
-import { HeroSection } from "~/features/home/components/hero-section";
-import { HistorySection } from "~/features/home/components/history-section";
-import { HowSection } from "~/features/home/components/how-section";
-import { MarqueeSection } from "~/features/home/components/marquee-section";
-import { PlansSection } from "~/features/home/components/plans-section";
-import { SellSection } from "~/features/home/components/sell-section";
-import { WhySection } from "~/features/home/components/why-section";
+import { ClientsSection } from "~/features/site/components/clients-section";
+import { CtaSection } from "~/features/site/components/cta-section";
+import { DataSection } from "~/features/site/components/data-section";
+import { FaqSection } from "~/features/site/components/faq-section";
+import { HeroSection } from "~/features/site/components/hero-section";
+import { HistorySection } from "~/features/site/components/history-section";
+import { HowSection } from "~/features/site/components/how-section";
+import { MarqueeSection } from "~/features/site/components/marquee-section";
+import { PlansSection } from "~/features/site/components/plans-section";
+import { WhySection } from "~/features/site/components/why-section";
 import { homeFaq } from "~/shared/config/faq";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 
