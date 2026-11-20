@@ -30,7 +30,7 @@ export const faq: FaqItem[] = [
 		category: "consulta",
 		question: "Por que é importante consultar o histórico do veículo?",
 		answer:
-			"Um usado pode ter passado por roubo, leilão ou sinistro, ou ainda ter restrições financeiras. Isso derruba o valor do carro e pode travar a transferência para o seu nome. A consulta mostra tudo antes da compra.",
+			"Um usado pode ter passado por roubo, leilão ou sinistro, ou ainda ter restrições financeiras. Isso derruba o valor do veículo e pode travar a transferência para o seu nome. A consulta mostra tudo antes da compra.",
 	},
 	{
 		category: "consulta",

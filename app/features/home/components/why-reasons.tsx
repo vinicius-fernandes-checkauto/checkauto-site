@@ -69,7 +69,7 @@ export function WhyReasons() {
 						<p className="text-[0.9375rem]/6 text-muted-foreground">
 							Há mais de 25 anos ajudamos quem compra, vende e financia veículos
 							a decidir com segurança, com informação de verdade sobre cada
-							carro.
+							veículo.
 						</p>
 						<Button asChild>
 							<a href={`#${HERO_PLATE_INPUT_ID}`} onClick={handleCtaClick}>

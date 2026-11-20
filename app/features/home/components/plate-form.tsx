@@ -21,11 +21,13 @@ export function focusHeroPlateInput() {
 type PlateFormProps = {
 	inputId?: string;
 	className?: string;
+	onSubmitted?: (plate: string) => void;
 };
 
 export function PlateForm({
 	inputId: customInputId,
 	className,
+	onSubmitted,
 }: PlateFormProps) {
 	const navigate = useNavigate();
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +53,11 @@ export function PlateForm({
 		try {
 			sessionStorage.setItem(PLATE_STORAGE_KEY, result.data);
 		} catch {}
+
+		if (onSubmitted) {
+			onSubmitted(result.data);
+			return;
+		}
 
 		navigate("/#pacotes");
 	}

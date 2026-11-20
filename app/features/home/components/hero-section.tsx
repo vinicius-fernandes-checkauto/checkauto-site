@@ -77,7 +77,7 @@ const features: Feature[] = [
 	{
 		title: "Gravame",
 		description:
-			"Indica se o carro ainda está alienado a um banco ou financeira.",
+			"Indica se o veículo ainda está alienado a um banco ou financeira.",
 		icon: LockIcon,
 		x: 0.44,
 		y: 0.88,
@@ -119,7 +119,7 @@ const stats = [
 	},
 	{
 		value: "1 em 4",
-		label: "carros consultados têm restrição",
+		label: "veículos consultados têm restrição",
 		className: "border border-border bg-card text-heading",
 	},
 ];
@@ -199,7 +199,7 @@ export function HeroSection() {
 							))}
 						</span>
 						<span>
-							Quem compra carro{" "}
+							Quem compra veículo{" "}
 							<strong className="font-semibold text-heading">
 								confia na Checkauto
 							</strong>
@@ -299,7 +299,7 @@ export function HeroSection() {
 							src={heroCarFront}
 							srcSet={`${heroCarFront640} 640w, ${heroCarFront} 949w`}
 							sizes="(min-width: 1024px) 38vw, 88vw"
-							alt="Frente de um carro prata visto de cima, com pontos de informação em cada parte"
+							alt="Frente de um veículo prata visto de cima, com pontos de informação em cada parte"
 							width={949}
 							height={867}
 							fetchPriority="high"

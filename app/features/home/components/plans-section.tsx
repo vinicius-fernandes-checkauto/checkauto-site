@@ -12,16 +12,17 @@ import {
 import { Button } from "~/shared/components/ui/button";
 import {
 	corporatePlan,
+	PLAN_STORAGE_KEY,
 	type Plan,
+	planFeatureHints,
 	planFeatures,
 	plans,
+	sharedExtraInfoCount,
 } from "~/shared/config/plans";
 import { cn } from "~/shared/lib/utils";
 
 import { focusHeroPlateInput, PLATE_STORAGE_KEY } from "./plate-form";
 import { SectionEyebrow } from "./section-eyebrow";
-
-const PLAN_STORAGE_KEY = "checkauto:plan";
 
 function readPlate() {
 	try {
@@ -32,13 +33,28 @@ function readPlate() {
 }
 
 const planTones = [
-	"border-brand-green/15 from-card via-card to-brand-green/10",
-	"border-navy-100 from-card via-card to-navy-50",
+	"border-border bg-[color-mix(in_oklab,var(--color-brand-green)_8%,var(--card))]",
+	"border-border bg-[color-mix(in_oklab,var(--color-brand-blue)_5%,var(--card))]",
 ];
+
+const rowHeights = [
+	...planFeatures.map((feature) =>
+		planFeatureHints[feature] ? "2.5rem" : "2.375rem",
+	),
+	"2.75rem",
+].join(" ");
+
+function ExtraInfoChip() {
+	return (
+		<span className="rounded-full bg-brand-blue/7 px-2.5 py-0.5 text-xs/5 font-semibold text-heading tabular-nums group-data-recommended/plan:bg-brand-green/20 group-data-recommended/plan:text-brand-green">
+			+{sharedExtraInfoCount}
+		</span>
+	);
+}
 
 function planTone(plan: Plan, index: number) {
 	return plan.recommended
-		? "border-transparent from-navy-600 via-navy-700 to-navy-900 text-white"
+		? "border-transparent bg-linear-to-b from-navy-600 via-navy-700 to-navy-900 text-white"
 		: planTones[index % planTones.length];
 }
 
@@ -70,27 +86,32 @@ function RecommendedBadge() {
 
 function PlanSummary({ plan }: { plan: Plan }) {
 	return (
-		<div className="flex flex-col gap-5">
-			<div className="flex flex-col gap-1.5">
+		<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-1">
 				<p className="text-[0.6875rem] font-semibold tracking-[0.14em] text-highlight uppercase group-data-recommended/plan:text-brand-green">
 					{plan.kicker}
 				</p>
 				<h3 className="text-2xl font-medium tracking-tight group-data-recommended/plan:text-white">
 					{plan.shortName}
 				</h3>
-				<p className="text-sm/5 text-muted-foreground group-data-recommended/plan:text-mist lg:min-h-15">
+				<p className="text-sm/5 text-muted-foreground group-data-recommended/plan:text-mist lg:hidden">
 					{plan.description}
 				</p>
 			</div>
-			<p className="flex items-baseline gap-1.5 tabular-nums">
-				<span className="text-sm font-medium">R$</span>
-				<span className="text-4xl/none font-semibold tracking-tight">
-					{plan.price}
+			<div className="flex items-baseline justify-between gap-2">
+				<p className="flex items-baseline gap-1.5 tabular-nums">
+					<span className="text-sm font-medium">R$</span>
+					<span className="text-4xl/none font-semibold tracking-tight">
+						{plan.price}
+					</span>
+					<span className="text-sm text-muted-foreground group-data-recommended/plan:text-mist">
+						/cada
+					</span>
+				</p>
+				<span className="rounded-full bg-brand-blue/7 px-2.5 py-0.5 text-xs/5 font-semibold whitespace-nowrap text-heading group-data-recommended/plan:bg-brand-green/20 group-data-recommended/plan:text-brand-green">
+					{plan.infoCount} infos
 				</span>
-				<span className="text-sm text-muted-foreground group-data-recommended/plan:text-mist">
-					/cada
-				</span>
-			</p>
+			</div>
 		</div>
 	);
 }
@@ -103,15 +124,24 @@ function SelectButton({
 	onSelect: (planId: string) => void;
 }) {
 	return (
-		<Button
-			variant={plan.recommended ? "default" : "outline"}
-			size="sm"
-			className="mt-auto w-full"
-			onClick={() => onSelect(plan.id)}
-		>
-			Consultar
-			<span className="sr-only"> com o {plan.name}</span>
-		</Button>
+		<div className="mt-auto flex w-full flex-col gap-1">
+			<Button
+				variant={plan.recommended ? "default" : "outline"}
+				size="sm"
+				className="w-full"
+				onClick={() => onSelect(plan.id)}
+			>
+				Consultar
+				<span className="sr-only"> com o {plan.name}</span>
+			</Button>
+			<Link
+				to={plan.detailsUrl}
+				className="inline-flex min-h-8 items-center justify-center rounded-full text-sm font-semibold text-heading underline decoration-1 underline-offset-4 transition-colors group-data-recommended/plan:text-white hover:decoration-2"
+			>
+				Detalhes do plano
+				<span className="sr-only"> {plan.name}</span>
+			</Link>
+		</div>
 	);
 }
 
@@ -131,7 +161,7 @@ function PlanCard({
 			data-plan
 			data-recommended={plan.recommended || undefined}
 			className={cn(
-				"group/plan relative flex flex-col gap-5 rounded-3xl border bg-linear-to-b p-5",
+				"group/plan relative flex flex-col gap-5 rounded-3xl border p-5",
 				planTone(plan, index),
 			)}
 		>
@@ -157,12 +187,12 @@ function PlanColumn({
 			data-plan
 			data-recommended={plan.recommended || undefined}
 			className={cn(
-				"group/plan relative row-span-full grid grid-rows-subgrid rounded-3xl border bg-linear-to-b px-5 pt-6 pb-5",
+				"group/plan relative row-span-full grid grid-rows-subgrid rounded-3xl border px-5 pt-5 pb-4",
 				planTone(plan, index),
 			)}
 		>
 			{plan.recommended && <RecommendedBadge />}
-			<div className="pb-6">
+			<div className="pb-4">
 				<PlanSummary plan={plan} />
 			</div>
 			<ul className="contents">
@@ -189,8 +219,14 @@ function PlanColumn({
 						</li>
 					);
 				})}
+				<li className="flex items-center justify-center border-t border-foreground/12 group-data-recommended/plan:border-white/12">
+					<ExtraInfoChip />
+					<span className="sr-only">
+						e mais {sharedExtraInfoCount} informações
+					</span>
+				</li>
 			</ul>
-			<div className="flex border-t border-foreground/12 pt-5 group-data-recommended/plan:border-white/12">
+			<div className="flex border-t border-foreground/12 pt-4 group-data-recommended/plan:border-white/12">
 				<SelectButton plan={plan} onSelect={onSelect} />
 			</div>
 		</article>
@@ -223,11 +259,21 @@ function FeatureList({ plan }: { plan: Plan }) {
 							)}
 						>
 							{feature}
+							{planFeatureHints[feature] && (
+								<span className="text-xs text-muted-foreground group-data-recommended/plan:text-mist">
+									{" "}
+									({planFeatureHints[feature]})
+								</span>
+							)}
 							{!included && <span className="sr-only"> (não incluso)</span>}
 						</span>
 					</li>
 				);
 			})}
+			<li className="flex min-h-11.5 items-center gap-3 text-[0.9375rem] font-medium">
+				<ExtraInfoChip />
+				informações em todos os pacotes
+			</li>
 		</ul>
 	);
 }
@@ -266,19 +312,18 @@ export function PlansSection() {
 			<section
 				id="pacotes"
 				aria-labelledby="pacotes-titulo"
-				className="mx-auto flex w-full max-w-7xl flex-col px-4 py-16 sm:px-8 lg:py-28"
+				className="mx-auto flex w-full max-w-7xl flex-col px-4 py-16 sm:px-8 lg:py-6"
 			>
-				<div className="flex max-w-2xl flex-col gap-3 lg:gap-4">
-					<SectionEyebrow>Consultas veiculares</SectionEyebrow>
+				<div className="flex max-w-2xl flex-col gap-3 lg:hidden">
+					<SectionEyebrow>Pacotes</SectionEyebrow>
 					<h2
 						id="pacotes-titulo"
-						className="text-3xl/tight font-medium tracking-tight text-balance lg:text-5xl/tight"
+						className="text-3xl/tight font-medium tracking-tight text-balance"
 					>
 						Escolha a consulta ideal para você.
 					</h2>
-					<p className="text-muted-foreground lg:text-lg">
-						Pacotes personalizados para a sua necessidade: três opções, com
-						acesso online e resultado após a confirmação do pagamento.
+					<p className="text-muted-foreground">
+						Todos os pacotes trazem 16 informações essenciais.
 					</p>
 				</div>
 
@@ -321,26 +366,42 @@ export function PlansSection() {
 				</div>
 
 				<div
-					className="mt-16 hidden grid-cols-[minmax(0,1.15fr)_repeat(3,minmax(0,1fr))] gap-x-4 lg:grid"
-					style={{
-						gridTemplateRows: `auto repeat(${planFeatures.length}, 3.75rem) auto`,
-					}}
+					className="hidden grid-cols-[minmax(0,1.15fr)_repeat(3,minmax(0,1fr))] gap-x-4 pt-3 lg:grid"
+					style={{ gridTemplateRows: `auto ${rowHeights} auto` }}
 				>
-					<div
-						aria-hidden="true"
-						className="row-span-full grid grid-rows-subgrid"
-					>
-						<p className="self-end pb-4 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-							Principais itens de cada pacote
-						</p>
+					<div className="row-span-full grid grid-rows-subgrid">
+						<div className="flex flex-col gap-2 self-end pb-4">
+							<SectionEyebrow>Pacotes</SectionEyebrow>
+							<h2
+								id="pacotes-titulo-desktop"
+								className="text-[2rem]/[1.12] font-medium tracking-tight"
+							>
+								Escolha a consulta ideal para você.
+							</h2>
+							<p className="mt-1 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+								Principais itens de cada pacote
+							</p>
+						</div>
 						{planFeatures.map((feature) => (
 							<span
 								key={feature}
-								className="flex items-center border-t border-border text-[0.9375rem] font-medium last-of-type:border-b"
+								aria-hidden="true"
+								className="flex flex-col justify-center border-t border-border text-[0.9375rem] font-medium"
 							>
 								{feature}
+								{planFeatureHints[feature] && (
+									<span className="text-xs font-normal text-muted-foreground">
+										{planFeatureHints[feature]}
+									</span>
+								)}
 							</span>
 						))}
+						<span
+							aria-hidden="true"
+							className="flex items-center border-y border-border text-[0.9375rem] font-semibold"
+						>
+							+ {sharedExtraInfoCount} informações em todos os pacotes
+						</span>
 					</div>
 					{plans.map((plan, index) => (
 						<PlanColumn
@@ -354,7 +415,7 @@ export function PlansSection() {
 
 				<div
 					data-plan
-					className="mt-4 flex flex-col gap-3 rounded-3xl border border-border bg-card p-5 lg:mt-14 lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,2fr)_auto] lg:items-center lg:gap-8 lg:px-8 lg:py-7"
+					className="mt-4 flex flex-col gap-3 rounded-3xl border border-border bg-card p-5 lg:mt-10 lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,2fr)_auto] lg:items-center lg:gap-8 lg:px-8 lg:py-7"
 				>
 					<div className="flex flex-col gap-1.5">
 						<p className="text-[0.6875rem] font-semibold tracking-[0.14em] text-highlight uppercase group-data-recommended/plan:text-brand-green">

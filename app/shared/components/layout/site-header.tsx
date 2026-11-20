@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 import type { AccountUser } from "~/features/account/lib/account";
@@ -15,6 +16,7 @@ import {
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
 import { accountNav, headerNav } from "~/shared/config/navigation";
+import { cn } from "~/shared/lib/utils";
 
 function HeaderNav() {
 	return (
@@ -86,8 +88,26 @@ function MobileMenu() {
 }
 
 export function SiteHeader({ user }: { user?: AccountUser }) {
+	const [scrolled, setScrolled] = useState(false);
+
+	useEffect(() => {
+		function update() {
+			setScrolled(window.scrollY > 8);
+		}
+
+		update();
+		window.addEventListener("scroll", update, { passive: true });
+		return () => window.removeEventListener("scroll", update);
+	}, []);
+
 	return (
-		<header className="z-40 border-b border-transparent bg-background max-lg:sticky max-lg:top-0 max-lg:border-border">
+		<header
+			className={cn(
+				"z-40 border-b border-transparent bg-background transition-shadow duration-300 max-lg:sticky max-lg:top-0 max-lg:border-border",
+				scrolled &&
+					"max-lg:shadow-[0_10px_28px_-14px_--alpha(var(--color-brand-blue)/35%)]",
+			)}
+		>
 			<div className="relative mx-auto flex min-h-19 w-full max-w-7xl items-center gap-1.5 px-4 sm:gap-2 sm:px-8">
 				<CheckautoLogo className="h-6 sm:h-7" />
 				<HeaderNav />

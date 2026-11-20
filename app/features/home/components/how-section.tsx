@@ -23,7 +23,7 @@ const steps: Step[] = [
 	{
 		number: "01",
 		title: "Informe a placa",
-		description: "Do carro que você tem ou do que pretende comprar.",
+		description: "Do veículo que você tem ou do que pretende comprar.",
 		preview: "plate",
 		tilt: 2,
 	},
@@ -138,7 +138,9 @@ export function HowSection() {
 									key={step.number}
 									className={cn(
 										"relative flex flex-col items-start gap-6 lg:w-full lg:max-w-180 lg:flex-row lg:items-center lg:gap-10",
-										onLeft ? "lg:mr-auto lg:flex-row-reverse" : "lg:ml-auto",
+										onLeft
+											? "lg:mr-auto lg:flex-row-reverse"
+											: "md:max-lg:items-end lg:ml-auto",
 										index > 0 && "lg:-mt-2",
 									)}
 								>
@@ -146,13 +148,20 @@ export function HowSection() {
 										aria-hidden="true"
 										className={cn(
 											"text-[7.5rem]/none lg:text-[11rem]/none pointer-events-none absolute -top-10 -left-2 font-semibold tracking-tighter text-transparent [-webkit-text-stroke:1.5px_--alpha(var(--color-brand-green)/28%)] lg:-top-14",
-											onLeft ? "lg:-right-6 lg:left-auto" : "lg:-left-6",
+											onLeft
+												? "lg:-right-6 lg:left-auto"
+												: "md:max-lg:right-0 md:max-lg:left-auto lg:-left-6",
 										)}
 									>
 										{step.number}
 									</span>
 
-									<div className="relative flex max-w-80 flex-col gap-2">
+									<div
+										className={cn(
+											"relative flex max-w-80 flex-col gap-2",
+											!onLeft && "md:max-lg:text-right",
+										)}
+									>
 										<h3 className="text-2xl/tight font-medium tracking-tight text-white lg:text-3xl/tight">
 											<span className="sr-only">Passo {step.number}: </span>
 											{step.title}

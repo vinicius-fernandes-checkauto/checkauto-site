@@ -29,7 +29,7 @@ const milestones: Milestone[] = [
 		year: "Anos 2000",
 		tag: "Referência",
 		title: "Vira sinônimo de consulta",
-		body: "Em várias regiões do país, comprar carro passa a ter dois passos: o laudo de vistoria e a Checkauto.",
+		body: "Em várias regiões do país, comprar um veículo passa a ter dois passos: o laudo de vistoria e a Checkauto.",
 		consultas: 0,
 		compactYear: true,
 	},
@@ -44,7 +44,7 @@ const milestones: Milestone[] = [
 	{
 		year: "2016",
 		tag: "Lojistas",
-		title: "Pacotes para quem vende carro",
+		title: "Pacotes para quem vende veículos",
 		body: "Revendas e multimarcas ganham pacotes próprios. Mais de 2 mil empresas na carteira de clientes.",
 		consultas: 11,
 		stat: "+11 mi",
@@ -195,7 +195,7 @@ export function HistorySection() {
 						>
 							<span className="block">Mais de 25 anos abrindo</span>
 							<span className="block">
-								o <span className="text-highlight">histórico</span> dos carros
+								o <span className="text-highlight">histórico</span> dos veículos
 								do Brasil.
 							</span>
 						</h2>

@@ -21,7 +21,7 @@ import { cn } from "~/shared/lib/utils";
 import { SectionEyebrow } from "./section-eyebrow";
 
 const benefits: { icon: LucideIcon; title: string }[] = [
-	{ icon: ZapIcon, title: "Agilize a venda do seu carro" },
+	{ icon: ZapIcon, title: "Agilize a venda do seu veículo" },
 	{ icon: EyeIcon, title: "Transparência gera confiança" },
 	{ icon: ScaleIcon, title: "Garanta uma negociação justa" },
 	{ icon: MegaphoneIcon, title: "Torne seu anúncio mais atrativo" },
@@ -95,7 +95,7 @@ export function SellSection() {
 						id="hora-de-vender-titulo"
 						className="-mt-2 max-w-[12ch] text-4xl/tight font-medium tracking-tight lg:text-6xl/[1.06]"
 					>
-						Valorize seu carro com a Checkauto
+						Valorize seu veículo com a Checkauto
 					</h2>
 					<p className="max-w-[44ch] text-lg text-muted-foreground">
 						Ofereça o histórico completo e feche negócio mais rápido.
@@ -113,7 +113,7 @@ export function SellSection() {
 					</ul>
 					<div className="pt-1.5">
 						<Button asChild>
-							<Link to="/#topo">Consultar meu carro</Link>
+							<Link to="/#topo">Consultar meu veículo</Link>
 						</Button>
 					</div>
 				</div>
