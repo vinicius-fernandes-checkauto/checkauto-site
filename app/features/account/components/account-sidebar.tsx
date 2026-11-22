@@ -28,7 +28,7 @@ export function AccountSidebar({ user }: { user: AccountUser }) {
 			className="hidden min-w-0 flex-col gap-3 lg:sticky lg:top-24 lg:flex"
 		>
 			<div className="flex items-center gap-3 px-2 pb-2">
-				<BrandAvatar name={user.name} className="size-13" />
+				<BrandAvatar className="size-13" />
 				<div className="flex min-w-0 flex-col">
 					<p className="truncate text-sm font-semibold text-heading">
 						{user.name}

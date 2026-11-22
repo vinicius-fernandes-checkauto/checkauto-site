@@ -1,12 +1,13 @@
 import { Link } from "react-router";
 
-import logo from "~/assets/brand/checkauto-logo.png";
+import { ScrollToTopButton } from "~/features/site/components/scroll-to-top-button";
+import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 import {
-	ChevronUpIcon,
 	FacebookIcon,
 	InstagramIcon,
 	MailIcon,
 	PhoneIcon,
+	SecureSealIcon,
 	YoutubeIcon,
 } from "~/shared/components/icons";
 import { company, contact, socialLinks } from "~/shared/config/company";
@@ -14,13 +15,6 @@ import { footerNav, legalNav } from "~/shared/config/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const year = new Date().getFullYear();
-
-function scrollToTop() {
-	const smooth = window.matchMedia(
-		"(prefers-reduced-motion: no-preference)",
-	).matches;
-	window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
-}
 
 const socialIcons = {
 	Facebook: FacebookIcon,
@@ -36,39 +30,15 @@ const linkClassName = cn(
 	focusRing,
 );
 
-const headingClassName =
-	"mb-2 text-base/relaxed font-medium text-foreground lg:mb-4";
-
-function SecureSeal() {
-	return (
-		<svg
-			aria-hidden="true"
-			width={16}
-			height={18}
-			viewBox="0 0 32 36"
-			className="shrink-0"
-		>
-			<path
-				d="M16 1 3 6v10c0 8.6 5.6 15.6 13 18 7.4-2.4 13-9.4 13-18V6L16 1z"
-				className="fill-brand-green"
-			/>
-			<rect x="10.5" y="16" width="11" height="9" rx="2" fill="#fff" />
-			<path
-				d="M12.75 16v-2.6a3.25 3.25 0 0 1 6.5 0V16"
-				fill="none"
-				stroke="#fff"
-				strokeWidth={2.4}
-			/>
-		</svg>
-	);
-}
-
 function FooterLinks({ title, links }: (typeof footerNav)[number]) {
 	const id = `rodape-${title.toLowerCase()}`;
 
 	return (
 		<nav aria-labelledby={id}>
-			<h2 id={id} className={headingClassName}>
+			<h2
+				id={id}
+				className="mb-2 text-base/relaxed font-medium text-foreground lg:mb-4"
+			>
 				{title}
 			</h2>
 			<ul className="flex flex-col lg:gap-0.5">
@@ -91,23 +61,7 @@ export function SiteFooter() {
 		<footer className="border-t border-border bg-card text-foreground">
 			<div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-x-4 gap-y-7 px-5 pt-10 sm:px-8 lg:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,0.9fr))_minmax(0,1.6fr)] lg:gap-10 lg:pt-18 lg:pb-14">
 				<div className="col-span-2 flex flex-col gap-4 lg:col-span-1 lg:gap-5">
-					<Link
-						to="/"
-						className={cn(
-							"inline-flex w-fit items-center rounded-md",
-							focusRing,
-						)}
-					>
-						<img
-							src={logo}
-							alt="Página inicial da Checkauto"
-							width={800}
-							height={109}
-							loading="lazy"
-							decoding="async"
-							className="h-6.5 w-auto lg:h-7"
-						/>
-					</Link>
+					<CheckautoLogo />
 					<p className="max-w-[34ch] text-sm/5.5 text-muted-foreground">
 						Histórico veicular e inteligência de mercado para decisões mais
 						seguras.
@@ -146,14 +100,16 @@ export function SiteFooter() {
 				</div>
 
 				<div className="col-span-2 lg:col-span-1">
-					<h2 className={headingClassName}>Atendimento</h2>
+					<h2 className="mb-2 text-base/relaxed font-medium text-foreground lg:mb-4">
+						Atendimento
+					</h2>
 					<ul className="flex flex-col lg:gap-0.5">
 						{contact.phones.map(({ label, href }) => (
 							<li key={href}>
 								<a href={href} className={cn(linkClassName, "text-foreground")}>
 									<PhoneIcon
 										aria-hidden="true"
-										className="size-4.5 shrink-0 text-brand-green"
+										className="size-4.5 shrink-0 text-brand-green-dark"
 									/>
 									{label}
 								</a>
@@ -169,14 +125,14 @@ export function SiteFooter() {
 							>
 								<MailIcon
 									aria-hidden="true"
-									className="size-4.5 shrink-0 text-brand-green"
+									className="size-4.5 shrink-0 text-brand-green-dark"
 								/>
 								{contact.email}
 							</a>
 						</li>
 					</ul>
 					<p className="mt-2 flex items-center justify-center gap-2 pt-2 pb-7 text-xs/4.5 text-muted-foreground lg:mt-6 lg:justify-start lg:border-t lg:border-border lg:pt-5 lg:pb-0">
-						<SecureSeal />
+						<SecureSealIcon />
 						Site seguro · Certificado SSL
 					</p>
 				</div>
@@ -215,23 +171,8 @@ export function SiteFooter() {
 								</Link>
 							))}
 						</nav>
-						<button
-							type="button"
-							onClick={scrollToTop}
-							className={cn(
-								"group inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/20 py-1 pr-1 pl-4 text-sm/5.5 font-medium text-white transition-colors hover:bg-white/10",
-								focusRing,
-								"focus-visible:ring-brand-green/60",
-							)}
-						>
-							Voltar ao topo
-							<span
-								aria-hidden="true"
-								className="flex size-9 items-center justify-center rounded-full bg-brand-green text-brand-blue transition-transform group-hover:-translate-y-0.5"
-							>
-								<ChevronUpIcon className="size-4.5" />
-							</span>
-						</button>
+
+						<ScrollToTopButton />
 					</div>
 				</div>
 			</div>

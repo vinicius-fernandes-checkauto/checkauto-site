@@ -59,7 +59,7 @@ const topics: Topic[] = [
 			"Verifique se o veículo já foi ofertado em leilão, com detalhes como comitente, lote, data de realização, ano do veículo e status de avaria. A Checkauto reproduz essa informação de fornecedores terceirizados, esclarecendo que a presença no leilão não indica necessariamente venda confirmada, devido a possíveis falhas na coleta de dados.",
 	},
 	{
-		id: "sinistro",
+		id: "ocorrências",
 		position: "xl:top-[4%] xl:left-[60.5%]",
 		reversed: true,
 		title: "Indício de ocorrência",

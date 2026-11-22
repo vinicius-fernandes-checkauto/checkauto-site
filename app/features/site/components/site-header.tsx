@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 
 import type { AccountUser } from "~/features/account/lib/account";
-import { SiteHeaderAccount } from "~/features/site/components/site-header-account";
+import { HeaderCart } from "~/features/site/components/header-cart";
+import { BrandAvatar } from "~/shared/components/brand-avatar";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 import { MenuIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
@@ -17,25 +18,6 @@ import {
 import { accountNav, headerNav } from "~/shared/config/navigation";
 import { useScrolled } from "~/shared/hooks/use-scrolled";
 import { cn } from "~/shared/lib/utils";
-
-function HeaderNav() {
-	return (
-		<nav aria-label="Principal" className="mx-auto hidden xl:block">
-			<ul className="flex items-center gap-1">
-				{headerNav.map((link) => (
-					<li key={link.to}>
-						<Link
-							to={link.to}
-							className="relative inline-flex min-h-11 items-center px-3 text-sm/5.5 font-medium whitespace-nowrap text-heading transition-colors after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-brand-blue after:transition-transform hover:after:scale-x-100"
-						>
-							{link.label}
-						</Link>
-					</li>
-				))}
-			</ul>
-		</nav>
-	);
-}
 
 function MobileMenu() {
 	return (
@@ -56,14 +38,14 @@ function MobileMenu() {
 				</SheetHeader>
 				<nav aria-label="Menu" className="px-3">
 					<ul className="flex flex-col gap-1">
-						{headerNav.map((link) => (
-							<li key={link.to}>
+						{headerNav.map(({ to, label }) => (
+							<li key={to}>
 								<SheetClose asChild>
 									<Link
-										to={link.to}
+										to={to}
 										className="flex min-h-12 items-center rounded-full px-4 font-medium text-heading transition-colors hover:bg-brand-blue/6"
 									>
-										{link.label}
+										{label}
 									</Link>
 								</SheetClose>
 							</li>
@@ -73,12 +55,7 @@ function MobileMenu() {
 				<SheetFooter className="gap-2 border-t border-border pb-6 sm:hidden">
 					<SheetClose asChild>
 						<Button asChild variant="secondary" className="w-full">
-							<Link to={accountNav.home.to}>{accountNav.home.label}</Link>
-						</Button>
-					</SheetClose>
-					<SheetClose asChild>
-						<Button asChild variant="ghost" className="w-full">
-							<Link to={accountNav.orders.to}>{accountNav.orders.label}</Link>
+							<Link to={accountNav.home.to}>Minha conta</Link>
 						</Button>
 					</SheetClose>
 				</SheetFooter>
@@ -87,7 +64,9 @@ function MobileMenu() {
 	);
 }
 
-export function SiteHeader({ user }: { user?: AccountUser }) {
+type SiteHeaderProps = { user?: AccountUser; carCount?: number };
+
+export function SiteHeader({ user, carCount = 0 }: SiteHeaderProps) {
 	const scrolled = useScrolled();
 
 	return (
@@ -100,8 +79,41 @@ export function SiteHeader({ user }: { user?: AccountUser }) {
 		>
 			<div className="relative mx-auto flex min-h-19 w-full max-w-7xl items-center gap-1.5 px-4 sm:gap-2 sm:px-8">
 				<CheckautoLogo className="h-6 sm:h-7" />
-				<HeaderNav />
-				<SiteHeaderAccount user={user} className="ml-auto xl:ml-0" />
+
+				{/* Main Navigation */}
+				<nav aria-label="Principal" className="mx-auto hidden xl:block">
+					<ul className="flex items-center gap-1">
+						{headerNav.map(({ to, label }) => (
+							<li key={to}>
+								<Link
+									to={to}
+									className="relative inline-flex min-h-11 items-center px-3 text-sm/5.5 font-medium whitespace-nowrap text-heading transition-colors after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-brand-blue after:transition-transform hover:after:scale-x-100"
+								>
+									{label}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</nav>
+
+				<div className="ml-auto flex shrink-0 items-center gap-1.5 xl:ml-0">
+					{user ? (
+						<Link to={accountNav.home.to} className="hidden sm:inline-flex">
+							<BrandAvatar />
+						</Link>
+					) : (
+						<Button
+							asChild
+							variant="secondary"
+							size="sm"
+							className="hidden px-6 sm:inline-flex"
+						>
+							<Link to="/entrar">Entrar</Link>
+						</Button>
+					)}
+					<HeaderCart count={carCount} />
+				</div>
+
 				<MobileMenu />
 			</div>
 		</header>

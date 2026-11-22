@@ -50,11 +50,11 @@ export function AccountMenu({
 					triggerClassName,
 				)}
 			>
-				<BrandAvatar name={user.name} className={avatarClassName} />
+				<BrandAvatar className={avatarClassName} />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-68">
 				<DropdownMenuLabel className="flex items-center gap-3">
-					<BrandAvatar name={user.name} className="size-12" />
+					<BrandAvatar className="size-12" />
 					<span className="flex min-w-0 flex-col">
 						<span className="truncate text-sm font-semibold text-heading">
 							{user.name}

@@ -12,7 +12,7 @@ export const planFeatures = [
 export type PlanFeature = (typeof planFeatures)[number];
 
 export const planFeatureHints: Partial<Record<PlanFeature, string>> = {
-	"Indício de batida ou enchente": "sinistro",
+	"Indício de batida ou enchente": "ocorrência",
 	"Financiamento ativo": "gravame",
 };
 

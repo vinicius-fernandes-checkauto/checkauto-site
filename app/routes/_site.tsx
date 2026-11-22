@@ -8,14 +8,7 @@ export default function SiteLayout() {
 	return (
 		<div className="flex min-h-dvh flex-col bg-background">
 			<SkipLink />
-			<SiteHeader
-				user={{
-					name: "John Doe",
-					email: "john.doe@example.com",
-					pendingOrders: 10,
-					personType: "Pessoa física",
-				}}
-			/>
+			<SiteHeader carCount={2} user={undefined} />
 			<main id="conteudo" tabIndex={-1} className="flex-1 outline-none">
 				<Outlet />
 			</main>

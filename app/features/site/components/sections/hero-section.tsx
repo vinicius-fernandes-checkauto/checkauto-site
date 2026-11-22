@@ -1,7 +1,6 @@
 import { type CSSProperties, useRef, useState } from "react";
 import { Link } from "react-router";
 
-import ring from "~/assets/brand/symbol-ring-blue.webp";
 import ticks from "~/assets/brand/symbol-ticks.webp";
 import avatar1 from "~/assets/home/avatars/avatar-1.webp";
 import avatar2 from "~/assets/home/avatars/avatar-2.webp";
@@ -9,10 +8,8 @@ import avatar3 from "~/assets/home/avatars/avatar-3.webp";
 import avatar4 from "~/assets/home/avatars/avatar-4.webp";
 import heroCarFront from "~/assets/home/hero-car-front.webp";
 import heroCarFront640 from "~/assets/home/hero-car-front-640.webp";
-import {
-	HERO_PLATE_INPUT_ID,
-	PlateForm,
-} from "~/features/site/components/plate-form";
+import { PlateForm } from "~/features/site/components/plate-form";
+import { Arc } from "~/shared/components/arc";
 import {
 	BanIcon,
 	FileTextIcon,
@@ -102,12 +99,6 @@ const features: Feature[] = [
 	},
 ];
 
-const points = features.map(({ x, y }) => ({
-	left: x * 200,
-	top: y * 100,
-	delay: 1100 + x * 2400,
-}));
-
 const stats = [
 	{
 		value: "+25",
@@ -126,6 +117,12 @@ const stats = [
 	},
 ];
 
+const points = features.map(({ x, y }) => ({
+	left: x * 200,
+	top: y * 100,
+	delay: 1100 + x * 2400,
+}));
+
 /** Entrada escalonada só com CSS: pinta certo desde o primeiro quadro. */
 const enter =
 	"animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both motion-reduce:animate-none";
@@ -133,6 +130,7 @@ const enter =
 export function HeroSection() {
 	const scope = useRef<HTMLElement>(null);
 	const [active, setActive] = useState<number | null>(null);
+
 	const feature = active === null ? null : features[active];
 	const point = active === null ? null : points[active];
 
@@ -161,23 +159,14 @@ export function HeroSection() {
 	return (
 		<section
 			ref={scope}
+			id="hero"
 			aria-labelledby="hero-titulo"
 			className="relative isolate overflow-hidden bg-background [--mh:calc(var(--mw)/1.0946)] [--mw:min(38vw,40rem,calc((100svh-9rem)*1.0946))] lg:flex lg:min-h-[calc(100svh-4.75rem-1px)] lg:flex-col"
 		>
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -top-48 -left-56 -z-10 aspect-896/900 w-136 bg-brand-blue/6 mask-contain mask-no-repeat max-lg:hidden lg:-top-72 lg:-left-72 lg:w-200"
-			/>
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -right-40 -bottom-56 -z-10 hidden aspect-896/900 w-176 rotate-150 bg-brand-blue/5 mask-contain mask-no-repeat lg:block"
-			/>
-			<span
-				aria-hidden="true"
+			<Arc className="-top-48 -left-56 w-136 max-lg:hidden lg:-top-72 lg:-left-72 lg:w-200" />
+			<Arc
 				style={{ maskImage: `url(${ticks})` }}
-				className="pointer-events-none absolute bottom-6 -left-24 -z-10 aspect-878/389 w-96 rotate-180 bg-brand-blue/7 mask-contain mask-no-repeat max-lg:hidden lg:bottom-10 lg:left-[8%] lg:w-120"
+				className="bottom-6 -left-24 aspect-878/389 w-96 rotate-180 bg-brand-blue/7 max-lg:hidden lg:bottom-10 lg:left-[8%] lg:w-120"
 			/>
 
 			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-10 pb-6 sm:px-8 lg:flex-1 lg:grid-cols-2 lg:pt-8 lg:pb-18 lg:[@media(max-height:620px)]:pb-6 lg:[@media(max-height:660px)]:pt-2 lg:[@media(min-height:621px)_and_(max-height:820px)]:pb-16 lg:[@media(min-height:661px)_and_(max-height:820px)]:pt-4">
@@ -236,7 +225,7 @@ export function HeroSection() {
 						style={{ animationDelay: "360ms" }}
 						className={cn(enter, "flex flex-col")}
 					>
-						<PlateForm inputId={HERO_PLATE_INPUT_ID} />
+						<PlateForm />
 						<Link
 							to="/ainda-nao-tenho-placa"
 							className="-mt-1 inline-flex min-h-11 w-fit items-center self-center px-5 text-sm/5.5 font-medium text-heading underline decoration-1 underline-offset-4 hover:text-highlight hover:decoration-2 sm:self-start"

@@ -16,7 +16,7 @@ export function CheckautoLogo({
 	return (
 		<Link
 			to="/"
-			className="inline-flex min-h-11 shrink-0 items-center rounded-full"
+			className="inline-flex min-h-10 shrink-0 items-center rounded-full"
 		>
 			<img
 				src={variant === "white" ? logoWhite : logo}

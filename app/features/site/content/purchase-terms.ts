@@ -143,8 +143,8 @@ export const purchaseTerms: LegalDocumentContent = {
 						},
 						{
 							marker: "s",
-							text: "Informação da existência de um possível indício de sinistro originado de dados cujas fontes podem ser públicas (quando advindas de órgãos administrativos/oficiais) ou privadas (como seguradoras e lojas de bens salvados). Em alguns casos, tais informações são restritas ao informante das mesmas e não são divulgadas. Embora as bases de dados sejam regularmente atualizadas, a CHECKAUTO não garante a identificação completa de indícios de sinistro, e a ausência de registros em nossas consultas não deve ser interpretada como garantia da inexistência de sinistros anteriores. Para uma avaliação mais detalhada e conclusiva das condições do veículo, recomenda-se a realização de uma vistoria física. As informações fornecidas na consulta dependerão do pacote selecionado pelo USUÁRIO no momento da compra.",
-							term: "Indício de Sinistro",
+							text: "Informação da existência de um possível indício de ocorrência originado de dados cujas fontes podem ser públicas (quando advindas de órgãos administrativos/oficiais) ou privadas (como seguradoras e lojas de bens salvados). Em alguns casos, tais informações são restritas ao informante das mesmas e não são divulgadas. Embora as bases de dados sejam regularmente atualizadas, a CHECKAUTO não garante a identificação completa de indícios de ocorrência, e a ausência de registros em nossas consultas não deve ser interpretada como garantia da inexistência de ocorrências anteriores. Para uma avaliação mais detalhada e conclusiva das condições do veículo, recomenda-se a realização de uma vistoria física. As informações fornecidas na consulta dependerão do pacote selecionado pelo USUÁRIO no momento da compra.",
+							term: "Indício de Ocorrência",
 						},
 						{
 							marker: "t",
