@@ -39,12 +39,12 @@ export default function Home() {
 			<HeroSection />
 			<MarqueeSection />
 			<WhySection />
+			<ClientsSection />
 			<WhyNumbers />
 			<HowSection />
 			<DataSection />
 			<PlansSection />
 			<HistorySection />
-			<ClientsSection />
 			<FaqSection />
 			<CtaSection />
 		</div>

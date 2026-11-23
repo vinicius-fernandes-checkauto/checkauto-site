@@ -52,7 +52,7 @@ const milestones: Milestone[] = [
 		year: "2026",
 		tag: "Grupo ForRisk",
 		title: "Um novo grupo, mais fôlego",
-		body: "A Checkauto passa a fazer parte do Grupo ForRisk, ao lado da Autovist, com investimentos para expansão.",
+		body: "A Checkauto passa a fazer parte do Grupo ForRisk, com investimentos para expansão.",
 		consultas: 11,
 	},
 	{
@@ -171,7 +171,7 @@ export function HistorySection() {
 			ref={scope}
 			id="nossa-historia"
 			aria-labelledby="nossa-historia-titulo"
-			className="relative isolate overflow-clip bg-background"
+			className="relative isolate overflow-clip bg-[color-mix(in_oklab,var(--color-brand-green)_8%,var(--background))]"
 		>
 			<span
 				aria-hidden="true"
@@ -181,7 +181,7 @@ export function HistorySection() {
 			<span
 				aria-hidden="true"
 				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -right-60 -bottom-64 -z-10 aspect-896/900 w-160 rotate-160 bg-brand-green/12 mask-contain mask-no-repeat max-lg:hidden"
+				className="pointer-events-none absolute -right-60 -bottom-64 -z-10 aspect-896/900 w-160 rotate-160 bg-brand-blue/6 mask-contain mask-no-repeat max-lg:hidden"
 			/>
 
 			<div className="mx-auto flex w-full max-w-7xl flex-col gap-12 px-4 py-16 sm:px-8 lg:gap-16 lg:py-24">

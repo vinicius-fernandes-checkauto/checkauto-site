@@ -14,18 +14,18 @@ export function ScrollToTopButton() {
 			type="button"
 			onClick={scrollToTop}
 			className={cn(
-				"group inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/20 py-1 pr-1 pl-4 text-sm/5.5 font-medium text-white transition-colors hover:bg-white/10",
-				"outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-				"focus-visible:ring-brand-green/60",
+				"group inline-flex flex-col items-center gap-2 rounded-2xl px-2 py-1 text-xs/4 font-medium text-white",
+				"outline-none focus-visible:ring-3 focus-visible:ring-brand-green/60",
 			)}
 		>
-			Voltar ao topo
 			<span
 				aria-hidden="true"
-				className="flex size-9 items-center justify-center rounded-full bg-brand-green text-brand-blue transition-transform group-hover:-translate-y-0.5"
+				className="relative flex size-11 items-center justify-center rounded-full bg-brand-green text-brand-blue shadow-[0_0_0_6px_--alpha(var(--color-brand-green)/18%)] transition-transform group-hover:-translate-y-1"
 			>
-				<ChevronUpIcon className="size-4.5" />
+				<span className="absolute inset-0 animate-ping rounded-full bg-brand-green/60 [animation-duration:2s] motion-reduce:animate-none" />
+				<ChevronUpIcon className="relative size-5 stroke-[2.5]" />
 			</span>
+			Voltar ao topo
 		</button>
 	);
 }

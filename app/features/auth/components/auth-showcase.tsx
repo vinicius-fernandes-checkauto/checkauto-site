@@ -10,12 +10,12 @@ const scanned = [
 	{ label: "Leilão", className: "top-[2%] left-[62%]" },
 	{
 		label: "Roubo e furto",
-		className: "top-[44%] right-[-12%] hidden lg:flex",
+		className: "top-[44%] right-[-12%] @max-[17rem]:hidden",
 	},
 	{ label: "Gravame", className: "bottom-0 left-[52%]" },
 	{
 		label: "Ocorrência",
-		className: "top-[30%] left-[-10%] hidden lg:flex",
+		className: "top-[30%] left-[-10%] @max-[17rem]:hidden",
 	},
 ];
 
@@ -24,7 +24,7 @@ const tickRing =
 
 function Scanner() {
 	return (
-		<div className="absolute top-[52%] left-1/2 aspect-square w-75 -translate-1/2 lg:top-[66%] lg:left-[62%] lg:w-[min(58%,22rem)]">
+		<div className="@container absolute top-1/2 left-[58%] aspect-square w-[min(64cqw,80cqh,22rem)] -translate-1/2">
 			<span className="absolute inset-0 rounded-full border border-brand-blue/10" />
 			<span className="absolute inset-[14%] rounded-full border border-brand-blue/8" />
 			<span className="absolute inset-[28%] rounded-full border border-dashed border-brand-blue/14" />
@@ -47,7 +47,7 @@ function Scanner() {
 			<img
 				src={carTopGray}
 				srcSet={`${carTopGray1000} 1000w, ${carTopGray} 1898w`}
-				sizes="(min-width: 1024px) 28rem, 15rem"
+				sizes="28rem"
 				alt=""
 				width={1898}
 				height={867}
@@ -83,10 +83,10 @@ function Scanner() {
 
 export function AuthShowcase() {
 	return (
-		<div className="relative flex justify-center pt-6 text-heading lg:block lg:h-[min(44rem,calc(100dvh-4rem))] lg:overflow-hidden lg:rounded-3xl lg:bg-navy-100/70 lg:pt-0">
+		<div className="relative flex justify-center pt-6 text-heading lg:h-[min(44rem,calc(100dvh-4rem))] lg:flex-col lg:justify-start lg:gap-6 lg:overflow-hidden lg:rounded-3xl lg:bg-navy-100/70 lg:px-11 lg:pt-8 lg:pb-9">
 			<Link
 				to="/"
-				className="z-20 inline-flex min-h-11 items-center rounded-full lg:absolute lg:top-8 lg:left-11"
+				className="z-20 inline-flex min-h-11 w-fit items-center rounded-full"
 			>
 				<img
 					src={logo}
@@ -97,14 +97,15 @@ export function AuthShowcase() {
 				/>
 			</Link>
 
-			<div aria-hidden="true" className="hidden lg:block">
-				<span className="absolute top-[52%] left-1/2 aspect-square w-[70%] -translate-1/2 rounded-full bg-[radial-gradient(circle,--alpha(var(--color-brand-green)/22%),transparent_62%)] lg:top-[66%] lg:left-[62%] lg:w-[56%]" />
-
-				<div className="absolute top-24 left-11 z-10 hidden max-w-[26ch] flex-col gap-3 lg:flex">
+			<div
+				aria-hidden="true"
+				className="hidden min-h-0 flex-1 flex-col gap-4 lg:flex"
+			>
+				<div className="relative z-10 flex max-w-[26ch] flex-col gap-3">
 					{/* <p className="text-[0.8125rem] font-semibold tracking-[0.16em] text-highlight uppercase">
 						Histórico veicular
 					</p> */}
-					<p className="text-3xl/9 font-normal tracking-tighter">
+					<p className="text-3xl/9 font-normal tracking-tighter [@media(max-height:720px)]:text-2xl/7.5">
 						Cada placa conta uma história.{" "}
 						<span className="text-highlight">
 							Descubra a do seu próximo veículo.
@@ -112,9 +113,12 @@ export function AuthShowcase() {
 					</p>
 				</div>
 
-				<Scanner />
+				<div className="[container-type:size] relative min-h-0 flex-1">
+					<span className="absolute top-1/2 left-[58%] aspect-square w-[min(90cqw,110cqh,30rem)] -translate-1/2 rounded-full bg-[radial-gradient(circle,--alpha(var(--color-brand-green)/22%),transparent_62%)]" />
+					<Scanner />
+				</div>
 
-				<p className="absolute bottom-9 left-11 z-10 hidden items-center gap-2 text-sm text-muted-foreground lg:flex">
+				<p className="relative z-10 flex items-center gap-2 text-sm text-muted-foreground">
 					<span className="size-2 rounded-full bg-brand-green shadow-[0_0_0_4px_--alpha(var(--color-brand-green)/22%)]" />
 					<strong className="font-semibold text-heading">+250 mil</strong>
 					consultas realizadas

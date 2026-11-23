@@ -2,8 +2,6 @@
 import { type ReactNode, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
-import ring from "~/assets/brand/symbol-ring-blue.webp";
-import ticks from "~/assets/brand/symbol-ticks.webp";
 import {
 	focusHeroPlateInput,
 	PLATE_STORAGE_KEY,
@@ -19,10 +17,9 @@ import {
 	corporatePlan,
 	PLAN_STORAGE_KEY,
 	type Plan,
-	planFeatureHints,
-	planFeatures,
+	planComparisonItems,
+	planIncludes,
 	plans,
-	sharedExtraInfoCount,
 } from "~/shared/config/plans";
 import { cn } from "~/shared/lib/utils";
 
@@ -34,30 +31,14 @@ function readPlate() {
 	}
 }
 
-const planTones = [
-	"border-border bg-[color-mix(in_oklab,var(--color-brand-green)_8%,var(--card))]",
-	"border-border bg-[color-mix(in_oklab,var(--color-brand-blue)_5%,var(--card))]",
-];
+const rowHeights = planComparisonItems
+	.map((item) => (item.hint ? "3rem" : "2.5rem"))
+	.join(" ");
 
-const rowHeights = [
-	...planFeatures.map((feature) =>
-		planFeatureHints[feature] ? "2.5rem" : "2.375rem",
-	),
-	"2.75rem",
-].join(" ");
-
-function ExtraInfoChip() {
-	return (
-		<span className="rounded-full bg-brand-blue/7 px-2.5 py-0.5 text-xs/5 font-semibold text-heading tabular-nums group-data-recommended/plan:bg-brand-green/20 group-data-recommended/plan:text-brand-green">
-			+{sharedExtraInfoCount}
-		</span>
-	);
-}
-
-function planTone(plan: Plan, index: number) {
+function planTone(plan: Plan, _index: number) {
 	return plan.recommended
 		? "border-transparent bg-linear-to-b from-navy-600 via-navy-700 to-navy-900 text-white"
-		: planTones[index % planTones.length];
+		: "border-border bg-card";
 }
 
 function IncludedSeal({ className }: { className?: string }) {
@@ -80,7 +61,7 @@ const recommendedIndex = Math.max(
 
 function RecommendedBadge() {
 	return (
-		<span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-green px-3 py-1 text-[0.6875rem] font-semibold tracking-[0.06em] whitespace-nowrap text-brand-blue uppercase">
+		<span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 rounded-full bg-brand-green px-3 py-1 text-[0.6875rem] font-semibold tracking-[0.06em] whitespace-nowrap text-brand-blue uppercase">
 			Plano recomendado
 		</span>
 	);
@@ -100,20 +81,15 @@ function PlanSummary({ plan }: { plan: Plan }) {
 					{plan.description}
 				</p>
 			</div>
-			<div className="flex items-baseline justify-between gap-2">
-				<p className="flex items-baseline gap-1.5 tabular-nums">
-					<span className="text-sm font-medium">R$</span>
-					<span className="text-4xl/none font-semibold tracking-tight">
-						{plan.price}
-					</span>
-					<span className="text-sm text-muted-foreground group-data-recommended/plan:text-mist">
-						/cada
-					</span>
-				</p>
-				<span className="rounded-full bg-brand-blue/7 px-2.5 py-0.5 text-xs/5 font-semibold whitespace-nowrap text-heading group-data-recommended/plan:bg-brand-green/20 group-data-recommended/plan:text-brand-green">
-					{plan.infoCount} infos
+			<p className="flex items-baseline gap-1.5 tabular-nums">
+				<span className="text-sm font-medium">R$</span>
+				<span className="text-4xl/none font-semibold tracking-tight">
+					{plan.price}
 				</span>
-			</div>
+				<span className="text-sm text-muted-foreground group-data-recommended/plan:text-mist">
+					/cada
+				</span>
+			</p>
 		</div>
 	);
 }
@@ -189,21 +165,21 @@ function PlanColumn({
 			data-plan
 			data-recommended={plan.recommended || undefined}
 			className={cn(
-				"group/plan relative row-span-full grid grid-rows-subgrid rounded-3xl border px-5 pt-5 pb-4",
+				"group/plan relative row-span-full grid grid-rows-subgrid rounded-3xl border px-5 pb-4",
 				planTone(plan, index),
 			)}
 		>
 			{plan.recommended && <RecommendedBadge />}
-			<div className="pb-4">
+			<div className="sticky top-0 z-10 -mx-5 rounded-t-3xl bg-inherit px-5 pt-5 pb-4 group-data-recommended/plan:bg-navy-600">
 				<PlanSummary plan={plan} />
 			</div>
 			<ul className="contents">
-				{planFeatures.map((feature) => {
-					const included = plan.features.includes(feature);
+				{planComparisonItems.map((item) => {
+					const included = planIncludes(plan, item);
 
 					return (
 						<li
-							key={feature}
+							key={item.name}
 							className="flex items-center justify-center border-t border-foreground/12 group-data-recommended/plan:border-white/12"
 						>
 							{included ? (
@@ -215,18 +191,12 @@ function PlanColumn({
 								/>
 							)}
 							<span className="sr-only">
-								{feature}
+								{item.name}
 								{included ? "" : " (não incluso)"}
 							</span>
 						</li>
 					);
 				})}
-				<li className="flex items-center justify-center border-t border-foreground/12 group-data-recommended/plan:border-white/12">
-					<ExtraInfoChip />
-					<span className="sr-only">
-						e mais {sharedExtraInfoCount} informações
-					</span>
-				</li>
 			</ul>
 			<div className="flex border-t border-foreground/12 pt-4 group-data-recommended/plan:border-white/12">
 				<SelectButton plan={plan} onSelect={onSelect} />
@@ -238,12 +208,12 @@ function PlanColumn({
 function FeatureList({ plan }: { plan: Plan }) {
 	return (
 		<ul className="flex flex-col border-t border-foreground/15 group-data-recommended/plan:border-white/15">
-			{planFeatures.map((feature) => {
-				const included = plan.features.includes(feature);
+			{planComparisonItems.map((item) => {
+				const included = planIncludes(plan, item);
 
 				return (
 					<li
-						key={feature}
+						key={item.name}
 						className="flex min-h-11.5 items-center gap-3 border-b border-foreground/15 text-[0.9375rem] group-data-recommended/plan:border-white/15 last:border-b-0"
 					>
 						{included ? (
@@ -260,11 +230,11 @@ function FeatureList({ plan }: { plan: Plan }) {
 									"text-muted-foreground line-through group-data-recommended/plan:text-mist",
 							)}
 						>
-							{feature}
-							{planFeatureHints[feature] && (
+							{item.name}
+							{item.hint && (
 								<span className="text-xs text-muted-foreground group-data-recommended/plan:text-mist">
 									{" "}
-									({planFeatureHints[feature]})
+									({item.hint.toLowerCase()})
 								</span>
 							)}
 							{!included && <span className="sr-only"> (não incluso)</span>}
@@ -272,10 +242,6 @@ function FeatureList({ plan }: { plan: Plan }) {
 					</li>
 				);
 			})}
-			<li className="flex min-h-11.5 items-center gap-3 text-[0.9375rem] font-medium">
-				<ExtraInfoChip />
-				informações em todos os pacotes
-			</li>
 		</ul>
 	);
 }
@@ -300,17 +266,7 @@ export function PlansSection() {
 	const activePlan = plans[active];
 
 	return (
-		<div className="relative isolate overflow-hidden">
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -top-20 -left-24 -z-10 aspect-896/900 w-80 bg-brand-blue/6 mask-contain mask-no-repeat max-lg:hidden lg:-top-36 lg:-left-28 lg:w-120"
-			/>
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ticks})` }}
-				className="pointer-events-none absolute -right-24 -bottom-12 -z-10 aspect-878/389 w-80 bg-brand-green/15 mask-contain mask-no-repeat max-lg:hidden lg:-right-20 lg:-bottom-16 lg:w-136"
-			/>
+		<div className="relative isolate overflow-clip">
 			<section
 				id="pacotes"
 				aria-labelledby="pacotes-titulo"
@@ -384,26 +340,20 @@ export function PlansSection() {
 								Principais itens de cada pacote
 							</p>
 						</div>
-						{planFeatures.map((feature) => (
+						{planComparisonItems.map((item) => (
 							<span
-								key={feature}
+								key={item.name}
 								aria-hidden="true"
-								className="flex flex-col justify-center border-t border-border text-[0.9375rem] font-medium"
+								className="flex flex-col justify-center border-t border-border text-[0.9375rem]/5 font-medium last:border-b"
 							>
-								{feature}
-								{planFeatureHints[feature] && (
+								{item.name}
+								{item.hint && (
 									<span className="text-xs font-normal text-muted-foreground">
-										{planFeatureHints[feature]}
+										{item.hint}
 									</span>
 								)}
 							</span>
 						))}
-						<span
-							aria-hidden="true"
-							className="flex items-center border-y border-border text-[0.9375rem] font-semibold"
-						>
-							+ {sharedExtraInfoCount} informações em todos os pacotes
-						</span>
 					</div>
 					{plans.map((plan, index) => (
 						<PlanColumn

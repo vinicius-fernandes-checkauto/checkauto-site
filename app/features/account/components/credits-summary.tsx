@@ -6,32 +6,17 @@ import {
 	formatCurrency,
 	formatDate,
 } from "~/features/account/lib/credits";
-import {
-	ArrowDownLeftIcon,
-	ArrowUpRightIcon,
-	ClockIcon,
-	SearchIcon,
-} from "~/shared/components/icons";
+import { ClockIcon, SearchIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 
 type CreditsSummaryProps = {
 	balance: number;
-	received: number;
-	used: number;
 	nextExpiring?: CreditEntry;
 };
 
-export function CreditsSummary({
-	balance,
-	received,
-	used,
-	nextExpiring,
-}: CreditsSummaryProps) {
+export function CreditsSummary({ balance, nextExpiring }: CreditsSummaryProps) {
 	return (
-		<section
-			aria-labelledby="creditos-saldo"
-			className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]"
-		>
+		<section aria-labelledby="creditos-saldo">
 			<div className="relative flex flex-col justify-between gap-8 overflow-hidden rounded-4xl bg-brand-blue p-6 text-white sm:p-8">
 				<span
 					aria-hidden="true"
@@ -67,31 +52,6 @@ export function CreditsSummary({
 					</Link>
 				</Button>
 			</div>
-
-			<dl className="grid grid-cols-2 gap-4 md:grid-cols-1">
-				<div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
-					<dt className="flex items-center gap-2.5 text-sm font-medium text-muted-foreground">
-						<span className="flex size-8 items-center justify-center rounded-full bg-brand-green/15 text-highlight">
-							<ArrowDownLeftIcon aria-hidden="true" className="size-4" />
-						</span>
-						Entradas
-					</dt>
-					<dd className="text-2xl/none font-semibold tracking-tight text-heading">
-						{formatCurrency(received)}
-					</dd>
-				</div>
-				<div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-5">
-					<dt className="flex items-center gap-2.5 text-sm font-medium text-muted-foreground">
-						<span className="flex size-8 items-center justify-center rounded-full bg-brand-blue/6 text-heading">
-							<ArrowUpRightIcon aria-hidden="true" className="size-4" />
-						</span>
-						Usados
-					</dt>
-					<dd className="text-2xl/none font-semibold tracking-tight text-heading">
-						{formatCurrency(used)}
-					</dd>
-				</div>
-			</dl>
 		</section>
 	);
 }

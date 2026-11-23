@@ -104,7 +104,6 @@ export function SiteHeader({ user, carCount = 0 }: SiteHeaderProps) {
 					) : (
 						<Button
 							asChild
-							variant="secondary"
 							size="sm"
 							className="hidden px-6 sm:inline-flex"
 						>

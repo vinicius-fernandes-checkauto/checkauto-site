@@ -15,31 +15,71 @@ type Step = {
 	description: string;
 	preview: "plate" | "plans" | "statement";
 	tilt: number;
+	className: string;
 };
 
 const steps: Step[] = [
 	{
-		number: "01",
+		number: "1",
 		title: "Informe a placa",
 		description: "Do veículo que você tem ou do que pretende comprar.",
 		preview: "plate",
 		tilt: 2,
+		className: "lg:col-start-1 lg:row-start-1",
 	},
 	{
-		number: "02",
+		number: "2",
 		title: "Escolha o pacote",
 		description: "Selecione a consulta ideal e pague com segurança.",
 		preview: "plans",
 		tilt: -2.5,
+		className: "lg:col-start-1 lg:row-start-2",
 	},
 	{
-		number: "03",
+		number: "3",
 		title: "Receba o histórico",
 		description: "O relatório completo aparece na hora.",
 		preview: "statement",
 		tilt: 1.5,
+		className: "lg:col-start-2 lg:row-start-2",
 	},
 ];
+
+function Connector({
+	className,
+	path,
+	from,
+	to,
+	viewBox,
+}: {
+	className: string;
+	path: string;
+	from: [number, number];
+	to: [number, number];
+	viewBox: string;
+}) {
+	return (
+		<svg
+			aria-hidden="true"
+			viewBox={viewBox}
+			fill="none"
+			className={cn(
+				"pointer-events-none absolute z-10 hidden overflow-visible lg:block",
+				className,
+			)}
+		>
+			<path
+				d={path}
+				className="stroke-white/40"
+				strokeWidth="1.5"
+				strokeDasharray="4 5"
+				strokeLinecap="round"
+			/>
+			<circle cx={from[0]} cy={from[1]} r="4" className="fill-brand-green" />
+			<circle cx={to[0]} cy={to[1]} r="5" className="fill-white" />
+		</svg>
+	);
+}
 
 export function HowSection() {
 	const scope = useRef<HTMLElement>(null);
@@ -71,13 +111,13 @@ export function HowSection() {
 			ref={scope}
 			id="como-funciona"
 			aria-labelledby="como-funciona-titulo"
-			className="relative isolate w-full overflow-hidden bg-brand-blue-dark text-white"
+			className="relative isolate w-full overflow-hidden bg-brand-blue-dark text-white lg:flex lg:min-h-svh lg:items-center"
 		>
 			<Arc className="top-72 -right-76 -z-10 w-160 -rotate-40 bg-brand-green/6 max-lg:hidden" />
 			<Arc className="-bottom-64 -left-56 -z-10 w-140 rotate-160 bg-white/4 max-lg:hidden" />
 
-			<div className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-4 py-16 sm:px-8 lg:gap-18 lg:py-24">
-				<div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 px-4 py-16 sm:px-8 lg:grid-cols-2 lg:gap-12 lg:py-10">
+				<div className="mb-6 flex flex-col items-start gap-6 lg:col-start-2 lg:row-start-1 lg:mb-0 lg:justify-center lg:pl-6">
 					<div className="flex flex-col gap-3">
 						<SectionEyebrow className="text-brand-green">
 							Como funciona
@@ -90,86 +130,70 @@ export function HowSection() {
 							<span className="text-brand-green">3 passos</span>
 						</h2>
 					</div>
-					<Button asChild className="self-start md:self-auto">
+					<Button asChild>
 						<a href="#pacotes">Consultar agora</a>
 					</Button>
 				</div>
 
-				<div className="relative">
-					<svg
-						aria-hidden="true"
-						viewBox="0 0 1152 860"
-						preserveAspectRatio="none"
-						className="pointer-events-none absolute inset-0 hidden size-full overflow-visible lg:block"
-					>
-						<path
-							d="M 252 120 C 92 300, 892 220, 852 430 C 812 640, 172 560, 292 760"
-							fill="none"
-							className="stroke-white/18"
-							strokeWidth="2"
-							strokeDasharray="2 12"
-							strokeLinecap="round"
-						/>
-					</svg>
+				<ol className="contents">
+					{steps.map((step, index) => (
+						<li
+							key={step.number}
+							className={cn(
+								"relative flex flex-col gap-6 rounded-4xl border border-white/10 bg-white/6 p-4 sm:p-6 lg:flex-row lg:items-center lg:gap-6 xl:gap-8",
+								step.className,
+							)}
+						>
+							{index === 0 && (
+								<Connector
+									className="-bottom-13 left-14 h-16 w-20"
+									path="M 4 4 C 4 40, 40 60, 76 60"
+									from={[4, 4]}
+									to={[76, 60]}
+									viewBox="0 0 80 64"
+								/>
+							)}
+							{index === 1 && (
+								<Connector
+									className="top-1/2 -right-13 h-12 w-14 -translate-y-1/2"
+									path="M 4 40 C 28 40, 28 8, 52 8"
+									from={[4, 40]}
+									to={[52, 8]}
+									viewBox="0 0 56 48"
+								/>
+							)}
 
-					<ol className="relative flex flex-col gap-16 lg:gap-12">
-						{steps.map((step, index) => {
-							const onLeft = index % 2 === 0;
-
-							return (
-								<li
-									key={step.number}
-									className={cn(
-										"relative flex flex-col items-start gap-6 lg:w-full lg:max-w-180 lg:flex-row lg:items-center lg:gap-10",
-										onLeft
-											? "lg:mr-auto lg:flex-row-reverse"
-											: "md:max-lg:items-end lg:ml-auto",
-										index > 0 && "lg:-mt-2",
-									)}
+							<div className="flex flex-col gap-4 lg:w-36 lg:shrink-0 xl:w-44">
+								<span
+									aria-hidden="true"
+									className="text-6xl/none relative isolate w-fit pt-2 pl-3 font-semibold text-brand-green tabular-nums"
 								>
-									<span
-										aria-hidden="true"
-										className={cn(
-											"text-[7.5rem]/none lg:text-[11rem]/none pointer-events-none absolute -top-10 -left-2 font-semibold tracking-tighter text-transparent [-webkit-text-stroke:1.5px_--alpha(var(--color-brand-green)/28%)] lg:-top-14",
-											onLeft
-												? "lg:-right-6 lg:left-auto"
-												: "md:max-lg:right-0 md:max-lg:left-auto lg:-left-6",
-										)}
-									>
-										{step.number}
-									</span>
+									<span className="absolute top-0 left-0 -z-10 size-12 rounded-xl bg-brand-green/20" />
+									{step.number}
+								</span>
+								<div className="flex flex-col gap-1.5">
+									<h3 className="text-xl/tight font-medium tracking-tight text-white">
+										<span className="sr-only">Passo {step.number}: </span>
+										{step.title}
+									</h3>
+									<p className="text-sm/5.5 text-mist">{step.description}</p>
+								</div>
+							</div>
 
-									<div
-										className={cn(
-											"relative flex max-w-80 flex-col gap-2",
-											!onLeft && "md:max-lg:text-right",
-										)}
-									>
-										<h3 className="text-2xl/tight font-medium tracking-tight text-white lg:text-3xl/tight">
-											<span className="sr-only">Passo {step.number}: </span>
-											{step.title}
-										</h3>
-										<p className="text-[0.9375rem]/6 text-mist">
-											{step.description}
-										</p>
-									</div>
-
-									<div
-										data-float
-										style={{ rotate: `${step.tilt}deg` }}
-										className="w-full max-w-100 shrink-0 rounded-[2rem] bg-white/8 p-2.5 sm:p-3 lg:w-90"
-									>
-										{step.preview === "plate" && <PlateTypingPreview />}
-										{step.preview === "plans" && <PlansPickingPreview />}
-										{step.preview === "statement" && (
-											<StatementPreview className="h-72 rounded-3xl" />
-										)}
-									</div>
-								</li>
-							);
-						})}
-					</ol>
-				</div>
+							<div
+								data-float
+								style={{ rotate: `${step.tilt}deg` }}
+								className="w-full max-w-100 min-w-0 rounded-[1.75rem] bg-white/8 p-2.5 max-sm:[zoom:0.88] lg:max-w-none lg:flex-1 lg:max-xl:[zoom:0.74]"
+							>
+								{step.preview === "plate" && <PlateTypingPreview />}
+								{step.preview === "plans" && <PlansPickingPreview />}
+								{step.preview === "statement" && (
+									<StatementPreview className="h-44 rounded-3xl" />
+								)}
+							</div>
+						</li>
+					))}
+				</ol>
 			</div>
 		</section>
 	);

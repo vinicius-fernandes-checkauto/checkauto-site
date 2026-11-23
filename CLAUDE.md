@@ -76,6 +76,8 @@ app/
     utils/               funções puras (placa, iniciais, telefone)
 ```
 
+O contrato da API do backend fica em `docs/api/` (`openapi.json` + `README.md` com os endpoints que o site usa e o que falta confirmar).
+
 Rotas:
 
 - `app/routes.ts` usa `flatRoutes()`: a URL sai do **nome do arquivo**. Ponto vira `/`, `$` é parâmetro e o prefixo `_` cria um layout sem segmento na URL (`_site.faq.tsx` → `/faq`, dentro de `_site.tsx`; `conta.pedidos.tsx` → `/conta/pedidos`, dentro de `conta.tsx`).
@@ -131,6 +133,13 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Eyebrow de seção: `<SectionEyebrow>`, que usa caixa alta, `tracking-widest` e `text-highlight`. Sem ícone.
 
 ### Componentes-base
+
+**Sempre que possível, use componentes do shadcn ajustados ao nosso DS** em vez de montar o elemento na mão. Não espalhe nem repita blocos de classes: quando um elemento de UI aparece em mais de um lugar (botão, badge, chip, checkbox, radio, switch, input, tabs, tooltip…), ele vira componente.
+
+- Existe no shadcn? Instale com `npx shadcn add <componente>` em `shared/components/ui` e ajuste ao tema (veja a seção 4). As variações entram como `variant`/`size` (`cva`), não como classes soltas em cada uso.
+- Não existe no shadcn ou é específico de uma área? Crie o componente na pasta `components/` da área, ou em `shared/components` se mais de uma área usar.
+- Componentize quando houver repetição ou regra própria; não crie abstração para um uso único.
+- Essa regra é sobre componentes React. Estilo global em CSS (classes utilitárias novas, `text-h2`) continua precisando de aprovação antes.
 
 - **Button** (`~/shared/components/ui/button`). Variantes: `default` (verde escuro), `secondary` (azul), `outline`, `ghost`, `destructive`, `link`. Tamanhos: `default` h-12, `sm` h-11, `lg` h-14, `icon`, `icon-sm`. Área de toque mínima de 44px (`min-h-11`).
 - **Dialog**, **Sheet**, **DropdownMenu**, **Accordion** do shadcn.

@@ -1,0 +1,6815 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "Info Magic Service",
+		"description": "Informações num passe de mágica",
+		"termsOfService": "No terms",
+		"contact": {
+			"email": "suporte@infomagic.com"
+		},
+		"license": {
+			"name": "No License"
+		},
+		"version": "v1"
+	},
+	"host": "dashiest-frazzledly-vihaan.ngrok-free.dev",
+	"schemes": ["http"],
+	"basePath": "/",
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"securityDefinitions": {
+		"Auth Token eg [Bearer (JWT) ]": {
+			"type": "apiKey",
+			"name": "Authorization",
+			"in": "header"
+		}
+	},
+	"security": [
+		{
+			"Auth Token eg [Bearer (JWT) ]": []
+		}
+	],
+	"paths": {
+		"/api/create/": {
+			"post": {
+				"operationId": "api_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Api"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Api"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/create_description_api/": {
+			"post": {
+				"operationId": "api_create_description_api_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/DescriptionAPI"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/DescriptionAPI"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/default-failure-message/create/": {
+			"post": {
+				"operationId": "api_default-failure-message_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/DefaultApiFailureMessage"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/DefaultApiFailureMessage"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/default-failure-message/destroy/{id}/": {
+			"delete": {
+				"operationId": "api_default-failure-message_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this default api failure message.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/api/default-failure-message/list/": {
+			"get": {
+				"operationId": "api_default-failure-message_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/DefaultApiFailureMessage"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/default-failure-message/retrieve/{id}/": {
+			"get": {
+				"operationId": "api_default-failure-message_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/DefaultApiFailureMessage"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this default api failure message.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/api/default-failure-message/update/{id}/": {
+			"put": {
+				"operationId": "api_default-failure-message_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/DefaultApiFailureMessage"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/DefaultApiFailureMessage"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this default api failure message.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/api/destroy/{id}/": {
+			"delete": {
+				"operationId": "api_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this api.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/api/list/": {
+			"get": {
+				"operationId": "api_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Api"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/list/all/": {
+			"get": {
+				"operationId": "api_list_list_all",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Api"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/list/{id}/": {
+			"get": {
+				"operationId": "api_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Api"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/api/list_description_api/": {
+			"get": {
+				"operationId": "api_list_description_api_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/DescriptionAPI"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/retrieve/{id}/": {
+			"get": {
+				"operationId": "api_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Api"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this api.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/api/token/": {
+			"post": {
+				"operationId": "api_token_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ApiTokenObtainPair"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ApiTokenObtainPair"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": []
+		},
+		"/api/update/{id}/": {
+			"put": {
+				"operationId": "api_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Api"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Api"
+						}
+					}
+				},
+				"tags": ["api"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this api.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/call/availability/{id}/": {
+			"get": {
+				"operationId": "call_availability_list",
+				"description": "Reporta, por produto/API da Call, se a última CallResponse daquela API é uma\nfalha (elegível para reconsulta) — usado pelo front pra decidir se mostra o\nbotão \"reconsultar\". Não é `gateway.List`: a resposta é uma estrutura\ncomputada (produtos -> apis), não uma listagem de instâncias de model, então\no mixin ListModelMixin/queryset obrigatório de `gateway.List` não se aplica.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/call/create/": {
+			"post": {
+				"operationId": "call_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CreateCall"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/CreateCall"
+						}
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": []
+		},
+		"/call/list/": {
+			"get": {
+				"operationId": "call_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "ordering",
+						"in": "query",
+						"description": "Which field to use when ordering the results.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/CallList"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": []
+		},
+		"/call/list/response/": {
+			"get": {
+				"operationId": "call_list_response_list",
+				"description": "Retorno cru do fornecedor (`CallResponse.data`, sem structure_decode) é\nadmin-only — não é o que o dono da call recebeu, é o payload bruto pra\nsuporte/depuração. Também expõe o retorno tratado via `integration_response`,\npra comparar bruto vs. integração.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/CallResponse"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": []
+		},
+		"/call/query/": {
+			"post": {
+				"operationId": "call_api",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CreateCall"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/CreateCall"
+						}
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": []
+		},
+		"/call/requery/{id}/": {
+			"post": {
+				"operationId": "call_requery_create",
+				"description": "Dispara reconsulta seletiva (is_requery) de uma Call com insumo elegível,\nmesmo critério do `Availability`. Rejeita com 409 se já em execução.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/call/retrieve/response/{id}/": {
+			"get": {
+				"operationId": "call_retrieve_response_read",
+				"description": "Ver docstring de `ListResponse`: mesmo motivo pra restringir a admin.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/CallResponse"
+						}
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this call response.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/call/retrieve/{id}/": {
+			"get": {
+				"operationId": "call_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Call"
+						}
+					}
+				},
+				"tags": ["call"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this call.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/api-failure-message/create/": {
+			"post": {
+				"operationId": "company_api-failure-message_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CompanyApiFailureMessage"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/CompanyApiFailureMessage"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": []
+		},
+		"/company/api-failure-message/destroy/{id}/": {
+			"delete": {
+				"operationId": "company_api-failure-message_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company api failure message.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/api-failure-message/list/": {
+			"get": {
+				"operationId": "company_api-failure-message_list_list",
+				"description": "Config de substituição de `response[]` por (Company, Api). Admin-only —\nafeta o que o cliente vê quando `is_failure=True`.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/CompanyApiFailureMessage"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": []
+		},
+		"/company/api-failure-message/retrieve/{id}/": {
+			"get": {
+				"operationId": "company_api-failure-message_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/CompanyApiFailureMessage"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company api failure message.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/api-failure-message/update/{id}/": {
+			"put": {
+				"operationId": "company_api-failure-message_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CompanyApiFailureMessage"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/CompanyApiFailureMessage"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company api failure message.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/balance-movements/{company_id}/": {
+			"get": {
+				"operationId": "company_balance-movements_list",
+				"summary": "Histórico do limite de uma empresa pós-paga: consumo, alterações de limite, viradas de mês e abertura.",
+				"description": "O administrador (perfil 3) vê qualquer empresa ativa; o representante (perfil 2) só a própria, e outra empresa\nresponde 404. Somente leitura, paginado, com filtro de período (`date_from`, `date_to`).",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "company_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/company/create/": {
+			"post": {
+				"operationId": "company_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": []
+		},
+		"/company/destroy/{id}/": {
+			"delete": {
+				"operationId": "company_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/download/invoice/export/{export_id}/file/": {
+			"get": {
+				"operationId": "company_download_invoice_export_export_file",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Company"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "export_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/company/download/invoice/export/{export_id}/status/": {
+			"get": {
+				"operationId": "company_download_invoice_export_export_status",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Company"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "export_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/company/download/invoice/{id}/": {
+			"get": {
+				"operationId": "company_download_download",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Company"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/download/invoice/{id}/start/": {
+			"post": {
+				"operationId": "company_download_invoice_create_export",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/info_balance/{id}": {
+			"get": {
+				"operationId": "company_info_balance_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"balance": {
+									"type": "string"
+								},
+								"current_balance_query": {
+									"type": "string"
+								},
+								"current_balance_processing": {
+									"type": "string"
+								},
+								"current_balance_checkmatch": {
+									"type": "string"
+								},
+								"current_balance_onboarding": {
+									"type": "string"
+								},
+								"used_balance": {
+									"type": "string"
+								},
+								"current_balance": {
+									"type": "string"
+								},
+								"has_balance": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/list/": {
+			"get": {
+				"operationId": "company_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "ordering",
+						"in": "query",
+						"description": "Which field to use when ordering the results.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Company"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": []
+		},
+		"/company/list/all/": {
+			"get": {
+				"operationId": "company_list_list_all",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "ordering",
+						"in": "query",
+						"description": "Which field to use when ordering the results.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Company"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": []
+		},
+		"/company/list/invoice/{id}/": {
+			"get": {
+				"operationId": "company_list_invoice_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Invoice"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this call response.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/retrieve/{id}/": {
+			"get": {
+				"operationId": "company_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/update/onboarding/{token_onboarding}/": {
+			"put": {
+				"operationId": "company_update_onboarding_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "token_onboarding",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/company/update/price-list/{id}/": {
+			"put": {
+				"operationId": "company_update_price-list_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/PriceList"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/PriceList"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this price list.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/company/update/{id}/": {
+			"put": {
+				"operationId": "company_update_update",
+				"description": "Administrador (perfil 3) altera qualquer empresa. Representante (2) e usuário web (4) alteram só a própria\nempresa e só contato e endereço; mexer em limite, identidade ou configuração devolve 403. Os demais perfis, e\nquem tenta editar outra empresa, recebem 404.",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Company"
+						}
+					}
+				},
+				"tags": ["company"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/licensing/month/": {
+			"get": {
+				"operationId": "licensing_month_list",
+				"description": "`GET /licensing/month/` — mês de licenciamento por uf/placa/ano.\nSó admin ou bearer de sistema.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["licensing"]
+			},
+			"parameters": []
+		},
+		"/licensing/rules/create/": {
+			"post": {
+				"operationId": "licensing_rules_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/LicensingMonthRule"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/LicensingMonthRule"
+						}
+					}
+				},
+				"tags": ["licensing"]
+			},
+			"parameters": []
+		},
+		"/licensing/rules/destroy/{id}/": {
+			"delete": {
+				"operationId": "licensing_rules_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["licensing"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this licensing month rule.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/licensing/rules/list/": {
+			"get": {
+				"operationId": "licensing_rules_list_list",
+				"description": "CRUD de `LicensingMonthRule`, só admin.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/LicensingMonthRule"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["licensing"]
+			},
+			"parameters": []
+		},
+		"/licensing/rules/retrieve/{id}/": {
+			"get": {
+				"operationId": "licensing_rules_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/LicensingMonthRule"
+						}
+					}
+				},
+				"tags": ["licensing"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this licensing month rule.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/licensing/rules/update/{id}/": {
+			"put": {
+				"operationId": "licensing_rules_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/LicensingMonthRule"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/LicensingMonthRule"
+						}
+					}
+				},
+				"tags": ["licensing"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this licensing month rule.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/logs/": {
+			"get": {
+				"operationId": "logs_list",
+				"description": "/logs/ -> Lista resumida, filtrável\n/logs/{id}/ -> Detalhe completo",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "ordering",
+						"in": "query",
+						"description": "Which field to use when ordering the results.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/APILogList"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["logs"]
+			},
+			"parameters": []
+		},
+		"/logs/{id}/": {
+			"get": {
+				"operationId": "logs_read",
+				"description": "/logs/ -> Lista resumida, filtrável\n/logs/{id}/ -> Detalhe completo",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/APILogDetail"
+						}
+					}
+				},
+				"tags": ["logs"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A unique integer value identifying this API Log.",
+					"required": true,
+					"type": "integer"
+				}
+			]
+		},
+		"/onboarding/create/": {
+			"post": {
+				"operationId": "onboarding_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Onboarding"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Onboarding"
+						}
+					}
+				},
+				"tags": ["onboarding"]
+			},
+			"parameters": []
+		},
+		"/onboarding/createPdf/": {
+			"post": {
+				"operationId": "onboarding_createPdf_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["onboarding"]
+			},
+			"parameters": []
+		},
+		"/onboarding/destroy/{id}/": {
+			"delete": {
+				"operationId": "onboarding_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["onboarding"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this onboarding.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/onboarding/list/all/": {
+			"get": {
+				"operationId": "onboarding_list_list_all",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Onboarding"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["onboarding"]
+			},
+			"parameters": []
+		},
+		"/onboarding/list/{id}/": {
+			"get": {
+				"operationId": "onboarding_list_id",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Onboarding"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["onboarding"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this onboarding.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/onboarding/update/{id}/": {
+			"put": {
+				"operationId": "onboarding_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Onboarding"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Onboarding"
+						}
+					}
+				},
+				"tags": ["onboarding"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this onboarding.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/order/cancel/{id}/": {
+			"post": {
+				"operationId": "order_cancel",
+				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/order/checkout/{id}/": {
+			"post": {
+				"operationId": "order_checkout",
+				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/order/create/": {
+			"post": {
+				"operationId": "order_create_create",
+				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": []
+		},
+		"/order/list/": {
+			"get": {
+				"operationId": "order_list_list",
+				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": []
+		},
+		"/order/refresh/{id}/": {
+			"post": {
+				"operationId": "order_refresh",
+				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/order/retrieve/{id}/": {
+			"get": {
+				"operationId": "order_retrieve_read",
+				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/order/update/{id}/": {
+			"patch": {
+				"operationId": "order_update_partial_update",
+				"description": "Só o perfil 3 altera, e só a placa de pedido não pago; demais campos são ignorados.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["order"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/payment/webhook/{provider_code}/": {
+			"post": {
+				"operationId": "payment_webhook_create",
+				"description": "Recebe a notificação do gateway: valida a assinatura, grava o evento e responde logo; o trabalho vai à fila.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["payment"]
+			},
+			"parameters": [
+				{
+					"name": "provider_code",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/precificador/door-count-rules/": {
+			"get": {
+				"operationId": "precificador_door-count-rules_list",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"post": {
+				"operationId": "precificador_door-count-rules_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"parameters": []
+		},
+		"/precificador/door-count-rules/options/": {
+			"get": {
+				"operationId": "precificador_door-count-rules_options_list",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"parameters": []
+		},
+		"/precificador/door-count-rules/{id}/": {
+			"get": {
+				"operationId": "precificador_door-count-rules_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"patch": {
+				"operationId": "precificador_door-count-rules_partial_update",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/precificador/upload/": {
+			"get": {
+				"operationId": "precificador_upload_list",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"post": {
+				"operationId": "precificador_upload_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"parameters": []
+		},
+		"/precificador/upload/{id}/": {
+			"get": {
+				"operationId": "precificador_upload_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"delete": {
+				"operationId": "precificador_upload_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/precificador/upload/{id}/match/": {
+			"post": {
+				"operationId": "precificador_upload_match_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["precificador"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/processing/cadaster/fenebrave/": {
+			"post": {
+				"operationId": "processing_cadaster_fenebrave_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["processing"]
+			},
+			"parameters": []
+		},
+		"/processing/create/": {
+			"post": {
+				"operationId": "processing_create_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["processing"]
+			},
+			"parameters": []
+		},
+		"/processing/list/": {
+			"get": {
+				"operationId": "processing_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Process"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["processing"]
+			},
+			"parameters": []
+		},
+		"/product/api-fallback/create/": {
+			"post": {
+				"operationId": "product_api-fallback_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProductApiFallback"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProductApiFallback"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/api-fallback/destroy/{id}/": {
+			"delete": {
+				"operationId": "product_api-fallback_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product api fallback.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/api-fallback/list/{id}/": {
+			"get": {
+				"operationId": "product_api-fallback_list_list",
+				"description": "Wiring de fallback (root_api -> fallback_api) cadastrado no Produto informado.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ProductApiFallback"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/api-parameter-binding/create/": {
+			"post": {
+				"operationId": "product_api-parameter-binding_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProductApiParameterBinding"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProductApiParameterBinding"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/api-parameter-binding/destroy/{id}/": {
+			"delete": {
+				"operationId": "product_api-parameter-binding_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product api parameter binding.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/api-parameter-binding/list/{id}/": {
+			"get": {
+				"operationId": "product_api-parameter-binding_list_list",
+				"description": "Bindings (parametro de uma API preenchido pela resposta de outra) cadastrados no Produto informado.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ProductApiParameterBinding"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/api-parameter-binding/source-paths/{id}/": {
+			"get": {
+				"operationId": "product_api-parameter-binding_source-paths_list",
+				"description": "Caminhos de resposta que a `api` informada pode oferecer como origem de um binding, lidos da\nultima resposta ok dela. So os caminhos, sem valores (a resposta tem dado pessoal). Vazio se a Api\nainda nao teve resposta ok: o front mantem o campo de texto livre. Independe do produto: o\npertencimento a api ao produto e validado so ao cadastrar o binding.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ProductApiParameterBinding"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this api.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/create/": {
+			"post": {
+				"operationId": "product_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/destroy/{id}/": {
+			"delete": {
+				"operationId": "product_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/list/": {
+			"get": {
+				"operationId": "product_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Product"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/list/all/": {
+			"get": {
+				"operationId": "product_list_list_all",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Product"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/list/parameters/": {
+			"patch": {
+				"operationId": "product_list_parameters_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/parameters/options/": {
+			"post": {
+				"operationId": "product_parameters_options_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"required": ["final_api_id", "parameter_name"],
+							"type": "object",
+							"properties": {
+								"final_api_id": {
+									"type": "string",
+									"format": "uuid"
+								},
+								"parameter_name": {
+									"type": "string"
+								},
+								"selected": {
+									"description": "Valores já escolhidos nos parâmetros anteriores",
+									"type": "object"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Opções do parâmetro"
+					},
+					"400": {
+						"description": "Parâmetros inválidos"
+					},
+					"404": {
+						"description": "API ou parâmetro não encontrado"
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/report-template/create/": {
+			"post": {
+				"operationId": "product_report-template_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ReportTemplate"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ReportTemplate"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/report-template/destroy/{id}/": {
+			"delete": {
+				"operationId": "product_report-template_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this report template.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/report-template/list/": {
+			"get": {
+				"operationId": "product_report-template_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ReportTemplate"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/report-template/metadata/": {
+			"get": {
+				"operationId": "product_report-template_metadata_list",
+				"description": "Metadados para os pickers do editor de blocos: APIs ativas com sua\n`structure` (blocos/campos) já decodificada, independente de produto.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"format": "uuid"
+									},
+									"name": {
+										"type": "string"
+									},
+									"provider_name": {
+										"type": "string"
+									},
+									"category": {
+										"type": "string"
+									},
+									"structure": {
+										"type": "object",
+										"x-nullable": true
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/report-template/preview/": {
+			"post": {
+				"operationId": "product_report-template_preview_create",
+				"description": "Renderiza o `extrato.html` a partir do `config` enviado pelo editor\n(ainda não salvo) — dados sempre mock nesta fase. Não persiste nada.",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"required": ["config"],
+							"type": "object",
+							"properties": {
+								"config": {
+									"description": "Config do extrato ainda não salva",
+									"type": "object"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML renderizado",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"400": {
+						"description": "Config inválida"
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/report-template/retrieve/{id}/": {
+			"get": {
+				"operationId": "product_report-template_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ReportTemplate"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this report template.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/report-template/update/{id}/": {
+			"put": {
+				"operationId": "product_report-template_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ReportTemplate"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ReportTemplate"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this report template.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/report/pdf/": {
+			"get": {
+				"operationId": "product_report_pdf_list",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/report/pdf/{call_id}/{product_id}/": {
+			"get": {
+				"operationId": "product_report_pdf_read",
+				"summary": "PDF oficial do extrato a partir de uma Call/Product reais.",
+				"description": "Com ReportSnapshot (fluxo normal, criado na hora da consulta — ver\napps/call/views.py): serve o PDF já cacheado (`pdf_status == 'ready'`) ou\ndispara `generate_report_pdf` (Celery, fila dedicada) e responde 202 com o\nstatus atual — não bloqueia a request gerando na hora. A task usa o config\nCONGELADO em `snapshot.config_snapshot` (ver apps/product/tasks.py).\n\nSem ReportSnapshot (call antiga, anterior a este recurso, nunca teve cache):\nmantém o comportamento 100% síncrono de antes — gera na hora com o config\natual do template e não persiste nada.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "call_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "product_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/product/report/preview/": {
+			"get": {
+				"operationId": "product_report_preview_list",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": []
+		},
+		"/product/retrieve/structure/{id}/": {
+			"get": {
+				"operationId": "product_retrieve_retrieve_structure",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/retrieve/{id}/": {
+			"get": {
+				"operationId": "product_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/product/update/{id}/": {
+			"put": {
+				"operationId": "product_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Product"
+						}
+					}
+				},
+				"tags": ["product"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this product.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/provider/create/": {
+			"post": {
+				"operationId": "provider_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Provider"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Provider"
+						}
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": []
+		},
+		"/provider/destroy/{id}/": {
+			"delete": {
+				"operationId": "provider_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/provider/list/": {
+			"get": {
+				"operationId": "provider_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Provider"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": []
+		},
+		"/provider/retrieve/{id}/": {
+			"get": {
+				"operationId": "provider_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Provider"
+						}
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/provider/update/{id}/": {
+			"put": {
+				"operationId": "provider_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Provider"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Provider"
+						}
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/provider/{id}/certificate/": {
+			"patch": {
+				"operationId": "provider_certificate_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProviderCertificate"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProviderCertificate"
+						}
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/provider/{id}/certificate/generate/": {
+			"post": {
+				"operationId": "provider_certificate_generate_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"type": "object",
+							"properties": {
+								"force": {
+									"description": "Renova mesmo com certificado válido",
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/Provider"
+						}
+					},
+					"502": {
+						"description": "Falha ao gerar o certificado"
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/provider/{id}/certificate/history/": {
+			"get": {
+				"operationId": "provider_certificate_history_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ProviderCertificateAuditLog"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/provider/{id}/certificate/remove/": {
+			"delete": {
+				"operationId": "provider_certificate_remove_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["provider"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/report/response-classification/clone/": {
+			"post": {
+				"operationId": "report_response-classification_clone_create",
+				"description": "Duplica classificações ativas de `source_api` pra `target_api` (aditivo —\nnão sobrescreve linha já existente no destino). `source_field` opcional filtra\no que é clonado (ex.: só \"restricoes\").",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassificationClone"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassificationClone"
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": []
+		},
+		"/report/response-classification/create/": {
+			"post": {
+				"operationId": "report_response-classification_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": []
+		},
+		"/report/response-classification/destroy/{id}/": {
+			"delete": {
+				"operationId": "report_response-classification_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider response classification.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/report/response-classification/export/": {
+			"get": {
+				"operationId": "report_response-classification_export",
+				"description": "Mesmo filtro/busca do List (api/status/category/key_type/search) —\nexporta exatamente o que está filtrado na tela, em .xlsx.",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ProviderResponseClassification"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": []
+		},
+		"/report/response-classification/list/": {
+			"get": {
+				"operationId": "report_response-classification_list_list",
+				"description": "Lista ativas E desativadas por padrão (auditoria precisa ver o que foi\nexcluído) — filtre por `is_active` na querystring pra restringir.",
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"description": "A search term.",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ProviderResponseClassification"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": []
+		},
+		"/report/response-classification/reactivate/{id}/": {
+			"put": {
+				"operationId": "report_response-classification_reactivate_update",
+				"description": "Reverte uma exclusão lógica. Só enxerga regras já inativas (404 se a\nregra ainda estiver ativa). Barra se já existir outra regra ativa com a\nmesma combinação api/source_field/key_type/key (a constraint única do\nmodel só vale entre ativas — reativar pode colidir).",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider response classification.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/report/response-classification/retrieve/{id}/": {
+			"get": {
+				"operationId": "report_response-classification_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider response classification.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/report/response-classification/update/{id}/": {
+			"put": {
+				"operationId": "report_response-classification_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/ProviderResponseClassification"
+						}
+					}
+				},
+				"tags": ["report"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this provider response classification.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/token/": {
+			"post": {
+				"operationId": "token_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/MyTokenObtainPair"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/MyTokenObtainPair"
+						}
+					}
+				},
+				"tags": ["token"]
+			},
+			"parameters": []
+		},
+		"/token/refresh/": {
+			"post": {
+				"operationId": "token_refresh_create",
+				"description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/TokenRefresh"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/TokenRefresh"
+						}
+					}
+				},
+				"tags": ["token"]
+			},
+			"parameters": []
+		},
+		"/token/verify/": {
+			"post": {
+				"operationId": "token_verify_create",
+				"description": "Takes a token and indicates if it is valid.  This view provides no\ninformation about a token's fitness for a particular use.",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/TokenVerify"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/TokenVerify"
+						}
+					}
+				},
+				"tags": ["token"]
+			},
+			"parameters": []
+		},
+		"/user/block/{id}/": {
+			"post": {
+				"operationId": "user_block_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			]
+		},
+		"/user/change-password/": {
+			"post": {
+				"operationId": "user_change-password_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/create/": {
+			"post": {
+				"operationId": "user_create_create",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/destroy/{id}/": {
+			"delete": {
+				"operationId": "user_destroy_delete",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"204": {
+						"description": ""
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this user.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/user/forgot-password/": {
+			"post": {
+				"operationId": "user_forgot-password_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/list/": {
+			"get": {
+				"operationId": "user_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/UserList"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/list/{id}/": {
+			"get": {
+				"operationId": "user_list_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/UserList"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this company.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/user/list_company_user/": {
+			"get": {
+				"operationId": "user_list_company_user_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/UserList"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/list_permissions/": {
+			"get": {
+				"operationId": "user_list_permissions_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Permissions"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/list_products/": {
+			"get": {
+				"operationId": "user_list_products_list",
+				"description": "",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "A page number within the paginated result set.",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"required": ["count", "results"],
+							"type": "object",
+							"properties": {
+								"count": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"previous": {
+									"type": "string",
+									"format": "uri",
+									"x-nullable": true
+								},
+								"results": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/Product"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/retrieve/{id}/": {
+			"get": {
+				"operationId": "user_retrieve_read",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/UserDetail"
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this user.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/user/signup/": {
+			"post": {
+				"operationId": "user_signup_create",
+				"description": "",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/update/{id}/": {
+			"put": {
+				"operationId": "user_update_update",
+				"description": "",
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				},
+				"tags": ["user"]
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"in": "path",
+					"description": "A UUID string identifying this user.",
+					"required": true,
+					"type": "string",
+					"format": "uuid"
+				}
+			]
+		},
+		"/wallet/adjustments/": {
+			"post": {
+				"operationId": "wallet_adjustments_create",
+				"summary": "Recarga ou débito manual feito por administrador (perfil 3), sempre registrado como movimento.",
+				"description": "`user_id` ajusta a carteira que paga as consultas daquele usuário (a da empresa, quando a empresa é pré-paga);\n`company_id` ajusta a carteira da empresa pré-paga.",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["wallet"]
+			},
+			"parameters": []
+		},
+		"/wallet/movements/": {
+			"get": {
+				"operationId": "wallet_movements_list",
+				"summary": "Extrato de carteira pré-paga: consumo, créditos por pedido, estornos e ajustes.",
+				"description": "O usuário web (perfil 4) vê só a carteira que paga as consultas dele e não pode usar filtro de dono (403, mesmo\ncom o próprio id). O administrador (perfil 3) vê todas as carteiras ou filtra por `user_id` (a carteira que paga\nas consultas daquele usuário) ou `company_id`, e vê o autor e o dono de cada linha. Os demais perfis recebem 403.\nMovimentos do limite pós-pago ficam no histórico da empresa. Somente leitura, paginado, com período.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["wallet"]
+			},
+			"parameters": []
+		}
+	},
+	"definitions": {
+		"Api": {
+			"required": ["provider", "name", "url"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"provider": {
+					"title": "Provider",
+					"type": "string",
+					"format": "uuid"
+				},
+				"provider_name": {
+					"title": "Provider name",
+					"type": "string",
+					"readOnly": true
+				},
+				"category": {
+					"title": "Category",
+					"type": "string",
+					"enum": ["1", "2", "3", "4"]
+				},
+				"name": {
+					"title": "Name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"description": {
+					"title": "Description",
+					"type": "string",
+					"x-nullable": true
+				},
+				"request_type": {
+					"title": "Request type",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5", "6", "7"]
+				},
+				"method": {
+					"title": "Method",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5", "6", "7"]
+				},
+				"auth_type": {
+					"title": "Auth type",
+					"type": "string",
+					"enum": ["1", "2"]
+				},
+				"url": {
+					"title": "Url",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"dynamic_token": {
+					"title": "Dynamic token",
+					"type": "boolean"
+				},
+				"dynamic_token_id": {
+					"title": "Dynamic token id",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"parameters": {
+					"title": "Parameters",
+					"type": "object",
+					"x-nullable": true
+				},
+				"response_type": {
+					"title": "Response type",
+					"type": "string",
+					"enum": ["1", "2", "3", "4"]
+				},
+				"structure": {
+					"title": "Structure",
+					"type": "string",
+					"x-nullable": true
+				},
+				"webhook": {
+					"title": "Webhook",
+					"type": "boolean"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				},
+				"cache_enabled": {
+					"title": "Cache enabled",
+					"type": "boolean"
+				},
+				"cache_ttl_days": {
+					"title": "Cache ttl days",
+					"type": "integer",
+					"maximum": 2147483647,
+					"minimum": -2147483648,
+					"x-nullable": true
+				},
+				"cache_required_response_paths": {
+					"title": "Cache required response paths",
+					"type": "object",
+					"x-nullable": true
+				},
+				"timeout_seconds": {
+					"title": "Timeout seconds",
+					"type": "integer",
+					"maximum": 2147483647,
+					"minimum": 0
+				},
+				"failure_rule": {
+					"title": "Failure rule",
+					"type": "object",
+					"x-nullable": true
+				}
+			}
+		},
+		"DescriptionAPI": {
+			"required": ["name"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"name": {
+					"title": "Name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"DefaultApiFailureMessage": {
+			"required": ["api"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"api": {
+					"title": "Api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"api_name": {
+					"title": "Api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"rules": {
+					"title": "Rules",
+					"type": "object"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"ApiTokenObtainPair": {
+			"required": ["username", "password"],
+			"type": "object",
+			"properties": {
+				"username": {
+					"title": "Username",
+					"type": "string",
+					"minLength": 1
+				},
+				"password": {
+					"title": "Password",
+					"type": "string",
+					"minLength": 1
+				}
+			}
+		},
+		"CreateCall": {
+			"required": ["created_by", "products", "data"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"query_code": {
+					"title": "Query code",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"created_by": {
+					"title": "Created by",
+					"type": "string",
+					"format": "uuid"
+				},
+				"ip": {
+					"title": "Ip",
+					"type": "string",
+					"minLength": 1,
+					"x-nullable": true
+				},
+				"hash": {
+					"title": "Hash",
+					"type": "string",
+					"minLength": 1
+				},
+				"products": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"apis": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Api"
+					}
+				},
+				"status": {
+					"title": "Status",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5"]
+				},
+				"data": {
+					"title": "Data",
+					"type": "object"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time"
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time"
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"CallList": {
+			"required": ["created_by", "products", "apis", "data"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"query_code": {
+					"title": "Query code",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"created_by": {
+					"title": "Created by",
+					"type": "string",
+					"format": "uuid"
+				},
+				"ip": {
+					"title": "Ip",
+					"type": "string",
+					"minLength": 1,
+					"x-nullable": true
+				},
+				"hash": {
+					"title": "Hash",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"products": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"uniqueItems": true
+				},
+				"apis": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"status": {
+					"title": "Status",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5"]
+				},
+				"get_status_display": {
+					"title": "Get status display",
+					"type": "string",
+					"readOnly": true
+				},
+				"data": {
+					"title": "Data",
+					"type": "object"
+				},
+				"checkmatch": {
+					"title": "Checkmatch",
+					"type": "boolean"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time"
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time"
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"CallResponse": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"call": {
+					"title": "Call",
+					"type": "string",
+					"format": "uuid",
+					"x-nullable": true
+				},
+				"hash": {
+					"title": "Hash",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"data": {
+					"title": "Data",
+					"type": "object",
+					"x-nullable": true
+				},
+				"response_type": {
+					"title": "Response type",
+					"type": "string",
+					"enum": ["1", "2", "3", "4"]
+				},
+				"integration_response": {
+					"title": "Integration response",
+					"type": "string",
+					"readOnly": true
+				},
+				"status_code": {
+					"title": "Status code",
+					"type": "string",
+					"maxLength": 10,
+					"x-nullable": true
+				},
+				"price": {
+					"title": "Price",
+					"type": "string",
+					"format": "decimal"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"PriceList": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"price_products": {
+					"title": "Price products",
+					"type": "string",
+					"readOnly": true
+				}
+			}
+		},
+		"Company": {
+			"required": [
+				"corporate_name",
+				"cnpj",
+				"fantasy_name",
+				"cep",
+				"number_address",
+				"responsible_email",
+				"responsible_name"
+			],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"corporate_name": {
+					"title": "Corporate name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"state_registration": {
+					"title": "State registration",
+					"type": "string",
+					"maxLength": 25,
+					"x-nullable": true
+				},
+				"municipal_registration": {
+					"title": "Municipal registration",
+					"type": "string",
+					"maxLength": 25,
+					"x-nullable": true
+				},
+				"cnpj": {
+					"title": "Cnpj",
+					"type": "string",
+					"minLength": 1
+				},
+				"fantasy_name": {
+					"title": "Fantasy name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"business_area": {
+					"title": "Business area",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"cep": {
+					"title": "Cep",
+					"type": "string",
+					"maxLength": 12,
+					"minLength": 1
+				},
+				"street": {
+					"title": "Street",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"number_address": {
+					"title": "Number address",
+					"type": "string",
+					"maxLength": 12,
+					"minLength": 1
+				},
+				"complement": {
+					"title": "Complement",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"district": {
+					"title": "District",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"city": {
+					"title": "City",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"uf": {
+					"title": "Uf",
+					"type": "string",
+					"maxLength": 3,
+					"x-nullable": true
+				},
+				"responsible_email": {
+					"title": "Responsible email",
+					"type": "string",
+					"format": "email",
+					"maxLength": 254,
+					"minLength": 1
+				},
+				"responsible_name": {
+					"title": "Responsible name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"responsible_cpf": {
+					"title": "Responsible cpf",
+					"type": "string",
+					"maxLength": 20,
+					"x-nullable": true
+				},
+				"responsible_birth": {
+					"title": "Responsible birth",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"responsible_phone": {
+					"title": "Responsible phone",
+					"type": "string",
+					"maxLength": 20,
+					"x-nullable": true
+				},
+				"contract_start_date": {
+					"title": "Contract start date",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"contract_end_date": {
+					"title": "Contract end date",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"domain": {
+					"title": "Domain",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"site": {
+					"title": "Site",
+					"type": "string",
+					"format": "uri",
+					"maxLength": 200,
+					"x-nullable": true
+				},
+				"token_onboarding": {
+					"title": "Token onboarding",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"layout_onboarding": {
+					"title": "Layout onboarding",
+					"type": "object",
+					"x-nullable": true
+				},
+				"using_onboarding": {
+					"title": "Using onboarding",
+					"type": "boolean"
+				},
+				"price_onboarding": {
+					"title": "Price onboarding",
+					"type": "object",
+					"x-nullable": true
+				},
+				"onboarding_auto_reminder": {
+					"title": "Onboarding auto reminder",
+					"type": "boolean"
+				},
+				"origin": {
+					"title": "Origin",
+					"type": "string",
+					"enum": ["corporate", "web"]
+				},
+				"balance": {
+					"title": "Balance",
+					"type": "string",
+					"format": "decimal",
+					"x-nullable": true
+				},
+				"prices_list": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PriceList"
+					}
+				},
+				"checkmatch_token": {
+					"title": "Checkmatch token",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"checkmatch": {
+					"title": "Checkmatch",
+					"type": "boolean"
+				},
+				"current_balance_query": {
+					"title": "Current balance query",
+					"type": "string",
+					"format": "decimal",
+					"readOnly": true
+				},
+				"current_balance_processing": {
+					"title": "Current balance processing",
+					"type": "string",
+					"format": "decimal",
+					"readOnly": true
+				},
+				"current_balance_checkmatch": {
+					"title": "Current balance checkmatch",
+					"type": "string",
+					"format": "decimal",
+					"readOnly": true
+				},
+				"current_balance_onboarding": {
+					"title": "Current balance onboarding",
+					"type": "string",
+					"format": "decimal",
+					"readOnly": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"Permissions": {
+			"required": ["name"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"name": {
+					"title": "Name",
+					"type": "string",
+					"maxLength": 50,
+					"minLength": 1
+				},
+				"status": {
+					"title": "Status",
+					"type": "boolean"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"User": {
+			"required": ["first_name", "last_name", "email"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"first_name": {
+					"title": "First name",
+					"type": "string",
+					"maxLength": 150,
+					"minLength": 1
+				},
+				"last_name": {
+					"title": "Last name",
+					"type": "string",
+					"maxLength": 150,
+					"minLength": 1
+				},
+				"email": {
+					"title": "Email",
+					"type": "string",
+					"format": "email",
+					"maxLength": 254,
+					"minLength": 1
+				},
+				"birth": {
+					"title": "Birth",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"cpf": {
+					"title": "Cpf",
+					"type": "string",
+					"maxLength": 14,
+					"x-nullable": true
+				},
+				"phone": {
+					"title": "Phone",
+					"type": "string",
+					"maxLength": 20,
+					"x-nullable": true
+				},
+				"cep": {
+					"title": "Cep",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"street": {
+					"title": "Street",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"number_address": {
+					"title": "Number address",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"complement": {
+					"title": "Complement",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"district": {
+					"title": "District",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"city": {
+					"title": "City",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"uf": {
+					"title": "Uf",
+					"type": "string",
+					"maxLength": 3,
+					"x-nullable": true
+				},
+				"company": {
+					"$ref": "#/definitions/Company"
+				},
+				"profile": {
+					"title": "Profile",
+					"type": "string",
+					"enum": ["1", "2", "3", "4"]
+				},
+				"permissions_products": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"permissions_system": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"permissions_user": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Permissions"
+					},
+					"readOnly": true
+				},
+				"last_login": {
+					"title": "Último login",
+					"type": "string",
+					"format": "date-time",
+					"x-nullable": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Ativo",
+					"description": "Indica que o usuário será tratado como ativo. Ao invés de excluir contas de usuário, desmarque isso.",
+					"type": "boolean"
+				}
+			}
+		},
+		"Call": {
+			"required": ["created_by", "products", "apis", "data"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"query_code": {
+					"title": "Query code",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"created_by": {
+					"$ref": "#/definitions/User"
+				},
+				"ip": {
+					"title": "Ip",
+					"type": "string",
+					"minLength": 1,
+					"x-nullable": true
+				},
+				"hash": {
+					"title": "Hash",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"products": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"uniqueItems": true
+				},
+				"extrato_products": {
+					"title": "Extrato products",
+					"type": "string",
+					"readOnly": true
+				},
+				"apis": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"status": {
+					"title": "Status",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5"]
+				},
+				"get_status_display": {
+					"title": "Get status display",
+					"type": "string",
+					"readOnly": true
+				},
+				"data": {
+					"title": "Data",
+					"type": "object"
+				},
+				"files": {
+					"title": "Files",
+					"type": "string",
+					"readOnly": true
+				},
+				"checkmatch": {
+					"title": "Checkmatch",
+					"type": "boolean"
+				},
+				"onboarding": {
+					"title": "Onboarding",
+					"type": "boolean"
+				},
+				"responses": {
+					"title": "Responses",
+					"type": "string",
+					"readOnly": true
+				},
+				"total_price": {
+					"title": "Total price",
+					"type": "string",
+					"readOnly": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time"
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time"
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"CompanyApiFailureMessage": {
+			"required": ["company", "api"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"company": {
+					"title": "Company",
+					"type": "string",
+					"format": "uuid"
+				},
+				"company_name": {
+					"title": "Company name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"api": {
+					"title": "Api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"api_name": {
+					"title": "Api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"rules": {
+					"title": "Rules",
+					"type": "object"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"Invoice": {
+			"required": ["created_at"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"company__corporate_name": {
+					"title": "Company  corporate name",
+					"type": "string",
+					"readOnly": true
+				},
+				"company__cnpj": {
+					"title": "Company  cnpj",
+					"type": "string",
+					"readOnly": true
+				},
+				"created_by__email": {
+					"title": "Created by  email",
+					"type": "string",
+					"readOnly": true
+				},
+				"call__ip": {
+					"title": "Call  ip",
+					"type": "string",
+					"readOnly": true
+				},
+				"product__name": {
+					"title": "Product  name",
+					"type": "string",
+					"readOnly": true
+				},
+				"price": {
+					"title": "Price",
+					"type": "string",
+					"format": "decimal"
+				},
+				"price__sum": {
+					"title": "Price  sum",
+					"type": "string",
+					"format": "decimal",
+					"readOnly": true
+				},
+				"call_onboarding": {
+					"title": "Call onboarding",
+					"type": "boolean",
+					"readOnly": true
+				},
+				"reference_month": {
+					"title": "Reference month",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"reference_year": {
+					"title": "Reference year",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time"
+				}
+			}
+		},
+		"LicensingMonthRule": {
+			"required": [
+				"plate_last_digit",
+				"month",
+				"effective_from",
+				"source_description"
+			],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"uf": {
+					"title": "Uf",
+					"type": "string",
+					"enum": [
+						"AC",
+						"AL",
+						"AP",
+						"AM",
+						"BA",
+						"CE",
+						"DF",
+						"ES",
+						"GO",
+						"MA",
+						"MT",
+						"MS",
+						"MG",
+						"PA",
+						"PB",
+						"PR",
+						"PE",
+						"PI",
+						"RJ",
+						"RN",
+						"RS",
+						"RO",
+						"RR",
+						"SC",
+						"SP",
+						"SE",
+						"TO"
+					],
+					"x-nullable": true
+				},
+				"plate_last_digit": {
+					"title": "Plate last digit",
+					"type": "integer",
+					"maximum": 9,
+					"minimum": 0
+				},
+				"month": {
+					"title": "Month",
+					"type": "integer",
+					"maximum": 12,
+					"minimum": 1
+				},
+				"effective_from": {
+					"title": "Effective from",
+					"type": "string",
+					"format": "date"
+				},
+				"effective_until": {
+					"title": "Effective until",
+					"type": "string",
+					"format": "date",
+					"x-nullable": true
+				},
+				"source_description": {
+					"title": "Source description",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"source_url": {
+					"title": "Source url",
+					"type": "string",
+					"format": "uri",
+					"maxLength": 200
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"APILogList": {
+			"required": [
+				"added_on",
+				"method",
+				"api",
+				"status_code",
+				"execution_time",
+				"client_ip_address"
+			],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "integer",
+					"readOnly": true
+				},
+				"added_on": {
+					"title": "Added on",
+					"type": "string",
+					"format": "date-time"
+				},
+				"method": {
+					"title": "Method",
+					"type": "string",
+					"maxLength": 10,
+					"minLength": 1
+				},
+				"api": {
+					"title": "Api",
+					"description": "API URL",
+					"type": "string",
+					"maxLength": 1024,
+					"minLength": 1
+				},
+				"status_code": {
+					"title": "Status code",
+					"description": "Response status code",
+					"type": "integer",
+					"maximum": 32767,
+					"minimum": 0
+				},
+				"execution_time": {
+					"title": "Execution time",
+					"description": "Server execution time (Not complete response time.)",
+					"type": "string",
+					"format": "decimal"
+				},
+				"client_ip_address": {
+					"title": "Client ip address",
+					"type": "string",
+					"maxLength": 50,
+					"minLength": 1
+				},
+				"body_preview": {
+					"title": "Body preview",
+					"type": "string",
+					"readOnly": true
+				},
+				"response_preview": {
+					"title": "Response preview",
+					"type": "string",
+					"readOnly": true
+				}
+			}
+		},
+		"APILogDetail": {
+			"required": [
+				"added_on",
+				"api",
+				"headers",
+				"body",
+				"method",
+				"client_ip_address",
+				"response",
+				"status_code",
+				"execution_time"
+			],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "integer",
+					"readOnly": true
+				},
+				"added_on": {
+					"title": "Added on",
+					"type": "string",
+					"format": "date-time"
+				},
+				"api": {
+					"title": "Api",
+					"description": "API URL",
+					"type": "string",
+					"maxLength": 1024,
+					"minLength": 1
+				},
+				"headers": {
+					"title": "Headers",
+					"type": "string",
+					"minLength": 1
+				},
+				"body": {
+					"title": "Body",
+					"type": "string",
+					"minLength": 1
+				},
+				"method": {
+					"title": "Method",
+					"type": "string",
+					"maxLength": 10,
+					"minLength": 1
+				},
+				"client_ip_address": {
+					"title": "Client ip address",
+					"type": "string",
+					"maxLength": 50,
+					"minLength": 1
+				},
+				"response": {
+					"title": "Response",
+					"type": "string",
+					"minLength": 1
+				},
+				"status_code": {
+					"title": "Status code",
+					"description": "Response status code",
+					"type": "integer",
+					"maximum": 32767,
+					"minimum": 0
+				},
+				"execution_time": {
+					"title": "Execution time",
+					"description": "Server execution time (Not complete response time.)",
+					"type": "string",
+					"format": "decimal"
+				}
+			}
+		},
+		"Onboarding": {
+			"required": ["created_by"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"created_by": {
+					"title": "Created by",
+					"type": "string",
+					"format": "uuid"
+				},
+				"company": {
+					"title": "Company",
+					"type": "string",
+					"format": "uuid",
+					"x-nullable": true
+				},
+				"name_model": {
+					"title": "Name model",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"title_model": {
+					"title": "Title model",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"model_onboarding": {
+					"title": "Model onboarding",
+					"type": "object",
+					"x-nullable": true
+				},
+				"validations_input": {
+					"title": "Validations input",
+					"type": "object",
+					"x-nullable": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"Process": {
+			"required": ["created_by", "product", "data"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"created_by": {
+					"title": "Created by",
+					"type": "string",
+					"format": "uuid"
+				},
+				"email_user": {
+					"title": "Email user",
+					"type": "string",
+					"readOnly": true
+				},
+				"company": {
+					"title": "Company",
+					"type": "string",
+					"format": "uuid",
+					"x-nullable": true
+				},
+				"cnpj_company": {
+					"title": "Cnpj company",
+					"type": "string",
+					"readOnly": true
+				},
+				"product": {
+					"title": "Product",
+					"type": "string",
+					"format": "uuid"
+				},
+				"product__name": {
+					"title": "Product  name",
+					"type": "string",
+					"readOnly": true
+				},
+				"status": {
+					"title": "Status",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5"]
+				},
+				"get_status_display": {
+					"title": "Get status display",
+					"type": "string",
+					"readOnly": true
+				},
+				"data": {
+					"title": "Data",
+					"type": "object"
+				},
+				"lines": {
+					"title": "Lines",
+					"type": "string",
+					"readOnly": true
+				},
+				"price_product": {
+					"title": "Price product",
+					"type": "string",
+					"format": "decimal",
+					"x-nullable": true
+				},
+				"price_total": {
+					"title": "Price total",
+					"type": "string",
+					"readOnly": true
+				},
+				"ip": {
+					"title": "Ip",
+					"type": "string",
+					"minLength": 1,
+					"x-nullable": true
+				},
+				"hash": {
+					"title": "Hash",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"ProductApiFallback": {
+			"required": ["product", "root_api", "fallback_api"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"product": {
+					"title": "Product",
+					"type": "string",
+					"format": "uuid"
+				},
+				"root_api": {
+					"title": "Root api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"root_api_name": {
+					"title": "Root api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"fallback_api": {
+					"title": "Fallback api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"fallback_api_name": {
+					"title": "Fallback api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean",
+					"readOnly": true
+				}
+			}
+		},
+		"ProductApiParameterBinding": {
+			"required": [
+				"product",
+				"api",
+				"parameter_name",
+				"source_api",
+				"source_path"
+			],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"product": {
+					"title": "Product",
+					"type": "string",
+					"format": "uuid"
+				},
+				"api": {
+					"title": "Api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"api_name": {
+					"title": "Api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"parameter_name": {
+					"title": "Parameter name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"source_api": {
+					"title": "Source api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"source_api_name": {
+					"title": "Source api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"source_path": {
+					"title": "Source path",
+					"type": "string",
+					"maxLength": 500,
+					"minLength": 1
+				},
+				"source_path_warning": {
+					"title": "Source path warning",
+					"type": "string",
+					"readOnly": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean",
+					"readOnly": true
+				}
+			}
+		},
+		"Product": {
+			"required": ["name", "apis"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"category": {
+					"title": "Category",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5"]
+				},
+				"subcategory": {
+					"title": "Subcategory",
+					"type": "string",
+					"enum": ["1", "2", "3", "4", "5", "6", "7"],
+					"x-nullable": true
+				},
+				"name": {
+					"title": "Name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"description": {
+					"title": "Description",
+					"type": "string",
+					"x-nullable": true
+				},
+				"apis": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"price": {
+					"title": "Price",
+					"type": "string",
+					"format": "decimal"
+				},
+				"price__display": {
+					"title": "Price  display",
+					"type": "string",
+					"readOnly": true
+				},
+				"match_price": {
+					"title": "Match price",
+					"type": "string",
+					"format": "decimal"
+				},
+				"match_price__display": {
+					"title": "Match price  display",
+					"type": "string",
+					"readOnly": true
+				},
+				"allow_processing": {
+					"title": "Allow processing",
+					"type": "boolean",
+					"x-nullable": true
+				},
+				"is_default_web": {
+					"title": "Is default web",
+					"type": "boolean"
+				},
+				"background": {
+					"title": "Background",
+					"type": "boolean"
+				},
+				"validation_onboarding": {
+					"title": "Validation onboarding",
+					"type": "string",
+					"maxLength": 100,
+					"x-nullable": true
+				},
+				"extrato_enabled": {
+					"title": "Extrato enabled",
+					"type": "boolean"
+				},
+				"report_template": {
+					"title": "Report template",
+					"type": "string",
+					"format": "uuid",
+					"x-nullable": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"ReportTemplate": {
+			"required": ["name", "version"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"name": {
+					"title": "Name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"version": {
+					"title": "Version",
+					"type": "string",
+					"maxLength": 50,
+					"minLength": 1
+				},
+				"config": {
+					"title": "Config",
+					"type": "object"
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				}
+			}
+		},
+		"Provider": {
+			"required": ["corporate_name", "cnpj", "fantasy_name"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"corporate_name": {
+					"title": "Corporate name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"state_registration": {
+					"title": "State registration",
+					"type": "string",
+					"maxLength": 25,
+					"x-nullable": true
+				},
+				"cnpj": {
+					"title": "Cnpj",
+					"type": "string",
+					"minLength": 1
+				},
+				"fantasy_name": {
+					"title": "Fantasy name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean"
+				},
+				"cert_status": {
+					"title": "Cert status",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"cert_generated_at": {
+					"title": "Cert generated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"cert_expires_at": {
+					"title": "Cert expires at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"ProviderCertificate": {
+			"required": ["cert_password"],
+			"type": "object",
+			"properties": {
+				"cert_pfx": {
+					"title": "Cert pfx",
+					"type": "string",
+					"readOnly": true,
+					"format": "uri"
+				},
+				"cert_password": {
+					"title": "Cert password",
+					"type": "string",
+					"minLength": 1
+				},
+				"cert_expires_at": {
+					"title": "Cert expires at",
+					"type": "string",
+					"format": "date-time",
+					"x-nullable": true
+				}
+			}
+		},
+		"ProviderCertificateAuditLog": {
+			"required": ["action"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"action": {
+					"title": "Action",
+					"type": "string",
+					"enum": ["created", "updated", "renewed", "removed"]
+				},
+				"changed_by": {
+					"title": "Changed by",
+					"type": "string",
+					"readOnly": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				}
+			}
+		},
+		"ProviderResponseClassificationClone": {
+			"required": ["source_api", "target_api"],
+			"type": "object",
+			"properties": {
+				"source_api": {
+					"title": "Source api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"target_api": {
+					"title": "Target api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"source_field": {
+					"title": "Source field",
+					"type": "string",
+					"minLength": 1
+				}
+			}
+		},
+		"ProviderResponseClassification": {
+			"required": [
+				"api",
+				"source_field",
+				"key_type",
+				"key",
+				"category",
+				"status"
+			],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"api": {
+					"title": "Api",
+					"type": "string",
+					"format": "uuid"
+				},
+				"api_name": {
+					"title": "Api name",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				},
+				"source_field": {
+					"title": "Source field",
+					"type": "string",
+					"maxLength": 64,
+					"minLength": 1
+				},
+				"key_type": {
+					"title": "Key type",
+					"type": "string",
+					"enum": ["code", "text"]
+				},
+				"key": {
+					"title": "Key",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"category": {
+					"title": "Category",
+					"type": "string",
+					"enum": ["restriction", "observation", "debit"]
+				},
+				"status": {
+					"title": "Status",
+					"type": "string",
+					"enum": ["green", "yellow", "red", "gray"]
+				},
+				"label": {
+					"title": "Label",
+					"type": "string",
+					"maxLength": 255
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Is active",
+					"type": "boolean",
+					"readOnly": true
+				},
+				"created_by_email": {
+					"title": "Created by email",
+					"type": "string",
+					"readOnly": true
+				},
+				"updated_by_email": {
+					"title": "Updated by email",
+					"type": "string",
+					"readOnly": true
+				}
+			}
+		},
+		"MyTokenObtainPair": {
+			"required": ["username", "password"],
+			"type": "object",
+			"properties": {
+				"recaptcha_token": {
+					"title": "Recaptcha token",
+					"type": "string"
+				},
+				"recaptcha_token_v2": {
+					"title": "Recaptcha token v2",
+					"type": "string"
+				},
+				"username": {
+					"title": "Username",
+					"type": "string",
+					"minLength": 1
+				},
+				"password": {
+					"title": "Password",
+					"type": "string",
+					"minLength": 1
+				}
+			}
+		},
+		"TokenRefresh": {
+			"required": ["refresh"],
+			"type": "object",
+			"properties": {
+				"refresh": {
+					"title": "Refresh",
+					"type": "string",
+					"minLength": 1
+				},
+				"access": {
+					"title": "Access",
+					"type": "string",
+					"readOnly": true,
+					"minLength": 1
+				}
+			}
+		},
+		"TokenVerify": {
+			"required": ["token"],
+			"type": "object",
+			"properties": {
+				"token": {
+					"title": "Token",
+					"type": "string",
+					"minLength": 1
+				}
+			}
+		},
+		"CompanyMinimal": {
+			"required": ["corporate_name", "fantasy_name", "cnpj"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"corporate_name": {
+					"title": "Corporate name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"fantasy_name": {
+					"title": "Fantasy name",
+					"type": "string",
+					"maxLength": 255,
+					"minLength": 1
+				},
+				"cnpj": {
+					"title": "Cnpj",
+					"type": "string",
+					"minLength": 1
+				}
+			}
+		},
+		"UserList": {
+			"required": ["first_name", "last_name", "email"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"first_name": {
+					"title": "First name",
+					"type": "string",
+					"maxLength": 150,
+					"minLength": 1
+				},
+				"last_name": {
+					"title": "Last name",
+					"type": "string",
+					"maxLength": 150,
+					"minLength": 1
+				},
+				"email": {
+					"title": "Email",
+					"type": "string",
+					"format": "email",
+					"maxLength": 254,
+					"minLength": 1
+				},
+				"birth": {
+					"title": "Birth",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"cpf": {
+					"title": "Cpf",
+					"type": "string",
+					"maxLength": 14,
+					"x-nullable": true
+				},
+				"phone": {
+					"title": "Phone",
+					"type": "string",
+					"maxLength": 20,
+					"x-nullable": true
+				},
+				"cep": {
+					"title": "Cep",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"street": {
+					"title": "Street",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"number_address": {
+					"title": "Number address",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"complement": {
+					"title": "Complement",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"district": {
+					"title": "District",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"city": {
+					"title": "City",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"uf": {
+					"title": "Uf",
+					"type": "string",
+					"maxLength": 3,
+					"x-nullable": true
+				},
+				"company": {
+					"$ref": "#/definitions/CompanyMinimal"
+				},
+				"profile": {
+					"title": "Profile",
+					"type": "string",
+					"enum": ["1", "2", "3", "4"]
+				},
+				"permissions_products": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"permissions_system": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"permissions_user": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Permissions"
+					},
+					"readOnly": true
+				},
+				"last_login": {
+					"title": "Último login",
+					"type": "string",
+					"format": "date-time",
+					"x-nullable": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Ativo",
+					"description": "Indica que o usuário será tratado como ativo. Ao invés de excluir contas de usuário, desmarque isso.",
+					"type": "boolean"
+				}
+			}
+		},
+		"UserDetail": {
+			"required": ["first_name", "last_name", "email"],
+			"type": "object",
+			"properties": {
+				"id": {
+					"title": "Id",
+					"type": "string",
+					"format": "uuid",
+					"readOnly": true
+				},
+				"first_name": {
+					"title": "First name",
+					"type": "string",
+					"maxLength": 150,
+					"minLength": 1
+				},
+				"last_name": {
+					"title": "Last name",
+					"type": "string",
+					"maxLength": 150,
+					"minLength": 1
+				},
+				"email": {
+					"title": "Email",
+					"type": "string",
+					"format": "email",
+					"maxLength": 254,
+					"minLength": 1
+				},
+				"birth": {
+					"title": "Birth",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"cpf": {
+					"title": "Cpf",
+					"type": "string",
+					"maxLength": 14,
+					"x-nullable": true
+				},
+				"phone": {
+					"title": "Phone",
+					"type": "string",
+					"maxLength": 20,
+					"x-nullable": true
+				},
+				"cep": {
+					"title": "Cep",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"street": {
+					"title": "Street",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"number_address": {
+					"title": "Number address",
+					"type": "string",
+					"maxLength": 12,
+					"x-nullable": true
+				},
+				"complement": {
+					"title": "Complement",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"district": {
+					"title": "District",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"city": {
+					"title": "City",
+					"type": "string",
+					"maxLength": 255,
+					"x-nullable": true
+				},
+				"uf": {
+					"title": "Uf",
+					"type": "string",
+					"maxLength": 3,
+					"x-nullable": true
+				},
+				"company": {
+					"$ref": "#/definitions/Company"
+				},
+				"profile": {
+					"title": "Profile",
+					"type": "string",
+					"enum": ["1", "2", "3", "4"]
+				},
+				"permissions_products": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"permissions_system": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"uniqueItems": true
+				},
+				"permissions_user": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Permissions"
+					},
+					"readOnly": true
+				},
+				"last_login": {
+					"title": "Último login",
+					"type": "string",
+					"format": "date-time",
+					"x-nullable": true
+				},
+				"created_at": {
+					"title": "Created at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"updated_at": {
+					"title": "Updated at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true
+				},
+				"is_active": {
+					"title": "Ativo",
+					"description": "Indica que o usuário será tratado como ativo. Ao invés de excluir contas de usuário, desmarque isso.",
+					"type": "boolean"
+				},
+				"billing": {
+					"title": "Billing",
+					"type": "string",
+					"readOnly": true
+				}
+			}
+		}
+	}
+}

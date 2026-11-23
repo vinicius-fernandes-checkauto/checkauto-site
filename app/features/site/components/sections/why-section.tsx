@@ -1,36 +1,25 @@
+import forriskBee from "~/assets/brand/forrisk-bee.webp";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
 import { Arc } from "~/shared/components/arc";
 import { IconBadge } from "~/shared/components/icon-badge";
 import {
-	Building2Icon,
 	FileTextIcon,
 	FlagIcon,
 	LandmarkIcon,
 	ShieldCheckIcon,
-	ZapIcon,
 } from "~/shared/components/icons";
-import { Button } from "~/shared/components/ui/button";
 import { cn } from "~/shared/lib/utils";
 
 const sources = ["SENATRAN", "DETRANs", "Seguradoras", "Leiloeiros"];
 
-const topics = [
-	"Leilão",
-	"Indício de batida",
-	"Roubo e furto",
-	"Financiamento",
-	"Recall",
-	"Débitos e multas",
-];
+const topics = ["Leilão", "Roubo e furto", "Gravame", "Recall"];
 
-const card = "relative flex flex-col justify-end gap-4 rounded-4xl p-5";
+const card =
+	"relative flex flex-col justify-end gap-4 rounded-3xl p-5 sm:rounded-4xl";
 
-const cornerIcon = "lg:absolute lg:top-5 lg:right-5";
+const cornerIcon = "absolute top-4 right-4 sm:top-5 sm:right-5";
 
-const whiteCard = cn(
-	card,
-	"border border-border bg-card shadow-[0_12px_32px_-20px_--alpha(var(--color-brand-blue)/18%)]",
-);
+const whiteCard = cn(card, "border border-border bg-card");
 
 const chip = "rounded-full px-3 py-1.5 text-[0.8125rem]/4 font-medium";
 
@@ -42,53 +31,36 @@ export function WhySection() {
 			<section
 				id="por-que-checkauto"
 				aria-labelledby="por-que-checkauto-titulo"
-				className="relative lg:flex lg:min-h-[min(100svh,40rem)] lg:items-center"
+				className="relative lg:flex lg:min-h-svh lg:items-center"
 			>
-				<div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-16 sm:px-8 lg:gap-7 lg:py-8">
-					<div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-						<div className="flex flex-col gap-3">
-							<SectionEyebrow>Por que Checkauto</SectionEyebrow>
-							<h2
-								id="por-que-checkauto-titulo"
-								className="text-3xl/tight font-normal tracking-tight text-heading lg:text-[2.75rem]/[1.1]"
-							>
-								<span className="block">
-									A <span className="text-highlight">primeira</span> do Brasil.
-								</span>
-								<span className="block">E a mais completa.</span>
-							</h2>
-						</div>
-						<div className="flex max-w-md flex-col items-start gap-4">
-							<p className="text-[0.9375rem]/6 text-muted-foreground">
-								Há mais de 25 anos ajudamos quem compra, vende e financia
-								veículos a decidir com segurança, com informação de verdade
-								sobre cada veículo.
-							</p>
-							<Button asChild>
-								<a href="#pacotes">Consultar agora</a>
-							</Button>
-						</div>
+				<div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-16 sm:px-8 lg:gap-8 lg:py-12">
+					<div className="flex flex-col gap-3">
+						<SectionEyebrow>Por que Checkauto</SectionEyebrow>
+						<h2
+							id="por-que-checkauto-titulo"
+							className="text-3xl/tight font-normal tracking-tight text-heading lg:text-[2.75rem]/[1.1]"
+						>
+							<span className="block">
+								A <span className="text-highlight">primeira</span> do Brasil.
+							</span>
+							<span className="block">E a mais completa.</span>
+						</h2>
 					</div>
 
-					<ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+					<ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:auto-rows-[minmax(12rem,auto)] lg:grid-cols-3">
 						<li
 							data-tile
 							className={cn(
 								card,
-								"min-h-72 justify-between overflow-hidden bg-brand-blue text-white sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:min-h-0",
+								"min-h-52 justify-between overflow-hidden bg-brand-blue text-white sm:col-span-2 sm:min-h-64 lg:col-span-1 lg:row-span-2 lg:min-h-0",
 							)}
 						>
 							<Arc className="-right-32 -bottom-40 z-0 w-72 bg-brand-green/20" />
-							<div className="relative flex items-center gap-2.5">
-								<IconBadge className="bg-brand-green text-brand-blue">
-									<FlagIcon aria-hidden="true" className="size-5" />
-								</IconBadge>
-								<span className="rounded-full bg-white/10 px-3.5 py-1.5 text-sm/4 font-medium text-mist">
-									Pioneira
-								</span>
-							</div>
+							<IconBadge className="relative bg-brand-green text-brand-blue">
+								<FlagIcon aria-hidden="true" />
+							</IconBadge>
 							<div className="relative flex flex-col gap-2">
-								<strong className="text-7xl/[0.9] font-medium tracking-tighter text-brand-green lg:text-[5.25rem]/[0.9]">
+								<strong className="text-7xl/[0.9] font-medium tracking-tighter text-brand-green xl:text-[5.25rem]/[0.9]">
 									2000
 								</strong>
 								<h3 className="text-xl/snug font-medium tracking-tight text-white">
@@ -101,38 +73,14 @@ export function WhySection() {
 							</div>
 						</li>
 
-						<li
-							data-tile
-							className={cn(
-								card,
-								"bg-[color-mix(in_oklab,var(--color-brand-green)_12%,var(--card))]",
-							)}
-						>
-							<IconBadge className={cn(cornerIcon, "bg-card text-highlight")}>
-								<ZapIcon aria-hidden="true" />
-							</IconBadge>
-							<div className="flex flex-col gap-1">
-								<strong className="text-4xl/none font-medium tracking-tighter text-heading">
-									Na hora
-								</strong>
-								<h3 className="font-semibold text-heading">
-									resultado na tela
-								</h3>
-								<p className="text-sm/5 text-muted-foreground">
-									Digite a placa e receba o histórico completo em poucos
-									instantes.
-								</p>
-							</div>
-						</li>
-
 						<li data-tile className={whiteCard}>
 							<IconBadge
 								className={cn(cornerIcon, "bg-brand-blue/6 text-heading")}
 							>
 								<ShieldCheckIcon aria-hidden="true" />
 							</IconBadge>
-							<div className="flex flex-col gap-3">
-								<h3 className="font-semibold text-heading lg:pr-12">
+							<div className="flex flex-col gap-3 pr-12">
+								<h3 className="font-semibold text-heading">
 									Fontes oficiais, em tempo real
 								</h3>
 								<ul className="flex flex-wrap gap-1.5">
@@ -160,29 +108,26 @@ export function WhySection() {
 							>
 								<LandmarkIcon aria-hidden="true" />
 							</IconBadge>
-							<div className="flex flex-col gap-1.5">
-								<h3 className="text-lg/6 font-semibold tracking-tight lg:pr-12">
+							<div className="flex flex-col gap-1.5 pr-12">
+								<h3 className="text-lg/6 font-semibold tracking-tight">
 									Confiança de grandes empresas
 								</h3>
-								<p className="text-sm/5">
-									Bancos, financeiras e seguradoras usam a Checkauto para
-									decidir.
-								</p>
+								<p className="text-sm/5">Bancos, financeiras e seguradoras</p>
 							</div>
 						</li>
 
 						<li
 							data-tile
 							className={cn(
-								whiteCard,
-								"sm:col-span-2 lg:flex-row lg:items-center lg:gap-6",
+								card,
+								"bg-[color-mix(in_oklab,var(--color-brand-green)_12%,var(--card))]",
 							)}
 						>
-							<div className="flex shrink-0 items-center gap-4">
-								<IconBadge className="bg-brand-blue/6 text-heading">
-									<FileTextIcon aria-hidden="true" />
-								</IconBadge>
-								<div className="flex flex-col gap-0.5">
+							<IconBadge className={cn(cornerIcon, "bg-card text-highlight")}>
+								<FileTextIcon aria-hidden="true" />
+							</IconBadge>
+							<div className="flex flex-col gap-3">
+								<div className="flex flex-col gap-1 pr-12">
 									<strong className="text-4xl/none font-medium tracking-tighter text-heading">
 										+40
 									</strong>
@@ -190,17 +135,17 @@ export function WhySection() {
 										informações em um extrato só
 									</h3>
 								</div>
+								<ul className="flex flex-wrap gap-1.5">
+									{topics.map((topic) => (
+										<li
+											key={topic}
+											className={cn(chip, "bg-card text-highlight")}
+										>
+											{topic}
+										</li>
+									))}
+								</ul>
 							</div>
-							<ul className="flex flex-wrap gap-1.5">
-								{topics.map((topic) => (
-									<li
-										key={topic}
-										className={cn(chip, "bg-brand-green/10 text-highlight")}
-									>
-										{topic}
-									</li>
-								))}
-							</ul>
 						</li>
 
 						<li
@@ -210,22 +155,17 @@ export function WhySection() {
 								"bg-[color-mix(in_oklab,var(--color-brand-blue)_7%,var(--card))]",
 							)}
 						>
-							<IconBadge className={cn(cornerIcon, "bg-card text-heading")}>
-								<Building2Icon aria-hidden="true" />
+							<IconBadge className={cn(cornerIcon, "bg-card")}>
+								<span
+									style={{ maskImage: `url(${forriskBee})` }}
+									className="aspect-65/62 w-6 bg-heading mask-contain mask-center mask-no-repeat"
+								/>
 							</IconBadge>
-							<div className="flex flex-col gap-2">
-								<h3 className="font-semibold text-heading lg:pr-12">
-									Grupo ForRisk
-								</h3>
+							<div className="flex flex-col gap-1 pr-12">
+								<h3 className="font-semibold text-heading">Grupo ForRisk</h3>
 								<p className="text-sm/5 text-muted-foreground">
-									Do mesmo grupo da Autovist: vistoria e dados no mesmo lugar.
+									Soluções inteligentes para reduzir riscos
 								</p>
-								<ul className="flex flex-wrap gap-1.5">
-									<li className={cn(chip, "bg-brand-blue text-white")}>
-										Checkauto
-									</li>
-									<li className={cn(chip, "bg-card text-heading")}>Autovist</li>
-								</ul>
 							</div>
 						</li>
 					</ul>

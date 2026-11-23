@@ -1,7 +1,6 @@
 import { type CSSProperties, useRef, useState } from "react";
 import { Link } from "react-router";
 
-import ticks from "~/assets/brand/symbol-ticks.webp";
 import avatar1 from "~/assets/home/avatars/avatar-1.webp";
 import avatar2 from "~/assets/home/avatars/avatar-2.webp";
 import avatar3 from "~/assets/home/avatars/avatar-3.webp";
@@ -164,10 +163,6 @@ export function HeroSection() {
 			className="relative isolate overflow-hidden bg-background [--mh:calc(var(--mw)/1.0946)] [--mw:min(38vw,40rem,calc((100svh-9rem)*1.0946))] lg:flex lg:min-h-[calc(100svh-4.75rem-1px)] lg:flex-col"
 		>
 			<Arc className="-top-48 -left-56 w-136 max-lg:hidden lg:-top-72 lg:-left-72 lg:w-200" />
-			<Arc
-				style={{ maskImage: `url(${ticks})` }}
-				className="bottom-6 -left-24 aspect-878/389 w-96 rotate-180 bg-brand-blue/7 max-lg:hidden lg:bottom-10 lg:left-[8%] lg:w-120"
-			/>
 
 			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 pt-10 pb-6 sm:px-8 lg:flex-1 lg:grid-cols-2 lg:pt-8 lg:pb-18 lg:[@media(max-height:620px)]:pb-6 lg:[@media(max-height:660px)]:pt-2 lg:[@media(min-height:621px)_and_(max-height:820px)]:pb-16 lg:[@media(min-height:661px)_and_(max-height:820px)]:pt-4">
 				<div className="relative z-10 flex min-w-0 flex-col gap-6 lg:gap-7 lg:[@media(max-height:660px)]:gap-2.5 lg:[@media(min-height:661px)_and_(max-height:760px)]:gap-3 lg:[@media(min-height:761px)_and_(max-height:820px)]:gap-4">
@@ -202,7 +197,7 @@ export function HeroSection() {
 						style={{ animationDelay: "120ms" }}
 						className={cn(
 							enter,
-							"text-4xl/[1.12] font-normal tracking-tighter text-balance text-heading sm:text-5xl/[1.08] xl:text-6xl/[1.07] lg:[@media(max-height:660px)]:text-[2.25rem]/[1.1] lg:[@media(min-height:661px)_and_(max-height:760px)]:text-[2.5rem]/[1.1] lg:[@media(min-height:761px)_and_(max-height:820px)]:text-5xl/[1.08]",
+							"text-4xl/[1.12] font-normal tracking-tighter text-balance text-heading sm:text-[2.75rem]/[1.1] lg:[@media(max-height:660px)]:text-[2.25rem]/[1.1] lg:[@media(min-height:661px)_and_(max-height:760px)]:text-[2.5rem]/[1.1]",
 						)}
 					>
 						Antes de comprar, confira o{" "}
@@ -249,7 +244,7 @@ export function HeroSection() {
 									className,
 								)}
 							>
-								<strong className="text-2xl/none sm:text-3xl/none font-medium tracking-tighter">
+								<strong className="text-[1.375rem]/none min-[400px]:text-2xl/none sm:text-3xl/none font-medium tracking-tighter whitespace-nowrap">
 									{value}
 								</strong>
 								<span className="text-xs/4 font-medium sm:text-[0.8125rem]/4.5">
@@ -261,16 +256,22 @@ export function HeroSection() {
 				</div>
 
 				<div className="flex min-w-0 flex-col gap-3 lg:static">
-					<p className="flex items-center gap-2 text-sm font-medium text-heading lg:absolute lg:top-[calc(50%+var(--mh)/2+0.75rem)] lg:right-[calc(var(--mw)/2)] lg:translate-x-1/2 lg:whitespace-nowrap">
+					<p className="flex items-center gap-2 text-sm font-medium whitespace-nowrap text-heading lg:absolute lg:top-[calc(50%+var(--mh)/2+0.75rem)] lg:right-[calc(var(--mw)/2)] lg:translate-x-1/2">
 						<span
 							aria-hidden="true"
-							className="size-2 shrink-0 rounded-full bg-brand-green shadow-[0_0_0_4px_--alpha(var(--color-brand-green)/20%)]"
+							className="size-3 shrink-0 rounded-full bg-brand-blue shadow-[0_0_0_3px_white,0_2px_8px_--alpha(var(--color-brand-blue-dark)/35%)]"
 						/>
-						<span className="pointer-coarse:hidden">
-							Passe o mouse nos pontos e veja o que a consulta revela
-						</span>
-						<span className="hidden pointer-coarse:inline">
-							Toque nos pontos e veja o que a consulta revela
+						<span>
+							<span className="pointer-coarse:hidden">
+								Passe o mouse nos pontos
+							</span>
+							<span className="hidden pointer-coarse:inline">
+								Toque nos pontos
+							</span>
+							<span className="max-sm:hidden lg:max-xl:hidden">
+								{" "}
+								e veja o que a consulta revela
+							</span>
 						</span>
 					</p>
 

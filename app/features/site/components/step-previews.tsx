@@ -67,7 +67,7 @@ export function PlateTypingPreview() {
 				</span>
 				<span className="flex min-w-0 flex-1 items-center text-base font-semibold tracking-[0.14em]">
 					{typed === 0 ? (
-						<span className="font-normal tracking-normal text-muted-foreground">
+						<span className="truncate text-sm font-normal tracking-normal text-muted-foreground">
 							Informe a placa
 						</span>
 					) : (
@@ -112,7 +112,7 @@ export function PlansPickingPreview() {
 			<p className="px-1 text-sm font-semibold">
 				Escolha o pacote para a placa ABC1D23
 			</p>
-			<div className="grid grid-cols-3 gap-2">
+			<div className="grid grid-cols-3 gap-1.5">
 				{plans.map((plan, index) => {
 					const active = index === selected;
 
@@ -120,13 +120,15 @@ export function PlansPickingPreview() {
 						<div
 							key={plan.id}
 							className={cn(
-								"flex flex-col gap-1 rounded-2xl border p-2.5 transition-colors duration-300",
+								"flex min-w-0 flex-col gap-1 rounded-2xl border p-2 transition-colors duration-300",
 								active
 									? "border-secondary bg-secondary text-secondary-foreground"
 									: "border-border",
 							)}
 						>
-							<span className="text-sm font-semibold">{plan.shortName}</span>
+							<span className="text-[0.8125rem] font-semibold">
+								{plan.shortName}
+							</span>
 							<span className="text-xs tabular-nums">R$ {plan.price}</span>
 							<span
 								className={cn(

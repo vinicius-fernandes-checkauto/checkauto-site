@@ -24,6 +24,7 @@ export type PlanInfoItem = {
 	name: string;
 	description: string;
 	requires?: PlanFeature;
+	comparison?: { name: string; hint: string };
 };
 
 export type PlanInfoGroup = {
@@ -146,12 +147,17 @@ export const planInfoGroups: PlanInfoGroup[] = [
 				description:
 					"Registros de batida, enchente ou perda total informados por seguradoras.",
 				requires: "Indício de batida ou enchente",
+				comparison: {
+					name: "Ocorrência",
+					hint: "Indício de batida ou enchente",
+				},
 			},
 			{
 				name: "Financiamento ativo (gravame)",
 				description:
 					"Se o veículo ainda está alienado a um banco ou financeira.",
 				requires: "Financiamento ativo",
+				comparison: { name: "Gravame", hint: "Financiamento ativo" },
 			},
 		],
 	},
@@ -160,6 +166,14 @@ export const planInfoGroups: PlanInfoGroup[] = [
 export function planIncludes(plan: Plan, item: PlanInfoItem) {
 	return !item.requires || plan.features.includes(item.requires);
 }
+
+export const planComparisonItems = planInfoGroups.flatMap((group) =>
+	group.items.map((item) => ({
+		...item,
+		name: item.comparison?.name ?? item.name,
+		hint: item.comparison?.hint,
+	})),
+);
 
 export type Plan = {
 	id: string;

@@ -1,7 +1,6 @@
 import { useRef } from "react";
 
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
-import { Arc } from "~/shared/components/arc";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 
 type Stat = {
@@ -94,15 +93,13 @@ export function WhyNumbers() {
 
 	return (
 		<div className="relative isolate overflow-hidden bg-background">
-			<Arc className="top-1/2 -left-64 w-176 -translate-y-1/2 rotate-30 max-lg:hidden" />
-
 			<section
 				ref={scope}
 				id="nossos-numeros"
 				aria-labelledby="nossos-numeros-titulo"
 				className="relative lg:flex lg:min-h-[min(100svh,40rem)] lg:items-center"
 			>
-				<div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-16 sm:px-8 lg:gap-10 lg:py-12">
+				<div className="mx-auto flex w-full max-w-7xl flex-col gap-12 px-4 py-16 sm:px-8 lg:gap-16 lg:py-12">
 					<div className="flex flex-col gap-6 lg:flex-row-reverse lg:items-end lg:justify-between lg:gap-12">
 						<div className="flex flex-col gap-3 lg:items-end lg:text-right">
 							<SectionEyebrow>Nossos números</SectionEyebrow>
@@ -122,7 +119,7 @@ export function WhyNumbers() {
 
 					<ul
 						data-stats
-						className="grid grid-cols-1 gap-x-8 gap-y-10 rounded-4xl border border-border bg-card p-6 shadow-[0_12px_32px_-20px_--alpha(var(--color-brand-blue)/18%)] sm:grid-cols-2 lg:grid-cols-4 lg:p-10"
+						className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
 					>
 						{stats.map((stat, index) => (
 							<li key={stat.highlight} className="flex gap-6">

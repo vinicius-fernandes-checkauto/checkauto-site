@@ -131,15 +131,6 @@ export default function Cart() {
 											key={item.plate}
 											plate={item.plate}
 											planId={item.planId}
-											onPlanChange={(planId) =>
-												setItems((current) =>
-													current.map((entry) =>
-														entry.plate === item.plate
-															? { ...entry, planId }
-															: entry,
-													),
-												)
-											}
 											onRemove={() =>
 												setItems((current) =>
 													current.filter((entry) => entry.plate !== item.plate),
