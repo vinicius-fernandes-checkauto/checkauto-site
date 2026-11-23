@@ -1,19 +1,20 @@
-import { type FormEvent, type ReactNode, useId, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type ReactNode, useId, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import {
 	type ContactField,
 	contactSchema,
 	contactSubjects,
-	formatPhone,
 } from "~/features/site/lib/contact";
 import { ChevronDownIcon, CircleCheckIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
+import { errorProps, withMask } from "~/shared/lib/form";
 import { cn } from "~/shared/lib/utils";
+import { formatPhone } from "~/shared/utils/phone";
 
 const controlClassName =
 	"w-full border bg-card text-[0.9375rem] text-heading outline-none placeholder:text-muted-foreground focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:outline-solid aria-invalid:border-destructive";
-
-type Errors = Partial<Record<ContactField, string>>;
 
 function Field({
 	id,
@@ -55,36 +56,17 @@ function Field({
 
 export function ContactForm() {
 	const baseId = useId();
-	const [phone, setPhone] = useState("");
-	const [errors, setErrors] = useState<Errors>({});
 	const [sent, setSent] = useState(false);
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm({ resolver: zodResolver(contactSchema) });
 
 	const fieldId = (field: ContactField) => `${baseId}-${field}`;
 	const describe = (field: ContactField) =>
-		errors[field]
-			? { "aria-invalid": true, "aria-describedby": `${fieldId(field)}-erro` }
-			: {};
-
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		const data = Object.fromEntries(new FormData(event.currentTarget));
-		const result = contactSchema.safeParse(data);
-
-		if (!result.success) {
-			const next: Errors = {};
-			for (const issue of result.error.issues) {
-				const field = issue.path[0] as ContactField;
-				next[field] ??= issue.message;
-			}
-			setErrors(next);
-			const first = Object.keys(next)[0] as ContactField | undefined;
-			if (first) document.getElementById(fieldId(first))?.focus();
-			return;
-		}
-
-		setErrors({});
-		setSent(true);
-	}
+		errorProps(fieldId(field), errors[field]);
 
 	if (sent) {
 		return (
@@ -103,8 +85,8 @@ export function ContactForm() {
 					size="sm"
 					className="mt-2"
 					onClick={() => {
+						reset();
 						setSent(false);
-						setPhone("");
 					}}
 				>
 					Enviar outra mensagem
@@ -116,20 +98,18 @@ export function ContactForm() {
 	return (
 		<form
 			noValidate
-			onSubmit={handleSubmit}
-			onChange={(event) => {
-				const target = event.target;
-				if (!(target instanceof HTMLElement) || !("name" in target)) return;
-				const field = target.name as ContactField;
-				if (errors[field]) setErrors({ ...errors, [field]: undefined });
-			}}
+			onSubmit={handleSubmit(() => setSent(true))}
 			className="flex w-full max-w-2xl flex-col gap-4"
 		>
-			<Field id={fieldId("subject")} label="Assunto" error={errors.subject}>
+			<Field
+				id={fieldId("subject")}
+				label="Assunto"
+				error={errors.subject?.message}
+			>
 				<div className="relative">
 					<select
 						id={fieldId("subject")}
-						name="subject"
+						{...register("subject")}
 						defaultValue=""
 						{...describe("subject")}
 						className={cn(
@@ -157,12 +137,12 @@ export function ContactForm() {
 				<Field
 					id={fieldId("name")}
 					label="Nome"
-					error={errors.name}
+					error={errors.name?.message}
 					className="sm:col-span-2"
 				>
 					<input
 						id={fieldId("name")}
-						name="name"
+						{...register("name")}
 						autoComplete="name"
 						{...describe("name")}
 						className={cn(
@@ -171,10 +151,14 @@ export function ContactForm() {
 						)}
 					/>
 				</Field>
-				<Field id={fieldId("email")} label="E-mail" error={errors.email}>
+				<Field
+					id={fieldId("email")}
+					label="E-mail"
+					error={errors.email?.message}
+				>
 					<input
 						id={fieldId("email")}
-						name="email"
+						{...register("email")}
 						type="email"
 						autoComplete="email"
 						{...describe("email")}
@@ -187,17 +171,15 @@ export function ContactForm() {
 				<Field
 					id={fieldId("phone")}
 					label="Telefone de contato"
-					error={errors.phone}
+					error={errors.phone?.message}
 				>
 					<input
 						id={fieldId("phone")}
-						name="phone"
+						{...withMask(register("phone"), formatPhone)}
 						type="tel"
 						inputMode="tel"
 						autoComplete="tel-national"
 						placeholder="(00) 00000-0000"
-						value={phone}
-						onChange={(event) => setPhone(formatPhone(event.target.value))}
 						{...describe("phone")}
 						className={cn(
 							controlClassName,
@@ -207,10 +189,14 @@ export function ContactForm() {
 				</Field>
 			</div>
 
-			<Field id={fieldId("message")} label="Comentários" error={errors.message}>
+			<Field
+				id={fieldId("message")}
+				label="Comentários"
+				error={errors.message?.message}
+			>
 				<textarea
 					id={fieldId("message")}
-					name="message"
+					{...register("message")}
 					rows={4}
 					{...describe("message")}
 					className={cn(

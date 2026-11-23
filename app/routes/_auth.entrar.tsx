@@ -1,4 +1,5 @@
-import type { FormEvent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 import {
@@ -10,6 +11,7 @@ import {
 	TermsCheckbox,
 	TextLink,
 } from "~/features/auth/components/auth-form";
+import { signInSchema } from "~/features/auth/lib/auth";
 import { Button } from "~/shared/components/ui/button";
 import { legalNav } from "~/shared/config/navigation";
 
@@ -27,9 +29,14 @@ export const meta: Route.MetaFunction = () => [
 const termsLink = legalNav.find(({ label }) => label === "Termos de compra");
 
 export default function SignIn() {
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-	}
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(signInSchema),
+		defaultValues: { email: "", password: "" },
+	});
 
 	return (
 		<>
@@ -38,19 +45,23 @@ export default function SignIn() {
 				description="Acesse sua conta para acompanhar suas consultas, ver relatórios anteriores e fazer novas consultas."
 			/>
 
-			<form onSubmit={handleSubmit} className="flex flex-col gap-6">
+			<form
+				noValidate
+				onSubmit={handleSubmit(() => {})}
+				className="flex flex-col gap-6"
+			>
 				<div className="flex flex-col gap-3">
 					<AuthField
 						label="E-mail"
 						type="email"
-						name="email"
 						autoComplete="email"
-						required
+						error={errors.email?.message}
+						{...register("email")}
 					/>
 					<PasswordField
-						name="senha"
 						autoComplete="current-password"
-						required
+						error={errors.password?.message}
+						{...register("password")}
 					/>
 					<Link
 						to="/redefinir-senha"
@@ -60,7 +71,7 @@ export default function SignIn() {
 					</Link>
 				</div>
 
-				<TermsCheckbox>
+				<TermsCheckbox error={errors.terms?.message} {...register("terms")}>
 					Concordo com os{" "}
 					<TextLink to={termsLink?.to ?? "/contrato"}>
 						termos e condições

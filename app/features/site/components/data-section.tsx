@@ -173,6 +173,7 @@ export function DataSection() {
 					decoding="async"
 					className="w-full mix-blend-multiply"
 				/>
+
 				<ul className="grid grid-cols-1 gap-x-3 gap-y-4 min-[360px]:grid-cols-2 sm:grid-cols-4 xl:block">
 					{topics.map(({ id, title, icon: Icon, position, reversed }) => {
 						const isOpen = openId === id;

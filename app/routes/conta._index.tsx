@@ -14,7 +14,7 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export default function Account() {
-	const [today, setToday] = useState("");
+	const [_today, setToday] = useState("");
 
 	useEffect(() => {
 		setToday(formatToday(new Date()));

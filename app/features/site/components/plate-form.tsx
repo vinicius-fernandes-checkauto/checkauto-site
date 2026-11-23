@@ -1,9 +1,15 @@
-import { type FormEvent, useId, useRef, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { z } from "zod";
 
 import { Button } from "~/shared/components/ui/button";
+import { withMask } from "~/shared/lib/form";
 import { cn } from "~/shared/lib/utils";
 import { normalizePlate, plateSchema } from "~/shared/utils/plate";
+
+const plateFormSchema = z.object({ plate: plateSchema });
 
 export const PLATE_STORAGE_KEY = "checkauto:plate";
 
@@ -30,32 +36,26 @@ export function PlateForm({
 	onSubmitted,
 }: PlateFormProps) {
 	const navigate = useNavigate();
-	const inputRef = useRef<HTMLInputElement>(null);
-	const [plate, setPlate] = useState("");
-	const [error, setError] = useState<string | null>(null);
 	const generatedInputId = useId();
 	const inputId = customInputId ?? generatedInputId;
 	const messageId = useId();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(plateFormSchema),
+		defaultValues: { plate: "" },
+	});
+	const error = errors.plate?.message;
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-
-		const result = plateSchema.safeParse(plate);
-
-		if (!result.success) {
-			setError(result.error.issues[0]?.message ?? null);
-			inputRef.current?.focus();
-			return;
-		}
-
-		setError(null);
-
+	function submit({ plate }: z.output<typeof plateFormSchema>) {
 		try {
-			sessionStorage.setItem(PLATE_STORAGE_KEY, result.data);
+			sessionStorage.setItem(PLATE_STORAGE_KEY, plate);
 		} catch {}
 
 		if (onSubmitted) {
-			onSubmitted(result.data);
+			onSubmitted(plate);
 			return;
 		}
 
@@ -65,7 +65,7 @@ export function PlateForm({
 	return (
 		<form
 			noValidate
-			onSubmit={handleSubmit}
+			onSubmit={handleSubmit(submit)}
 			className={cn("flex w-full max-w-lg flex-col gap-2", className)}
 		>
 			<label htmlFor={inputId} className="sr-only">
@@ -91,9 +91,7 @@ export function PlateForm({
 						BR
 					</span>
 					<input
-						ref={inputRef}
 						id={inputId}
-						name="placa"
 						type="text"
 						inputMode="text"
 						autoComplete="off"
@@ -101,11 +99,7 @@ export function PlateForm({
 						spellCheck={false}
 						maxLength={8}
 						placeholder="Informe a placa do veículo"
-						value={plate}
-						onChange={(event) => {
-							setPlate(normalizePlate(event.target.value));
-							setError(null);
-						}}
+						{...withMask(register("plate"), normalizePlate)}
 						aria-invalid={error ? true : undefined}
 						aria-describedby={messageId}
 						className="h-12 min-w-0 flex-1 bg-transparent px-1 text-base/relaxed font-semibold tracking-[0.12em] text-heading uppercase outline-none placeholder:font-normal placeholder:tracking-normal placeholder:text-muted-foreground placeholder:normal-case focus-visible:outline-none"

@@ -1,12 +1,7 @@
-import { type MouseEvent, useRef } from "react";
+import { useRef } from "react";
 
-import ring from "~/assets/brand/symbol-ring-blue.webp";
-import {
-	focusHeroPlateInput,
-	HERO_PLATE_INPUT_ID,
-} from "~/features/site/components/plate-form";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
-import { ArrowRightIcon } from "~/shared/components/icons";
+import { Arc } from "~/shared/components/arc";
 import { Button } from "~/shared/components/ui/button";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 import { cn } from "~/shared/lib/utils";
@@ -46,10 +41,6 @@ const steps: Step[] = [
 	},
 ];
 
-function handleCtaClick(event: MouseEvent<HTMLAnchorElement>) {
-	if (focusHeroPlateInput()) event.preventDefault();
-}
-
 export function HowSection() {
 	const scope = useRef<HTMLElement>(null);
 
@@ -82,16 +73,8 @@ export function HowSection() {
 			aria-labelledby="como-funciona-titulo"
 			className="relative isolate w-full overflow-hidden bg-brand-blue-dark text-white"
 		>
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute top-72 -right-76 -z-10 aspect-896/900 w-160 -rotate-40 bg-brand-green/6 mask-contain mask-no-repeat max-lg:hidden"
-			/>
-			<span
-				aria-hidden="true"
-				style={{ maskImage: `url(${ring})` }}
-				className="pointer-events-none absolute -bottom-64 -left-56 -z-10 aspect-896/900 w-140 rotate-160 bg-white/4 mask-contain mask-no-repeat max-lg:hidden"
-			/>
+			<Arc className="top-72 -right-76 -z-10 w-160 -rotate-40 bg-brand-green/6 max-lg:hidden" />
+			<Arc className="-bottom-64 -left-56 -z-10 w-140 rotate-160 bg-white/4 max-lg:hidden" />
 
 			<div className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-4 py-16 sm:px-8 lg:gap-18 lg:py-24">
 				<div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -108,10 +91,7 @@ export function HowSection() {
 						</h2>
 					</div>
 					<Button asChild className="self-start md:self-auto">
-						<a href={`#${HERO_PLATE_INPUT_ID}`} onClick={handleCtaClick}>
-							Consultar agora
-							<ArrowRightIcon aria-hidden="true" />
-						</a>
+						<a href="#pacotes">Consultar agora</a>
 					</Button>
 				</div>
 

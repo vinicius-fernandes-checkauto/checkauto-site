@@ -2,7 +2,9 @@ import type { SVGProps } from "react";
 
 export type { LucideIcon } from "lucide-react";
 export {
+	ArrowDownLeftIcon,
 	ArrowRightIcon,
+	ArrowUpRightIcon,
 	BadgeCheckIcon,
 	BanIcon,
 	Building2Icon,
@@ -13,6 +15,7 @@ export {
 	ChevronRightIcon,
 	ChevronUpIcon,
 	CircleCheckIcon,
+	ClockIcon,
 	DatabaseIcon,
 	EyeIcon,
 	EyeOffIcon,

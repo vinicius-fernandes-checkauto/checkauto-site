@@ -1,8 +1,15 @@
-import { type FormEvent, type ReactNode, useId, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
+import { useForm } from "react-hook-form";
 
+import {
+	FormField,
+	fieldControlClassName,
+} from "~/features/account/components/form-field";
 import {
 	type Address,
 	type AddressField,
+	type AddressFormValues,
 	type AddressInput,
 	addressSchema,
 	brazilianStates,
@@ -19,51 +26,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "~/shared/components/ui/dialog";
+import { errorProps, withMask } from "~/shared/lib/form";
 import { cn } from "~/shared/lib/utils";
-
-const controlClassName =
-	"h-11 w-full rounded-full border border-border bg-card px-4.5 text-sm text-heading outline-none placeholder:text-muted-foreground focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:outline-solid aria-invalid:border-destructive";
-
-type Errors = Partial<Record<AddressField, string>>;
-
-function Field({
-	id,
-	label,
-	error,
-	optional,
-	className,
-	children,
-}: {
-	id: string;
-	label: string;
-	error?: string;
-	optional?: boolean;
-	className?: string;
-	children: ReactNode;
-}) {
-	return (
-		<div className={cn("flex flex-col gap-1.5", className)}>
-			<label
-				htmlFor={id}
-				className="px-1 text-[0.8125rem] font-medium text-heading"
-			>
-				{label}
-				{optional && (
-					<span className="font-normal text-muted-foreground"> (opcional)</span>
-				)}
-			</label>
-			{children}
-			{error && (
-				<p
-					id={`${id}-erro`}
-					className="px-1 text-sm/5.5 font-medium text-destructive"
-				>
-					{error}
-				</p>
-			)}
-		</div>
-	);
-}
 
 type AddressFormDialogProps = {
 	open: boolean;
@@ -113,115 +77,99 @@ function AddressForm({
 	onSave: (input: AddressInput) => void;
 }) {
 	const baseId = useId();
-	const [zip, setZip] = useState(formatZip(address?.zip ?? ""));
-	const [errors, setErrors] = useState<Errors>({});
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<AddressFormValues, unknown, AddressInput>({
+		resolver: zodResolver(addressSchema),
+		defaultValues: {
+			label: address?.label ?? "",
+			zip: formatZip(address?.zip ?? ""),
+			street: address?.street ?? "",
+			number: address?.number ?? "",
+			complement: address?.complement ?? "",
+			district: address?.district ?? "",
+			city: address?.city ?? "",
+			state: address?.state,
+			isDefault: address?.isDefault ?? false,
+		},
+	});
 
 	const fieldId = (field: AddressField) => `${baseId}-${field}`;
 	const describe = (field: AddressField) =>
-		errors[field]
-			? { "aria-invalid": true, "aria-describedby": `${fieldId(field)}-erro` }
-			: {};
+		errorProps(fieldId(field), errors[field]);
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		const result = addressSchema.safeParse({
-			...Object.fromEntries(data),
-			isDefault: forceDefault || data.get("isDefault") === "on",
-		});
-
-		if (!result.success) {
-			const next: Errors = {};
-			for (const issue of result.error.issues) {
-				const field = issue.path[0] as AddressField;
-				next[field] ??= issue.message;
-			}
-			setErrors(next);
-			const first = Object.keys(next)[0] as AddressField | undefined;
-			if (first) document.getElementById(fieldId(first))?.focus();
-			return;
-		}
-
-		onSave(result.data);
+	function submit(data: AddressInput) {
+		onSave({ ...data, isDefault: forceDefault || data.isDefault });
 	}
 
 	return (
 		<form
 			noValidate
-			onSubmit={handleSubmit}
-			onChange={(event) => {
-				const target = event.target;
-				if (!(target instanceof HTMLElement) || !("name" in target)) return;
-				const field = target.name as AddressField;
-				if (errors[field]) setErrors({ ...errors, [field]: undefined });
-			}}
+			onSubmit={handleSubmit(submit)}
 			className="flex flex-col gap-6"
 		>
 			<div className="grid grid-cols-6 gap-4">
-				<Field
+				<FormField
 					id={fieldId("label")}
 					label="Nome do endereço"
-					error={errors.label}
+					error={errors.label?.message}
 					className="col-span-6"
 				>
 					<input
 						id={fieldId("label")}
-						name="label"
-						defaultValue={address?.label}
+						{...register("label")}
 						placeholder="Ex.: Sede, Filial, Casa"
 						{...describe("label")}
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("zip")}
 					label="CEP"
-					error={errors.zip}
+					error={errors.zip?.message}
 					className="col-span-6 sm:col-span-2"
 				>
 					<input
 						id={fieldId("zip")}
-						name="zip"
+						{...withMask(register("zip"), formatZip)}
 						inputMode="numeric"
 						autoComplete="postal-code"
 						placeholder="00000-000"
-						value={zip}
-						onChange={(event) => setZip(formatZip(event.target.value))}
 						{...describe("zip")}
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("street")}
 					label="Rua"
-					error={errors.street}
+					error={errors.street?.message}
 					className="col-span-6 sm:col-span-4"
 				>
 					<input
 						id={fieldId("street")}
-						name="street"
+						{...register("street")}
 						autoComplete="address-line1"
-						defaultValue={address?.street}
 						{...describe("street")}
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("number")}
 					label="Número"
-					error={errors.number}
+					error={errors.number?.message}
 					className="col-span-2"
 				>
 					<input
 						id={fieldId("number")}
-						name="number"
+						{...register("number")}
 						inputMode="numeric"
-						defaultValue={address?.number}
 						{...describe("number")}
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("complement")}
 					label="Complemento"
 					optional
@@ -229,57 +177,53 @@ function AddressForm({
 				>
 					<input
 						id={fieldId("complement")}
-						name="complement"
+						{...register("complement")}
 						autoComplete="address-line2"
-						defaultValue={address?.complement}
 						placeholder="Sala, andar, bloco"
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("district")}
 					label="Bairro"
-					error={errors.district}
+					error={errors.district?.message}
 					className="col-span-6 sm:col-span-2"
 				>
 					<input
 						id={fieldId("district")}
-						name="district"
-						defaultValue={address?.district}
+						{...register("district")}
 						{...describe("district")}
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("city")}
 					label="Cidade"
-					error={errors.city}
+					error={errors.city?.message}
 					className="col-span-4 sm:col-span-2"
 				>
 					<input
 						id={fieldId("city")}
-						name="city"
+						{...register("city")}
 						autoComplete="address-level2"
-						defaultValue={address?.city}
 						{...describe("city")}
-						className={controlClassName}
+						className={fieldControlClassName}
 					/>
-				</Field>
-				<Field
+				</FormField>
+				<FormField
 					id={fieldId("state")}
 					label="Estado"
-					error={errors.state}
+					error={errors.state?.message}
 					className="col-span-2"
 				>
 					<div className="relative">
 						<select
 							id={fieldId("state")}
-							name="state"
+							{...register("state")}
 							autoComplete="address-level1"
-							defaultValue={address?.state ?? ""}
 							{...describe("state")}
 							className={cn(
-								controlClassName,
+								fieldControlClassName,
 								"cursor-pointer appearance-none pr-9 pl-4",
 							)}
 						>
@@ -297,14 +241,14 @@ function AddressForm({
 							className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted-foreground"
 						/>
 					</div>
-				</Field>
+				</FormField>
 			</div>
 
 			{!forceDefault && !address?.isDefault && (
 				<label className="flex cursor-pointer items-center gap-3 rounded-2xl bg-brand-blue/4 px-4 py-3.5 text-sm font-medium text-heading">
 					<input
 						type="checkbox"
-						name="isDefault"
+						{...register("isDefault")}
 						className="size-4.5 accent-primary"
 					/>
 					Usar como endereço principal

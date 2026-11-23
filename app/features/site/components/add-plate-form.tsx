@@ -1,8 +1,14 @@
-import { type FormEvent, useId, useRef, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "~/shared/components/ui/button";
+import { withMask } from "~/shared/lib/form";
 import { cn } from "~/shared/lib/utils";
 import { normalizePlate, plateSchema } from "~/shared/utils/plate";
+
+const addPlateSchema = z.object({ plate: plateSchema });
 
 type AddPlateFormProps = {
 	label: string;
@@ -10,34 +16,35 @@ type AddPlateFormProps = {
 };
 
 export function AddPlateForm({ label, onAdd }: AddPlateFormProps) {
-	const inputRef = useRef<HTMLInputElement>(null);
-	const [plate, setPlate] = useState("");
-	const [error, setError] = useState<string | null>(null);
 	const inputId = useId();
 	const messageId = useId();
+	const {
+		register,
+		handleSubmit,
+		setError,
+		reset,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(addPlateSchema),
+		defaultValues: { plate: "" },
+	});
+	const error = errors.plate?.message;
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-
-		const result = plateSchema.safeParse(plate);
-		const message = result.success
-			? onAdd(result.data)
-			: (result.error.issues[0]?.message ?? null);
+	function submit({ plate }: z.output<typeof addPlateSchema>) {
+		const message = onAdd(plate);
 
 		if (message) {
-			setError(message);
-			inputRef.current?.focus();
+			setError("plate", { message }, { shouldFocus: true });
 			return;
 		}
 
-		setError(null);
-		setPlate("");
+		reset();
 	}
 
 	return (
 		<form
 			noValidate
-			onSubmit={handleSubmit}
+			onSubmit={handleSubmit(submit)}
 			className="flex flex-col gap-2 border-t border-border p-4 sm:px-7 sm:pt-4.5 sm:pb-5.5"
 		>
 			<div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -61,20 +68,14 @@ export function AddPlateForm({ label, onAdd }: AddPlateFormProps) {
 						BR
 					</span>
 					<input
-						ref={inputRef}
 						id={inputId}
-						name="placa"
 						type="text"
 						autoComplete="off"
 						autoCapitalize="characters"
 						spellCheck={false}
 						maxLength={8}
 						placeholder="Digite a placa"
-						value={plate}
-						onChange={(event) => {
-							setPlate(normalizePlate(event.target.value));
-							setError(null);
-						}}
+						{...withMask(register("plate"), normalizePlate)}
 						aria-invalid={error ? true : undefined}
 						aria-describedby={messageId}
 						className="h-11 min-w-0 flex-1 bg-transparent px-1 text-[0.9375rem] font-semibold tracking-[0.12em] text-heading uppercase outline-none placeholder:font-normal placeholder:tracking-normal placeholder:text-muted-foreground placeholder:normal-case"

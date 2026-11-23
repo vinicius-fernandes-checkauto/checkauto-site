@@ -65,7 +65,7 @@ export function WhySection() {
 								sobre cada veículo.
 							</p>
 							<Button asChild>
-								<a href="#hero">Consultar agora</a>
+								<a href="#pacotes">Consultar agora</a>
 							</Button>
 						</div>
 					</div>

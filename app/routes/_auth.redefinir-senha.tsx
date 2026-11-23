@@ -1,10 +1,13 @@
-import { type FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import {
 	AuthField,
 	AuthHeading,
 	AuthSwitch,
 } from "~/features/auth/components/auth-form";
+import { resetPasswordSchema } from "~/features/auth/lib/auth";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 
@@ -17,11 +20,14 @@ export const meta: Route.MetaFunction = () => [
 export default function ResetPassword() {
 	const [sentTo, setSentTo] = useState<string | null>(null);
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		const email = new FormData(event.currentTarget).get("email");
-		setSentTo(typeof email === "string" ? email : "");
-	}
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(resetPasswordSchema),
+		defaultValues: { email: "" },
+	});
 
 	if (sentTo !== null) {
 		return (
@@ -62,13 +68,17 @@ export default function ResetPassword() {
 				description="Informe o e-mail da sua conta e enviamos um link para criar uma nova senha."
 			/>
 
-			<form onSubmit={handleSubmit} className="flex flex-col gap-6">
+			<form
+				noValidate
+				onSubmit={handleSubmit(({ email }) => setSentTo(email))}
+				className="flex flex-col gap-6"
+			>
 				<AuthField
 					label="E-mail"
 					type="email"
-					name="email"
 					autoComplete="email"
-					required
+					error={errors.email?.message}
+					{...register("email")}
 				/>
 				<Button type="submit" className="w-full">
 					Enviar link

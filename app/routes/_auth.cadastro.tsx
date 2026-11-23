@@ -1,4 +1,5 @@
-import type { FormEvent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import {
 	AuthField,
@@ -9,8 +10,10 @@ import {
 	TermsCheckbox,
 	TextLink,
 } from "~/features/auth/components/auth-form";
+import { formatCpf, signUpSchema } from "~/features/auth/lib/auth";
 import { Button } from "~/shared/components/ui/button";
 import { legalNav } from "~/shared/config/navigation";
+import { withMask } from "~/shared/lib/form";
 
 import type { Route } from "./+types/_auth.cadastro";
 
@@ -29,9 +32,14 @@ const privacyLink = legalNav.find(
 );
 
 export default function SignUp() {
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-	}
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(signUpSchema),
+		defaultValues: { name: "", email: "", cpf: "", password: "" },
+	});
 
 	return (
 		<>
@@ -40,41 +48,44 @@ export default function SignUp() {
 				description="Leva menos de um minuto. Endereço só se você precisar de nota fiscal."
 			/>
 
-			<form onSubmit={handleSubmit} className="flex flex-col gap-6">
+			<form
+				noValidate
+				onSubmit={handleSubmit(() => {})}
+				className="flex flex-col gap-6"
+			>
 				<div className="flex flex-col gap-3">
 					<AuthField
 						label="Nome completo"
-						name="nome"
 						autoComplete="name"
-						required
+						error={errors.name?.message}
+						{...register("name")}
 					/>
 					<AuthField
 						label="E-mail"
 						type="email"
-						name="email"
 						autoComplete="email"
-						required
+						error={errors.email?.message}
+						{...register("email")}
 					/>
 					<AuthField
 						label="CPF"
-						name="cpf"
 						inputMode="numeric"
 						autoComplete="off"
-						required
+						error={errors.cpf?.message}
+						{...withMask(register("cpf"), formatCpf)}
 					/>
 					<PasswordField
-						name="senha"
 						autoComplete="new-password"
-						minLength={8}
 						maxLength={16}
-						required
+						error={errors.password?.message}
+						{...register("password")}
 					/>
 					<p className="px-1.5 text-xs/4.5 text-muted-foreground">
 						8 a 16 caracteres, com maiúscula, minúscula, número e símbolo.
 					</p>
 				</div>
 
-				<TermsCheckbox>
+				<TermsCheckbox error={errors.terms?.message} {...register("terms")}>
 					Aceito os{" "}
 					<TextLink to={termsLink?.to ?? "/contrato"}>
 						Termos de compra

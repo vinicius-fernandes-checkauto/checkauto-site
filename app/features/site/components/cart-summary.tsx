@@ -1,5 +1,8 @@
-import { type FormEvent, useId, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { z } from "zod";
 
 import { type AppliedCoupon, formatCents } from "~/features/site/lib/cart";
 import { LockIcon } from "~/shared/components/icons";
@@ -36,20 +39,39 @@ function SummaryRow({
 	);
 }
 
+const couponSchema = z.object({
+	code: z
+		.string()
+		.trim()
+		.toUpperCase()
+		.min(1, { error: "Digite o código do cupom." }),
+});
+
 function CouponForm({ onApply }: { onApply: (code: string) => string | null }) {
-	const [code, setCode] = useState("");
-	const [error, setError] = useState<string | null>(null);
 	const inputId = useId();
 	const messageId = useId();
+	const {
+		register,
+		handleSubmit,
+		setError,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(couponSchema),
+		defaultValues: { code: "" },
+	});
+	const error = errors.code?.message;
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		const normalized = code.trim().toUpperCase();
-		setError(normalized ? onApply(normalized) : "Digite o código do cupom.");
+	function submit({ code }: z.output<typeof couponSchema>) {
+		const message = onApply(code);
+		if (message) setError("code", { message }, { shouldFocus: true });
 	}
 
 	return (
-		<form noValidate onSubmit={handleSubmit} className="flex flex-col gap-2">
+		<form
+			noValidate
+			onSubmit={handleSubmit(submit)}
+			className="flex flex-col gap-2"
+		>
 			<label htmlFor={inputId} className="sr-only">
 				Cupom de desconto
 			</label>
@@ -61,17 +83,12 @@ function CouponForm({ onApply }: { onApply: (code: string) => string | null }) {
 			>
 				<input
 					id={inputId}
-					name="cupom"
 					type="text"
 					autoComplete="off"
 					autoCapitalize="characters"
 					spellCheck={false}
 					placeholder="Cupom de desconto"
-					value={code}
-					onChange={(event) => {
-						setCode(event.target.value);
-						setError(null);
-					}}
+					{...register("code")}
 					aria-invalid={error ? true : undefined}
 					aria-describedby={messageId}
 					className="h-11 min-w-0 flex-1 bg-transparent text-sm text-heading uppercase outline-none placeholder:text-muted-foreground placeholder:normal-case"
