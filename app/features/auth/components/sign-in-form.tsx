@@ -1,12 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import { legalNav } from "~/@content/navigation";
-import { signInSchema } from "~/features/auth/lib/auth-schema";
+import { safeCallbackUrl, signIn } from "~/features/auth/lib/auth";
+import {
+	type SignInFormValues,
+	signInSchema,
+} from "~/features/auth/lib/auth-schema";
+import { loadRecaptcha } from "~/features/auth/lib/recaptcha";
+import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
 import { TextLink } from "~/shared/components/text-link";
-import { Button } from "~/shared/components/ui/button";
 import { Checkbox } from "~/shared/components/ui/checkbox";
 import {
 	Field,
@@ -16,6 +21,7 @@ import {
 	FieldLabel,
 } from "~/shared/components/ui/field";
 import { Input } from "~/shared/components/ui/input";
+import { toApiError } from "~/shared/lib/api";
 
 export function SignInForm() {
 	const form = useForm({
@@ -23,12 +29,29 @@ export function SignInForm() {
 		defaultValues: { email: "", password: "", terms: false },
 	});
 
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 	const termsLink = legalNav.find(({ label }) => label === "Termos de compra");
+
+	async function submit({ email, password }: SignInFormValues) {
+		try {
+			await signIn("credentials", { email, password });
+			navigate(safeCallbackUrl(searchParams.get("callbackUrl")), {
+				replace: true,
+			});
+		} catch (error) {
+			form.setError("root", { message: toApiError(error).message });
+		}
+	}
 
 	return (
 		<form
+			method="post"
 			noValidate
-			onSubmit={form.handleSubmit(() => {})}
+			onSubmit={form.handleSubmit(submit)}
+			onFocus={() => {
+				loadRecaptcha().catch(() => {});
+			}}
 			className="flex flex-col gap-5"
 		>
 			<FieldGroup className="gap-3">
@@ -121,9 +144,19 @@ export function SignInForm() {
 				)}
 			/>
 
-			<Button type="submit" className="w-full">
+			{form.formState.errors.root && (
+				<FieldError
+					className="text-center"
+					errors={[form.formState.errors.root]}
+				/>
+			)}
+
+			<FormButton
+				isSubmitting={form.formState.isSubmitting}
+				submittingText="Entrando…"
+			>
 				Entrar
-			</Button>
+			</FormButton>
 		</form>
 	);
 }

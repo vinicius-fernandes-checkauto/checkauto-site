@@ -41,6 +41,7 @@ export function SignUpForm() {
 
 	return (
 		<form
+			method="post"
 			noValidate
 			onSubmit={form.handleSubmit(() => {})}
 			className="flex flex-col gap-5"

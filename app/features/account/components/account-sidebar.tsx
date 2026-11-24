@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router";
 
 import { accountNav } from "~/@content/navigation";
 import type { AccountUser } from "~/features/account/lib/account";
+import { signOut } from "~/features/auth/lib/auth";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import {
 	FileTextIcon,
@@ -71,6 +72,8 @@ export function AccountSidebar({ user }: { user: AccountUser }) {
 				<div className="mt-3 border-t border-border pt-3">
 					<Link
 						to="/"
+						replace
+						onClick={signOut}
 						className="flex h-11.5 items-center gap-3 rounded-full px-3.5 text-sm font-medium text-muted-foreground/80 transition-colors hover:bg-red-50 hover:text-destructive"
 					>
 						<LogOutIcon aria-hidden="true" className="size-4.5" />

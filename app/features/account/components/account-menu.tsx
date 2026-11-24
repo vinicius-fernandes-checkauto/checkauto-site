@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import { accountNav } from "~/@content/navigation";
 import type { AccountUser } from "~/features/account/lib/account";
+import { signOut } from "~/features/auth/lib/auth";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import {
 	FileTextIcon,
@@ -88,7 +89,7 @@ export function AccountMenu({
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem variant="destructive" asChild>
-					<Link to="/">
+					<Link to="/" replace onClick={signOut}>
 						<LogOutIcon aria-hidden="true" />
 						Sair
 					</Link>

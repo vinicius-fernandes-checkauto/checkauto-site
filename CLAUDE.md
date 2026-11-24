@@ -71,7 +71,10 @@ app/
       components/        seções da home, header/footer do site, página do pacote, carrinho, contato, jurídico
       lib/               dados e funções do site (cart, contact, legal, plan-selection)
       content/           textos longos (termos, privacidade, aviso legal)
-    auth/components/     formulários e painel visual do login/cadastro
+    auth/
+      components/        formulários e painel visual do login/cadastro
+      lib/               signIn (auth.ts), schemas, reCAPTCHA
+        providers/       um arquivo por forma de login (credentials-provider.ts, google-provider.ts), no padrão do next-auth
     account/
       components/        header, sidebar, menu, cards e diálogos da área do cliente
       lib/               dados de demonstração, schemas e helpers da conta
@@ -95,7 +98,7 @@ Rotas:
 Regras de organização:
 
 - `features/*` pode importar de `shared/` e de `@content/`; **`shared/` nunca importa de `features/`**; **`@content/` não importa de ninguém**.
-- Dentro de cada área e em `shared/` ficam só pastas por tipo (`components`, `content`, `hooks`, `lib`, `utils`; `shared/` não tem `content`). **Sem subpastas por página.** Não crie pasta nova (`config`, `helpers`, `constants`) sem combinar antes.
+- Dentro de cada área e em `shared/` ficam só pastas por tipo (`components`, `content`, `hooks`, `lib`, `utils`; `shared/` não tem `content`). **Sem subpastas por página.** Não crie pasta nova (`config`, `helpers`, `constants`) sem combinar antes. Exceção combinada: `features/auth/lib/providers/`.
 - Algo vai para `shared/` só quando **mais de uma área** usa. Se só o site usa, fica em `features/site`.
 - Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes na feature.
 - Imports sempre absolutos com `~/`. Relativo só entre arquivos da mesma pasta.
