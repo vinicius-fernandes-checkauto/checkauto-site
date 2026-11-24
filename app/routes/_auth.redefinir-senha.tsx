@@ -10,6 +10,7 @@ import {
 import { resetPasswordSchema } from "~/features/auth/lib/auth";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
+import { useHydrated } from "~/shared/hooks/use-hydrated";
 
 import type { Route } from "./+types/_auth.redefinir-senha";
 
@@ -18,6 +19,7 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export default function ResetPassword() {
+	const hydrated = useHydrated();
 	const [sentTo, setSentTo] = useState<string | null>(null);
 
 	const {
@@ -69,6 +71,7 @@ export default function ResetPassword() {
 			/>
 
 			<form
+				method="post"
 				noValidate
 				onSubmit={handleSubmit(({ email }) => setSentTo(email))}
 				className="flex flex-col gap-6"
@@ -80,7 +83,7 @@ export default function ResetPassword() {
 					error={errors.email?.message}
 					{...register("email")}
 				/>
-				<Button type="submit" className="w-full">
+				<Button type="submit" className="w-full" disabled={!hydrated}>
 					Enviar link
 				</Button>
 			</form>

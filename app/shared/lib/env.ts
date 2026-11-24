@@ -25,3 +25,20 @@ export function readApiEnv(
 		timeout: result.data.VITE_API_TIMEOUT,
 	};
 }
+
+export type RecaptchaKeys = {
+	v3: string | null;
+	v2: string | null;
+};
+
+export function readRecaptchaKeys(
+	source: Record<string, unknown> = import.meta.env,
+): RecaptchaKeys {
+	const key = (value: unknown) =>
+		typeof value === "string" && value.trim() ? value.trim() : null;
+
+	return {
+		v3: key(source.VITE_RECAPTCHA_SITE_KEY),
+		v2: key(source.VITE_RECAPTCHA_V2_SITE_KEY),
+	};
+}
