@@ -1,6 +1,6 @@
+import type { Plan } from "~/content/plans";
 import { findPlan } from "~/features/site/lib/cart";
 import { Trash2Icon } from "~/shared/components/icons";
-import type { Plan } from "~/shared/content/plans";
 import { cn } from "~/shared/lib/utils";
 
 type CartItemRowProps = {

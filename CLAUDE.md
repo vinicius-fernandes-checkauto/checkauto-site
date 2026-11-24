@@ -33,6 +33,7 @@ Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular 
 ## 3. Comandos
 
 ```bash
+cp .env.example .env                # variáveis locais (o .env não vai para o git)
 npm run dev                         # desenvolvimento
 npm run typecheck                   # tipos das rotas + tsc
 npm run lint                        # biome check
@@ -45,6 +46,7 @@ npx vitest run -t "<nome do teste>"             # um teste pelo nome
 ```
 
 - O Vitest só pega `app/**/*.test.ts` (não `.tsx`). Teste fica ao lado do arquivo testado.
+- `.env.example` vai para o git e tem **só nomes e comentários, nunca valores** (nem chaves públicas). Os valores ficam no `.env` local de cada um. Prefixo `VITE_` vai para o bundle do navegador: segredo nunca leva `VITE_`.
 - O `build` copia `build/client/__spa-fallback.html` para `404.html`, que é a página de erro servida pela Vercel.
 - `vercel.json` manda `X-Robots-Tag: noindex, nofollow` em tudo: o redesign ainda não deve ser indexado. Não remova sem o dono pedir.
 
@@ -58,6 +60,7 @@ app/
   root.tsx               HTML base, metadados, página de erro
   routes/                um arquivo por rota; só monta a página com peças de features/ e shared/
   assets/                imagens importadas (o Vite gera hash); prefira .webp
+  content/               dados e textos fixos do site: planos, FAQ, navegação, empresa (futuro Sanity)
   features/
     site/                site público
       components/        seções da home, header/footer do site, página do pacote, carrinho, contato, jurídico
@@ -68,16 +71,13 @@ app/
       components/        header, sidebar, menu, cards e diálogos da área do cliente
       lib/               dados de demonstração, schemas e helpers da conta
   shared/                só o que mais de uma área usa
-    api/                 cliente HTTP: getHttpClient, ApiError (seção 10.2)
     components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, LicensePlate, PlansComparison
     components/ui/       shadcn ajustado ao tema
-    content/             dados e textos fixos: planos, FAQ, navegação, empresa
     hooks/               useMediaQuery, useScrolled
-    lib/                 código de apoio: cn, gsap, form, env, placa, telefone
-    types/               tipos globais
+    lib/                 código de apoio: cn, gsap, form, placa, telefone
 ```
 
-`lib` é **código**; `content` são **dados**. Não existem `config/` nem `utils/`: configuração (variáveis de ambiente) e funções puras ficam em `lib/`. Esse é o mesmo padrão dos outros projetos do time e do shadcn (`lib/utils`).
+`lib` é **código**; `content` são **dados**. O `content/` da raiz fica isolado de propósito, porque vai ser substituído pelo Sanity: ele **não importa nada** de `features/` nem de `shared/` (tipos ficam no próprio arquivo), e quem lê dele são as features e o `shared/`. Não existem `config/` nem `utils/`: configuração e funções puras ficam em `lib/`. Esse é o mesmo padrão dos outros projetos do time e do shadcn (`lib/utils`).
 
 O contrato da API do backend fica em `docs/api/` (`openapi.json` + `README.md` com os endpoints que o site usa e o que falta confirmar).
 
@@ -88,8 +88,8 @@ Rotas:
 
 Regras de organização:
 
-- `features/*` pode importar de `shared/`; **`shared/` nunca importa de `features/`**.
-- Dentro de cada área e em `shared/` ficam só pastas por tipo (`api`, `components`, `content`, `hooks`, `lib`). **Sem subpastas por página.** Não crie pasta nova (`config`, `utils`, `helpers`, `constants`) sem combinar antes.
+- `features/*` pode importar de `shared/` e de `content/`; **`shared/` nunca importa de `features/`**; **`content/` não importa de ninguém**.
+- Dentro de cada área e em `shared/` ficam só pastas por tipo (`components`, `content`, `hooks`, `lib`; `shared/` não tem `content`). **Sem subpastas por página.** Não crie pasta nova (`config`, `utils`, `helpers`, `constants`) sem combinar antes.
 - Algo vai para `shared/` só quando **mais de uma área** usa. Se só o site usa, fica em `features/site`.
 - Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes na feature.
 - Imports sempre absolutos com `~/`. Relativo só entre arquivos da mesma pasta.
@@ -100,6 +100,29 @@ Regras de organização:
 - Formatação do Biome: tabs, aspas duplas, linha de 80 colunas. Imports em grupos: pacotes, depois `~/`, depois relativos, com linha em branco entre eles.
 
 ## 5. Design system
+
+### Regra: todo estilo vem do DS
+
+**Cor, raio, borda, sombra, tipografia e espaçamento saem sempre do design system**, nunca de um valor solto no código. Isso é regra, para o visual não ficar inconsistente.
+
+- Use só classes que apontam para os tokens de `app/app.css` ou para a escala padrão do Tailwind: `bg-primary`, `text-heading`, `border-border`, `rounded-3xl`, `rounded-full`, `text-sm`, `font-medium`, `gap-4`.
+- **Proibido em código novo:**
+  - valores arbitrários de estilo: `text-[0.9375rem]`, `rounded-[1.75rem]`, `shadow-[…]`, `bg-[#…]`, `bg-[color-mix(…)]`;
+  - cor em hex, `rgb()` ou `oklch()` dentro de componente;
+  - `style={{ … }}` para cor, raio, borda, sombra ou fonte;
+  - paleta crua do Tailwind em UI (`slate-300`, `navy-50`, `green-50`). Use os tokens semânticos ou a cor da marca com opacidade.
+- **Permitido:**
+  - opacidade sobre token, como `bg-brand-blue/6` e `border-brand-green/50`;
+  - a máscara dos arcos da marca (`style={{ maskImage: url(...) }}`);
+  - valores de **posição e tamanho de layout**, que não são estilo visual: `top-[17%]`, `w-[min(…)]`, `lg:min-h-[calc(100svh-…)]`, `cqw`.
+- **Tokens têm a nomenclatura do shadcn e não se criam tokens novos.** Os nomes são os do shadcn/Tailwind (`background`, `card`, `primary`, `muted-foreground`, `border`, `ring`, `--radius`, `shadow-*`, `text-*`) mais os da marca que já existem (`heading`, `highlight`, `brand-*`).
+- **Faltou um valor?** Não use arbitrário nem crie token. **Ajuste o valor do token que já existe** em `app/app.css` (`:root` ou `@theme`) para seguir o padrão visual do DS, ou use o degrau mais próximo da escala.
+- **Dívida conhecida:** o código ainda tem valores soltos, anteriores a esta regra:
+  - cerca de 85 tamanhos de texto arbitrários (`0.625rem`, `0.6875rem`, `0.8125rem`, `0.9375rem`, `1.75rem`, `2.75rem`);
+  - 23 sombras arbitrárias, 3 `color-mix` e 4 raios arbitrários;
+  - 8 cores em hex nos componentes e usos de `navy-*`/`slate-*`.
+
+  Ao mexer num arquivo, troque pelo degrau mais próximo da escala ou do token existente (por exemplo `text-[0.8125rem]` → `text-sm`, `shadow-[…]` → `shadow-*` do tema), **sem criar token**. Se a troca mudar demais o visual, ajuste o valor do token no `app.css` em vez de manter o arbitrário.
 
 ### Cores da marca (fixas)
 
@@ -115,24 +138,24 @@ Regras de cor:
 
 - **Botão é `bg-primary` (#008143).** O verde claro #66C61C nunca vai em fundo de botão nem em texto pequeno sobre fundo claro, porque não passa em contraste.
 - **Tons claros saem da cor da marca com opacidade**, não da paleta do Tailwind: `bg-brand-blue/6`, `bg-brand-green/15`, `border-brand-green/50`, `--alpha(var(--color-brand-blue)/35%)` em sombras. Evite `green-50`, `navy-50` e `slate-*` em UI nova, salvo semântica (erro, alerta).
-- Tom claro opaco, para cards sobre formas decorativas: `bg-[color-mix(in_oklab,var(--color-brand-green)_12%,var(--card))]`.
+- Tom claro opaco, para cards sobre formas decorativas: hoje usa `color-mix` inline (dívida). Em código novo, use um token existente (`bg-accent`, `bg-muted`, `bg-card`) ou a cor da marca com opacidade.
 - Fundo de página e seção: `bg-background` (#F3F5F2). Cards: `bg-card`. Bordas: `border-border`.
 
 ### Tokens
 
 Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css`: `background`, `foreground`, `heading`, `card`, `muted`, `muted-foreground`, `primary`, `secondary`, `accent`, `highlight`, `destructive`, `border`, `ring`.
 
-- **Não crie tokens novos** (`bg-paper`, `border-hairline`) nem estilos de texto globais (`text-h2`). Se um conjunto de classes se repete em vários lugares, **pergunte antes** de extrair um estilo global.
+- **Não crie tokens novos** (`bg-paper`, `border-hairline`, `text-h2`, `shadow-card`). Os tokens seguem a nomenclatura do shadcn; para mudar o visual, ajuste o **valor** dos tokens existentes no `app.css`. Se um conjunto de classes se repete, extraia um **componente** (seção 5, Componentes-base), não um token.
 - Raio base `--radius: 1rem`. Cards usam `rounded-3xl`/`rounded-4xl`; botões, campos e chips usam `rounded-full`.
 
 ### Tipografia
 
 - **Poppins** 400/500/600 (`font-sans` e `font-heading`). Os títulos (`h1`–`h6`) já saem com `text-heading` e `text-balance` pela base.
-- Tipografia inline com a escala do Tailwind, por exemplo:
+- Tipografia com a escala do Tailwind, por exemplo:
   - título de página: `text-3xl/tight font-medium tracking-tight lg:text-4xl/tight`;
-  - título de seção: `text-4xl`–`5xl`, `font-medium tracking-tight`;
-  - corpo: `text-[0.9375rem]/6` ou `text-base/relaxed text-muted-foreground`;
-  - rótulo: `text-[0.8125rem] font-medium`.
+  - título de seção: hoje `lg:text-[2.75rem]/[1.1]` (dívida: passar para o degrau da escala, como `lg:text-5xl`, ajustando o valor do degrau no `@theme` se precisar);
+  - corpo: `text-base/relaxed text-muted-foreground` ou `text-sm/6`;
+  - rótulo: `text-sm font-medium`.
 - Eyebrow de seção: `<SectionEyebrow>`, que usa caixa alta, `tracking-widest` e `text-highlight`. Sem ícone.
 
 ### Componentes-base
@@ -195,7 +218,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Diga **"veículo"**, não "carro".
 - Não cite a **DEKRA**.
 - Não use **"lojista"** no header nem na navegação.
-- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/shared/content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
+- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
 - Números da empresa: abreviados e grandes ("+250 mil", não o número cheio).
 - Placa de exemplo: `ABC1D23` (Mercosul).
 
@@ -205,7 +228,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Componentes como `function` nomeada e exportada. Props tipadas com `type XProps`.
 - Estado derivado em vez de `useEffect`. Para assinar eventos do navegador, use `useSyncExternalStore` (veja `use-scrolled.ts` e `use-media-query.ts`).
 - Classes condicionais com `cn(...)`. O Biome ordena as classes, então rode `--write --unsafe`.
-- Dados fixos ficam em `content/` (da área ou de `shared/`) e dados de demonstração no `lib/` da área, nunca soltos no JSX.
+- Dados fixos ficam em `content/` (o da raiz, ou o da área para textos que só ela usa) e dados de demonstração no `lib/` da área, nunca soltos no JSX.
 - Não adicione dependência sem necessidade clara. Prefira o que já está no projeto.
 
 ### 10.1 Formulários (regra)
@@ -221,14 +244,6 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Campo condicional, como a inscrição estadual quando a empresa é isenta: `register("campo", { disabled })` + `watch`, e o schema trata o valor opcional (`.optional()` + `refine`).
 - Depois do envio: `reset()` para limpar, e estado local só para a tela de sucesso (`sent`, `done`).
 
-### 10.2 Integração com a API
-
-- Componentes e rotas **nunca importam `axios`** (o Biome bloqueia). Use `getHttpClient()` de `~/shared/api` dentro de um serviço.
-- O cliente é criado só na primeira chamada e só no navegador. O prerender roda em Node e **nunca** chama a API: chame em `clientLoader`, evento ou efeito, não no nível do módulo.
-- Erros chegam sempre como `ApiError` (`code`, `status`, `details`), com mensagem padrão em português. Erros de campo do Django REST ficam em `details`.
-- Variáveis: copie `.env.example` para `.env`. Tudo que começa com `VITE_` vai para o bundle público, então **nunca** coloque segredo nelas.
-- O contrato da API está em `docs/api/`.
-
 ## 11. Fluxo de trabalho
 
 1. Mudança visual grande, como seção nova ou página nova: **prototipe primeiro** (Claude Design) e só implemente depois da aprovação.
@@ -239,7 +254,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 
 ## 12. Critérios de pronto
 
-- [ ] Segue as cores, os tokens e a tipografia desta spec, sem tokens novos e sem paleta do Tailwind.
+- [ ] Todo estilo vem do DS (seção 5): sem valores arbitrários de cor, raio, borda, sombra ou tipografia, sem hex e sem paleta crua do Tailwind.
 - [ ] Cabe no viewport do desktop (home) e não rola para os lados no mobile.
 - [ ] Acessível: foco, labels, `h1` único, toque de 44px, reduced motion.
 - [ ] Componentes na pasta certa (`site`, `auth`, `account` ou `shared`) e rota enxuta.

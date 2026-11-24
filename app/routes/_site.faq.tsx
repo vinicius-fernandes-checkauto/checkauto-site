@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { faq, faqCategories } from "~/content/faq";
 import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon, SearchIcon, XIcon } from "~/shared/components/icons";
 import {
@@ -10,7 +11,6 @@ import {
 	AccordionTrigger,
 } from "~/shared/components/ui/accordion";
 import { Button } from "~/shared/components/ui/button";
-import { faq, faqCategories } from "~/shared/content/faq";
 import { cn } from "~/shared/lib/utils";
 
 import type { Route } from "./+types/_site.faq";

@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { accountNav } from "~/content/navigation";
 import type { AccountUser } from "~/features/account/lib/account";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import {
@@ -19,7 +20,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "~/shared/components/ui/dropdown-menu";
-import { accountNav } from "~/shared/content/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const accountMenu = [

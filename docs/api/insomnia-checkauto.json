@@ -235,10 +235,10 @@
 			"_id": "req_4e3d91444d2d47e7ed5711fd",
 			"_type": "request",
 			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
-			"name": "Cadastro (POST /user/signup/)",
-			"description": "Corpo montado com o schema User + campos da especificação (accept_terms, terms_version, marketing_consent, reCAPTCHA). O Swagger não documenta o corpo: confirme os campos com o backend. Em 24/11/2026 a rota respondeu 401 sem autenticação.",
+			"name": "Cadastro do site (POST /signup/)",
+			"description": "Cadastro público do site novo (sem token). Campos do schema User + accept_terms, terms_version, marketing_consent e reCAPTCHA (v3 ação signup; v2 só quando o backend responder recaptcha_fallback_required). Spec: docs/api/cadastro-aceite-contrato.md.",
 			"method": "POST",
-			"url": "{{ _.base_url }}/user/signup/",
+			"url": "{{ _.base_url }}/signup/",
 			"body": {
 				"mimeType": "application/json",
 				"text": "{\n  \"first_name\": \"Teste\",\n  \"last_name\": \"Checkauto Site\",\n  \"email\": \"{{ _.test_email }}\",\n  \"birth\": \"1990-01-15\",\n  \"cpf\": \"529.982.247-25\",\n  \"phone\": \"(11) 91234-5678\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"password\": \"{{ _.test_password }}\",\n  \"accept_terms\": true,\n  \"terms_version\": \"{{ _.terms_version }}\",\n  \"marketing_consent\": false,\n  \"recaptcha_token\": \"{{ _.recaptcha_token }}\",\n  \"recaptcha_token_v2\": \"{{ _.recaptcha_token_v2 }}\"\n}"
@@ -5445,13 +5445,13 @@
 			"_id": "req_b33bfec043c46dad4d8b7c0c",
 			"_type": "request",
 			"parentId": "fld_12dea96fec20593566ab7569",
-			"name": "POST /user/signup/",
-			"description": "",
+			"name": "Cadastro pela equipe — Corp (POST /user/signup/)",
+			"description": "Só admin (JWT de perfil 3): anônimo 401, outro perfil 403. Sem reCAPTCHA. O aceite fica registrado como atestado pela equipe.",
 			"method": "POST",
 			"url": "{{ _.base_url }}/user/signup/",
 			"body": {
 				"mimeType": "application/json",
-				"text": "{}"
+				"text": "{\n  \"first_name\": \"Teste\",\n  \"last_name\": \"Checkauto Site\",\n  \"email\": \"{{ _.test_email }}\",\n  \"birth\": \"1990-01-15\",\n  \"cpf\": \"529.982.247-25\",\n  \"phone\": \"(11) 91234-5678\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"password\": \"{{ _.test_password }}\",\n  \"accept_terms\": true,\n  \"terms_version\": \"{{ _.terms_version }}\",\n  \"marketing_consent\": false\n}"
 			},
 			"parameters": [],
 			"headers": [
@@ -5468,7 +5468,11 @@
 					"value": "application/json"
 				}
 			],
-			"authentication": {},
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
 			"metaSortKey": 161,
 			"settingEncodeUrl": true,
 			"settingFollowRedirects": "global",

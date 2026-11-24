@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { contact } from "~/content/company";
 import { PageHeader } from "~/features/site/components/page-header";
 import type {
 	LegalBlock,
@@ -11,7 +12,6 @@ import {
 	MailIcon,
 	PhoneIcon,
 } from "~/shared/components/icons";
-import { contact } from "~/shared/content/company";
 import { cn } from "~/shared/lib/utils";
 
 function useActiveSection(ids: string[]) {

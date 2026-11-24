@@ -2,6 +2,12 @@ import { Link, useNavigate } from "react-router";
 
 import ring from "~/assets/brand/symbol-ring-blue.webp";
 import {
+	type Plan,
+	planFeatures,
+	plans,
+	sharedExtraInfoCount,
+} from "~/content/plans";
+import {
 	IncludedMark,
 	MissingMark,
 } from "~/features/site/components/plan-marks";
@@ -12,12 +18,6 @@ import {
 	savePlan,
 } from "~/features/site/lib/plan-selection";
 import { ChevronRightIcon } from "~/shared/components/icons";
-import {
-	type Plan,
-	planFeatures,
-	plans,
-	sharedExtraInfoCount,
-} from "~/shared/content/plans";
 import { cn } from "~/shared/lib/utils";
 
 function PlanSwitcher({ current }: { current: Plan }) {

@@ -1,4 +1,7 @@
-import type { NavLink } from "~/shared/types";
+export type NavLink = {
+	label: string;
+	to: string;
+};
 
 export const headerNav: NavLink[] = [
 	{ label: "Por que Checkauto", to: "/#por-que-checkauto" },

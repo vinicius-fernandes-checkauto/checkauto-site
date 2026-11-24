@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { plans } from "~/shared/content/plans";
+import { plans } from "~/content/plans";
 import { plateSchema } from "~/shared/lib/plate";
 
 export const newQuerySchema = z.object({

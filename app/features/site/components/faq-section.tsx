@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { homeFaq } from "~/content/faq";
 import {
 	Accordion,
 	AccordionContent,
@@ -7,7 +8,6 @@ import {
 	AccordionTrigger,
 } from "~/shared/components/ui/accordion";
 import { Button } from "~/shared/components/ui/button";
-import { homeFaq } from "~/shared/content/faq";
 
 export function FaqSection() {
 	return (

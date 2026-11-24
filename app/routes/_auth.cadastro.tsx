@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { legalNav } from "~/content/navigation";
 import {
 	AuthField,
 	AuthHeading,
@@ -12,8 +13,6 @@ import {
 } from "~/features/auth/components/auth-form";
 import { formatCpf, signUpSchema } from "~/features/auth/lib/auth";
 import { Button } from "~/shared/components/ui/button";
-import { legalNav } from "~/shared/content/navigation";
-import { useHydrated } from "~/shared/hooks/use-hydrated";
 import { withMask } from "~/shared/lib/form";
 
 import type { Route } from "./+types/_auth.cadastro";
@@ -33,7 +32,6 @@ const privacyLink = legalNav.find(
 );
 
 export default function SignUp() {
-	const hydrated = useHydrated();
 	const {
 		register,
 		handleSubmit,
@@ -51,7 +49,6 @@ export default function SignUp() {
 			/>
 
 			<form
-				method="post"
 				noValidate
 				onSubmit={handleSubmit(() => {})}
 				className="flex flex-col gap-6"
@@ -99,7 +96,7 @@ export default function SignUp() {
 					</TextLink>
 				</TermsCheckbox>
 
-				<Button type="submit" className="w-full" disabled={!hydrated}>
+				<Button type="submit" className="w-full">
 					Criar conta
 				</Button>
 			</form>

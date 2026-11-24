@@ -1,5 +1,7 @@
 import { Link } from "react-router";
 
+import { company, contact, socialLinks } from "~/content/company";
+import { footerNav, legalNav } from "~/content/navigation";
 import { ScrollToTopButton } from "~/features/site/components/scroll-to-top-button";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 import {
@@ -10,8 +12,6 @@ import {
 	SecureSealIcon,
 	YoutubeIcon,
 } from "~/shared/components/icons";
-import { company, contact, socialLinks } from "~/shared/content/company";
-import { footerNav, legalNav } from "~/shared/content/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const year = new Date().getFullYear();

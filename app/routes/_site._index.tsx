@@ -1,3 +1,4 @@
+import { homeFaq } from "~/content/faq";
 import { ClientsSection } from "~/features/site/components/clients-section";
 import { CtaSection } from "~/features/site/components/cta-section";
 import { DataSection } from "~/features/site/components/data-section";
@@ -7,7 +8,6 @@ import { PlansSection } from "~/features/site/components/plans-section";
 import { HeroSection } from "~/features/site/components/sections/hero-section";
 import { MarqueeSection } from "~/features/site/components/sections/marquee-section";
 import { WhySection } from "~/features/site/components/sections/why-section";
-import { homeFaq } from "~/shared/content/faq";
 
 import type { Route } from "./+types/_site._index";
 

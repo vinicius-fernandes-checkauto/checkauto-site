@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { accountNav, headerNav } from "~/content/navigation";
 import type { AccountUser } from "~/features/account/lib/account";
 import { HeaderCart } from "~/features/site/components/header-cart";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
@@ -15,7 +16,6 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
-import { accountNav, headerNav } from "~/shared/content/navigation";
 import { useScrolled } from "~/shared/hooks/use-scrolled";
 import { cn } from "~/shared/lib/utils";
 

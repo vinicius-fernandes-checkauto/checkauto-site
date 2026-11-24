@@ -1,5 +1,12 @@
 import { Link, useNavigate } from "react-router";
 
+import {
+	type Plan,
+	planComparisonItems,
+	planIncludes,
+	planInfoGroups,
+	plans,
+} from "~/content/plans";
 import { IncludedMark } from "~/features/site/components/plan-marks";
 import { PLATE_STORAGE_KEY } from "~/features/site/components/plate-form";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
@@ -9,13 +16,6 @@ import {
 } from "~/features/site/lib/plan-selection";
 import { MinusIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
-import {
-	type Plan,
-	planComparisonItems,
-	planIncludes,
-	planInfoGroups,
-	plans,
-} from "~/shared/content/plans";
 import { cn } from "~/shared/lib/utils";
 
 export function PlanComparison({ plan }: { plan: Plan }) {

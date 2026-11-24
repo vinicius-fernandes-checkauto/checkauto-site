@@ -1,10 +1,10 @@
 import { Link, useParams } from "react-router";
 
+import { plans } from "~/content/plans";
 import { PlanComparison } from "~/features/site/components/plan-comparison";
 import { PlanHero } from "~/features/site/components/plan-hero";
 import { PlanInfoGroups } from "~/features/site/components/plan-info-groups";
 import { Button } from "~/shared/components/ui/button";
-import { plans } from "~/shared/content/plans";
 
 import type { Route } from "./+types/_site.pacotes.$planId";
 

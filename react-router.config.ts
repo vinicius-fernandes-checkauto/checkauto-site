@@ -1,6 +1,6 @@
 import type { Config } from "@react-router/dev/config";
 
-import { plans } from "./app/shared/content/plans";
+import { plans } from "./app/content/plans";
 
 export default {
 	ssr: false,

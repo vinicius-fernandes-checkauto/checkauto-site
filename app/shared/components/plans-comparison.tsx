@@ -3,12 +3,6 @@ import { type ReactNode, useState } from "react";
 import { Link } from "react-router";
 
 import {
-	BadgeCheckIcon,
-	ChevronDownIcon,
-	MinusIcon,
-} from "~/shared/components/icons";
-import { Button } from "~/shared/components/ui/button";
-import {
 	type Plan,
 	type PlanInfoItem,
 	planDifferentiatorItems,
@@ -16,7 +10,13 @@ import {
 	planHighlightItems,
 	planIncludes,
 	plans,
-} from "~/shared/content/plans";
+} from "~/content/plans";
+import {
+	BadgeCheckIcon,
+	ChevronDownIcon,
+	MinusIcon,
+} from "~/shared/components/icons";
+import { Button } from "~/shared/components/ui/button";
 import { cn } from "~/shared/lib/utils";
 
 type ComparisonItem = PlanInfoItem & { hint?: string };

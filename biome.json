@@ -29,8 +29,7 @@
 					"options": {
 						"paths": {
 							"lucide-react": "Importe ícones de ~/shared/components/icons.",
-							"cn": "Importe cn de ~/shared/lib/utils.",
-							"axios": "Use getHttpClient() de ~/shared/api em um serviço."
+							"cn": "Importe cn de ~/shared/lib/utils."
 						}
 					}
 				}
@@ -41,8 +40,7 @@
 		{
 			"includes": [
 				"app/shared/components/icons.tsx",
-				"app/shared/lib/utils.ts",
-				"app/shared/api/**"
+				"app/shared/lib/utils.ts"
 			],
 			"linter": {
 				"rules": {
