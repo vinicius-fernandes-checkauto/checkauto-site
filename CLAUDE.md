@@ -218,6 +218,14 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Campo condicional, como a inscrição estadual quando a empresa é isenta: `register("campo", { disabled })` + `watch`, e o schema trata o valor opcional (`.optional()` + `refine`).
 - Depois do envio: `reset()` para limpar, e estado local só para a tela de sucesso (`sent`, `done`).
 
+### 10.2 Integração com a API
+
+- Componentes e rotas **nunca importam `axios`** (o Biome bloqueia). Use `getHttpClient()` de `~/shared/api` dentro de um serviço.
+- O cliente é criado só na primeira chamada e só no navegador. O prerender roda em Node e **nunca** chama a API: chame em `clientLoader`, evento ou efeito, não no nível do módulo.
+- Erros chegam sempre como `ApiError` (`code`, `status`, `details`), com mensagem padrão em português. Erros de campo do Django REST ficam em `details`.
+- Variáveis: copie `.env.example` para `.env`. Tudo que começa com `VITE_` vai para o bundle público, então **nunca** coloque segredo nelas.
+- O contrato da API está em `docs/api/`.
+
 ## 11. Fluxo de trabalho
 
 1. Mudança visual grande, como seção nova ou página nova: **prototipe primeiro** (Claude Design) e só implemente depois da aprovação.
