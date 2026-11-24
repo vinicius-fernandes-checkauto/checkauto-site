@@ -9,6 +9,7 @@ export {
 	defaultErrorMessages,
 	isApiError,
 } from "./api-error";
+export { envelope } from "./envelope";
 export type { HttpClient, HttpQuery, HttpRequestConfig } from "./http-client";
 
 let client: HttpClient | undefined;

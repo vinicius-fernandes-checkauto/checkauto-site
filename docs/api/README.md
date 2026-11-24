@@ -1,5 +1,7 @@
 # Contrato da API do backend
 
+Especificações complementares do backend: [`cadastro-aceite-contrato.md`](cadastro-aceite-contrato.md) (aceite do contrato, consentimento de marketing, reCAPTCHA no cadastro, login com Google).
+
 `openapi.json` é uma cópia do Swagger do backend (Info Magic Service, Swagger 2.0, 135 endpoints), salva em 23/11/2026 a partir de `https://dashiest-frazzledly-vihaan.ngrok-free.dev/swagger/`.
 
 O endereço do ngrok muda quando o túnel reinicia. Para atualizar a cópia com o endereço novo:

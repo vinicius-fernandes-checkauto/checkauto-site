@@ -26,6 +26,17 @@ describe("toApiError", () => {
 		expect(error.message).toBe("Credenciais inválidas.");
 	});
 
+	it("guarda o código do backend em reason", () => {
+		const error = toApiError(
+			responseError(401, {
+				detail: "Complete o reCAPTCHA para continuar.",
+				code: "recaptcha_fallback_required",
+			}),
+		);
+		expect(error.reason).toBe("recaptcha_fallback_required");
+		expect(error.message).toBe("Complete o reCAPTCHA para continuar.");
+	});
+
 	it("guarda os erros de campo em details", () => {
 		const data = { email: ["Informe um e-mail válido."] };
 		const error = toApiError(responseError(400, data));

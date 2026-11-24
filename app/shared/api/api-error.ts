@@ -33,6 +33,7 @@ export function codeFromStatus(status: number): ApiErrorCode {
 type ApiErrorOptions = {
 	code: ApiErrorCode;
 	status?: number;
+	reason?: string;
 	message?: string;
 	details?: unknown;
 	cause?: unknown;
@@ -41,13 +42,22 @@ type ApiErrorOptions = {
 export class ApiError extends Error {
 	readonly code: ApiErrorCode;
 	readonly status?: number;
+	readonly reason?: string;
 	readonly details?: unknown;
 
-	constructor({ code, status, message, details, cause }: ApiErrorOptions) {
+	constructor({
+		code,
+		status,
+		reason,
+		message,
+		details,
+		cause,
+	}: ApiErrorOptions) {
 		super(message ?? defaultErrorMessages[code], { cause });
 		this.name = "ApiError";
 		this.code = code;
 		this.status = status;
+		this.reason = reason;
 		this.details = details;
 	}
 }

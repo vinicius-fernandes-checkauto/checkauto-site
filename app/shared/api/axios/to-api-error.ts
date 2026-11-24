@@ -2,10 +2,10 @@ import { isAxiosError } from "axios";
 
 import { ApiError, codeFromStatus } from "~/shared/api/api-error";
 
-function detailMessage(data: unknown) {
-	if (data && typeof data === "object" && "detail" in data) {
-		const { detail } = data;
-		if (typeof detail === "string" && detail.trim()) return detail;
+function stringField(data: unknown, key: "detail" | "code") {
+	if (data && typeof data === "object" && key in data) {
+		const value = (data as Record<string, unknown>)[key];
+		if (typeof value === "string" && value.trim()) return value;
 	}
 	return undefined;
 }
@@ -34,7 +34,8 @@ export function toApiError(error: unknown): ApiError {
 	return new ApiError({
 		code: codeFromStatus(status),
 		status,
-		message: detailMessage(data),
+		reason: stringField(data, "code"),
+		message: stringField(data, "detail"),
 		details: data,
 		cause: error,
 	});
