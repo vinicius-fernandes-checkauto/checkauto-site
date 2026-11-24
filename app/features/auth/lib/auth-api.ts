@@ -9,6 +9,33 @@ export const authTokensSchema = z.object({
 
 export type AuthTokens = z.output<typeof authTokensSchema>;
 
+export const sessionUserSchema = z.object({
+	id: z.string().min(1),
+	email: z.string(),
+	name: z.string(),
+	profile: z.string(),
+	first_login: z.string().optional(),
+	corporate_id: z.string().nullish(),
+	corporate_name: z.string().nullish(),
+});
+
+export const loginResponseSchema = authTokensSchema
+	.extend(sessionUserSchema.shape)
+	.transform(({ access, refresh, ...user }) => ({
+		tokens: { access, refresh },
+		user: {
+			id: user.id,
+			email: user.email,
+			name: user.name,
+			profile: user.profile,
+			firstLogin: user.first_login === "1",
+			corporateId: user.corporate_id ?? null,
+			corporateName: user.corporate_name ?? null,
+		},
+	}));
+
+export type LoginResponse = z.output<typeof loginResponseSchema>;
+
 export const refreshedTokensSchema = z.object({
 	access: z.string().min(1),
 	refresh: z.string().min(1).optional(),

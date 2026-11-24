@@ -15,9 +15,21 @@ function fakeHttp(response: unknown): HttpClient {
 }
 
 describe("authService", () => {
-	it("envia o e-mail como username e devolve os tokens", async () => {
-		const http = fakeHttp({ access: "a1", refresh: "r1" });
-		const tokens = await createAuthService(http).login({
+	it("envia o e-mail como username e separa tokens e usuário", async () => {
+		const http = fakeHttp({
+			access: "a1",
+			refresh: "r1",
+			id: "u1",
+			email: "cliente@exemplo.com",
+			name: "Cliente Teste",
+			profile: "4",
+			first_login: "0",
+			corporate_id: null,
+			corporate_name: null,
+			checkmatch_token: "nao-deve-ser-guardado",
+			checkmatch: false,
+		});
+		const result = await createAuthService(http).login({
 			email: "cliente@exemplo.com",
 			password: "Senha@123",
 			recaptchaToken: "v3",
@@ -29,7 +41,18 @@ describe("authService", () => {
 			recaptcha_token: "v3",
 			recaptcha_token_v2: undefined,
 		});
-		expect(tokens).toEqual({ access: "a1", refresh: "r1" });
+		expect(result).toEqual({
+			tokens: { access: "a1", refresh: "r1" },
+			user: {
+				id: "u1",
+				email: "cliente@exemplo.com",
+				name: "Cliente Teste",
+				profile: "4",
+				firstLogin: false,
+				corporateId: null,
+				corporateName: null,
+			},
+		});
 	});
 
 	it("recusa resposta de login sem token", async () => {

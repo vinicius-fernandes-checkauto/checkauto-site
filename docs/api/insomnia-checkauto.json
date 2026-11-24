@@ -1,0 +1,5595 @@
+{
+	"_type": "export",
+	"__export_format": 4,
+	"__export_date": "2026-11-24T12:00:00.000Z",
+	"__export_source": "checkauto-site:docs/api/openapi.json",
+	"resources": [
+		{
+			"_id": "wrk_checkauto_api",
+			"_type": "workspace",
+			"name": "Checkauto API",
+			"description": "Gerado a partir de docs/api/openapi.json e docs/api/cadastro-aceite-contrato.md.",
+			"scope": "collection",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "env_checkauto_base",
+			"_type": "environment",
+			"parentId": "wrk_checkauto_api",
+			"name": "Base Environment",
+			"data": {
+				"base_url": "https://dashiest-frazzledly-vihaan.ngrok-free.dev",
+				"access_token": "{% response 'body', 'req_checkauto_auth_login', 'b64::JC5hY2Nlc3M=::46b', 'never', 60 %}",
+				"refresh_token": "{% response 'body', 'req_checkauto_auth_login', 'b64::JC5yZWZyZXNo::46b', 'never', 60 %}",
+				"test_email": "teste.site@example.com",
+				"test_password": "Teste@2026",
+				"recaptcha_token": "",
+				"recaptcha_token_v2": "",
+				"terms_version": "2026-11",
+				"api_id": "",
+				"call_id": "",
+				"company_id": "",
+				"export_id": "",
+				"licensing_id": "",
+				"logs_id": "",
+				"onboarding_id": "",
+				"order_id": "",
+				"precificador_id": "",
+				"product_id": "",
+				"provider_code": "",
+				"provider_id": "",
+				"report_id": "",
+				"token_onboarding": "",
+				"user_id": ""
+			},
+			"dataPropertyOrder": {
+				"&": [
+					"base_url",
+					"access_token",
+					"refresh_token",
+					"test_email",
+					"test_password",
+					"recaptcha_token",
+					"recaptcha_token_v2",
+					"terms_version",
+					"api_id",
+					"call_id",
+					"company_id",
+					"export_id",
+					"licensing_id",
+					"logs_id",
+					"onboarding_id",
+					"order_id",
+					"precificador_id",
+					"product_id",
+					"provider_code",
+					"provider_id",
+					"report_id",
+					"token_onboarding",
+					"user_id"
+				]
+			},
+			"color": null,
+			"isPrivate": false,
+			"metaSortKey": 1,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "env_checkauto_ngrok",
+			"_type": "environment",
+			"parentId": "env_checkauto_base",
+			"name": "Dev (ngrok)",
+			"data": {
+				"base_url": "https://dashiest-frazzledly-vihaan.ngrok-free.dev"
+			},
+			"dataPropertyOrder": {
+				"&": ["base_url"]
+			},
+			"color": "#008143",
+			"isPrivate": false,
+			"metaSortKey": 2,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_fe5f4bf20182c3ecc7157dd2",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "00 · Site: auth e cadastro",
+			"metaSortKey": -999000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_checkauto_auth_login",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Login (POST /token/)",
+			"description": "Devolve access e refresh. Sem reCAPTCHA válido responde 401 com code recaptcha_fallback_required. As variáveis access_token e refresh_token do ambiente leem a resposta desta requisição.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/token/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"username\": \"{{ _.test_email }}\",\n  \"password\": \"{{ _.test_password }}\",\n  \"recaptcha_token\": \"{{ _.recaptcha_token }}\",\n  \"recaptcha_token_v2\": \"{{ _.recaptcha_token_v2 }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 1,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_checkauto_auth_refresh",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Renovar token (POST /token/refresh/)",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/token/refresh/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"refresh\": \"{{ _.refresh_token }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 2,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_86a4261d849a6e99b3c3a38f",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Validar token (POST /token/verify/)",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/token/verify/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"token\": \"{{ _.access_token }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 3,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_checkauto_auth_terms",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Contrato vigente (GET /user/terms/current/)",
+			"description": "Público. content = { version, content, published_at }. 404 se não houver contrato publicado.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/terms/current/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 4,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4e3d91444d2d47e7ed5711fd",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Cadastro (POST /user/signup/)",
+			"description": "Corpo montado com o schema User + campos da especificação (accept_terms, terms_version, marketing_consent, reCAPTCHA). O Swagger não documenta o corpo: confirme os campos com o backend. Em 24/11/2026 a rota respondeu 401 sem autenticação.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/signup/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"first_name\": \"Teste\",\n  \"last_name\": \"Checkauto Site\",\n  \"email\": \"{{ _.test_email }}\",\n  \"birth\": \"1990-01-15\",\n  \"cpf\": \"529.982.247-25\",\n  \"phone\": \"(11) 91234-5678\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"password\": \"{{ _.test_password }}\",\n  \"accept_terms\": true,\n  \"terms_version\": \"{{ _.terms_version }}\",\n  \"marketing_consent\": false,\n  \"recaptcha_token\": \"{{ _.recaptcha_token }}\",\n  \"recaptcha_token_v2\": \"{{ _.recaptcha_token_v2 }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 5,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_5bfa1070b9be636057c738dc",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Esqueci a senha (POST /user/forgot-password/)",
+			"description": "O Swagger não documenta o corpo; e-mail é um palpite. Confirme com o backend.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/forgot-password/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"email\": \"{{ _.test_email }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 6,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_28156b7e51d7c65bb8edd514",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Trocar senha (POST /user/change-password/)",
+			"description": "O Swagger não documenta o corpo; nomes dos campos são palpite. Confirme com o backend.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/change-password/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"old_password\": \"{{ _.test_password }}\",\n  \"new_password\": \"Teste@2027\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 7,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b1c1d8736f20db3fb6c1c66b",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Meus dados (GET /user/retrieve/{id}/)",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/retrieve/{{ _.user_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 8,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_a286075043d42dcdce8d6668",
+			"_type": "request",
+			"parentId": "fld_fe5f4bf20182c3ecc7157dd2",
+			"name": "Consentimento de marketing (PUT /user/update/{id}/)",
+			"description": "Não envie marketing_consent_at: a API responde 403.",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/user/update/{{ _.user_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"marketing_consent\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 9,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_a033a528b603fed46f861d4b",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "api",
+			"metaSortKey": -998000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_d5110b45d86382f7f7d12686",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "POST /api/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/api/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"provider\": \"00000000-0000-0000-0000-000000000000\",\n  \"category\": \"1\",\n  \"name\": \"Teste Checkauto\",\n  \"description\": \"texto\",\n  \"request_type\": \"1\",\n  \"method\": \"1\",\n  \"auth_type\": \"1\",\n  \"url\": \"texto\",\n  \"dynamic_token\": false,\n  \"dynamic_token_id\": \"texto\",\n  \"parameters\": {},\n  \"response_type\": \"1\",\n  \"structure\": \"texto\",\n  \"webhook\": false,\n  \"is_active\": true,\n  \"cache_enabled\": false,\n  \"cache_ttl_days\": 1,\n  \"cache_required_response_paths\": {},\n  \"timeout_seconds\": 1,\n  \"failure_rule\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 12,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_5526e065c510b28c0f590cf9",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "POST /api/create_description_api/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/api/create_description_api/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"name\": \"Teste Checkauto\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 13,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_cc1fc2959cb54e85dff6fc1c",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "POST /api/default-failure-message/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/api/default-failure-message/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"rules\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 14,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_56a84a77b28af80d78523a2b",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "DELETE /api/default-failure-message/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/api/default-failure-message/destroy/{{ _.api_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 15,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_2c17c6e380d686c5c7ab1a43",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/default-failure-message/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/default-failure-message/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 16,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_2d65440d59660d77762d153a",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/default-failure-message/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/default-failure-message/retrieve/{{ _.api_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 17,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4984af1b9fdd9fb162bbee55",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "PUT /api/default-failure-message/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/api/default-failure-message/update/{{ _.api_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"rules\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 18,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_47224add5e2cc240a28450db",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "DELETE /api/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/api/destroy/{{ _.api_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 19,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4bcf5382b17922eaffecc448",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 20,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_90ca2e27a981cdd341d79046",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/list/all/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/list/all/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 21,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_2912c328a5e668e6adf15b0a",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/list/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/list/{{ _.api_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 22,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_cebab17d25b5f4d4083e9e8a",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/list_description_api/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/list_description_api/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 23,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_8bf681cb9964e4e11b5e9ab4",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "GET /api/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/api/retrieve/{{ _.api_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 24,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_9b53724b8be09fa351a255c7",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "POST /api/token/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/api/token/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"username\": \"{{ _.test_email }}\",\n  \"password\": \"{{ _.test_password }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 25,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0e26e4f1b38eb0d363cd3bff",
+			"_type": "request",
+			"parentId": "fld_a033a528b603fed46f861d4b",
+			"name": "PUT /api/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/api/update/{{ _.api_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"provider\": \"00000000-0000-0000-0000-000000000000\",\n  \"category\": \"1\",\n  \"name\": \"Teste Checkauto\",\n  \"description\": \"texto\",\n  \"request_type\": \"1\",\n  \"method\": \"1\",\n  \"auth_type\": \"1\",\n  \"url\": \"texto\",\n  \"dynamic_token\": false,\n  \"dynamic_token_id\": \"texto\",\n  \"parameters\": {},\n  \"response_type\": \"1\",\n  \"structure\": \"texto\",\n  \"webhook\": false,\n  \"is_active\": true,\n  \"cache_enabled\": false,\n  \"cache_ttl_days\": 1,\n  \"cache_required_response_paths\": {},\n  \"timeout_seconds\": 1,\n  \"failure_rule\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 26,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_bc8d8647b02deea0ab3e715c",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "call",
+			"metaSortKey": -997000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_8c579190023fca34e2caca70",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "GET /call/availability/{id}/",
+			"description": "Reporta, por produto/API da Call, se a última CallResponse daquela API é uma\nfalha (elegível para reconsulta) — usado pelo front pra decidir se mostra o\nbotão \"reconsultar\". Não é `gateway.List`: a resposta é uma estrutura\ncomputada (produtos -> apis), não uma listagem de instâncias de model, então\no mixin ListModelMixin/queryset obrigatório de `gateway.List` não se aplica.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/call/availability/{{ _.call_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 28,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_3049968c100378446a6a9225",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "POST /call/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/call/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"created_by\": \"00000000-0000-0000-0000-000000000000\",\n  \"ip\": \"texto\",\n  \"hash\": \"texto\",\n  \"products\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"apis\": [\n    {\n      \"provider\": \"00000000-0000-0000-0000-000000000000\",\n      \"category\": \"1\",\n      \"name\": \"Teste Checkauto\",\n      \"description\": \"texto\",\n      \"request_type\": \"1\",\n      \"method\": \"1\",\n      \"auth_type\": \"1\",\n      \"url\": \"texto\",\n      \"dynamic_token\": false,\n      \"dynamic_token_id\": \"texto\",\n      \"parameters\": {},\n      \"response_type\": \"1\",\n      \"structure\": \"texto\",\n      \"webhook\": false,\n      \"is_active\": true,\n      \"cache_enabled\": false,\n      \"cache_ttl_days\": 1,\n      \"cache_required_response_paths\": {},\n      \"timeout_seconds\": 1,\n      \"failure_rule\": {}\n    }\n  ],\n  \"status\": \"1\",\n  \"data\": {},\n  \"created_at\": \"2026-11-24T10:00:00Z\",\n  \"updated_at\": \"2026-11-24T10:00:00Z\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 29,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f0b1bbbe0a0b07fd9252950f",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "GET /call/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/call/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "ordering",
+					"value": "",
+					"description": "Which field to use when ordering the results.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 30,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f9efa0ecc45a913708866b17",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "GET /call/list/response/",
+			"description": "Retorno cru do fornecedor (`CallResponse.data`, sem structure_decode) é\nadmin-only — não é o que o dono da call recebeu, é o payload bruto pra\nsuporte/depuração. Também expõe o retorno tratado via `integration_response`,\npra comparar bruto vs. integração.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/call/list/response/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 31,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_3f3cd3ec64005ace578994be",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "POST /call/query/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/call/query/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"created_by\": \"00000000-0000-0000-0000-000000000000\",\n  \"ip\": \"texto\",\n  \"hash\": \"texto\",\n  \"products\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"apis\": [\n    {\n      \"provider\": \"00000000-0000-0000-0000-000000000000\",\n      \"category\": \"1\",\n      \"name\": \"Teste Checkauto\",\n      \"description\": \"texto\",\n      \"request_type\": \"1\",\n      \"method\": \"1\",\n      \"auth_type\": \"1\",\n      \"url\": \"texto\",\n      \"dynamic_token\": false,\n      \"dynamic_token_id\": \"texto\",\n      \"parameters\": {},\n      \"response_type\": \"1\",\n      \"structure\": \"texto\",\n      \"webhook\": false,\n      \"is_active\": true,\n      \"cache_enabled\": false,\n      \"cache_ttl_days\": 1,\n      \"cache_required_response_paths\": {},\n      \"timeout_seconds\": 1,\n      \"failure_rule\": {}\n    }\n  ],\n  \"status\": \"1\",\n  \"data\": {},\n  \"created_at\": \"2026-11-24T10:00:00Z\",\n  \"updated_at\": \"2026-11-24T10:00:00Z\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 32,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_e8523597e729d8df674f1ab4",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "POST /call/requery/{id}/",
+			"description": "Dispara reconsulta seletiva (is_requery) de uma Call com insumo elegível,\nmesmo critério do `Availability`. Rejeita com 409 se já em execução.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/call/requery/{{ _.call_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 33,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_ef1e3fe16b6ddc1aefc5d722",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "GET /call/retrieve/response/{id}/",
+			"description": "Ver docstring de `ListResponse`: mesmo motivo pra restringir a admin.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/call/retrieve/response/{{ _.call_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 34,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_5f3687cf13a82d77b4543eaf",
+			"_type": "request",
+			"parentId": "fld_bc8d8647b02deea0ab3e715c",
+			"name": "GET /call/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/call/retrieve/{{ _.call_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 35,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_71b21161ffa1e6516bcc072a",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "company",
+			"metaSortKey": -996000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f446c30adc83226bd2ac2aa1",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "POST /company/api-failure-message/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/company/api-failure-message/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"company\": \"00000000-0000-0000-0000-000000000000\",\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"rules\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 37,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_3238d73fc48f8099acce43c0",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "DELETE /company/api-failure-message/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/company/api-failure-message/destroy/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 38,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_17d475395fdd165bdd08f75e",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/api-failure-message/list/",
+			"description": "Config de substituição de `response[]` por (Company, Api). Admin-only —\nafeta o que o cliente vê quando `is_failure=True`.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/api-failure-message/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 39,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_c0233238eaf4096f2caa19ab",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/api-failure-message/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/api-failure-message/retrieve/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 40,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f75e0a772c9d2f80c0cbf9e4",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "PUT /company/api-failure-message/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/company/api-failure-message/update/{{ _.company_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"company\": \"00000000-0000-0000-0000-000000000000\",\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"rules\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 41,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0f3d3da3f107c4526c7dd151",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/balance-movements/{company_id}/",
+			"description": "O administrador (perfil 3) vê qualquer empresa ativa; o representante (perfil 2) só a própria, e outra empresa\nresponde 404. Somente leitura, paginado, com filtro de período (`date_from`, `date_to`).",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/balance-movements/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 42,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_54375bade1bc9201dfdfe28d",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "POST /company/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/company/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"corporate_name\": \"texto\",\n  \"state_registration\": \"texto\",\n  \"municipal_registration\": \"texto\",\n  \"cnpj\": \"11.222.333/0001-81\",\n  \"fantasy_name\": \"texto\",\n  \"business_area\": \"texto\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"responsible_email\": \"{{ _.test_email }}\",\n  \"responsible_name\": \"texto\",\n  \"responsible_cpf\": \"texto\",\n  \"responsible_birth\": \"texto\",\n  \"responsible_phone\": \"texto\",\n  \"contract_start_date\": \"texto\",\n  \"contract_end_date\": \"texto\",\n  \"domain\": \"texto\",\n  \"site\": \"https://example.com\",\n  \"token_onboarding\": \"texto\",\n  \"layout_onboarding\": {},\n  \"using_onboarding\": false,\n  \"price_onboarding\": {},\n  \"onboarding_auto_reminder\": false,\n  \"origin\": \"corporate\",\n  \"balance\": \"texto\",\n  \"prices_list\": [],\n  \"checkmatch_token\": \"texto\",\n  \"checkmatch\": false,\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 43,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6f086e126a5843ddca0d8d79",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "DELETE /company/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/company/destroy/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 44,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_55551ea748daca70d32872c6",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/download/invoice/export/{export_id}/file/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/download/invoice/export/{{ _.export_id }}/file/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 45,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_9ac68558ec747ed0a226053e",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/download/invoice/export/{export_id}/status/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/download/invoice/export/{{ _.export_id }}/status/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 46,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_dd247d948ed5b24e5f4ac50c",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/download/invoice/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/download/invoice/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 47,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f38597ee18138b9aef43f1fd",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "POST /company/download/invoice/{id}/start/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/company/download/invoice/{{ _.company_id }}/start/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"corporate_name\": \"texto\",\n  \"state_registration\": \"texto\",\n  \"municipal_registration\": \"texto\",\n  \"cnpj\": \"11.222.333/0001-81\",\n  \"fantasy_name\": \"texto\",\n  \"business_area\": \"texto\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"responsible_email\": \"{{ _.test_email }}\",\n  \"responsible_name\": \"texto\",\n  \"responsible_cpf\": \"texto\",\n  \"responsible_birth\": \"texto\",\n  \"responsible_phone\": \"texto\",\n  \"contract_start_date\": \"texto\",\n  \"contract_end_date\": \"texto\",\n  \"domain\": \"texto\",\n  \"site\": \"https://example.com\",\n  \"token_onboarding\": \"texto\",\n  \"layout_onboarding\": {},\n  \"using_onboarding\": false,\n  \"price_onboarding\": {},\n  \"onboarding_auto_reminder\": false,\n  \"origin\": \"corporate\",\n  \"balance\": \"texto\",\n  \"prices_list\": [],\n  \"checkmatch_token\": \"texto\",\n  \"checkmatch\": false,\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 48,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_21eb8a14be5be4d0cb9205d7",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/info_balance/{id}",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/info_balance/{{ _.company_id }}",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 49,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_092eacc0b8d2aa54ee0f30ca",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "ordering",
+					"value": "",
+					"description": "Which field to use when ordering the results.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 50,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_014a5c70698788478170176c",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/list/all/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/list/all/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "ordering",
+					"value": "",
+					"description": "Which field to use when ordering the results.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 51,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_47d13c88213845f5eb044bb6",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/list/invoice/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/list/invoice/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 52,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_5aa72a9bb8306ee0fa08861a",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "GET /company/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/company/retrieve/{{ _.company_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 53,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_36a623e1eafb81a7ed19eaea",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "PUT /company/update/onboarding/{token_onboarding}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/company/update/onboarding/{{ _.token_onboarding }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"corporate_name\": \"texto\",\n  \"state_registration\": \"texto\",\n  \"municipal_registration\": \"texto\",\n  \"cnpj\": \"11.222.333/0001-81\",\n  \"fantasy_name\": \"texto\",\n  \"business_area\": \"texto\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"responsible_email\": \"{{ _.test_email }}\",\n  \"responsible_name\": \"texto\",\n  \"responsible_cpf\": \"texto\",\n  \"responsible_birth\": \"texto\",\n  \"responsible_phone\": \"texto\",\n  \"contract_start_date\": \"texto\",\n  \"contract_end_date\": \"texto\",\n  \"domain\": \"texto\",\n  \"site\": \"https://example.com\",\n  \"token_onboarding\": \"texto\",\n  \"layout_onboarding\": {},\n  \"using_onboarding\": false,\n  \"price_onboarding\": {},\n  \"onboarding_auto_reminder\": false,\n  \"origin\": \"corporate\",\n  \"balance\": \"texto\",\n  \"prices_list\": [],\n  \"checkmatch_token\": \"texto\",\n  \"checkmatch\": false,\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 54,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_904b6900bfa75c58924bf95c",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "PUT /company/update/price-list/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/company/update/price-list/{{ _.company_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 55,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1c0fea17fd23db012e57bf90",
+			"_type": "request",
+			"parentId": "fld_71b21161ffa1e6516bcc072a",
+			"name": "PUT /company/update/{id}/",
+			"description": "Administrador (perfil 3) altera qualquer empresa. Representante (2) e usuário web (4) alteram só a própria\nempresa e só contato e endereço; mexer em limite, identidade ou configuração devolve 403. Os demais perfis, e\nquem tenta editar outra empresa, recebem 404.",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/company/update/{{ _.company_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"corporate_name\": \"texto\",\n  \"state_registration\": \"texto\",\n  \"municipal_registration\": \"texto\",\n  \"cnpj\": \"11.222.333/0001-81\",\n  \"fantasy_name\": \"texto\",\n  \"business_area\": \"texto\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"responsible_email\": \"{{ _.test_email }}\",\n  \"responsible_name\": \"texto\",\n  \"responsible_cpf\": \"texto\",\n  \"responsible_birth\": \"texto\",\n  \"responsible_phone\": \"texto\",\n  \"contract_start_date\": \"texto\",\n  \"contract_end_date\": \"texto\",\n  \"domain\": \"texto\",\n  \"site\": \"https://example.com\",\n  \"token_onboarding\": \"texto\",\n  \"layout_onboarding\": {},\n  \"using_onboarding\": false,\n  \"price_onboarding\": {},\n  \"onboarding_auto_reminder\": false,\n  \"origin\": \"corporate\",\n  \"balance\": \"texto\",\n  \"prices_list\": [],\n  \"checkmatch_token\": \"texto\",\n  \"checkmatch\": false,\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 56,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_912626a45bc4238281122207",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "licensing",
+			"metaSortKey": -995000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_d6a65f50da80c128940dc7de",
+			"_type": "request",
+			"parentId": "fld_912626a45bc4238281122207",
+			"name": "GET /licensing/month/",
+			"description": "`GET /licensing/month/` — mês de licenciamento por uf/placa/ano.\nSó admin ou bearer de sistema.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/licensing/month/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 58,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b15d77b21c7ae3fe58cc3a6a",
+			"_type": "request",
+			"parentId": "fld_912626a45bc4238281122207",
+			"name": "POST /licensing/rules/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/licensing/rules/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"uf\": \"SP\",\n  \"plate_last_digit\": 1,\n  \"month\": 1,\n  \"effective_from\": \"2026-11-24\",\n  \"effective_until\": \"2026-11-24\",\n  \"source_description\": \"texto\",\n  \"source_url\": \"https://example.com\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 59,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_d431b0a16cbe65f2df0dcfcb",
+			"_type": "request",
+			"parentId": "fld_912626a45bc4238281122207",
+			"name": "DELETE /licensing/rules/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/licensing/rules/destroy/{{ _.licensing_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 60,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_796cc8037d22e818425feecb",
+			"_type": "request",
+			"parentId": "fld_912626a45bc4238281122207",
+			"name": "GET /licensing/rules/list/",
+			"description": "CRUD de `LicensingMonthRule`, só admin.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/licensing/rules/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 61,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_446be57d859efdf1874cc1a2",
+			"_type": "request",
+			"parentId": "fld_912626a45bc4238281122207",
+			"name": "GET /licensing/rules/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/licensing/rules/retrieve/{{ _.licensing_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 62,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_9865896e7cda4b6445454cc0",
+			"_type": "request",
+			"parentId": "fld_912626a45bc4238281122207",
+			"name": "PUT /licensing/rules/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/licensing/rules/update/{{ _.licensing_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"uf\": \"SP\",\n  \"plate_last_digit\": 1,\n  \"month\": 1,\n  \"effective_from\": \"2026-11-24\",\n  \"effective_until\": \"2026-11-24\",\n  \"source_description\": \"texto\",\n  \"source_url\": \"https://example.com\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 63,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_474c797713f37901928aafb6",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "logs",
+			"metaSortKey": -994000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_282e0ab63f1709ae84985e2e",
+			"_type": "request",
+			"parentId": "fld_474c797713f37901928aafb6",
+			"name": "GET /logs/",
+			"description": "/logs/ -> Lista resumida, filtrável\n/logs/{id}/ -> Detalhe completo",
+			"method": "GET",
+			"url": "{{ _.base_url }}/logs/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "ordering",
+					"value": "",
+					"description": "Which field to use when ordering the results.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 65,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_3e48d5a0a40746ce6454770c",
+			"_type": "request",
+			"parentId": "fld_474c797713f37901928aafb6",
+			"name": "GET /logs/{id}/",
+			"description": "/logs/ -> Lista resumida, filtrável\n/logs/{id}/ -> Detalhe completo",
+			"method": "GET",
+			"url": "{{ _.base_url }}/logs/{{ _.logs_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 66,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_1f21316c7cfcc6c557f05ae5",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "onboarding",
+			"metaSortKey": -993000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_380e697b132e13c77d06201f",
+			"_type": "request",
+			"parentId": "fld_1f21316c7cfcc6c557f05ae5",
+			"name": "POST /onboarding/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/onboarding/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"created_by\": \"00000000-0000-0000-0000-000000000000\",\n  \"company\": \"00000000-0000-0000-0000-000000000000\",\n  \"name_model\": \"texto\",\n  \"title_model\": \"texto\",\n  \"model_onboarding\": {},\n  \"validations_input\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 68,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_2a9e8f2231d19609e913166a",
+			"_type": "request",
+			"parentId": "fld_1f21316c7cfcc6c557f05ae5",
+			"name": "POST /onboarding/createPdf/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/onboarding/createPdf/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 69,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_816b1ccfa071bf9d4ece222f",
+			"_type": "request",
+			"parentId": "fld_1f21316c7cfcc6c557f05ae5",
+			"name": "DELETE /onboarding/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/onboarding/destroy/{{ _.onboarding_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 70,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_cfc87c868df3657c99fcc82d",
+			"_type": "request",
+			"parentId": "fld_1f21316c7cfcc6c557f05ae5",
+			"name": "GET /onboarding/list/all/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/onboarding/list/all/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 71,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6848f9f40ce3ab11bac55ecf",
+			"_type": "request",
+			"parentId": "fld_1f21316c7cfcc6c557f05ae5",
+			"name": "GET /onboarding/list/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/onboarding/list/{{ _.onboarding_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 72,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_bcaef5f4c2798e2ffcf81db8",
+			"_type": "request",
+			"parentId": "fld_1f21316c7cfcc6c557f05ae5",
+			"name": "PUT /onboarding/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/onboarding/update/{{ _.onboarding_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"created_by\": \"00000000-0000-0000-0000-000000000000\",\n  \"company\": \"00000000-0000-0000-0000-000000000000\",\n  \"name_model\": \"texto\",\n  \"title_model\": \"texto\",\n  \"model_onboarding\": {},\n  \"validations_input\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 73,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_cce55e4309a753985bdd2191",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "order",
+			"metaSortKey": -992000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_c0f9e3209016cecc048d77ab",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "POST /order/cancel/{id}/",
+			"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/order/cancel/{{ _.order_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 75,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_ab670ba94c7347d14e736623",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "POST /order/checkout/{id}/",
+			"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/order/checkout/{{ _.order_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 76,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_369d7fffe8960757253f4d46",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "POST /order/create/",
+			"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/order/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 77,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_c087da457bab2015a1a5d42d",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "GET /order/list/",
+			"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/order/list/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 78,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6981df6303dde712bd5692db",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "POST /order/refresh/{id}/",
+			"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/order/refresh/{{ _.order_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 79,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b5a09066107fad77452d2514",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "GET /order/retrieve/{id}/",
+			"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/order/retrieve/{{ _.order_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 80,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_198c2d9fd7dfdb24c67c5a2b",
+			"_type": "request",
+			"parentId": "fld_cce55e4309a753985bdd2191",
+			"name": "PATCH /order/update/{id}/",
+			"description": "Só o perfil 3 altera, e só a placa de pedido não pago; demais campos são ignorados.",
+			"method": "PATCH",
+			"url": "{{ _.base_url }}/order/update/{{ _.order_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 81,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_e86256b2787ee7ff0c33d0d4",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "payment",
+			"metaSortKey": -991000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4ad5a41f26ef921aa0011ce8",
+			"_type": "request",
+			"parentId": "fld_e86256b2787ee7ff0c33d0d4",
+			"name": "POST /payment/webhook/{provider_code}/",
+			"description": "Recebe a notificação do gateway: valida a assinatura, grava o evento e responde logo; o trabalho vai à fila.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/payment/webhook/{{ _.provider_code }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 83,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_f43d055fbfd82fb743f483f8",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "precificador",
+			"metaSortKey": -990000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f8e060797d55be05491c303d",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "GET /precificador/door-count-rules/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/precificador/door-count-rules/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 85,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_9466e6c3db67b24d6fd8223e",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "POST /precificador/door-count-rules/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/precificador/door-count-rules/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 86,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_28ea035cd47a371cb42936b3",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "GET /precificador/door-count-rules/options/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/precificador/door-count-rules/options/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 87,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6855d89434c443cca12fa91c",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "GET /precificador/door-count-rules/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/precificador/door-count-rules/{{ _.precificador_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 88,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4ce7a4b9c9dd00bb9a74a800",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "PATCH /precificador/door-count-rules/{id}/",
+			"description": "",
+			"method": "PATCH",
+			"url": "{{ _.base_url }}/precificador/door-count-rules/{{ _.precificador_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 89,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_477a6cf1f60db857ccda49c1",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "GET /precificador/upload/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/precificador/upload/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 90,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_81d941c3410389e080108835",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "POST /precificador/upload/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/precificador/upload/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 91,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_ec21ca7e4288eee7437d7f17",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "GET /precificador/upload/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/precificador/upload/{{ _.precificador_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 92,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_87924f76933a6c5aa7687ab4",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "DELETE /precificador/upload/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/precificador/upload/{{ _.precificador_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 93,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_cb730b247f8776bf40aa0a27",
+			"_type": "request",
+			"parentId": "fld_f43d055fbfd82fb743f483f8",
+			"name": "POST /precificador/upload/{id}/match/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/precificador/upload/{{ _.precificador_id }}/match/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 94,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_6dd8429cc900b9460f1e9d4b",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "processing",
+			"metaSortKey": -989000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_bc652d8521a0c666645fb659",
+			"_type": "request",
+			"parentId": "fld_6dd8429cc900b9460f1e9d4b",
+			"name": "POST /processing/cadaster/fenebrave/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/processing/cadaster/fenebrave/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 96,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_62624eb5a82cb4111c422251",
+			"_type": "request",
+			"parentId": "fld_6dd8429cc900b9460f1e9d4b",
+			"name": "POST /processing/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/processing/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 97,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_08e4609823a25e5b05e188e0",
+			"_type": "request",
+			"parentId": "fld_6dd8429cc900b9460f1e9d4b",
+			"name": "GET /processing/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/processing/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 98,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_38a007151abe87cc01a5b6e9",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "product",
+			"metaSortKey": -988000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_95de22e786829c15db5ae0af",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "POST /product/api-fallback/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/product/api-fallback/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"product\": \"00000000-0000-0000-0000-000000000000\",\n  \"root_api\": \"00000000-0000-0000-0000-000000000000\",\n  \"fallback_api\": \"00000000-0000-0000-0000-000000000000\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 100,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_bb563c64f5b821c198d28c7b",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "DELETE /product/api-fallback/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/product/api-fallback/destroy/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 101,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_88113f91c0296b424e3996d0",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/api-fallback/list/{id}/",
+			"description": "Wiring de fallback (root_api -> fallback_api) cadastrado no Produto informado.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/api-fallback/list/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 102,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1c952eb540716ecd86cb3dc1",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "POST /product/api-parameter-binding/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/product/api-parameter-binding/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"product\": \"00000000-0000-0000-0000-000000000000\",\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"parameter_name\": \"texto\",\n  \"source_api\": \"00000000-0000-0000-0000-000000000000\",\n  \"source_path\": \"texto\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 103,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4afed755dfd4e557940b5171",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "DELETE /product/api-parameter-binding/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/product/api-parameter-binding/destroy/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 104,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b153712cc17eeaaf78e8277c",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/api-parameter-binding/list/{id}/",
+			"description": "Bindings (parametro de uma API preenchido pela resposta de outra) cadastrados no Produto informado.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/api-parameter-binding/list/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 105,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6a9b4307e8728d5dc0c592ff",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/api-parameter-binding/source-paths/{id}/",
+			"description": "Caminhos de resposta que a `api` informada pode oferecer como origem de um binding, lidos da\nultima resposta ok dela. So os caminhos, sem valores (a resposta tem dado pessoal). Vazio se a Api\nainda nao teve resposta ok: o front mantem o campo de texto livre. Independe do produto: o\npertencimento a api ao produto e validado so ao cadastrar o binding.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/api-parameter-binding/source-paths/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 106,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_e6f7d093fe942703ea853316",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "POST /product/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/product/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"category\": \"1\",\n  \"subcategory\": \"1\",\n  \"name\": \"Teste Checkauto\",\n  \"description\": \"texto\",\n  \"apis\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"price\": \"texto\",\n  \"match_price\": \"texto\",\n  \"allow_processing\": false,\n  \"is_default_web\": false,\n  \"background\": false,\n  \"validation_onboarding\": \"texto\",\n  \"extrato_enabled\": false,\n  \"report_template\": \"00000000-0000-0000-0000-000000000000\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 107,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f4d116256f6982432f44e705",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "DELETE /product/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/product/destroy/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 108,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_55554d17a667e4c254bd87d2",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 109,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1a898a69e1794021e7c0ff82",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/list/all/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/list/all/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 110,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_25f5d48bb168569390c2560c",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "PATCH /product/list/parameters/",
+			"description": "",
+			"method": "PATCH",
+			"url": "{{ _.base_url }}/product/list/parameters/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"category\": \"1\",\n  \"subcategory\": \"1\",\n  \"name\": \"Teste Checkauto\",\n  \"description\": \"texto\",\n  \"apis\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"price\": \"texto\",\n  \"match_price\": \"texto\",\n  \"allow_processing\": false,\n  \"is_default_web\": false,\n  \"background\": false,\n  \"validation_onboarding\": \"texto\",\n  \"extrato_enabled\": false,\n  \"report_template\": \"00000000-0000-0000-0000-000000000000\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 111,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_650aa0c15e3bf869999f76f5",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "POST /product/parameters/options/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/product/parameters/options/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"final_api_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"parameter_name\": \"texto\",\n  \"selected\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 112,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_3ff49fcd6ca423fdac268cc2",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "POST /product/report-template/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/product/report-template/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"name\": \"Teste Checkauto\",\n  \"version\": \"texto\",\n  \"config\": {},\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 113,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_9698639bc21d0c0a5788b906",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "DELETE /product/report-template/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/product/report-template/destroy/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 114,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b8f2647fdf2116983b342990",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/report-template/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/report-template/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 115,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_7b207d6e21f2b1354425d616",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/report-template/metadata/",
+			"description": "Metadados para os pickers do editor de blocos: APIs ativas com sua\n`structure` (blocos/campos) já decodificada, independente de produto.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/report-template/metadata/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 116,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_2322dd1de934b6eb3fdaf6ea",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "POST /product/report-template/preview/",
+			"description": "Renderiza o `extrato.html` a partir do `config` enviado pelo editor\n(ainda não salvo) — dados sempre mock nesta fase. Não persiste nada.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/product/report-template/preview/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"config\": {}\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 117,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1671b846b1fcbafe9e44a965",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/report-template/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/report-template/retrieve/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 118,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_63009f9df7b6642d0762320c",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "PUT /product/report-template/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/product/report-template/update/{{ _.product_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"name\": \"Teste Checkauto\",\n  \"version\": \"texto\",\n  \"config\": {},\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 119,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1ff5d97a98200713ba2c2add",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/report/pdf/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/report/pdf/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 120,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f2b9952ae4f94862db8e3ce3",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/report/pdf/{call_id}/{product_id}/",
+			"description": "Com ReportSnapshot (fluxo normal, criado na hora da consulta — ver\napps/call/views.py): serve o PDF já cacheado (`pdf_status == 'ready'`) ou\ndispara `generate_report_pdf` (Celery, fila dedicada) e responde 202 com o\nstatus atual — não bloqueia a request gerando na hora. A task usa o config\nCONGELADO em `snapshot.config_snapshot` (ver apps/product/tasks.py).\n\nSem ReportSnapshot (call antiga, anterior a este recurso, nunca teve cache):\nmantém o comportamento 100% síncrono de antes — gera na hora com o config\natual do template e não persiste nada.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/report/pdf/{{ _.call_id }}/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 121,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_90097a11377d8068f0fabe26",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/report/preview/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/report/preview/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 122,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_c583c728b5ba7b23e3744bb2",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/retrieve/structure/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/retrieve/structure/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 123,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0c368566906e18dc6f6cd48c",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "GET /product/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/product/retrieve/{{ _.product_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 124,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4cbebe454327fc3b94e6fc05",
+			"_type": "request",
+			"parentId": "fld_38a007151abe87cc01a5b6e9",
+			"name": "PUT /product/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/product/update/{{ _.product_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"category\": \"1\",\n  \"subcategory\": \"1\",\n  \"name\": \"Teste Checkauto\",\n  \"description\": \"texto\",\n  \"apis\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"price\": \"texto\",\n  \"match_price\": \"texto\",\n  \"allow_processing\": false,\n  \"is_default_web\": false,\n  \"background\": false,\n  \"validation_onboarding\": \"texto\",\n  \"extrato_enabled\": false,\n  \"report_template\": \"00000000-0000-0000-0000-000000000000\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 125,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_90c5d1358d128117989fc21f",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "provider",
+			"metaSortKey": -987000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_20adba8eb6241c9566f2dbfc",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "POST /provider/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/provider/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"corporate_name\": \"texto\",\n  \"state_registration\": \"texto\",\n  \"cnpj\": \"11.222.333/0001-81\",\n  \"fantasy_name\": \"texto\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 127,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_8ac1b9c9c42c1d2c4f53a591",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "DELETE /provider/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/provider/destroy/{{ _.provider_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 128,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_fc6b8ed6f9353b9cdf307e6b",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "GET /provider/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/provider/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 129,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_3697340b7a9d04ef203d54c2",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "GET /provider/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/provider/retrieve/{{ _.provider_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 130,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1f112675ca64e4e5d4073c4e",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "PUT /provider/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/provider/update/{{ _.provider_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"corporate_name\": \"texto\",\n  \"state_registration\": \"texto\",\n  \"cnpj\": \"11.222.333/0001-81\",\n  \"fantasy_name\": \"texto\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 131,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0a59aa2228cba9c401bbe208",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "PATCH /provider/{id}/certificate/",
+			"description": "",
+			"method": "PATCH",
+			"url": "{{ _.base_url }}/provider/{{ _.provider_id }}/certificate/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"cert_password\": \"texto\",\n  \"cert_expires_at\": \"2026-11-24T10:00:00Z\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 132,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_bacdacad1fcf04bfd17acb30",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "POST /provider/{id}/certificate/generate/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/provider/{{ _.provider_id }}/certificate/generate/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"force\": false\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 133,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0515045538d68f5532f9c18e",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "GET /provider/{id}/certificate/history/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/provider/{{ _.provider_id }}/certificate/history/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 134,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4ca0850bca751033717ad62d",
+			"_type": "request",
+			"parentId": "fld_90c5d1358d128117989fc21f",
+			"name": "DELETE /provider/{id}/certificate/remove/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/provider/{{ _.provider_id }}/certificate/remove/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 135,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_a27297bde9732f2e73fbc06d",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "report",
+			"metaSortKey": -986000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_aff93e6b984adb958f63bc8c",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "POST /report/response-classification/clone/",
+			"description": "Duplica classificações ativas de `source_api` pra `target_api` (aditivo —\nnão sobrescreve linha já existente no destino). `source_field` opcional filtra\no que é clonado (ex.: só \"restricoes\").",
+			"method": "POST",
+			"url": "{{ _.base_url }}/report/response-classification/clone/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"source_api\": \"00000000-0000-0000-0000-000000000000\",\n  \"target_api\": \"00000000-0000-0000-0000-000000000000\",\n  \"source_field\": \"texto\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 137,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6ab44c5a269a6d3f99c10058",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "POST /report/response-classification/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/report/response-classification/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"source_field\": \"texto\",\n  \"key_type\": \"code\",\n  \"key\": \"texto\",\n  \"category\": \"restriction\",\n  \"status\": \"green\",\n  \"label\": \"texto\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 138,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_5f6bde5ac04c5c2a3ff4a804",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "DELETE /report/response-classification/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/report/response-classification/destroy/{{ _.report_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 139,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_1c80daa344c2aae6ec5b42ff",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "GET /report/response-classification/export/",
+			"description": "Mesmo filtro/busca do List (api/status/category/key_type/search) —\nexporta exatamente o que está filtrado na tela, em .xlsx.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/report/response-classification/export/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 140,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_8f4d5cad1b88ddef7528c025",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "GET /report/response-classification/list/",
+			"description": "Lista ativas E desativadas por padrão (auditoria precisa ver o que foi\nexcluído) — filtre por `is_active` na querystring pra restringir.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/report/response-classification/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "search",
+					"value": "",
+					"description": "A search term.",
+					"disabled": true
+				},
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 141,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_165967e530c31549e014778a",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "PUT /report/response-classification/reactivate/{id}/",
+			"description": "Reverte uma exclusão lógica. Só enxerga regras já inativas (404 se a\nregra ainda estiver ativa). Barra se já existir outra regra ativa com a\nmesma combinação api/source_field/key_type/key (a constraint única do\nmodel só vale entre ativas — reativar pode colidir).",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/report/response-classification/reactivate/{{ _.report_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"source_field\": \"texto\",\n  \"key_type\": \"code\",\n  \"key\": \"texto\",\n  \"category\": \"restriction\",\n  \"status\": \"green\",\n  \"label\": \"texto\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 142,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_89e14f1e0a316da070e0ee05",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "GET /report/response-classification/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/report/response-classification/retrieve/{{ _.report_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 143,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0b6c9a8cc9d2f4917b800212",
+			"_type": "request",
+			"parentId": "fld_a27297bde9732f2e73fbc06d",
+			"name": "PUT /report/response-classification/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/report/response-classification/update/{{ _.report_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"api\": \"00000000-0000-0000-0000-000000000000\",\n  \"source_field\": \"texto\",\n  \"key_type\": \"code\",\n  \"key\": \"texto\",\n  \"category\": \"restriction\",\n  \"status\": \"green\",\n  \"label\": \"texto\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 144,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_ee977806d7286510da8b9a74",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "token",
+			"metaSortKey": -985000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_c73922988bda225a19d66796",
+			"_type": "request",
+			"parentId": "fld_ee977806d7286510da8b9a74",
+			"name": "POST /token/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/token/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"recaptcha_token\": \"{{ _.recaptcha_token }}\",\n  \"recaptcha_token_v2\": \"{{ _.recaptcha_token_v2 }}\",\n  \"username\": \"{{ _.test_email }}\",\n  \"password\": \"{{ _.test_password }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 146,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_cf34afce2c41d070ce1c6929",
+			"_type": "request",
+			"parentId": "fld_ee977806d7286510da8b9a74",
+			"name": "POST /token/refresh/",
+			"description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/token/refresh/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"refresh\": \"{{ _.refresh_token }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 147,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_2a19db564399ca60f9c4f413",
+			"_type": "request",
+			"parentId": "fld_ee977806d7286510da8b9a74",
+			"name": "POST /token/verify/",
+			"description": "Takes a token and indicates if it is valid.  This view provides no\ninformation about a token's fitness for a particular use.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/token/verify/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"token\": \"{{ _.access_token }}\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 148,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_12dea96fec20593566ab7569",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "user",
+			"metaSortKey": -984000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_05aa025f64a11b6ec2851611",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "POST /user/block/{id}/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/block/{{ _.user_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 150,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_a26d199979f3e737c0c189f3",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "POST /user/change-password/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/change-password/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 151,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_36620612adf857d24f820894",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "POST /user/create/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/create/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"first_name\": \"Teste\",\n  \"last_name\": \"Checkauto Site\",\n  \"email\": \"{{ _.test_email }}\",\n  \"birth\": \"1990-01-15\",\n  \"cpf\": \"529.982.247-25\",\n  \"phone\": \"(11) 91234-5678\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"company\": {\n    \"corporate_name\": \"texto\",\n    \"state_registration\": \"texto\",\n    \"municipal_registration\": \"texto\",\n    \"cnpj\": \"11.222.333/0001-81\",\n    \"fantasy_name\": \"texto\",\n    \"business_area\": \"texto\",\n    \"cep\": \"01310-100\",\n    \"street\": \"Avenida Paulista\",\n    \"number_address\": \"1000\",\n    \"complement\": \"Sala 10\",\n    \"district\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"responsible_email\": \"{{ _.test_email }}\",\n    \"responsible_name\": \"texto\",\n    \"responsible_cpf\": \"texto\",\n    \"responsible_birth\": \"texto\",\n    \"responsible_phone\": \"texto\",\n    \"contract_start_date\": \"texto\",\n    \"contract_end_date\": \"texto\",\n    \"domain\": \"texto\",\n    \"site\": \"https://example.com\",\n    \"token_onboarding\": \"texto\",\n    \"layout_onboarding\": {},\n    \"using_onboarding\": false,\n    \"price_onboarding\": {},\n    \"onboarding_auto_reminder\": false,\n    \"origin\": \"corporate\",\n    \"balance\": \"texto\",\n    \"prices_list\": [],\n    \"checkmatch_token\": \"texto\",\n    \"checkmatch\": false,\n    \"is_active\": true\n  },\n  \"profile\": \"1\",\n  \"permissions_products\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"permissions_system\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"last_login\": \"2026-11-24T10:00:00Z\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 152,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0d15276e4e2ebf2d05bf7c86",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "DELETE /user/destroy/{id}/",
+			"description": "",
+			"method": "DELETE",
+			"url": "{{ _.base_url }}/user/destroy/{{ _.user_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 153,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b4c1a00b0cd4571a3c41738e",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "POST /user/forgot-password/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/forgot-password/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 154,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_ce8a8aeab824c17f2729657d",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "GET /user/list/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/list/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 155,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_53f8929201de51f908781595",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "GET /user/list/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/list/{{ _.user_id }}/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 156,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_f82d0bd1ed42f966a98cfb45",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "GET /user/list_company_user/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/list_company_user/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 157,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_0e56561d4fe56108c899b718",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "GET /user/list_permissions/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/list_permissions/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 158,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_98e2c3a2b7a34eecdf767450",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "GET /user/list_products/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/list_products/",
+			"body": {},
+			"parameters": [
+				{
+					"name": "page",
+					"value": "1",
+					"description": "A page number within the paginated result set.",
+					"disabled": true
+				}
+			],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 159,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_6a9b2a7cf2b87fa8e96cff8b",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "GET /user/retrieve/{id}/",
+			"description": "",
+			"method": "GET",
+			"url": "{{ _.base_url }}/user/retrieve/{{ _.user_id }}/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 160,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_b33bfec043c46dad4d8b7c0c",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "POST /user/signup/",
+			"description": "",
+			"method": "POST",
+			"url": "{{ _.base_url }}/user/signup/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": 161,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_756c64f5d37160ccfca5a520",
+			"_type": "request",
+			"parentId": "fld_12dea96fec20593566ab7569",
+			"name": "PUT /user/update/{id}/",
+			"description": "",
+			"method": "PUT",
+			"url": "{{ _.base_url }}/user/update/{{ _.user_id }}/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"first_name\": \"Teste\",\n  \"last_name\": \"Checkauto Site\",\n  \"email\": \"{{ _.test_email }}\",\n  \"birth\": \"1990-01-15\",\n  \"cpf\": \"529.982.247-25\",\n  \"phone\": \"(11) 91234-5678\",\n  \"cep\": \"01310-100\",\n  \"street\": \"Avenida Paulista\",\n  \"number_address\": \"1000\",\n  \"complement\": \"Sala 10\",\n  \"district\": \"Bela Vista\",\n  \"city\": \"São Paulo\",\n  \"uf\": \"SP\",\n  \"company\": {\n    \"corporate_name\": \"texto\",\n    \"state_registration\": \"texto\",\n    \"municipal_registration\": \"texto\",\n    \"cnpj\": \"11.222.333/0001-81\",\n    \"fantasy_name\": \"texto\",\n    \"business_area\": \"texto\",\n    \"cep\": \"01310-100\",\n    \"street\": \"Avenida Paulista\",\n    \"number_address\": \"1000\",\n    \"complement\": \"Sala 10\",\n    \"district\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"responsible_email\": \"{{ _.test_email }}\",\n    \"responsible_name\": \"texto\",\n    \"responsible_cpf\": \"texto\",\n    \"responsible_birth\": \"texto\",\n    \"responsible_phone\": \"texto\",\n    \"contract_start_date\": \"texto\",\n    \"contract_end_date\": \"texto\",\n    \"domain\": \"texto\",\n    \"site\": \"https://example.com\",\n    \"token_onboarding\": \"texto\",\n    \"layout_onboarding\": {},\n    \"using_onboarding\": false,\n    \"price_onboarding\": {},\n    \"onboarding_auto_reminder\": false,\n    \"origin\": \"corporate\",\n    \"balance\": \"texto\",\n    \"prices_list\": [],\n    \"checkmatch_token\": \"texto\",\n    \"checkmatch\": false,\n    \"is_active\": true\n  },\n  \"profile\": \"1\",\n  \"permissions_products\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"permissions_system\": [\n    \"00000000-0000-0000-0000-000000000000\"\n  ],\n  \"last_login\": \"2026-11-24T10:00:00Z\",\n  \"is_active\": true\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 162,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "fld_c307b632ca379cb7df9cf79d",
+			"_type": "request_group",
+			"parentId": "wrk_checkauto_api",
+			"name": "wallet",
+			"metaSortKey": -983000,
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_a6d6070bbed5a0c4007519d0",
+			"_type": "request",
+			"parentId": "fld_c307b632ca379cb7df9cf79d",
+			"name": "POST /wallet/adjustments/",
+			"description": "`user_id` ajusta a carteira que paga as consultas daquele usuário (a da empresa, quando a empresa é pré-paga);\n`company_id` ajusta a carteira da empresa pré-paga.",
+			"method": "POST",
+			"url": "{{ _.base_url }}/wallet/adjustments/",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				},
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 164,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		},
+		{
+			"_id": "req_4be55e754672b9392668f46a",
+			"_type": "request",
+			"parentId": "fld_c307b632ca379cb7df9cf79d",
+			"name": "GET /wallet/movements/",
+			"description": "O usuário web (perfil 4) vê só a carteira que paga as consultas dele e não pode usar filtro de dono (403, mesmo\ncom o próprio id). O administrador (perfil 3) vê todas as carteiras ou filtra por `user_id` (a carteira que paga\nas consultas daquele usuário) ou `company_id`, e vê o autor e o dono de cada linha. Os demais perfis recebem 403.\nMovimentos do limite pós-pago ficam no histórico da empresa. Somente leitura, paginado, com período.",
+			"method": "GET",
+			"url": "{{ _.base_url }}/wallet/movements/",
+			"body": {},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Accept",
+					"value": "application/json"
+				},
+				{
+					"name": "ngrok-skip-browser-warning",
+					"value": "true"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"prefix": "Bearer",
+				"token": "{{ _.access_token }}"
+			},
+			"metaSortKey": 165,
+			"settingEncodeUrl": true,
+			"settingFollowRedirects": "global",
+			"created": 1795600000000,
+			"modified": 1795600000000
+		}
+	]
+}

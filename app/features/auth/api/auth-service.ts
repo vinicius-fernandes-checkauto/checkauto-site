@@ -1,7 +1,7 @@
 import {
-	authTokensSchema,
 	currentTermsSchema,
 	type LoginCredentials,
+	loginResponseSchema,
 	refreshedTokensSchema,
 } from "~/features/auth/lib/auth-api";
 import { getHttpClient, type HttpClient } from "~/shared/api";
@@ -20,7 +20,7 @@ export function createAuthService(http: HttpClient) {
 				recaptcha_token: recaptchaToken,
 				recaptcha_token_v2: recaptchaTokenV2,
 			});
-			return authTokensSchema.parse(data);
+			return loginResponseSchema.parse(data);
 		},
 
 		async refresh(refreshToken: string) {
