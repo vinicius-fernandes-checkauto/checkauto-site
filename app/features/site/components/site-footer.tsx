@@ -10,8 +10,8 @@ import {
 	SecureSealIcon,
 	YoutubeIcon,
 } from "~/shared/components/icons";
-import { company, contact, socialLinks } from "~/shared/config/company";
-import { footerNav, legalNav } from "~/shared/config/navigation";
+import { company, contact, socialLinks } from "~/shared/content/company";
+import { footerNav, legalNav } from "~/shared/content/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const year = new Date().getFullYear();

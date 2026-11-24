@@ -17,7 +17,7 @@ import {
 	planFeatures,
 	plans,
 	sharedExtraInfoCount,
-} from "~/shared/config/plans";
+} from "~/shared/content/plans";
 import { cn } from "~/shared/lib/utils";
 
 function PlanSwitcher({ current }: { current: Plan }) {

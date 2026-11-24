@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { plans } from "~/shared/config/plans";
-import { plateSchema } from "~/shared/utils/plate";
+import { plans } from "~/shared/content/plans";
+import { plateSchema } from "~/shared/lib/plate";
 
 export const newQuerySchema = z.object({
 	planId: z.string().refine((id) => plans.some((plan) => plan.id === id), {

@@ -40,7 +40,7 @@ npm run format                      # biome check --write no projeto todo
 npx biome check --write --unsafe <arquivos>   # corrige formatação e ordena classes
 npm run build                       # build + prerender de todas as rotas
 npm test                            # vitest
-npx vitest run app/shared/utils/plate.test.ts   # um arquivo de teste
+npx vitest run app/shared/lib/plate.test.ts   # um arquivo de teste
 npx vitest run -t "<nome do teste>"             # um teste pelo nome
 ```
 
@@ -68,13 +68,16 @@ app/
       components/        header, sidebar, menu, cards e diálogos da área do cliente
       lib/               dados de demonstração, schemas e helpers da conta
   shared/                só o que mais de uma área usa
-    components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, LicensePlate
+    api/                 cliente HTTP: getHttpClient, ApiError (seção 10.2)
+    components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, LicensePlate, PlansComparison
     components/ui/       shadcn ajustado ao tema
-    config/              dados fixos: planos, FAQ, navegação, empresa
+    content/             dados e textos fixos: planos, FAQ, navegação, empresa
     hooks/               useMediaQuery, useScrolled
-    lib/                 cn, gsap
-    utils/               funções puras (placa, iniciais, telefone)
+    lib/                 código de apoio: cn, gsap, form, env, placa, telefone
+    types/               tipos globais
 ```
+
+`lib` é **código**; `content` são **dados**. Não existem `config/` nem `utils/`: configuração (variáveis de ambiente) e funções puras ficam em `lib/`. Esse é o mesmo padrão dos outros projetos do time e do shadcn (`lib/utils`).
 
 O contrato da API do backend fica em `docs/api/` (`openapi.json` + `README.md` com os endpoints que o site usa e o que falta confirmar).
 
@@ -86,7 +89,7 @@ Rotas:
 Regras de organização:
 
 - `features/*` pode importar de `shared/`; **`shared/` nunca importa de `features/`**.
-- Dentro de cada área ficam só pastas por tipo (`components`, `lib`, `content`, `hooks`). **Sem subpastas por página.**
+- Dentro de cada área e em `shared/` ficam só pastas por tipo (`api`, `components`, `content`, `hooks`, `lib`). **Sem subpastas por página.** Não crie pasta nova (`config`, `utils`, `helpers`, `constants`) sem combinar antes.
 - Algo vai para `shared/` só quando **mais de uma área** usa. Se só o site usa, fica em `features/site`.
 - Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes na feature.
 - Imports sempre absolutos com `~/`. Relativo só entre arquivos da mesma pasta.
@@ -192,7 +195,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Diga **"veículo"**, não "carro".
 - Não cite a **DEKRA**.
 - Não use **"lojista"** no header nem na navegação.
-- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/shared/config/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
+- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/shared/content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
 - Números da empresa: abreviados e grandes ("+250 mil", não o número cheio).
 - Placa de exemplo: `ABC1D23` (Mercosul).
 
@@ -202,14 +205,14 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Componentes como `function` nomeada e exportada. Props tipadas com `type XProps`.
 - Estado derivado em vez de `useEffect`. Para assinar eventos do navegador, use `useSyncExternalStore` (veja `use-scrolled.ts` e `use-media-query.ts`).
 - Classes condicionais com `cn(...)`. O Biome ordena as classes, então rode `--write --unsafe`.
-- Dados fixos e de demonstração ficam em `lib/` ou `config/`, nunca soltos no JSX.
+- Dados fixos ficam em `content/` (da área ou de `shared/`) e dados de demonstração no `lib/` da área, nunca soltos no JSX.
 - Não adicione dependência sem necessidade clara. Prefira o que já está no projeto.
 
 ### 10.1 Formulários (regra)
 
 **Todo formulário usa React Hook Form com zod.** Não valide à mão com `useState`, `FormData` ou `safeParse` no `onSubmit`, e não use `required`, `minLength` e afins do HTML para validar.
 
-- O schema zod fica no `lib/` da área (`features/<área>/lib/*.ts`) ou em `shared/utils` quando é genérico, como a placa. As mensagens são em português e no imperativo ("Informe o CEP.").
+- O schema zod fica no `lib/` da área (`features/<área>/lib/*.ts`) ou em `shared/lib` quando é genérico, como a placa (`~/shared/lib/plate`). As mensagens são em português e no imperativo ("Informe o CEP.").
 - `useForm({ resolver: zodResolver(schema), defaultValues })`. Quando o schema transforma valores (máscaras, `trim`, `toUpperCase`), tipe como `useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>` e exporte os dois tipos do `lib/`.
 - `<form noValidate onSubmit={handleSubmit(submit)}>`; o `submit` recebe os dados já validados e transformados.
 - Ligue os campos com `{...register("campo")}`. Para máscara, use `withMask(register("campo"), formatador)` de `~/shared/lib/form` (telefone, CEP, CPF, placa, código).

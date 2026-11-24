@@ -3,7 +3,11 @@ import {
 	MissingMark,
 } from "~/features/site/components/plan-marks";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
-import { type Plan, planIncludes, planInfoGroups } from "~/shared/config/plans";
+import {
+	type Plan,
+	planIncludes,
+	planInfoGroups,
+} from "~/shared/content/plans";
 import { cn } from "~/shared/lib/utils";
 
 export function PlanInfoGroups({ plan }: { plan: Plan }) {

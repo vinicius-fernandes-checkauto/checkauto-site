@@ -11,7 +11,7 @@ import {
 	WalletIcon,
 } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
-import { accountNav } from "~/shared/config/navigation";
+import { accountNav } from "~/shared/content/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const sections = [

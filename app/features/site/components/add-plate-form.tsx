@@ -5,8 +5,8 @@ import { z } from "zod";
 
 import { Button } from "~/shared/components/ui/button";
 import { withMask } from "~/shared/lib/form";
+import { normalizePlate, plateSchema } from "~/shared/lib/plate";
 import { cn } from "~/shared/lib/utils";
-import { normalizePlate, plateSchema } from "~/shared/utils/plate";
 
 const addPlateSchema = z.object({ plate: plateSchema });
 

@@ -15,7 +15,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
-import { accountNav, headerNav } from "~/shared/config/navigation";
+import { accountNav, headerNav } from "~/shared/content/navigation";
 import { useScrolled } from "~/shared/hooks/use-scrolled";
 import { cn } from "~/shared/lib/utils";
 

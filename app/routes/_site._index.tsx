@@ -7,7 +7,7 @@ import { PlansSection } from "~/features/site/components/plans-section";
 import { HeroSection } from "~/features/site/components/sections/hero-section";
 import { MarqueeSection } from "~/features/site/components/sections/marquee-section";
 import { WhySection } from "~/features/site/components/sections/why-section";
-import { homeFaq } from "~/shared/config/faq";
+import { homeFaq } from "~/shared/content/faq";
 
 import type { Route } from "./+types/_site._index";
 

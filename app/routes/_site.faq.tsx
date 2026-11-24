@@ -10,7 +10,7 @@ import {
 	AccordionTrigger,
 } from "~/shared/components/ui/accordion";
 import { Button } from "~/shared/components/ui/button";
-import { faq, faqCategories } from "~/shared/config/faq";
+import { faq, faqCategories } from "~/shared/content/faq";
 import { cn } from "~/shared/lib/utils";
 
 import type { Route } from "./+types/_site.faq";

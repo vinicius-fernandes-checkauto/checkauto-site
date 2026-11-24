@@ -12,7 +12,7 @@ import {
 } from "~/features/auth/components/auth-form";
 import { formatCpf, signUpSchema } from "~/features/auth/lib/auth";
 import { Button } from "~/shared/components/ui/button";
-import { legalNav } from "~/shared/config/navigation";
+import { legalNav } from "~/shared/content/navigation";
 import { withMask } from "~/shared/lib/form";
 
 import type { Route } from "./+types/_auth.cadastro";

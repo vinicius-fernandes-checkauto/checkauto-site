@@ -1,4 +1,4 @@
-import { readApiEnv } from "~/shared/config/env";
+import { readApiEnv } from "~/shared/lib/env";
 
 import { createHttpClient } from "./create-http-client";
 import type { HttpClient } from "./http-client";

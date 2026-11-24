@@ -13,7 +13,7 @@ import {
 } from "~/features/auth/components/auth-form";
 import { signInSchema } from "~/features/auth/lib/auth";
 import { Button } from "~/shared/components/ui/button";
-import { legalNav } from "~/shared/config/navigation";
+import { legalNav } from "~/shared/content/navigation";
 
 import type { Route } from "./+types/_auth.entrar";
 

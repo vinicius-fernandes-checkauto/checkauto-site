@@ -1,7 +1,7 @@
 import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
-import { contact } from "~/shared/config/company";
+import { contact } from "~/shared/content/company";
 
 import type { Route } from "./+types/_site.imprensa";
 

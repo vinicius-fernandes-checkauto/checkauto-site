@@ -1,4 +1,4 @@
-import { type Plan, plans } from "~/shared/config/plans";
+import { type Plan, plans } from "~/shared/content/plans";
 
 export type CartItem = {
 	plate: string;

@@ -23,8 +23,8 @@ import {
 } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 import { errorProps, withMask } from "~/shared/lib/form";
+import { formatPhone } from "~/shared/lib/phone";
 import { cn } from "~/shared/lib/utils";
-import { formatPhone } from "~/shared/utils/phone";
 
 const acceptedAt = new Intl.DateTimeFormat("pt-BR", {
 	day: "2-digit",

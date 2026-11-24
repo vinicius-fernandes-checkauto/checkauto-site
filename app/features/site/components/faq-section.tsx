@@ -7,7 +7,7 @@ import {
 	AccordionTrigger,
 } from "~/shared/components/ui/accordion";
 import { Button } from "~/shared/components/ui/button";
-import { homeFaq } from "~/shared/config/faq";
+import { homeFaq } from "~/shared/content/faq";
 
 export function FaqSection() {
 	return (

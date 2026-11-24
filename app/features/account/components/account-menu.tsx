@@ -19,7 +19,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "~/shared/components/ui/dropdown-menu";
-import { accountNav } from "~/shared/config/navigation";
+import { accountNav } from "~/shared/content/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const accountMenu = [

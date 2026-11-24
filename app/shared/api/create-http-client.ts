@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import type { HttpClient } from "~/shared/api/http-client";
-import type { ApiEnv } from "~/shared/config/env";
+import type { ApiEnv } from "~/shared/lib/env";
 
 import { AxiosHttpClient } from "./axios/axios-http-client";
 

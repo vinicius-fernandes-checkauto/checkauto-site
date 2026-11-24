@@ -13,10 +13,10 @@ import {
 } from "~/features/account/lib/new-query";
 import { ArrowRightIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
-import { plans } from "~/shared/config/plans";
+import { plans } from "~/shared/content/plans";
 import { withMask } from "~/shared/lib/form";
+import { normalizePlate } from "~/shared/lib/plate";
 import { cn } from "~/shared/lib/utils";
-import { normalizePlate } from "~/shared/utils/plate";
 
 export function NewQueryForm() {
 	const baseId = useId();

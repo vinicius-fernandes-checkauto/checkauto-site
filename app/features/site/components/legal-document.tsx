@@ -11,7 +11,7 @@ import {
 	MailIcon,
 	PhoneIcon,
 } from "~/shared/components/icons";
-import { contact } from "~/shared/config/company";
+import { contact } from "~/shared/content/company";
 import { cn } from "~/shared/lib/utils";
 
 function useActiveSection(ids: string[]) {

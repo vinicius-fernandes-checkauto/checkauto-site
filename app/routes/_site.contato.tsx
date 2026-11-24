@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { ContactForm } from "~/features/site/components/contact-form";
 import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon, PhoneIcon } from "~/shared/components/icons";
-import { contact } from "~/shared/config/company";
+import { contact } from "~/shared/content/company";
 
 import type { Route } from "./+types/_site.contato";
 
