@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 
-import carDiagram960 from "~/assets/home/car-diagram-960.webp";
-import carDiagram1600 from "~/assets/home/car-diagram-1600.webp";
+import carDiagram960 from "~/@assets/car-diagram-960.webp";
+import carDiagram1600 from "~/@assets/car-diagram-1600.webp";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
 import {
 	BanIcon,

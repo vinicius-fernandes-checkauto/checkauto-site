@@ -3,7 +3,7 @@ import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 
-import { plans } from "~/content/plans";
+import { plans } from "~/@content/plans";
 import { AccountSection } from "~/features/account/components/account-section";
 import {
 	defaultPlanId,
@@ -14,9 +14,9 @@ import {
 } from "~/features/account/lib/new-query";
 import { ArrowRightIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
-import { withMask } from "~/shared/lib/form";
-import { normalizePlate } from "~/shared/lib/plate";
 import { cn } from "~/shared/lib/utils";
+import { withMask } from "~/shared/utils/form";
+import { normalizePlate } from "~/shared/utils/plate";
 
 export function NewQueryForm() {
 	const baseId = useId();

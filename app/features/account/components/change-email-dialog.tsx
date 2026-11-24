@@ -22,8 +22,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "~/shared/components/ui/dialog";
-import { errorProps, withMask } from "~/shared/lib/form";
 import { cn } from "~/shared/lib/utils";
+import { errorProps, withMask } from "~/shared/utils/form";
 
 type ChangeEmailDialogProps = {
 	open: boolean;

@@ -1,6 +1,6 @@
+import { Arc } from "~/features/site/components/arc";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
 import { WhyNumbers } from "~/features/site/components/sections/why-numbers";
-import { Arc } from "~/shared/components/arc";
 import { IconBadge } from "~/shared/components/icon-badge";
 import {
 	FileTextIcon,

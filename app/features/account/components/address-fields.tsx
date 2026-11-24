@@ -11,8 +11,8 @@ import {
 } from "~/features/account/lib/addresses";
 import type { ProfileFormValues } from "~/features/account/lib/profile";
 import { ChevronDownIcon } from "~/shared/components/icons";
-import { errorProps, withMask } from "~/shared/lib/form";
 import { cn } from "~/shared/lib/utils";
+import { errorProps, withMask } from "~/shared/utils/form";
 
 type AddressFieldsProps = {
 	baseId: string;

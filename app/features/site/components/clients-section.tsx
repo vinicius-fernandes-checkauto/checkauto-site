@@ -1,8 +1,8 @@
-import caixa from "~/assets/clients/caixa.webp";
-import randoncorp from "~/assets/clients/randoncorp.webp";
-import rodobens from "~/assets/clients/rodobens.webp";
-import suhai from "~/assets/clients/suhai.webp";
-import tokioMarine from "~/assets/clients/tokio-marine.webp";
+import caixa from "~/@assets/clients/caixa.webp";
+import randoncorp from "~/@assets/clients/randoncorp.webp";
+import rodobens from "~/@assets/clients/rodobens.webp";
+import suhai from "~/@assets/clients/suhai.webp";
+import tokioMarine from "~/@assets/clients/tokio-marine.webp";
 import { cn } from "~/shared/lib/utils";
 
 const clients = [

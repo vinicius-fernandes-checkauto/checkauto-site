@@ -1,6 +1,5 @@
-import { type ComponentProps, type ReactNode, useState } from "react";
+import type { ReactNode } from "react";
 
-import { EyeIcon, EyeOffIcon } from "~/shared/components/icons";
 import { cn } from "~/shared/lib/utils";
 
 export const fieldControlClassName =
@@ -51,33 +50,6 @@ export function FormField({
 					</p>
 				)
 			)}
-		</div>
-	);
-}
-
-export function PasswordInput({
-	className,
-	...props
-}: Omit<ComponentProps<"input">, "type">) {
-	const [visible, setVisible] = useState(false);
-	const Icon = visible ? EyeIcon : EyeOffIcon;
-
-	return (
-		<div className="relative">
-			<input
-				type={visible ? "text" : "password"}
-				className={cn(fieldControlClassName, "pr-13", className)}
-				{...props}
-			/>
-			<button
-				type="button"
-				aria-label={visible ? "Ocultar senha" : "Mostrar senha"}
-				aria-pressed={visible}
-				onClick={() => setVisible((value) => !value)}
-				className="absolute top-1 right-1 flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-heading"
-			>
-				<Icon aria-hidden="true" className="size-4.5" />
-			</button>
 		</div>
 	);
 }

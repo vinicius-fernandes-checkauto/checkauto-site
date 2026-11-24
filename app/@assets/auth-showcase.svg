@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="620" fill="none" viewBox="0 0 720 620">
+  <title>Veículo com itens do histórico verificados</title>
+  <defs>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientTransform="matrix(0 245 -245 0 365 308)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66C61C" stop-opacity=".12"/>
+      <stop offset=".72" stop-color="#66C61C" stop-opacity=".035"/>
+      <stop offset="1" stop-color="#66C61C" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="carBody" x1="287" x2="447" y1="192" y2="445" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/>
+      <stop offset=".48" stop-color="#E9EEF0"/>
+      <stop offset="1" stop-color="#CAD5DA"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="319" x2="414" y1="225" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#183B56"/>
+      <stop offset=".5" stop-color="#31566F"/>
+      <stop offset="1" stop-color="#183B56"/>
+    </linearGradient>
+    <linearGradient id="scan" x1="190" x2="480" y1="202" y2="412" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66C61C" stop-opacity="0"/>
+      <stop offset=".48" stop-color="#66C61C" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#66C61C" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" width="285" height="420" x="226" y="106" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="16"/>
+      <feGaussianBlur stdDeviation="18"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0.18 0 0 0 0 0.33 0 0 0 0.22 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <mask id="scanMask" width="480" height="480" x="125" y="68" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+      <circle cx="365" cy="308" r="240" fill="#fff"/>
+    </mask>
+  </defs>
+  <circle cx="365" cy="308" r="240" fill="url(#halo)"/>
+  <circle cx="365" cy="308" r="225" stroke="#002E55" stroke-opacity=".09"/>
+  <circle cx="365" cy="308" r="183" stroke="#002E55" stroke-opacity=".07"/>
+  <circle cx="365" cy="308" r="144" stroke="#002E55" stroke-dasharray="2 8" stroke-linecap="round" stroke-opacity=".16"/>
+  <g mask="url(#scanMask)">
+    <path fill="url(#scan)" d="M365 68a240 240 0 0 1 207.846 120L365 308V68Z"/>
+    <path stroke="#66C61C" stroke-opacity=".8" stroke-width="2" d="M365 308 572.846 188"/>
+    <path stroke="#66C61C" stroke-opacity=".2" d="M365 68a240 240 0 0 1 207.846 120"/>
+  </g>
+  <circle cx="365" cy="308" r="7" fill="#008143"/>
+  <circle cx="365" cy="308" r="14" stroke="#008143" stroke-opacity=".2"/>
+  <g filter="url(#shadow)" transform="rotate(-24 365 308)">
+    <path fill="#002647" d="M327 132c-9 5-15 17-17 31l-11 65c-3 15-5 30-5 45v82c0 18 2 34 6 50l13 57c3 15 9 25 18 30 9 6 28 9 54 9s45-3 54-9c9-5 15-15 18-30l13-57c4-16 6-32 6-50v-82c0-15-2-30-5-45l-11-65c-2-14-8-26-17-31-10-6-28-9-58-9s-48 3-58 9Z"/>
+    <path fill="url(#carBody)" stroke="#fff" stroke-width="3" d="M330 145c-7 4-11 12-13 22l-12 67c-2 13-4 26-4 39v80c0 17 2 31 5 46l13 56c2 10 6 18 12 22 7 4 22 7 50 7s43-3 50-7c6-4 10-12 12-22l13-56c3-15 5-29 5-46v-80c0-13-2-26-4-39l-12-67c-2-10-6-18-13-22-8-5-24-7-51-7s-43 2-51 7Z"/>
+    <path fill="#D9E1E4" d="m318 241 10-63c2-9 6-16 13-20 7-4 19-6 44-6s37 2 44 6c7 4 11 11 13 20l10 63-17 10H335l-17-10Z"/>
+    <path fill="url(#glass)" stroke="#002647" stroke-opacity=".45" stroke-width="2" d="m326 252 13-54c2-8 7-13 15-16 7-3 17-4 31-4s24 1 31 4c8 3 13 8 15 16l13 54-15 10h-88l-15-10Z"/>
+    <path fill="#B7C7CF" fill-opacity=".72" d="M359 187h52c5 2 8 5 10 11l12 51h-68l-6-62Z"/>
+    <path fill="#D5DEE1" d="M317 280c14-8 30-12 48-12h1v50h-59v-21c0-7 3-13 10-17Zm96-12c18 0 34 4 48 12 7 4 10 10 10 17v21h-59v-50h1Z"/>
+    <path fill="#244761" d="M307 326h117v52H307z"/>
+    <path fill="#31566F" d="M424 326h47v52h-47z"/>
+    <path fill="#183B56" d="M307 326h117v52H307z"/>
+    <path stroke="#8FA5B1" stroke-opacity=".55" d="M365 326v52m-58-26h164"/>
+    <path fill="#D5DEE1" d="M305 390h60v48h-1c-18 0-34-4-48-12-7-4-10-10-10-17v-19Zm119 0h47v19c0 7-3 13-10 17-14 8-30 12-48 12h-1v-48h12Z"/>
+    <path fill="url(#glass)" stroke="#002647" stroke-opacity=".4" stroke-width="2" d="m317 445 17-10h88l15 10-13 53c-2 8-7 13-15 16-7 3-17 4-31 4s-24-1-31-4c-8-3-13-8-15-16l-15-53Z"/>
+    <path fill="#B7C7CF" fill-opacity=".72" d="M365 439h68l-12 51c-2 6-5 9-10 11-7 3-17 4-31 4h-9l-6-66Z"/>
+    <path stroke="#002647" stroke-opacity=".22" stroke-width="2" d="M303 271h124m-124 117h124"/>
+    <path fill="#002647" d="M296 240h12v29h-12zm0 120h12v29h-12zm164-120h12v29h-12zm0 120h12v29h-12z"/>
+    <path fill="#66C61C" d="M297 210h5v19h-5zm169 0h5v19h-5zm-169 190h5v19h-5zm169 0h5v19h-5z"/>
+    <path fill="#F4F7F5" stroke="#002647" stroke-width="2" d="M338 510h54v18h-54z"/>
+    <path fill="#002E55" d="M340 512h50v4h-50z"/>
+    <text x="365" y="524" fill="#002647" font-family="Arial,sans-serif" font-size="8" font-weight="700" letter-spacing="2" text-anchor="middle">ABC1D23</text>
+  </g>
+  <g font-family="Arial,sans-serif" font-size="13" font-weight="600">
+    <g transform="translate(440 105)">
+      <rect width="102" height="34" rx="17" fill="#fff"/>
+      <circle cx="18" cy="17" r="10" fill="#008143"/>
+      <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 17 3 3 5-6"/>
+      <text x="35" y="21" fill="#002647">Leilão</text>
+    </g>
+    <g transform="translate(484 263)">
+      <rect width="156" height="34" rx="17" fill="#fff"/>
+      <circle cx="18" cy="17" r="10" fill="#008143"/>
+      <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 17 3 3 5-6"/>
+      <text x="35" y="21" fill="#002647">Roubo e furto</text>
+    </g>
+    <g transform="translate(155 440)">
+      <rect width="119" height="34" rx="17" fill="#fff"/>
+      <circle cx="18" cy="17" r="10" fill="#008143"/>
+      <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 17 3 3 5-6"/>
+      <text x="35" y="21" fill="#002647">Ocorrência</text>
+    </g>
+    <g transform="translate(435 500)">
+      <rect width="105" height="34" rx="17" fill="#fff"/>
+      <circle cx="18" cy="17" r="10" fill="#008143"/>
+      <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 17 3 3 5-6"/>
+      <text x="35" y="21" fill="#002647">Gravame</text>
+    </g>
+  </g>
+</svg>

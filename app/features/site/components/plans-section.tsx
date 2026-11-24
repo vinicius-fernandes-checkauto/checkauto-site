@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 
-import { corporatePlan, PLAN_STORAGE_KEY, plans } from "~/content/plans";
+import { corporatePlan, PLAN_STORAGE_KEY, plans } from "~/@content/plans";
 import {
 	focusHeroPlateInput,
 	PLATE_STORAGE_KEY,

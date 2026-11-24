@@ -8,7 +8,7 @@ export function IconBadge({
 		<span
 			aria-hidden="true"
 			className={cn(
-				"flex size-11 shrink-0 items-center justify-center rounded-full [&>svg]:size-5",
+				"flex size-11 shrink-0 items-center justify-center rounded-full [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
 				className,
 			)}
 			{...props}

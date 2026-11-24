@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
-import logo from "~/assets/brand/checkauto-logo.png";
-import logoWhite from "~/assets/brand/checkauto-logo-white.png";
+import logo from "~/@assets/brand/checkauto-logo.png";
+import logoWhite from "~/@assets/brand/checkauto-logo-white.png";
 import { cn } from "~/shared/lib/utils";
 
 type CheckautoLogoProps = {
@@ -16,7 +16,7 @@ export function CheckautoLogo({
 	return (
 		<Link
 			to="/"
-			className="inline-flex min-h-10 shrink-0 items-center rounded-full"
+			className="inline-flex min-h-10 w-fit shrink-0 items-center rounded-full"
 		>
 			<img
 				src={variant === "white" ? logoWhite : logo}

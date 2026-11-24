@@ -9,9 +9,9 @@ import {
 } from "~/features/site/lib/contact";
 import { ChevronDownIcon, CircleCheckIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
-import { errorProps, withMask } from "~/shared/lib/form";
-import { formatPhone } from "~/shared/lib/phone";
 import { cn } from "~/shared/lib/utils";
+import { errorProps, withMask } from "~/shared/utils/form";
+import { formatPhone } from "~/shared/utils/phone";
 
 const controlClassName =
 	"w-full border bg-card text-[0.9375rem] text-heading outline-none placeholder:text-muted-foreground focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:outline-solid aria-invalid:border-destructive";

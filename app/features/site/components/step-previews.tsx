@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { plans } from "~/content/plans";
+import { plans } from "~/@content/plans";
 import { cn } from "~/shared/lib/utils";
 
 const PLATE = "ABC1D23";

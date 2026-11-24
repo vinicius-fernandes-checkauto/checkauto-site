@@ -12,7 +12,7 @@ export const socialLinks = [
 	{ label: "YouTube", href: "https://www.youtube.com/@CHEKAUTO" },
 ] as const;
 
-export const company = {
+export const checkauto = {
 	legalName: "Checkauto Consultoria Técnica e Informações Veiculares LTDA",
 	cnpj: "00.305.974/0001-83",
 	address: "Rua Bartolomeu de Gusmão, 158 – Guarulhos/SP – CEP 07024-010",

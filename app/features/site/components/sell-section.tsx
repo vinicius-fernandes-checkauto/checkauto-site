@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 
-import ticks from "~/assets/brand/symbol-ticks.webp";
-import sellCarSilver from "~/assets/home/sell-car-silver.webp";
-import sellCarTop from "~/assets/home/sell-car-top.webp";
-import sellCarWheel from "~/assets/home/sell-car-wheel.webp";
+import ticks from "~/@assets/brand/symbol-ticks.webp";
+import sellCarSilver from "~/@assets/sell-car-silver.webp";
+import sellCarTop from "~/@assets/sell-car-top.webp";
+import sellCarWheel from "~/@assets/sell-car-wheel.webp";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
 import {
 	CircleCheckIcon,

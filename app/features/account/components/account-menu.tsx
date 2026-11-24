@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { accountNav } from "~/content/navigation";
+import { accountNav } from "~/@content/navigation";
 import type { AccountUser } from "~/features/account/lib/account";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import {

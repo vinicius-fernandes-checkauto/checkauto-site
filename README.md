@@ -27,7 +27,10 @@ app/
   routes/                  uma rota por arquivo; só compõe o que vem de features e shared
     _site.tsx              layout das páginas do site (cabeçalho e rodapé)
     _site._index.tsx       home (/)
-  assets/                  imagens importadas pelos componentes (o Vite gera o nome com hash)
+  @assets/
+    brand/                  logos e símbolos da marca
+    clients/                logos de clientes
+                            demais imagens soltas nesta pasta
   features/<módulo>/       tudo que é de um assunto do site
     components/            seções e componentes do módulo
     services/              chamadas à API do módulo

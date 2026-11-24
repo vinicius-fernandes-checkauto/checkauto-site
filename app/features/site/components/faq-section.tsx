@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { homeFaq } from "~/content/faq";
+import { homeFaq } from "~/@content/faq";
 import {
 	Accordion,
 	AccordionContent,

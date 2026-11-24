@@ -6,7 +6,7 @@ import {
 	planIncludes,
 	planInfoGroups,
 	plans,
-} from "~/content/plans";
+} from "~/@content/plans";
 import { IncludedMark } from "~/features/site/components/plan-marks";
 import { PLATE_STORAGE_KEY } from "~/features/site/components/plate-form";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";

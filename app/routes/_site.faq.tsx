@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
-import { faq, faqCategories } from "~/content/faq";
+import { faq, faqCategories } from "~/@content/faq";
 import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon, SearchIcon, XIcon } from "~/shared/components/icons";
 import {

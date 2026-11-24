@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
 
-import { accountNav } from "~/content/navigation";
+import { accountNav } from "~/@content/navigation";
 
 import type { Route } from "./+types/conta._index";
 

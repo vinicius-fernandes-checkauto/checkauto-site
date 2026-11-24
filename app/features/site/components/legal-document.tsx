@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { contact } from "~/content/company";
+import { contact } from "~/@content/checkauto";
 import { PageHeader } from "~/features/site/components/page-header";
 import type {
 	LegalBlock,

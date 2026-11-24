@@ -1,13 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 import {
-	AuthField,
 	AuthHeading,
-	AuthSwitch,
-} from "~/features/auth/components/auth-form";
-import { resetPasswordSchema } from "~/features/auth/lib/auth";
+	AuthHeadingDescription,
+	AuthHeadingTitle,
+} from "~/features/auth/components/auth-heading";
+import { AuthSwitch } from "~/features/auth/components/auth-switch";
+import { ResetPasswordForm } from "~/features/auth/components/reset-password-form";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 
@@ -20,15 +19,6 @@ export const meta: Route.MetaFunction = () => [
 export default function ResetPassword() {
 	const [sentTo, setSentTo] = useState<string | null>(null);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
-		resolver: zodResolver(resetPasswordSchema),
-		defaultValues: { email: "" },
-	});
-
 	if (sentTo !== null) {
 		return (
 			<>
@@ -36,16 +26,14 @@ export default function ResetPassword() {
 					<MailIcon aria-hidden="true" className="size-6" />
 				</span>
 				<div role="status">
-					<AuthHeading
-						title="Confira seu e-mail"
-						description={
-							<>
-								Enviamos o link para{" "}
-								<strong className="font-medium text-heading">{sentTo}</strong>.
-								Não achou? Veja também a caixa de spam.
-							</>
-						}
-					/>
+					<AuthHeading>
+						<AuthHeadingTitle>Confira seu e-mail</AuthHeadingTitle>
+						<AuthHeadingDescription>
+							Enviamos o link para{" "}
+							<strong className="font-medium text-heading">{sentTo}</strong>.
+							Não achou? Veja também a caixa de spam.
+						</AuthHeadingDescription>
+					</AuthHeading>
 				</div>
 				<Button
 					type="button"
@@ -63,27 +51,15 @@ export default function ResetPassword() {
 
 	return (
 		<>
-			<AuthHeading
-				title="Redefinir senha"
-				description="Informe o e-mail da sua conta e enviamos um link para criar uma nova senha."
-			/>
+			<AuthHeading>
+				<AuthHeadingTitle>Redefinir senha</AuthHeadingTitle>
+				<AuthHeadingDescription>
+					Informe o e-mail da sua conta e enviamos um link para criar uma nova
+					senha.
+				</AuthHeadingDescription>
+			</AuthHeading>
 
-			<form
-				noValidate
-				onSubmit={handleSubmit(({ email }) => setSentTo(email))}
-				className="flex flex-col gap-6"
-			>
-				<AuthField
-					label="E-mail"
-					type="email"
-					autoComplete="email"
-					error={errors.email?.message}
-					{...register("email")}
-				/>
-				<Button type="submit" className="w-full">
-					Enviar link
-				</Button>
-			</form>
+			<ResetPasswordForm onSubmit={setSentTo} />
 
 			<AuthSwitch question="Lembrou a senha?" to="/entrar">
 				Entrar

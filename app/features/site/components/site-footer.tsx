@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
-import { company, contact, socialLinks } from "~/content/company";
-import { footerNav, legalNav } from "~/content/navigation";
+import { checkauto, contact, socialLinks } from "~/@content/checkauto";
+import { footerNav, legalNav } from "~/@content/navigation";
 import { ScrollToTopButton } from "~/features/site/components/scroll-to-top-button";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 import {
@@ -148,9 +148,9 @@ export function SiteFooter() {
 							Todos os direitos reservados.
 						</p>
 						<p>
-							{company.legalName} · CNPJ {company.cnpj}
+							{checkauto.legalName} · CNPJ {checkauto.cnpj}
 						</p>
-						<p>{company.address}</p>
+						<p>{checkauto.address}</p>
 					</div>
 					<div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 lg:justify-end lg:gap-x-8">
 						<nav

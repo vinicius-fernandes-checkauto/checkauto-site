@@ -41,7 +41,7 @@ npm run format                      # biome check --write no projeto todo
 npx biome check --write --unsafe <arquivos>   # corrige formatação e ordena classes
 npm run build                       # build + prerender de todas as rotas
 npm test                            # vitest
-npx vitest run app/shared/lib/plate.test.ts   # um arquivo de teste
+npx vitest run app/shared/utils/plate.test.ts # um arquivo de teste
 npx vitest run -t "<nome do teste>"             # um teste pelo nome
 ```
 
@@ -59,8 +59,11 @@ app/
   app.css                tema (tokens do DS) — único arquivo de estilo global
   root.tsx               HTML base, metadados, página de erro
   routes/                um arquivo por rota; só monta a página com peças de features/ e shared/
-  assets/                imagens importadas (o Vite gera hash); prefira .webp
-  content/               dados e textos fixos do site: planos, FAQ, navegação, empresa (futuro Sanity)
+  @assets/
+    brand/               logos e símbolos da marca
+    clients/              logos de clientes
+                          demais imagens soltas nesta pasta
+  @content/              dados e textos fixos do site: planos, FAQ, navegação, empresa (futuro Sanity)
   features/
     site/                site público
       components/        seções da home, header/footer do site, página do pacote, carrinho, contato, jurídico
@@ -74,10 +77,11 @@ app/
     components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, LicensePlate, PlansComparison
     components/ui/       shadcn ajustado ao tema
     hooks/               useMediaQuery, useScrolled
-    lib/                 código de apoio: cn, gsap, form, placa, telefone
+    lib/                 código de apoio: cn, gsap
+    utils/               funções reutilizáveis: form, placa, telefone
 ```
 
-`lib` é **código**; `content` são **dados**. O `content/` da raiz fica isolado de propósito, porque vai ser substituído pelo Sanity: ele **não importa nada** de `features/` nem de `shared/` (tipos ficam no próprio arquivo), e quem lê dele são as features e o `shared/`. Não existem `config/` nem `utils/`: configuração e funções puras ficam em `lib/`. Esse é o mesmo padrão dos outros projetos do time e do shadcn (`lib/utils`).
+`lib` e `utils` são **código**; `content` são **dados**. O `@content/` da raiz fica isolado de propósito, porque vai ser substituído pelo Sanity: ele **não importa nada** de `features/` nem de `shared/` (tipos ficam no próprio arquivo), e quem lê dele são as features e o `shared/`. Configuração fica em `lib/`. Esse é o mesmo padrão dos outros projetos do time e do shadcn (`lib/utils`).
 
 O contrato da API do backend fica em `docs/api/` (`openapi.json` + `README.md` com os endpoints que o site usa e o que falta confirmar).
 
@@ -88,8 +92,8 @@ Rotas:
 
 Regras de organização:
 
-- `features/*` pode importar de `shared/` e de `content/`; **`shared/` nunca importa de `features/`**; **`content/` não importa de ninguém**.
-- Dentro de cada área e em `shared/` ficam só pastas por tipo (`components`, `content`, `hooks`, `lib`; `shared/` não tem `content`). **Sem subpastas por página.** Não crie pasta nova (`config`, `utils`, `helpers`, `constants`) sem combinar antes.
+- `features/*` pode importar de `shared/` e de `@content/`; **`shared/` nunca importa de `features/`**; **`@content/` não importa de ninguém**.
+- Dentro de cada área e em `shared/` ficam só pastas por tipo (`components`, `content`, `hooks`, `lib`, `utils`; `shared/` não tem `content`). **Sem subpastas por página.** Não crie pasta nova (`config`, `helpers`, `constants`) sem combinar antes.
 - Algo vai para `shared/` só quando **mais de uma área** usa. Se só o site usa, fica em `features/site`.
 - Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes na feature.
 - Imports sempre absolutos com `~/`. Relativo só entre arquivos da mesma pasta.
@@ -176,7 +180,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 
 ### Elementos da marca
 
-- **Arcos da marca, não bolhas nem blobs.** Use o símbolo `~/assets/brand/symbol-ring-blue.webp` como máscara (`style={{ maskImage: url(...) }}` + `mask-contain mask-no-repeat`), pintado com `bg-brand-green/20` e afins. Também existe `symbol-ticks.webp`.
+- **Arcos da marca, não bolhas nem blobs.** Use o símbolo `~/@assets/brand/symbol-ring-blue.webp` como máscara (`style={{ maskImage: url(...) }}` + `mask-contain mask-no-repeat`), pintado com `bg-brand-green/20` e afins. Também existe `symbol-ticks.webp`.
 - Estilo: **moderno, limpo, orgânico**. Muito respiro, poucos textos, cards arredondados, detalhes em verde sobre azul.
 
 ## 6. Layout e responsividade
@@ -218,7 +222,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Diga **"veículo"**, não "carro".
 - Não cite a **DEKRA**.
 - Não use **"lojista"** no header nem na navegação.
-- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
+- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/@content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
 - Números da empresa: abreviados e grandes ("+250 mil", não o número cheio).
 - Placa de exemplo: `ABC1D23` (Mercosul).
 
@@ -228,17 +232,17 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Componentes como `function` nomeada e exportada. Props tipadas com `type XProps`.
 - Estado derivado em vez de `useEffect`. Para assinar eventos do navegador, use `useSyncExternalStore` (veja `use-scrolled.ts` e `use-media-query.ts`).
 - Classes condicionais com `cn(...)`. O Biome ordena as classes, então rode `--write --unsafe`.
-- Dados fixos ficam em `content/` (o da raiz, ou o da área para textos que só ela usa) e dados de demonstração no `lib/` da área, nunca soltos no JSX.
+- Dados fixos ficam em `@content/` (o da raiz, ou `content/` da área para textos que só ela usa) e dados de demonstração no `lib/` da área, nunca soltos no JSX.
 - Não adicione dependência sem necessidade clara. Prefira o que já está no projeto.
 
 ### 10.1 Formulários (regra)
 
 **Todo formulário usa React Hook Form com zod.** Não valide à mão com `useState`, `FormData` ou `safeParse` no `onSubmit`, e não use `required`, `minLength` e afins do HTML para validar.
 
-- O schema zod fica no `lib/` da área (`features/<área>/lib/*.ts`) ou em `shared/lib` quando é genérico, como a placa (`~/shared/lib/plate`). As mensagens são em português e no imperativo ("Informe o CEP.").
+- O schema zod fica no `lib/` da área (`features/<área>/lib/*.ts`) ou em `shared/utils` quando é genérico, como a placa (`~/shared/utils/plate`). As mensagens são em português e no imperativo ("Informe o CEP.").
 - `useForm({ resolver: zodResolver(schema), defaultValues })`. Quando o schema transforma valores (máscaras, `trim`, `toUpperCase`), tipe como `useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>` e exporte os dois tipos do `lib/`.
 - `<form noValidate onSubmit={handleSubmit(submit)}>`; o `submit` recebe os dados já validados e transformados.
-- Ligue os campos com `{...register("campo")}`. Para máscara, use `withMask(register("campo"), formatador)` de `~/shared/lib/form` (telefone, CEP, CPF, placa, código).
+- Ligue os campos com `{...register("campo")}`. Para máscara, use `withMask(register("campo"), formatador)` de `~/shared/utils/form` (telefone, CEP, CPF, placa, código).
 - Erros: `errors.campo?.message` no `FormField` (conta), no `AuthField`/`PasswordField`/`TermsCheckbox` (auth) ou no componente do site. Para as props de acessibilidade, use `errorProps(id, errors.campo)`.
 - Erro que vem da regra de negócio, como cupom inválido ou placa repetida: `setError("campo", { message }, { shouldFocus: true })`.
 - Campo condicional, como a inscrição estadual quando a empresa é isenta: `register("campo", { disabled })` + `watch`, e o schema trata o valor opcional (`.optional()` + `refine`).

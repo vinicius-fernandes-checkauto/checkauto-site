@@ -1,4 +1,4 @@
-import { type Plan, plans } from "~/content/plans";
+import { type Plan, plans } from "~/@content/plans";
 
 export type CartItem = {
 	plate: string;

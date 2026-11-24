@@ -1,4 +1,4 @@
-import ring from "~/assets/brand/symbol-ring-blue.webp";
+import ring from "~/@assets/brand/symbol-ring-blue.webp";
 import { cn } from "~/shared/lib/utils";
 
 export function Arc({

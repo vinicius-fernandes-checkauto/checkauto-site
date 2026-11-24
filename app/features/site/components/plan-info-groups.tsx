@@ -1,4 +1,4 @@
-import { type Plan, planIncludes, planInfoGroups } from "~/content/plans";
+import { type Plan, planIncludes, planInfoGroups } from "~/@content/plans";
 import {
 	IncludedMark,
 	MissingMark,

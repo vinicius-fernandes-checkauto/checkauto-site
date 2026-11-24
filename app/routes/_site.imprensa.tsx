@@ -1,4 +1,4 @@
-import { contact } from "~/content/company";
+import { contact } from "~/@content/checkauto";
 import { PageHeader } from "~/features/site/components/page-header";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
+import { Arc } from "~/features/site/components/arc";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
-import { Arc } from "~/shared/components/arc";
 import { Button } from "~/shared/components/ui/button";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 import { cn } from "~/shared/lib/utils";

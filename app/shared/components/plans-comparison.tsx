@@ -10,7 +10,7 @@ import {
 	planHighlightItems,
 	planIncludes,
 	plans,
-} from "~/content/plans";
+} from "~/@content/plans";
 import {
 	BadgeCheckIcon,
 	ChevronDownIcon,

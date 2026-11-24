@@ -3,14 +3,11 @@ import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
-	FormField,
-	PasswordInput,
-} from "~/features/account/components/form-field";
-import {
 	type PasswordField,
 	passwordSchema,
 } from "~/features/account/lib/profile";
 import { CircleCheckIcon } from "~/shared/components/icons";
+import { PasswordInput } from "~/shared/components/password-input";
 import { Button } from "~/shared/components/ui/button";
 import {
 	Dialog,
@@ -21,7 +18,13 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "~/shared/components/ui/dialog";
-import { errorProps } from "~/shared/lib/form";
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+} from "~/shared/components/ui/field";
+import { errorProps } from "~/shared/utils/form";
 
 type ChangePasswordDialogProps = {
 	open: boolean;
@@ -58,9 +61,6 @@ function ChangePasswordForm() {
 	});
 
 	const fieldId = (field: PasswordField) => `${baseId}-${field}`;
-	const describe = (field: PasswordField) =>
-		errorProps(fieldId(field), errors[field]);
-
 	if (done) {
 		return (
 			<div role="status" className="flex flex-col items-start gap-4">
@@ -103,23 +103,30 @@ function ChangePasswordForm() {
 				onSubmit={handleSubmit(() => setDone(true))}
 				className="flex flex-col gap-6"
 			>
-				<div className="flex flex-col gap-4">
-					{fields.map((field) => (
-						<FormField
-							key={field.name}
-							id={fieldId(field.name)}
-							label={field.label}
-							error={errors[field.name]?.message}
-						>
-							<PasswordInput
-								id={fieldId(field.name)}
-								{...register(field.name)}
-								autoComplete={field.auto}
-								{...describe(field.name)}
-							/>
-						</FormField>
-					))}
-				</div>
+				<FieldGroup className="gap-4">
+					{fields.map((field) => {
+						const error = errors[field.name];
+
+						return (
+							<Field key={field.name} data-invalid={Boolean(error)}>
+								<FieldLabel htmlFor={fieldId(field.name)}>
+									{field.label}
+								</FieldLabel>
+								<PasswordInput
+									id={fieldId(field.name)}
+									{...register(field.name)}
+									autoComplete={field.auto}
+									{...errorProps(fieldId(field.name), error)}
+								/>
+								{error?.message && (
+									<FieldError id={`${fieldId(field.name)}-erro`}>
+										{error.message}
+									</FieldError>
+								)}
+							</Field>
+						);
+					})}
+				</FieldGroup>
 				<DialogFooter>
 					<DialogClose asChild>
 						<Button type="button" variant="outline" size="sm">

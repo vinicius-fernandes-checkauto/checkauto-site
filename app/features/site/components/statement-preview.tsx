@@ -1,6 +1,6 @@
-import page1 from "~/assets/home/extrato-modelo-1.webp";
-import page2 from "~/assets/home/extrato-modelo-2.webp";
-import page3 from "~/assets/home/extrato-modelo-3.webp";
+import page1 from "~/@assets/extrato-modelo-1.webp";
+import page2 from "~/@assets/extrato-modelo-2.webp";
+import page3 from "~/@assets/extrato-modelo-3.webp";
 import { cn } from "~/shared/lib/utils";
 
 const pages = [page1, page2, page3];

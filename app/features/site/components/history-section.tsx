@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import ring from "~/assets/brand/symbol-ring-blue.webp";
+import ring from "~/@assets/brand/symbol-ring-blue.webp";
 import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 import { cn } from "~/shared/lib/utils";

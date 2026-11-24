@@ -1,4 +1,4 @@
-import { homeFaq } from "~/content/faq";
+import { homeFaq } from "~/@content/faq";
 import { ClientsSection } from "~/features/site/components/clients-section";
 import { CtaSection } from "~/features/site/components/cta-section";
 import { DataSection } from "~/features/site/components/data-section";

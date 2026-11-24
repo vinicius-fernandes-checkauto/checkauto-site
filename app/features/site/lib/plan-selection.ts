@@ -1,4 +1,4 @@
-import { PLAN_STORAGE_KEY } from "~/content/plans";
+import { PLAN_STORAGE_KEY } from "~/@content/plans";
 
 export const PLAN_PLATE_INPUT_ID = "placa-pacote";
 

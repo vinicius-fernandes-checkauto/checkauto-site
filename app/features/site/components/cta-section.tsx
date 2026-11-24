@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import ring from "~/assets/brand/symbol-ring-blue.webp";
+import ring from "~/@assets/brand/symbol-ring-blue.webp";
 import { PlateForm } from "~/features/site/components/plate-form";
 
 export function CtaSection() {

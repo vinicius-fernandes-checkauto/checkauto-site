@@ -1,14 +1,14 @@
 import { type CSSProperties, useRef, useState } from "react";
 import { Link } from "react-router";
 
-import avatar1 from "~/assets/home/avatars/avatar-1.webp";
-import avatar2 from "~/assets/home/avatars/avatar-2.webp";
-import avatar3 from "~/assets/home/avatars/avatar-3.webp";
-import avatar4 from "~/assets/home/avatars/avatar-4.webp";
-import heroCarFront from "~/assets/home/hero-car-front.webp";
-import heroCarFront640 from "~/assets/home/hero-car-front-640.webp";
+import avatar1 from "~/@assets/avatar-1.webp";
+import avatar2 from "~/@assets/avatar-2.webp";
+import avatar3 from "~/@assets/avatar-3.webp";
+import avatar4 from "~/@assets/avatar-4.webp";
+import heroCarFront from "~/@assets/hero-car-front.webp";
+import heroCarFront640 from "~/@assets/hero-car-front-640.webp";
+import { Arc } from "~/features/site/components/arc";
 import { PlateForm } from "~/features/site/components/plate-form";
-import { Arc } from "~/shared/components/arc";
 import {
 	BanIcon,
 	FileTextIcon,
