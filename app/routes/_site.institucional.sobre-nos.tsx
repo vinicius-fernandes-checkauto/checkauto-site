@@ -4,6 +4,7 @@ import aboutNumbers from "~/assets/about/about-numbers.webp";
 import aboutReference from "~/assets/about/about-reference.webp";
 import ring from "~/assets/brand/symbol-ring-blue.webp";
 import ticks from "~/assets/brand/symbol-ticks.webp";
+import { HistorySection } from "~/features/site/components/history-section";
 
 import type { Route } from "./+types/_site.institucional.sobre-nos";
 
@@ -86,6 +87,8 @@ export default function About() {
 					/>
 				</div>
 			</section>
+
+			<HistorySection />
 
 			<div className="mx-auto flex w-full max-w-7xl flex-col gap-18 px-4 pt-18 pb-18 sm:px-8 lg:gap-28 lg:pt-28 lg:pb-28">
 				<section

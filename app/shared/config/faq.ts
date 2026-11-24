@@ -78,7 +78,7 @@ export const faq: FaqItem[] = [
 		category: "informacoes",
 		question: "Quais informações a Checkauto fornece sobre o veículo?",
 		answer:
-			"Mais de 40 informações em um só extrato, como leilão, indício de batida ou enchente, roubo e furto, financiamento (gravame), recall, débitos e multas.",
+			"Mais de 40 informações em um só extrato, como leilão, indício de ocorrência, roubo e furto, gravame, recall, débitos e multas.",
 	},
 	{
 		category: "informacoes",

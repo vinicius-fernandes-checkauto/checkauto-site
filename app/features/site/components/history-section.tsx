@@ -171,7 +171,7 @@ export function HistorySection() {
 			ref={scope}
 			id="nossa-historia"
 			aria-labelledby="nossa-historia-titulo"
-			className="relative isolate overflow-clip bg-[color-mix(in_oklab,var(--color-brand-green)_8%,var(--background))]"
+			className="relative isolate overflow-clip bg-background"
 		>
 			<span
 				aria-hidden="true"

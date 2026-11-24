@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import { AddPlateForm } from "~/features/site/components/add-plate-form";
 import { CartItemRow } from "~/features/site/components/cart-item";
@@ -11,6 +11,7 @@ import {
 	findPlan,
 	formatCents,
 	priceToCents,
+	readCartItem,
 } from "~/features/site/lib/cart";
 import {
 	ChevronRightIcon,
@@ -34,7 +35,11 @@ const initialItems: CartItem[] = [
 const defaultPlanId = "checkauto-plus";
 
 export default function Cart() {
-	const [items, setItems] = useState(initialItems);
+	const location = useLocation();
+	const [items, setItems] = useState(() => {
+		const item = readCartItem(location.state);
+		return item ? [item] : initialItems;
+	});
 	const [coupon, setCoupon] = useState<AppliedCoupon | null>(null);
 
 	const count = items.length;

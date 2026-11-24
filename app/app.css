@@ -7,7 +7,7 @@
 
 @theme {
 	--animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
-	--animate-pdf-scroll: pdf-scroll 9s ease-in-out 1.6s infinite;
+	--animate-pdf-scroll: pdf-scroll 20s ease-in-out 1.6s infinite;
 
 	@keyframes pdf-scroll {
 		0%,

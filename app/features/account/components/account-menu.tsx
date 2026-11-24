@@ -4,9 +4,9 @@ import type { AccountUser } from "~/features/account/lib/account";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import {
 	FileTextIcon,
-	HouseIcon,
 	LogOutIcon,
-	MapPinIcon,
+	PackageIcon,
+	SearchIcon,
 	UserRoundIcon,
 	WalletIcon,
 } from "~/shared/components/icons";
@@ -23,11 +23,10 @@ import { accountNav } from "~/shared/config/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const accountMenu = [
-	{ ...accountNav.home, icon: HouseIcon },
-	{ ...accountNav.orders, icon: FileTextIcon },
-	{ ...accountNav.credits, icon: WalletIcon },
+	{ ...accountNav.queries, icon: FileTextIcon },
+	{ ...accountNav.transactions, icon: WalletIcon },
+	{ ...accountNav.plans, icon: PackageIcon },
 	{ ...accountNav.profile, icon: UserRoundIcon },
-	{ ...accountNav.addresses, icon: MapPinIcon },
 ];
 
 type AccountMenuProps = {
@@ -65,18 +64,24 @@ export function AccountMenu({
 					</span>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
+				<DropdownMenuItem
+					asChild
+					className="bg-primary font-semibold text-primary-foreground focus:bg-primary/90 focus:text-primary-foreground"
+				>
+					<Link to={accountNav.newQuery.to}>
+						<SearchIcon
+							aria-hidden="true"
+							className="text-primary-foreground"
+						/>
+						{accountNav.newQuery.label}
+					</Link>
+				</DropdownMenuItem>
 				<DropdownMenuGroup>
 					{accountMenu.map(({ icon: Icon, ...link }) => (
 						<DropdownMenuItem key={link.to} asChild>
 							<Link to={link.to}>
 								<Icon aria-hidden="true" className="text-muted-foreground" />
 								{link.label}
-								{link.to === accountNav.orders.to && user.pendingOrders > 0 && (
-									<span className="ml-auto rounded-full bg-secondary px-2 text-[0.6875rem]/5 font-semibold text-secondary-foreground">
-										{user.pendingOrders}
-										<span className="sr-only"> aguardando pagamento</span>
-									</span>
-								)}
 							</Link>
 						</DropdownMenuItem>
 					))}

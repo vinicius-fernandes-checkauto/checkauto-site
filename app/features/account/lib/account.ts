@@ -2,14 +2,12 @@ export type AccountUser = {
 	name: string;
 	email: string;
 	personType: "Pessoa física" | "Pessoa jurídica";
-	pendingOrders: number;
 };
 
 export const demoAccount: AccountUser = {
 	name: "Teste Veículos Ltda",
 	email: "contato@testeveiculos.com.br",
 	personType: "Pessoa jurídica",
-	pendingOrders: 1,
 };
 
 const companySuffixes = new Set(["eireli", "epp", "ltda", "me", "s/a", "sa"]);

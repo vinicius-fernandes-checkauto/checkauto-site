@@ -14,7 +14,6 @@ type Step = {
 	title: string;
 	description: string;
 	preview: "plate" | "plans" | "statement";
-	tilt: number;
 	className: string;
 };
 
@@ -24,7 +23,6 @@ const steps: Step[] = [
 		title: "Informe a placa",
 		description: "Do veículo que você tem ou do que pretende comprar.",
 		preview: "plate",
-		tilt: 2,
 		className: "lg:col-start-1 lg:row-start-1",
 	},
 	{
@@ -32,7 +30,6 @@ const steps: Step[] = [
 		title: "Escolha o pacote",
 		description: "Selecione a consulta ideal e pague com segurança.",
 		preview: "plans",
-		tilt: -2.5,
 		className: "lg:col-start-1 lg:row-start-2",
 	},
 	{
@@ -40,7 +37,6 @@ const steps: Step[] = [
 		title: "Receba o histórico",
 		description: "O relatório completo aparece na hora.",
 		preview: "statement",
-		tilt: 1.5,
 		className: "lg:col-start-2 lg:row-start-2",
 	},
 ];
@@ -182,7 +178,6 @@ export function HowSection() {
 
 							<div
 								data-float
-								style={{ rotate: `${step.tilt}deg` }}
 								className="w-full max-w-100 min-w-0 rounded-[1.75rem] bg-white/8 p-2.5 max-sm:[zoom:0.88] lg:max-w-none lg:flex-1 lg:max-xl:[zoom:0.74]"
 							>
 								{step.preview === "plate" && <PlateTypingPreview />}

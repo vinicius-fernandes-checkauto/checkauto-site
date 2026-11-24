@@ -5,16 +5,11 @@ export const planFeatures = [
 	"Débitos e multas",
 	"Recall",
 	"Histórico de quilometragem",
-	"Indício de batida ou enchente",
-	"Financiamento ativo",
+	"Indício de ocorrência",
+	"Gravame",
 ] as const;
 
 export type PlanFeature = (typeof planFeatures)[number];
-
-export const planFeatureHints: Partial<Record<PlanFeature, string>> = {
-	"Indício de batida ou enchente": "ocorrência",
-	"Financiamento ativo": "gravame",
-};
 
 export const sharedExtraInfoCount = 10;
 
@@ -24,7 +19,7 @@ export type PlanInfoItem = {
 	name: string;
 	description: string;
 	requires?: PlanFeature;
-	comparison?: { name: string; hint: string };
+	highlight?: boolean;
 };
 
 export type PlanInfoGroup = {
@@ -63,6 +58,7 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		items: [
 			{
 				name: "Restrições federais",
+				highlight: true,
 				description:
 					"Impedimentos na base nacional que podem travar a transferência.",
 			},
@@ -81,6 +77,7 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		items: [
 			{
 				name: "Débitos e multas",
+				highlight: true,
 				description:
 					"IPVA, licenciamento e multas em aberto antes de você assumir a conta.",
 			},
@@ -95,11 +92,13 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		items: [
 			{
 				name: "Roubo e furto",
+				highlight: true,
 				description:
 					"Ocorrências de roubo e furto, inclusive as já recuperadas.",
 			},
 			{
 				name: "Histórico de quilometragem",
+				highlight: true,
 				description:
 					"Leituras de KM registradas, que ajudam a perceber adulteração.",
 			},
@@ -110,17 +109,13 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		],
 	},
 	{
-		title: "Leilão e remarketing",
+		title: "Leilão",
 		items: [
 			{
 				name: "Oferta em leilão (2 bases)",
+				highlight: true,
 				description:
 					"Se o veículo já foi ofertado em leilão, com lote e condição.",
-			},
-			{
-				name: "Remarketing",
-				description:
-					"Se o veículo já foi revendido por banco, financeira ou seguradora.",
 			},
 		],
 	},
@@ -129,6 +124,7 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		items: [
 			{
 				name: "Recall e pendências",
+				highlight: true,
 				description:
 					"Chamados do fabricante e reparos que ainda estão pendentes.",
 			},
@@ -143,21 +139,16 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		differentiator: true,
 		items: [
 			{
-				name: "Indício de batida ou enchente",
+				name: "Indício de ocorrência",
 				description:
-					"Registros de batida, enchente ou perda total informados por seguradoras.",
-				requires: "Indício de batida ou enchente",
-				comparison: {
-					name: "Ocorrência",
-					hint: "Indício de batida ou enchente",
-				},
+					"Registros de ocorrência informados por seguradoras e órgãos públicos.",
+				requires: "Indício de ocorrência",
 			},
 			{
-				name: "Financiamento ativo (gravame)",
+				name: "Gravame",
 				description:
-					"Se o veículo ainda está alienado a um banco ou financeira.",
-				requires: "Financiamento ativo",
-				comparison: { name: "Gravame", hint: "Financiamento ativo" },
+					"Se há gravame registrado no veículo, o que pode restringir a transferência.",
+				requires: "Gravame",
 			},
 		],
 	},
@@ -167,12 +158,20 @@ export function planIncludes(plan: Plan, item: PlanInfoItem) {
 	return !item.requires || plan.features.includes(item.requires);
 }
 
-export const planComparisonItems = planInfoGroups.flatMap((group) =>
-	group.items.map((item) => ({
-		...item,
-		name: item.comparison?.name ?? item.name,
-		hint: item.comparison?.hint,
-	})),
+export const planComparisonItems = planInfoGroups.flatMap(
+	(group) => group.items,
+);
+
+export const planHighlightItems = planComparisonItems.filter(
+	(item) => item.highlight && !item.requires,
+);
+
+export const planExtraItems = planComparisonItems.filter(
+	(item) => !item.highlight && !item.requires,
+);
+
+export const planDifferentiatorItems = planComparisonItems.filter(
+	(item) => item.requires,
 );
 
 export type Plan = {
@@ -208,7 +207,7 @@ export const plans: Plan[] = [
 			"Recall",
 			"Histórico de quilometragem",
 		],
-		infoCount: 16,
+		infoCount: 15,
 		moreUrl: "/produto/checkauto-standard-150136",
 		detailsUrl: "/pacotes/checkauto-standard",
 	},
@@ -221,7 +220,7 @@ export const plans: Plan[] = [
 		description:
 			"Informações essenciais para negociar e escolher seu veículo com segurança.",
 		longDescription:
-			"Informações essenciais para negociar e escolher seu veículo com segurança, incluindo indício de batida ou enchente.",
+			"Informações essenciais para negociar e escolher seu veículo com segurança, incluindo indício de ocorrência.",
 		features: [
 			"Oferta em leilão",
 			"Roubo e furto",
@@ -229,9 +228,9 @@ export const plans: Plan[] = [
 			"Débitos e multas",
 			"Recall",
 			"Histórico de quilometragem",
-			"Indício de batida ou enchente",
+			"Indício de ocorrência",
 		],
-		infoCount: 17,
+		infoCount: 16,
 		moreUrl: "/produto/checkauto-master-150135",
 		detailsUrl: "/pacotes/checkauto-master",
 	},
@@ -244,9 +243,9 @@ export const plans: Plan[] = [
 		description:
 			"A consulta mais completa e confiável, com informações exclusivas.",
 		longDescription:
-			"A consulta mais completa e confiável, com todas as informações que a Checkauto oferece, inclusive financiamento ativo.",
+			"A consulta mais completa e confiável, com todas as informações que a Checkauto oferece, inclusive gravame.",
 		features: [...planFeatures],
-		infoCount: 18,
+		infoCount: 17,
 		moreUrl: "/produto/checkauto-plus-150134",
 		detailsUrl: "/pacotes/checkauto-plus",
 		recommended: true,

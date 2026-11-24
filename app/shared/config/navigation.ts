@@ -6,6 +6,7 @@ export const headerNav: NavLink[] = [
 	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
 	{ label: "Pacotes", to: "/#pacotes" },
 	{ label: "FAQ", to: "/#faq" },
+	{ label: "Sobre", to: "/institucional/sobre-nos" },
 ];
 
 export const footerNav: { title: string; links: NavLink[] }[] = [
@@ -41,9 +42,9 @@ export const legalNav: NavLink[] = [
 ];
 
 export const accountNav = {
-	home: { label: "Início", to: "/conta" },
-	orders: { label: "Pedidos", to: "/conta/pedidos" },
-	credits: { label: "Créditos", to: "/conta/creditos" },
+	newQuery: { label: "Nova consulta", to: "/conta/nova-consulta" },
+	queries: { label: "Histórico de consultas", to: "/conta/consultas" },
+	transactions: { label: "Histórico de transações", to: "/conta/transacoes" },
+	plans: { label: "Pacotes", to: "/conta/pacotes" },
 	profile: { label: "Meus dados", to: "/conta/meus-dados" },
-	addresses: { label: "Endereços", to: "/conta/enderecos" },
 } as const satisfies Record<string, NavLink>;

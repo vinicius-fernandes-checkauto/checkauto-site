@@ -1,6 +1,5 @@
 import { useRef } from "react";
 
-import { SectionEyebrow } from "~/features/site/components/section-eyebrow";
 import { gsap, MOTION_OK, useGSAP } from "~/shared/lib/gsap";
 
 type Stat = {
@@ -55,7 +54,7 @@ const format = ({ prefix = "", suffix = "" }: Stat, value: number) =>
 	`${prefix}${Math.round(value).toLocaleString("pt-BR")}${suffix}`;
 
 export function WhyNumbers() {
-	const scope = useRef<HTMLElement>(null);
+	const scope = useRef<HTMLDivElement>(null);
 
 	useGSAP(
 		() => {
@@ -92,69 +91,44 @@ export function WhyNumbers() {
 	);
 
 	return (
-		<div className="relative isolate overflow-hidden bg-background">
-			<section
-				ref={scope}
-				id="nossos-numeros"
-				aria-labelledby="nossos-numeros-titulo"
-				className="relative lg:flex lg:min-h-[min(100svh,40rem)] lg:items-center"
+		<div ref={scope}>
+			<ul
+				data-stats
+				className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
+				aria-label="Checkauto em números"
 			>
-				<div className="mx-auto flex w-full max-w-7xl flex-col gap-12 px-4 py-16 sm:px-8 lg:gap-16 lg:py-12">
-					<div className="flex flex-col gap-6 lg:flex-row-reverse lg:items-end lg:justify-between lg:gap-12">
-						<div className="flex flex-col gap-3 lg:items-end lg:text-right">
-							<SectionEyebrow>Nossos números</SectionEyebrow>
-							<h2
-								id="nossos-numeros-titulo"
-								className="text-3xl/tight font-normal tracking-tight text-heading lg:text-[2.75rem]/[1.1]"
-							>
-								<span className="block">Mais de 25 anos de confiança,</span>
-								<span className="block text-highlight">em números.</span>
-							</h2>
+				{stats.map((stat, index) => (
+					<li key={stat.highlight} className="flex gap-6">
+						<div
+							aria-hidden="true"
+							className="relative ml-2 h-36 w-13 shrink-0"
+						>
+							<span className="absolute inset-0 rounded-2xl bg-brand-blue/6" />
+							<span
+								data-bar
+								style={{ height: `${stat.fill}%` }}
+								className="absolute inset-x-0 bottom-0 rounded-2xl bg-brand-green"
+							/>
+							<span className="absolute top-3 -left-2 h-36 w-13 rounded-2xl border-2 border-brand-blue" />
 						</div>
-						<p className="max-w-md text-[0.9375rem]/6 text-muted-foreground">
-							Cada consulta ajuda a construir a base que protege quem compra,
-							vende e financia veículos no Brasil.
-						</p>
-					</div>
-
-					<ul
-						data-stats
-						className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
-					>
-						{stats.map((stat, index) => (
-							<li key={stat.highlight} className="flex gap-6">
-								<div
-									aria-hidden="true"
-									className="relative ml-2 h-46 w-13 shrink-0"
-								>
-									<span className="absolute inset-0 rounded-2xl bg-brand-blue/6" />
-									<span
-										data-bar
-										style={{ height: `${stat.fill}%` }}
-										className="absolute inset-x-0 bottom-0 rounded-2xl bg-brand-green"
-									/>
-									<span className="absolute top-3 -left-2 h-46 w-13 rounded-2xl border-2 border-brand-blue" />
-								</div>
-								<div className="flex flex-col gap-3 pt-1">
-									<strong
-										data-count={index}
-										className="text-5xl/none font-medium tracking-tighter text-heading tabular-nums"
-									>
-										{format(stat, stat.value)}
-									</strong>
-									<p className="text-sm/[1.375rem] font-medium text-heading">
-										{stat.before}
-										<span className="rounded-md bg-brand-green/18 px-1.5 py-px">
-											{stat.highlight}
-										</span>
-										{stat.after}
-									</p>
-								</div>
-							</li>
-						))}
-					</ul>
-				</div>
-			</section>
+						<div className="flex flex-col gap-3 pt-1">
+							<strong
+								data-count={index}
+								className="text-5xl/none font-medium tracking-tighter text-heading tabular-nums"
+							>
+								{format(stat, stat.value)}
+							</strong>
+							<p className="text-sm/[1.375rem] font-medium text-heading">
+								{stat.before}
+								<span className="rounded-md bg-brand-green/18 px-1.5 py-px">
+									{stat.highlight}
+								</span>
+								{stat.after}
+							</p>
+						</div>
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 }

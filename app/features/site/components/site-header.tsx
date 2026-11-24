@@ -55,7 +55,7 @@ function MobileMenu() {
 				<SheetFooter className="gap-2 border-t border-border pb-6 sm:hidden">
 					<SheetClose asChild>
 						<Button asChild variant="secondary" className="w-full">
-							<Link to={accountNav.home.to}>Minha conta</Link>
+							<Link to={accountNav.queries.to}>Minha conta</Link>
 						</Button>
 					</SheetClose>
 				</SheetFooter>
@@ -98,15 +98,11 @@ export function SiteHeader({ user, carCount = 0 }: SiteHeaderProps) {
 
 				<div className="ml-auto flex shrink-0 items-center gap-1.5 xl:ml-0">
 					{user ? (
-						<Link to={accountNav.home.to} className="hidden sm:inline-flex">
+						<Link to={accountNav.queries.to} className="hidden sm:inline-flex">
 							<BrandAvatar />
 						</Link>
 					) : (
-						<Button
-							asChild
-							size="sm"
-							className="hidden px-6 sm:inline-flex"
-						>
+						<Button asChild size="sm" className="hidden px-6 sm:inline-flex">
 							<Link to="/entrar">Entrar</Link>
 						</Button>
 					)}

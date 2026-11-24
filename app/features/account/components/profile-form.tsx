@@ -4,10 +4,12 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 import { AccountSection } from "~/features/account/components/account-section";
+import { AddressFields } from "~/features/account/components/address-fields";
 import {
 	FormField,
 	fieldControlClassName,
 } from "~/features/account/components/form-field";
+import { formatZip } from "~/features/account/lib/addresses";
 import {
 	type AccountProfile,
 	type ProfileField,
@@ -62,6 +64,10 @@ export function ProfileForm({ profile }: { profile: AccountProfile }) {
 			stateRegistrationExempt: !company || profile.stateRegistrationExempt,
 			phone: profile.phone,
 			secondaryPhone: profile.secondaryPhone,
+			address: {
+				...profile.address,
+				zip: formatZip(profile.address.zip),
+			},
 			shareData: profile.shareData ? "sim" : "nao",
 		},
 	});
@@ -179,6 +185,18 @@ export function ProfileForm({ profile }: { profile: AccountProfile }) {
 						/>
 					</FormField>
 				</div>
+			</AccountSection>
+
+			<AccountSection
+				id={`${baseId}-endereco`}
+				title="Endereço"
+				description="Usado na nota fiscal das suas consultas."
+			>
+				<AddressFields
+					baseId={baseId}
+					register={register}
+					errors={errors.address}
+				/>
 			</AccountSection>
 
 			<AccountSection

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { type Address, addressSchema } from "~/features/account/lib/addresses";
+
 export type AccountProfile = {
 	personType: "Pessoa física" | "Pessoa jurídica";
 	name: string;
@@ -9,6 +11,7 @@ export type AccountProfile = {
 	phone: string;
 	secondaryPhone: string;
 	email: string;
+	address: Address;
 	contractAcceptedAt: string;
 	shareData: boolean;
 };
@@ -22,6 +25,15 @@ export const demoProfile: AccountProfile = {
 	phone: "(11) 90000-0000",
 	secondaryPhone: "",
 	email: "contato@testeveiculos.com.br",
+	address: {
+		zip: "04543011",
+		street: "Avenida Brigadeiro Faria Lima",
+		number: "3477",
+		complement: "Conjunto 92",
+		district: "Itaim Bibi",
+		city: "São Paulo",
+		state: "SP",
+	},
 	contractAcceptedAt: "2025-03-12",
 	shareData: true,
 };
@@ -42,6 +54,7 @@ export const profileSchema = z
 			z.literal(""),
 			phoneDigits("Informe o telefone com DDD."),
 		]),
+		address: addressSchema,
 		shareData: z.enum(["sim", "nao"]),
 	})
 	.refine(
@@ -53,7 +66,7 @@ export const profileSchema = z
 	);
 
 export type ProfileFormValues = z.input<typeof profileSchema>;
-export type ProfileField = keyof ProfileFormValues;
+export type ProfileField = Exclude<keyof ProfileFormValues, "address">;
 
 export const passwordSchema = z
 	.object({

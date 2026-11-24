@@ -3,8 +3,6 @@ import { Link } from "react-router";
 import { AccountMenu } from "~/features/account/components/account-menu";
 import type { AccountUser } from "~/features/account/lib/account";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
-import { SearchIcon } from "~/shared/components/icons";
-import { Button } from "~/shared/components/ui/button";
 import { useScrolled } from "~/shared/hooks/use-scrolled";
 import { cn } from "~/shared/lib/utils";
 
@@ -31,12 +29,6 @@ export function AccountHeader({ user }: { user: AccountUser }) {
 					>
 						Ajuda
 					</Link>
-					<Button asChild size="sm" className="max-lg:hidden">
-						<Link to="/">
-							<SearchIcon aria-hidden="true" />
-							Nova consulta
-						</Link>
-					</Button>
 				</div>
 			</div>
 		</header>

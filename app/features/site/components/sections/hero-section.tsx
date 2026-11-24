@@ -51,7 +51,7 @@ const features: Feature[] = [
 	{
 		title: "Indício de ocorrência",
 		description:
-			"Aponta registros de batida, enchente ou perda total informados por seguradoras.",
+			"Aponta registros de ocorrência informados por seguradoras e órgãos públicos.",
 		icon: TriangleAlertIcon,
 		x: 0.17,
 		y: 0.13,
@@ -75,7 +75,7 @@ const features: Feature[] = [
 	{
 		title: "Gravame",
 		description:
-			"Indica se o veículo ainda está alienado a um banco ou financeira.",
+			"Indica se há gravame registrado no veículo, o que pode impedir a transferência.",
 		icon: LockIcon,
 		x: 0.44,
 		y: 0.88,

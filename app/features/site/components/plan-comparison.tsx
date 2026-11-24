@@ -11,6 +11,7 @@ import { MinusIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 import {
 	type Plan,
+	planComparisonItems,
 	planIncludes,
 	planInfoGroups,
 	plans,
@@ -49,7 +50,7 @@ export function PlanComparison({ plan }: { plan: Plan }) {
 						id="pacote-comparacao"
 						className="text-3xl/tight font-normal tracking-tight text-heading lg:text-4xl/tight"
 					>
-						As 18 informações, lado a lado
+						As {planComparisonItems.length} informações, lado a lado
 					</h2>
 				</div>
 

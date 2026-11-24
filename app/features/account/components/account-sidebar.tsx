@@ -4,21 +4,21 @@ import type { AccountUser } from "~/features/account/lib/account";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import {
 	FileTextIcon,
-	HouseIcon,
 	LogOutIcon,
-	MapPinIcon,
+	PackageIcon,
+	SearchIcon,
 	UserRoundIcon,
 	WalletIcon,
 } from "~/shared/components/icons";
+import { Button } from "~/shared/components/ui/button";
 import { accountNav } from "~/shared/config/navigation";
 import { cn } from "~/shared/lib/utils";
 
 const sections = [
-	{ ...accountNav.home, icon: HouseIcon, end: true },
-	{ ...accountNav.orders, icon: FileTextIcon, end: false },
-	{ ...accountNav.credits, icon: WalletIcon, end: false },
-	{ ...accountNav.profile, icon: UserRoundIcon, end: false },
-	{ ...accountNav.addresses, icon: MapPinIcon, end: false },
+	{ ...accountNav.queries, icon: FileTextIcon },
+	{ ...accountNav.transactions, icon: WalletIcon },
+	{ ...accountNav.plans, icon: PackageIcon },
+	{ ...accountNav.profile, icon: UserRoundIcon },
 ];
 
 export function AccountSidebar({ user }: { user: AccountUser }) {
@@ -38,12 +38,17 @@ export function AccountSidebar({ user }: { user: AccountUser }) {
 			</div>
 
 			<nav aria-label="Seções da conta">
+				<Button asChild size="sm" className="mb-3 w-full">
+					<Link to={accountNav.newQuery.to}>
+						<SearchIcon aria-hidden="true" />
+						{accountNav.newQuery.label}
+					</Link>
+				</Button>
 				<ul className="flex flex-col gap-0.5">
 					{sections.map(({ icon: Icon, ...section }) => (
 						<li key={section.to}>
 							<NavLink
 								to={section.to}
-								end={section.end}
 								className={({ isActive }) =>
 									cn(
 										"group flex h-11.5 items-center gap-3 rounded-full px-3.5 text-sm font-medium whitespace-nowrap transition-colors",
@@ -58,13 +63,6 @@ export function AccountSidebar({ user }: { user: AccountUser }) {
 									className="size-4.5 group-aria-[current=page]:text-highlight"
 								/>
 								{section.label}
-								{section.to === accountNav.orders.to &&
-									user.pendingOrders > 0 && (
-										<span className="ml-auto rounded-full bg-secondary px-2 text-[0.6875rem]/5 font-semibold text-secondary-foreground">
-											{user.pendingOrders}
-											<span className="sr-only"> aguardando pagamento</span>
-										</span>
-									)}
 							</NavLink>
 						</li>
 					))}

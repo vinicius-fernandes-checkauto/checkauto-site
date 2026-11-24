@@ -78,7 +78,7 @@ const topics: Topic[] = [
 		title: "Informações de gravame",
 		icon: LandmarkIcon,
 		description:
-			"Consulte a existência de gravames no veículo, como alienação fiduciária e reserva de domínio, que restringem a transferência sem autorização da instituição financeira. Registros no DETRAN indicam gravames ativos ou baixados, permitindo constatar a situação financeira do veículo para transferência de titularidade.",
+			"Consulte se existe gravame registrado no veículo. Os registros do DETRAN mostram se o gravame está ativo ou baixado, o que ajuda a saber se a transferência de titularidade pode ser feita.",
 	},
 	{
 		id: "roubo-e-furto",

@@ -14,6 +14,17 @@ export const demoCoupons: Record<string, number> = {
 	BEMVINDO10: 10,
 };
 
+export function readCartItem(state: unknown): CartItem | null {
+	if (!state || typeof state !== "object" || !("cartItem" in state)) {
+		return null;
+	}
+	const item = state.cartItem as Partial<CartItem> | undefined;
+	if (typeof item?.plate !== "string" || typeof item.planId !== "string") {
+		return null;
+	}
+	return { plate: item.plate, planId: item.planId };
+}
+
 export function findPlan(planId: Plan["id"]) {
 	return plans.find((plan) => plan.id === planId) ?? plans[plans.length - 1];
 }

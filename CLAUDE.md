@@ -14,7 +14,7 @@ Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular 
 | --------------- | -------------------------------------------------------------------------------------------- | ---------------------- |
 | Site público    | `/`, `/pacotes/:planId`, `/faq`, `/contato`, `/carrinho`, páginas institucionais e jurídicas | `app/routes/_site.tsx` |
 | Autenticação    | `/entrar`, `/cadastro`, `/redefinir-senha`                                                   | `app/routes/_auth.tsx` |
-| Área do cliente | `/conta`, `/conta/pedidos`, `/conta/creditos`, `/conta/meus-dados`, `/conta/enderecos`       | `app/routes/conta.tsx` |
+| Área do cliente | `/conta` (redireciona), `/conta/consultas`, `/conta/meus-dados`, `/conta/transacoes`         | `app/routes/conta.tsx` |
 
 **Fase atual: só interface.** Nada de integração com API, login real, pagamento ou envio de formulário. Estado de demonstração (dados fixos e `useState`) é o esperado. Ao entregar, diga quando a tela sugere um comportamento real que ainda não existe, como "Mensagem enviada".
 
@@ -80,7 +80,7 @@ O contrato da API do backend fica em `docs/api/` (`openapi.json` + `README.md` c
 
 Rotas:
 
-- `app/routes.ts` usa `flatRoutes()`: a URL sai do **nome do arquivo**. Ponto vira `/`, `$` é parâmetro e o prefixo `_` cria um layout sem segmento na URL (`_site.faq.tsx` → `/faq`, dentro de `_site.tsx`; `conta.pedidos.tsx` → `/conta/pedidos`, dentro de `conta.tsx`).
+- `app/routes.ts` usa `flatRoutes()`: a URL sai do **nome do arquivo**. Ponto vira `/`, `$` é parâmetro e o prefixo `_` cria um layout sem segmento na URL (`_site.faq.tsx` → `/faq`, dentro de `_site.tsx`; `conta.consultas.tsx` → `/conta/consultas`, dentro de `conta.tsx`).
 - Página nova do site público: `_site.<nome>.tsx`. Rota com parâmetro precisa listar os caminhos no `prerender` de `react-router.config.ts`, senão não vira HTML.
 
 Regras de organização:
@@ -165,7 +165,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
   - Mantenha conteúdo moderado (≲ 560px de altura) e confira em 1366×657, 1536×730 e 1920×969.
 - **Header do site**: sticky só abaixo de `lg`, com sombra ao rolar (`useScrolled`). No desktop ele rola junto com a página.
 - **Header da conta**: branco, sticky em todos os tamanhos, com sombra ao rolar.
-  - Desktop: "Ajuda" e "Nova consulta".
+  - Desktop: só "Ajuda". "Nova consulta" fica no topo do menu da conta, em destaque.
   - Mobile: só o avatar, que abre o `AccountMenu`.
   - A sidebar da conta só aparece em `lg`.
 - Sem rolagem horizontal no mobile (confira em 360/375/390). Tabelas largas ficam dentro de um contêiner `relative min-w-0 overflow-x-auto`.
