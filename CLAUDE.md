@@ -48,6 +48,8 @@ npx vitest run -t "<nome do teste>"             # um teste pelo nome
 - O Vitest só pega `app/**/*.test.ts` (não `.tsx`). Teste fica ao lado do arquivo testado.
 - `.env.example` vai para o git e tem **só nomes e comentários, nunca valores** (nem chaves públicas). Os valores ficam no `.env` local de cada um. Prefixo `VITE_` vai para o bundle do navegador: segredo nunca leva `VITE_`.
 - O `build` copia `build/client/__spa-fallback.html` para `404.html`, que é a página de erro servida pela Vercel.
+- `robots.txt` é arquivo fixo em `public/`. O sitemap entra no lançamento como resource route pré-renderizada (`app/routes/sitemap[.]xml.ts` com `loader` que devolve o XML), como a documentação do React Router orienta.
+- Metadados de SEO: `seo({ title, description, path, image, noIndex })` de `~/shared/lib/seo` devolve título, description, canonical, Open Graph e Twitter. Use no `meta` das rotas. A Organization (JSON-LD) já sai no `root.tsx`.
 - `vercel.json` manda `X-Robots-Tag: noindex, nofollow` em tudo: o redesign ainda não deve ser indexado. Não remova sem o dono pedir.
 
 Antes de dizer que terminou: **typecheck e Biome sem erro**. Se mexeu em rota, import ou estrutura, rode também o **build**, que pré-renderiza tudo e pega import quebrado.
@@ -212,7 +214,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Um `h1` por página. Seções com `aria-labelledby`.
 - Textos de acessibilidade em português (`aria-label`, `sr-only`). Botões de ícone sempre com `sr-only`.
 - Foco visível (já global: `outline-3 outline-ring`). Toque mínimo de 44px.
-- Formulário: `noValidate`, React Hook Form + zod (veja a seção 10.1). Erro ligado ao campo com `aria-invalid` e `aria-describedby` (`errorProps`); o foco no primeiro campo inválido vem do próprio React Hook Form.
+- Formulário: `noValidate`, React Hook Form + zod com os componentes `Field` (seção 10.1). Erro ligado ao campo com `aria-invalid` e `aria-describedby` apontando para o `FieldError`; o foco no primeiro campo inválido vem do próprio React Hook Form.
 - Prévias animadas usam `role="img"` com `aria-label` descrevendo a cena.
 - Contraste: texto pequeno nunca em #66C61C sobre fundo claro.
 
@@ -237,16 +239,51 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 
 ### 10.1 Formulários (regra)
 
-**Todo formulário usa React Hook Form com zod.** Não valide à mão com `useState`, `FormData` ou `safeParse` no `onSubmit`, e não use `required`, `minLength` e afins do HTML para validar.
+**Todo formulário usa React Hook Form com zod**, montado com os componentes `Field` do shadcn (`~/shared/components/ui/field`). O modelo são as telas de auth (`features/auth`). Não valide à mão com `useState`, `FormData` ou `safeParse` no `onSubmit`, e não use `required`, `minLength` e afins do HTML para validar.
 
-- O schema zod fica no `lib/` da área (`features/<área>/lib/*.ts`) ou em `shared/utils` quando é genérico, como a placa (`~/shared/utils/plate`). As mensagens são em português e no imperativo ("Informe o CEP.").
-- `useForm({ resolver: zodResolver(schema), defaultValues })`. Quando o schema transforma valores (máscaras, `trim`, `toUpperCase`), tipe como `useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>` e exporte os dois tipos do `lib/`.
-- `<form noValidate onSubmit={handleSubmit(submit)}>`; o `submit` recebe os dados já validados e transformados.
-- Ligue os campos com `{...register("campo")}`. Para máscara, use `withMask(register("campo"), formatador)` de `~/shared/utils/form` (telefone, CEP, CPF, placa, código).
-- Erros: `errors.campo?.message` no `FormField` (conta), no `AuthField`/`PasswordField`/`TermsCheckbox` (auth) ou no componente do site. Para as props de acessibilidade, use `errorProps(id, errors.campo)`.
-- Erro que vem da regra de negócio, como cupom inválido ou placa repetida: `setError("campo", { message }, { shouldFocus: true })`.
-- Campo condicional, como a inscrição estadual quando a empresa é isenta: `register("campo", { disabled })` + `watch`, e o schema trata o valor opcional (`.optional()` + `refine`).
-- Depois do envio: `reset()` para limpar, e estado local só para a tela de sucesso (`sent`, `done`).
+Responsabilidades separadas:
+
+| Peça       | Onde                                                                                                                                               | O que faz                                                                                                                                |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Schema zod | `features/<área>/lib/<área>-schema.ts` (ou `shared/utils` se for genérico, como a placa)                                                           | regras e mensagens, em português e no imperativo ("Informe o CEP."); exporta os tipos `…FormInput`/`…FormOutput` quando há transformação |
+| Formulário | `features/<área>/components/<nome>-form.tsx` (`SignInForm`, `SignUpForm`)                                                                          | `useForm`, campos e envio                                                                                                                |
+| Rota       | `routes/*.tsx`                                                                                                                                     | só monta: heading, `<XForm />`, links. Nada de `useForm` na rota                                                                         |
+| Campos     | `~/shared/components/ui/*` (`Input`, `Checkbox`, `Label`, `Field…`) e compostos de `~/shared/components` (`PasswordInput`, `CpfInput`, `TextLink`) | visual vindo do DS; nada de input estilizado na mão                                                                                      |
+
+Padrão do campo:
+
+```tsx
+<Controller
+	name="email"
+	control={form.control}
+	render={({ field, fieldState }) => (
+		<Field data-invalid={fieldState.invalid}>
+			<FieldLabel htmlFor="email">E-mail</FieldLabel>
+			<Input
+				{...field}
+				id="email"
+				type="email"
+				aria-invalid={fieldState.invalid}
+				aria-describedby={fieldState.error ? "email-error" : undefined}
+				autoComplete="email"
+			/>
+			{fieldState.error && (
+				<FieldError id="email-error" errors={[fieldState.error]} />
+			)}
+		</Field>
+	)}
+/>;
+```
+
+- `const form = useForm({ resolver: zodResolver(schema), defaultValues })`. Com transformação (máscara, `trim`, `toUpperCase`): `useForm<XFormInput, unknown, XFormOutput>`.
+- `<form noValidate onSubmit={form.handleSubmit(submit)}>`; o `submit` recebe os dados já validados e transformados.
+- Todo campo usa `Controller` + `Field`, com `data-invalid`, `aria-invalid` e `aria-describedby` apontando para o `FieldError`. Label sempre existe (pode ser `sr-only` quando o placeholder já identifica o campo).
+- Checkbox do shadcn: `checked={field.value}` e `onCheckedChange={field.onChange}`.
+- Máscara: componente próprio em `shared/components` (como `CpfInput`) usando os formatadores de `shared/utils`.
+- Erro da regra de negócio (cupom inválido, placa repetida): `form.setError("campo", { message }, { shouldFocus: true })`.
+- Campo condicional: `form.watch` + schema com `.optional()` e `refine`.
+- Depois do envio: `form.reset()` para limpar, e estado local só para a tela de sucesso (`sent`, `done`).
+- Formulários antigos que ainda usam `register`, `FormField` ou `withMask`/`errorProps` migram para este padrão quando forem mexidos.
 
 ## 11. Fluxo de trabalho
 

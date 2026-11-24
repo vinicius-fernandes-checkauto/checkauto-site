@@ -1,3 +1,11 @@
+export const site = {
+	name: "Checkauto",
+	url: "https://www.checkauto.com.br",
+	description:
+		"Consulta de histórico veicular pela placa: leilão, ocorrências, roubo e furto, restrições, recall e gravame.",
+	locale: "pt_BR",
+};
+
 export const contact = {
 	email: "comercial@checkauto.com.br",
 	phones: [
@@ -13,6 +21,7 @@ export const socialLinks = [
 ] as const;
 
 export const checkauto = {
+	tradeName: "Checkauto",
 	legalName: "Checkauto Consultoria Técnica e Informações Veiculares LTDA",
 	cnpj: "00.305.974/0001-83",
 	address: "Rua Bartolomeu de Gusmão, 158 – Guarulhos/SP – CEP 07024-010",

@@ -7,7 +7,9 @@ import {
 	ScrollRestoration,
 } from "react-router";
 
+import logo from "~/@assets/brand/checkauto-logo.png";
 import { ErrorPage } from "~/shared/components/error-page";
+import { jsonLdScript, organizationJsonLd } from "~/shared/lib/seo";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -18,8 +20,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta name="theme-color" content="#002e55" />
 				<Meta />
 				<Links />
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD estático, gerado a partir de @content e com "<" escapado
+					dangerouslySetInnerHTML={{
+						__html: jsonLdScript(organizationJsonLd(logo)),
+					}}
+				/>
 			</head>
 			<body>
 				{children}

@@ -9,7 +9,7 @@ export const headerNav: NavLink[] = [
 	{ label: "Dados da consulta", to: "/#dados-da-consulta" },
 	{ label: "Pacotes", to: "/#pacotes" },
 	{ label: "FAQ", to: "/#faq" },
-	{ label: "Sobre", to: "/institucional/sobre-nos" },
+	{ label: "Sobre", to: "/sobre-nos" },
 ];
 
 export const footerNav: { title: string; links: NavLink[] }[] = [
@@ -24,7 +24,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
 	{
 		title: "Empresa",
 		links: [
-			{ label: "Sobre nós", to: "/institucional/sobre-nos" },
+			{ label: "Sobre nós", to: "/sobre-nos" },
 			{ label: "Imprensa", to: "/imprensa" },
 			{ label: "Aspectos legais", to: "/aspectos-legais" },
 		],

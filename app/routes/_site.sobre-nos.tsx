@@ -5,17 +5,18 @@ import aboutReference from "~/@assets/about-reference.webp";
 import ring from "~/@assets/brand/symbol-ring-blue.webp";
 import ticks from "~/@assets/brand/symbol-ticks.webp";
 import { HistorySection } from "~/features/site/components/history-section";
+import { seo } from "~/shared/lib/seo";
 
-import type { Route } from "./+types/_site.institucional.sobre-nos";
+import type { Route } from "./+types/_site.sobre-nos";
 
-export const meta: Route.MetaFunction = () => [
-	{ title: "Sobre nós | Checkauto" },
-	{
-		name: "description",
-		content:
+export const meta: Route.MetaFunction = () =>
+	seo({
+		title: "Sobre nós | Checkauto",
+		description:
 			"Há mais de duas décadas, a Checkauto é referência nacional em consultas de histórico veicular. Conheça nossa história e nossos números.",
-	},
-];
+		path: "/sobre-nos",
+		image: aboutDriver,
+	});
 
 const stats = [
 	{ value: "13", label: "milhões de consultas realizadas" },
