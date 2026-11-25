@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 
 import { accountNav, headerNav } from "~/@content/navigation";
-import type { AccountUser } from "~/features/account/lib/account";
 import { HeaderCart } from "~/features/site/components/header-cart";
 import { BrandAvatar } from "~/shared/components/brand-avatar";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
@@ -17,9 +16,10 @@ import {
 	SheetTrigger,
 } from "~/shared/components/ui/sheet";
 import { useScrolled } from "~/shared/hooks/use-scrolled";
+import { useSession } from "~/shared/hooks/use-session";
 import { cn } from "~/shared/lib/utils";
 
-function MobileMenu() {
+function MobileMenu({ signedIn }: { signedIn: boolean }) {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -54,9 +54,15 @@ function MobileMenu() {
 				</nav>
 				<SheetFooter className="gap-2 border-t border-border pb-6 sm:hidden">
 					<SheetClose asChild>
-						<Button asChild variant="secondary" className="w-full">
-							<Link to={accountNav.queries.to}>Minha conta</Link>
-						</Button>
+						{signedIn ? (
+							<Button asChild variant="secondary" className="w-full">
+								<Link to={accountNav.queries.to}>Minha conta</Link>
+							</Button>
+						) : (
+							<Button asChild className="w-full">
+								<Link to="/entrar">Entrar</Link>
+							</Button>
+						)}
 					</SheetClose>
 				</SheetFooter>
 			</SheetContent>
@@ -64,10 +70,11 @@ function MobileMenu() {
 	);
 }
 
-type SiteHeaderProps = { user?: AccountUser; carCount?: number };
+type SiteHeaderProps = { carCount?: number };
 
-export function SiteHeader({ user, carCount = 0 }: SiteHeaderProps) {
+export function SiteHeader({ carCount = 0 }: SiteHeaderProps) {
 	const scrolled = useScrolled();
+	const { data: session, status } = useSession();
 
 	return (
 		<header
@@ -97,19 +104,30 @@ export function SiteHeader({ user, carCount = 0 }: SiteHeaderProps) {
 				</nav>
 
 				<div className="ml-auto flex shrink-0 items-center gap-1.5 xl:ml-0">
-					{user ? (
-						<Link to={accountNav.queries.to} className="hidden sm:inline-flex">
+					<HeaderCart count={carCount} />
+					{session ? (
+						<Link
+							to={accountNav.queries.to}
+							aria-label={`Minha conta: ${session.user.name}`}
+							className="hidden rounded-full sm:inline-flex"
+						>
 							<BrandAvatar />
 						</Link>
 					) : (
-						<Button asChild size="sm" className="hidden px-6 sm:inline-flex">
+						<Button
+							asChild
+							size="sm"
+							className={cn(
+								"hidden px-6 sm:inline-flex",
+								status === "loading" && "invisible",
+							)}
+						>
 							<Link to="/entrar">Entrar</Link>
 						</Button>
 					)}
-					<HeaderCart count={carCount} />
 				</div>
 
-				<MobileMenu />
+				<MobileMenu signedIn={status === "authenticated"} />
 			</div>
 		</header>
 	);

@@ -45,7 +45,7 @@ let loadingV2: Promise<GrecaptchaEnterprise> | null = null;
 
 export function loadRecaptcha() {
 	loadingV3 ??= loadScript(
-		`https://www.google.com/recaptcha/api.js?render=${siteKey}`,
+		`https://www.google.com/recaptcha/api.js?render=${siteKey}&hl=pt-BR`,
 		() => window.grecaptcha as Grecaptcha | undefined,
 	)
 		.then(
@@ -69,7 +69,7 @@ export async function getRecaptchaToken(action: string) {
 
 function loadRecaptchaV2() {
 	loadingV2 ??= loadScript(
-		"https://www.google.com/recaptcha/enterprise.js?render=explicit",
+		"https://www.google.com/recaptcha/enterprise.js?render=explicit&hl=pt-BR",
 		() => window.grecaptcha?.enterprise,
 	)
 		.then(

@@ -8,7 +8,7 @@ export default function SiteLayout() {
 	return (
 		<div className="flex min-h-dvh flex-col bg-background">
 			<SkipLink />
-			<SiteHeader carCount={2} user={undefined} />
+			<SiteHeader carCount={2} />
 			<main id="conteudo" tabIndex={-1} className="flex-1 outline-none">
 				<Outlet />
 			</main>

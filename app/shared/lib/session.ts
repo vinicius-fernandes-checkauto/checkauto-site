@@ -2,6 +2,8 @@ import { z } from "zod";
 
 const STORAGE_KEY = "checkauto.session";
 
+export const SIGN_IN_PATH = "/entrar";
+
 const sessionSchema = z.object({
 	user: z.object({
 		id: z.string(),

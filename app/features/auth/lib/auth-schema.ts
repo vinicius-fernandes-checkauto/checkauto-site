@@ -11,7 +11,6 @@ const acceptedTerms = z.boolean().refine((accepted) => accepted, {
 export const signInSchema = z.object({
 	email,
 	password: z.string().min(1, { error: "Informe sua senha." }),
-	terms: acceptedTerms,
 });
 
 export type SignInFormValues = z.infer<typeof signInSchema>;

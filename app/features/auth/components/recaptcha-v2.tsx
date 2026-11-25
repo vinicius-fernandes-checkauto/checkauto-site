@@ -11,8 +11,10 @@ export function RecaptchaV2({ onChange, onError }: RecaptchaV2Props) {
 	const mount = useCallback(
 		(node: HTMLDivElement | null) => {
 			if (!node) return;
-			renderRecaptchaV2(node, onChange).catch(onError);
-			return () => node.replaceChildren();
+			const widget = document.createElement("div");
+			node.append(widget);
+			renderRecaptchaV2(widget, onChange).catch(onError);
+			return () => widget.remove();
 		},
 		[onChange, onError],
 	);

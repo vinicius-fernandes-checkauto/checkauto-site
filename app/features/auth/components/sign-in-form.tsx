@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import { legalNav } from "~/@content/navigation";
 import { RecaptchaV2 } from "~/features/auth/components/recaptcha-v2";
-import { safeCallbackUrl, signIn } from "~/features/auth/lib/auth";
+import { signIn } from "~/features/auth/lib/auth";
 import {
 	type SignInFormValues,
 	signInSchema,
@@ -14,10 +14,8 @@ import { loadRecaptcha } from "~/features/auth/lib/recaptcha";
 import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
 import { TextLink } from "~/shared/components/text-link";
-import { Checkbox } from "~/shared/components/ui/checkbox";
 import {
 	Field,
-	FieldContent,
 	FieldError,
 	FieldGroup,
 	FieldLabel,
@@ -25,15 +23,22 @@ import {
 import { Input } from "~/shared/components/ui/input";
 import { toApiError } from "~/shared/lib/api";
 
+const challengeMessages: Record<string, string> = {
+	recaptcha_fallback_required:
+		"Confirme que você não é um robô para continuar.",
+	recaptcha_failed:
+		"Não conseguimos confirmar a verificação. Marque a caixa de novo.",
+};
+
+const [privacyLink, termsLink] = legalNav;
+
 export function SignInForm() {
 	const form = useForm({
 		resolver: zodResolver(signInSchema),
-		defaultValues: { email: "", password: "", terms: false },
+		defaultValues: { email: "", password: "" },
 	});
 
 	const navigate = useNavigate();
-	const [searchParams] = useSearchParams();
-	const termsLink = legalNav.find(({ label }) => label === "Termos de compra");
 
 	const [challengeKey, setChallengeKey] = useState(0);
 	const [recaptchaV2Token, setRecaptchaV2Token] = useState<string | null>(null);
@@ -58,16 +63,16 @@ export function SignInForm() {
 				password,
 				recaptchaV2Token: recaptchaV2Token ?? undefined,
 			});
-			navigate(safeCallbackUrl(searchParams.get("callbackUrl")), {
-				replace: true,
-			});
+			navigate("/conta", { replace: true });
 		} catch (error) {
 			const { code, message } = toApiError(error);
 			if (showChallenge || code === "recaptcha_fallback_required") {
 				setRecaptchaV2Token(null);
 				setChallengeKey((key) => key + 1);
 			}
-			form.setError("root", { message });
+			form.setError("root", {
+				message: challengeMessages[code ?? ""] ?? message,
+			});
 		}
 	}
 
@@ -139,38 +144,6 @@ export function SignInForm() {
 				</Link>
 			</FieldGroup>
 
-			<Controller
-				name="terms"
-				control={form.control}
-				render={({ field, fieldState }) => (
-					<Field data-invalid={fieldState.invalid}>
-						<div className="flex items-start justify-center gap-2.5">
-							<Checkbox
-								id="terms"
-								name={field.name}
-								checked={field.value}
-								onCheckedChange={field.onChange}
-								onBlur={field.onBlur}
-								ref={field.ref}
-								aria-invalid={fieldState.invalid}
-								aria-describedby={fieldState.error ? "terms-error" : undefined}
-							/>
-							<FieldContent className="flex-row flex-wrap gap-1">
-								<FieldLabel htmlFor="terms" className="inline-flex font-normal">
-									Concordo com os
-								</FieldLabel>
-								<TextLink to={termsLink?.to ?? "/contrato"}>
-									termos e condições
-								</TextLink>
-							</FieldContent>
-						</div>
-						{fieldState.error && (
-							<FieldError id="terms-error" errors={[fieldState.error]} />
-						)}
-					</Field>
-				)}
-			/>
-
 			{showChallenge && (
 				<RecaptchaV2
 					key={challengeKey}
@@ -192,6 +165,12 @@ export function SignInForm() {
 			>
 				Entrar
 			</FormButton>
+
+			<p className="text-center text-sm/6 text-muted-foreground">
+				Ao entrar, você concorda com os{" "}
+				<TextLink to={termsLink.to}>termos de compra</TextLink> e a{" "}
+				<TextLink to={privacyLink.to}>política de privacidade</TextLink>.
+			</p>
 		</form>
 	);
 }

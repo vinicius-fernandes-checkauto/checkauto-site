@@ -1,5 +1,20 @@
 import axios, { isAxiosError } from "axios";
 
+import {
+	clearSession,
+	getSession,
+	type Session,
+	SIGN_IN_PATH,
+	setSession,
+	tokenExpiresAt,
+} from "~/shared/lib/session";
+
+declare module "axios" {
+	interface InternalAxiosRequestConfig {
+		_retry?: boolean;
+	}
+}
+
 type ErrorBody = {
 	detail?: unknown;
 	code?: unknown;
@@ -58,12 +73,72 @@ export function toApiError(error: unknown): ApiError {
 export const api = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
 	timeout: 15_000,
-	headers: {
-		Accept: "application/json",
-		"ngrok-skip-browser-warning": "true",
-	},
+	// headers: {
+	// 	Accept: "application/json",
+	// 	"ngrok-skip-browser-warning": "true",
+	// },
 });
 
-api.interceptors.response.use(undefined, (error) =>
-	Promise.reject(toApiError(error)),
-);
+function isAuthRoute(url = "") {
+	return url.replace(/^\//, "").startsWith("token/");
+}
+
+let refreshing: Promise<string> | null = null;
+
+async function refreshSession({ refreshToken, ...session }: Session) {
+	const { data } = await api.post<{ access: string; refresh?: string }>(
+		"/token/refresh/",
+		{ refresh: refreshToken },
+	);
+
+	setSession({
+		...session,
+		accessToken: data.access,
+		refreshToken: data.refresh ?? refreshToken,
+		expires: data.refresh ? tokenExpiresAt(data.refresh) : session.expires,
+	});
+
+	return data.access;
+}
+
+function expireSession() {
+	clearSession();
+	window.location.replace(SIGN_IN_PATH);
+}
+
+api.interceptors.request.use((config) => {
+	const session = getSession();
+	if (session && !isAuthRoute(config.url)) {
+		config.headers.Authorization = `Bearer ${session.accessToken}`;
+	}
+	return config;
+});
+
+api.interceptors.response.use(undefined, async (error) => {
+	const config = isAxiosError(error) ? error.config : undefined;
+	const session = getSession();
+
+	if (
+		error.response?.status !== 401 ||
+		!config ||
+		config._retry ||
+		isAuthRoute(config.url) ||
+		!session
+	) {
+		throw toApiError(error);
+	}
+
+	config._retry = true;
+
+	try {
+		refreshing ??= refreshSession(session).finally(() => {
+			refreshing = null;
+		});
+		config.headers.Authorization = `Bearer ${await refreshing}`;
+	} catch {
+		expireSession();
+		throw toApiError(error);
+	}
+
+	return api(config);
+});

@@ -2,7 +2,6 @@ import { Outlet } from "react-router";
 
 import { AccountHeader } from "~/features/account/components/account-header";
 import { AccountSidebar } from "~/features/account/components/account-sidebar";
-import { demoAccount } from "~/features/account/lib/account";
 import { authMiddleware, sessionContext } from "~/features/auth/lib/auth";
 import { SiteFooter } from "~/features/site/components/site-footer";
 import { SkipLink } from "~/shared/components/skip-link";
@@ -15,7 +14,7 @@ export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
 
 export function clientLoader({ context }: Route.ClientLoaderArgs) {
 	const { user } = context.get(sessionContext);
-	return { user: { ...demoAccount, name: user.name, email: user.email } };
+	return { user };
 }
 
 export function HydrateFallback() {
