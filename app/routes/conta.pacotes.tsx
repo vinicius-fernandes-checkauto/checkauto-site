@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { useNavigate } from "react-router";
 
-import { AccountPageHeader } from "~/features/account/components/account-page-header";
+import { AccountPageHeader } from "~/domains/account/components/account-page-header";
 import { PlansComparison } from "~/shared/components/plans-comparison";
 
 import type { Route } from "./+types/conta.pacotes";

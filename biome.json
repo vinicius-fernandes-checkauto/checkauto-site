@@ -38,6 +38,82 @@
 	},
 	"overrides": [
 		{
+			"includes": ["app/shared/**"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noRestrictedImports": {
+							"level": "error",
+							"options": {
+								"paths": {
+									"lucide-react": "Importe ícones de ~/shared/components/icons.",
+									"cn": "Importe cn de ~/shared/lib/utils."
+								},
+								"patterns": [
+									{
+										"group": ["~/domains", "~/domains/**"],
+										"message": "shared não importa domínios."
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			"includes": [
+				"app/domains/*/services/**",
+				"app/domains/*/types/**",
+				"app/domains/*/utils/**",
+				"app/domains/*/*.api.ts",
+				"app/domains/*/*.mock.ts"
+			],
+			"linter": {
+				"rules": {
+					"style": {
+						"noRestrictedImports": {
+							"level": "error",
+							"options": {
+								"paths": {
+									"lucide-react": "Importe ícones de ~/shared/components/icons.",
+									"cn": "Importe cn de ~/shared/lib/utils.",
+									"react": "Esta camada não usa React: mova o código para components/ ou hooks/.",
+									"react-router": "Esta camada não usa React Router: a navegação fica nas rotas e nos componentes."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			"includes": ["app/domains/*/*.api.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noRestrictedImports": {
+							"level": "error",
+							"options": {
+								"paths": {
+									"lucide-react": "Importe ícones de ~/shared/components/icons.",
+									"cn": "Importe cn de ~/shared/lib/utils.",
+									"react": "Esta camada não usa React: mova o código para components/ ou hooks/.",
+									"react-router": "Esta camada não usa React Router: a navegação fica nas rotas e nos componentes."
+								},
+								"patterns": [
+									{
+										"group": ["~/domains/*/services/**"],
+										"message": "A camada de API não chama services/."
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		{
 			"includes": [
 				"app/shared/components/icons.tsx",
 				"app/shared/lib/utils.ts"

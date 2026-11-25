@@ -109,7 +109,13 @@ beforeEach(() => {
 	});
 	vi.stubGlobal("document", cookieDocument());
 	setSession({
-		user: { id: "1", name: "Cliente", email: "c@exemplo.com", profile: "4" },
+		user: {
+			id: "1",
+			name: "Cliente",
+			email: "c@exemplo.com",
+			profile: "4",
+			profileComplete: true,
+		},
 		accessToken: "velho",
 		refreshToken: jwt(Math.floor((Date.now() + 60_000) / 1000)),
 		expires: Date.now() + 60_000,

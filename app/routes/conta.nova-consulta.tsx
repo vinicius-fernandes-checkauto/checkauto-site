@@ -1,5 +1,5 @@
-import { AccountPageHeader } from "~/features/account/components/account-page-header";
-import { NewQueryForm } from "~/features/account/components/new-query-form";
+import { AccountPageHeader } from "~/domains/account/components/account-page-header";
+import { NewQueryForm } from "~/domains/account/components/new-query-form";
 
 import type { Route } from "./+types/conta.nova-consulta";
 

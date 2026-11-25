@@ -1,6 +1,6 @@
 import type { MetaDescriptor } from "react-router";
 
-import { checkauto, contact, site, socialLinks } from "~/@content/checkauto";
+import { checkauto, contact, site, socialLinks } from "~/content/checkauto";
 
 export type SeoInput = {
 	title: string;

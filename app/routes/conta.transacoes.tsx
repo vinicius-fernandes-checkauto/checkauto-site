@@ -1,6 +1,6 @@
-import { AccountPageHeader } from "~/features/account/components/account-page-header";
-import { TransactionList } from "~/features/account/components/transaction-list";
-import { demoTransactions } from "~/features/account/lib/transactions";
+import { demoTransactions } from "~/domains/account/account.mock";
+import { AccountPageHeader } from "~/domains/account/components/account-page-header";
+import { TransactionList } from "~/domains/account/components/transaction-list";
 
 import type { Route } from "./+types/conta.transacoes";
 

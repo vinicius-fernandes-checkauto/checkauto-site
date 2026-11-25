@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import errorArt from "~/@assets/error-art.svg";
+import errorArt from "~/assets/error-art.svg";
 import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 import { Button } from "~/shared/components/ui/button";
 

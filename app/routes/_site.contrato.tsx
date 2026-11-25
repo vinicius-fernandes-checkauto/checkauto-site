@@ -1,5 +1,5 @@
-import { LegalDocument } from "~/features/site/components/legal-document";
-import { purchaseTerms } from "~/features/site/content/purchase-terms";
+import { LegalDocument } from "~/domains/site/components/legal-document";
+import { purchaseTerms } from "~/domains/site/content/purchase-terms";
 
 import type { Route } from "./+types/_site.contrato";
 

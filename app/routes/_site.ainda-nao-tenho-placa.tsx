@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { PageHeader } from "~/features/site/components/page-header";
+import { PageHeader } from "~/domains/site/components/page-header";
 import {
 	CheckIcon,
 	LightbulbIcon,

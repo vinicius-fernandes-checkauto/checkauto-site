@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 
-import { SiteFooter } from "~/features/site/components/site-footer";
-import { SiteHeader } from "~/features/site/components/site-header";
+import { SiteFooter } from "~/domains/site/components/site-footer";
+import { SiteHeader } from "~/domains/site/components/site-header";
 import { SkipLink } from "~/shared/components/skip-link";
 
 export default function SiteLayout() {

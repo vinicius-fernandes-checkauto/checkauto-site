@@ -45,8 +45,10 @@ O que diferencia os pacotes é só **indício de ocorrência** e **gravame**. O 
 
 - **Interface:** pronta para todas as rotas, com dados de demonstração.
 - **Integração com o backend:** em andamento, passo a passo, começando pela autenticação.
-  - Feito: login por e-mail e senha com reCAPTCHA v3 e fallback v2, sessão no navegador, logout, proteção da `/conta`, token nas chamadas com renovação automática.
-  - Falta: cadastro (`POST /signup/` com aceite do contrato), esqueci a senha, trocar senha, login com Google, e todas as telas da conta com dados reais.
+  - Feito: login por e-mail e senha com reCAPTCHA v3 e fallback v2; sessão num cookie (`checkauto.session-token`); logout; proteção da `/conta`; token nas chamadas com renovação automática; cadastro (`POST /signup/` com aceite do contrato e reCAPTCHA); esqueci a senha (`POST /user/forgot-password/`).
+  - Tela pronta, sem backend: login com Google e `/completar-cadastro` (aguardam as rotas do backend).
+  - Falta: trocar senha e todas as telas da conta com dados reais.
+- **Arquitetura:** por domínios (`app/domains/<domínio>`), com o auth no padrão do next-auth. Detalhes no `CLAUDE.md` §4 e em `docs/fluxo-auth.md` §7.
 - **Pagamento, carrinho e consultas:** ainda só interface.
 - **Indexação:** o site ainda **não** deve ser indexado (`noindex` no `vercel.json`) até o lançamento.
 - Ao entregar algo, diga o que é só interface (por exemplo, "Mensagem enviada" sem envio real).

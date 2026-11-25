@@ -1,10 +1,10 @@
-import aboutDriver from "~/@assets/about-driver.webp";
-import aboutInformation from "~/@assets/about-information.webp";
-import aboutNumbers from "~/@assets/about-numbers.webp";
-import aboutReference from "~/@assets/about-reference.webp";
-import ring from "~/@assets/brand/symbol-ring-blue.webp";
-import ticks from "~/@assets/brand/symbol-ticks.webp";
-import { HistorySection } from "~/features/site/components/history-section";
+import aboutDriver from "~/assets/about-driver.webp";
+import aboutInformation from "~/assets/about-information.webp";
+import aboutNumbers from "~/assets/about-numbers.webp";
+import aboutReference from "~/assets/about-reference.webp";
+import ring from "~/assets/brand/symbol-ring-blue.webp";
+import ticks from "~/assets/brand/symbol-ticks.webp";
+import { HistorySection } from "~/domains/site/components/history-section";
 import { seo } from "~/shared/lib/seo";
 
 import type { Route } from "./+types/_site.sobre-nos";

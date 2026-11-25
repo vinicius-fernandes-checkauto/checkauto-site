@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
 
-import { AddPlateForm } from "~/features/site/components/add-plate-form";
-import { CartItemRow } from "~/features/site/components/cart-item";
-import { CartSummary } from "~/features/site/components/cart-summary";
+import { AddPlateForm } from "~/domains/site/components/add-plate-form";
+import { CartItemRow } from "~/domains/site/components/cart-item";
+import { CartSummary } from "~/domains/site/components/cart-summary";
 import {
 	type AppliedCoupon,
 	type CartItem,
@@ -12,7 +12,7 @@ import {
 	formatCents,
 	priceToCents,
 	readCartItem,
-} from "~/features/site/lib/cart";
+} from "~/domains/site/lib/cart";
 import {
 	ChevronRightIcon,
 	ShoppingBagIcon,

@@ -4,10 +4,10 @@ import {
 	AuthHeading,
 	AuthHeadingDescription,
 	AuthHeadingTitle,
-} from "~/features/auth/components/auth-heading";
-import { AuthSwitch } from "~/features/auth/components/auth-switch";
-import { ResetPasswordForm } from "~/features/auth/components/reset-password-form";
-import { forgotPassword } from "~/features/auth/lib/auth";
+} from "~/domains/auth/components/auth-heading";
+import { AuthSwitch } from "~/domains/auth/components/auth-switch";
+import { ResetPasswordForm } from "~/domains/auth/components/reset-password-form";
+import { forgotPassword } from "~/domains/auth/services/auth.service";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 

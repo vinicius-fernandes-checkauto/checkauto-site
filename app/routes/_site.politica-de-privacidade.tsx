@@ -1,5 +1,5 @@
-import { LegalDocument } from "~/features/site/components/legal-document";
-import { privacyPolicy } from "~/features/site/content/privacy-policy";
+import { LegalDocument } from "~/domains/site/components/legal-document";
+import { privacyPolicy } from "~/domains/site/content/privacy-policy";
 
 import type { Route } from "./+types/_site.politica-de-privacidade";
 

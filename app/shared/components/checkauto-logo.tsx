@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
-import logo from "~/@assets/brand/checkauto-logo.png";
-import logoWhite from "~/@assets/brand/checkauto-logo-white.png";
+import logo from "~/assets/brand/checkauto-logo.png";
+import logoWhite from "~/assets/brand/checkauto-logo-white.png";
 import { cn } from "~/shared/lib/utils";
 
 type CheckautoLogoProps = {

@@ -1,11 +1,15 @@
+import { Navigate } from "react-router";
+
 import {
 	AuthHeading,
 	AuthHeadingDescription,
 	AuthHeadingTitle,
-} from "~/features/auth/components/auth-heading";
-import { AuthSwitch } from "~/features/auth/components/auth-switch";
-import { SignUpForm } from "~/features/auth/components/sign-up-form";
-import { SocialSignIn } from "~/features/auth/components/social-sign-in";
+} from "~/domains/auth/components/auth-heading";
+import { AuthSwitch } from "~/domains/auth/components/auth-switch";
+import { SignUpForm } from "~/domains/auth/components/sign-up-form";
+import { SocialSignIn } from "~/domains/auth/components/social-sign-in";
+import { getGuestRedirect } from "~/domains/auth/services/auth.service";
+import { useSession } from "~/shared/hooks/use-session";
 
 import type { Route } from "./+types/_auth.cadastro";
 
@@ -19,6 +23,11 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export default function SignUp() {
+	const { data: session } = useSession();
+	const redirectTo = getGuestRedirect(session ?? null);
+
+	if (redirectTo) return <Navigate to={redirectTo} replace />;
+
 	return (
 		<>
 			<AuthHeading>

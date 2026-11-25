@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-import { AuthShowcase } from "~/features/auth/components/auth-showcase";
+import { AuthShowcase } from "~/domains/auth/components/auth-showcase";
 
 export default function AuthLayout() {
 	return (

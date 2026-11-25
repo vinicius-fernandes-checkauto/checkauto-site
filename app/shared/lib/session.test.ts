@@ -26,6 +26,7 @@ function session(expires: number): Session {
 			name: "Cliente Teste",
 			email: "cliente@exemplo.com",
 			profile: "4",
+			profileComplete: true,
 		},
 		accessToken: "access",
 		refreshToken: `header.${refreshPayload}.signature`,
@@ -66,9 +67,8 @@ describe("session", () => {
 		setSession(value);
 		expect(getSession()).toEqual(value);
 		expect(getSession()).toBe(getSession());
-		expect(document.cookie).toContain("checkauto.access=access");
-		expect(document.cookie).toContain("checkauto.refresh=header.");
-		expect(document.cookie).toContain("checkauto.user=");
+		expect(document.cookie).toMatch(/^__Secure-checkauto\.session-token=/);
+		expect(document.cookie.split("; ")).toHaveLength(1);
 	});
 
 	it("expõe um snapshot público estável sem tokens", () => {
@@ -80,10 +80,8 @@ describe("session", () => {
 	});
 
 	it("descarta sessão vencida", () => {
-		const expired = session(Date.now() - 1);
-		document.cookie = `checkauto.access=${expired.accessToken}`;
-		document.cookie = `checkauto.refresh=${encodeURIComponent(expired.refreshToken)}`;
-		document.cookie = `checkauto.user=${encodeURIComponent(JSON.stringify(expired.user))}`;
+		const { expires: _, ...expired } = session(Date.now() - 1_000);
+		document.cookie = `__Secure-checkauto.session-token=${encodeURIComponent(JSON.stringify(expired))}`;
 		expect(getSession()).toBeNull();
 	});
 

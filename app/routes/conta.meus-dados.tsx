@@ -1,7 +1,7 @@
-import { AccessSettings } from "~/features/account/components/access-settings";
-import { AccountPageHeader } from "~/features/account/components/account-page-header";
-import { ProfileForm } from "~/features/account/components/profile-form";
-import { demoProfile } from "~/features/account/lib/profile";
+import { demoProfile } from "~/domains/account/account.mock";
+import { AccessSettings } from "~/domains/account/components/access-settings";
+import { AccountPageHeader } from "~/domains/account/components/account-page-header";
+import { ProfileForm } from "~/domains/account/components/profile-form";
 
 import type { Route } from "./+types/conta.meus-dados";
 

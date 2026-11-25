@@ -1,4 +1,4 @@
-import ring from "~/@assets/brand/symbol-ring-blue.webp";
+import ring from "~/assets/brand/symbol-ring-blue.webp";
 import { User2Icon } from "~/shared/components/icons";
 import { cn } from "~/shared/lib/utils";
 

@@ -312,7 +312,40 @@ stateDiagram-v2
 7. **Cookies `HttpOnly` (futuro):** o backend pode passar a gravar o refresh num cookie `HttpOnly`? Hoje fica com o JavaScript, igual ao Corp.
 8. **CORS:** liberar `http://localhost:3000` e os domínios de preview e produção do site.
 
-## 7. Referências
+## 7. Arquitetura no código
+
+O auth fica em `app/domains/auth`, em camadas. Cada camada só chama as de baixo. As regras de import são checadas pelo Biome.
+
+```mermaid
+flowchart TD
+    R["routes/<br/>_auth.entrar, _auth.cadastro, _auth.completar-cadastro, conta"] --> C["domains/auth/components/<br/>SignInForm, SignUpForm, CompleteProfileForm…"]
+    R -->|"clientMiddleware"| S
+    C --> H["domains/auth/hooks/<br/>use-recaptcha-challenge"]
+    C --> S["domains/auth/services/auth.service.ts<br/>authOptions, signIn, signOut, signUp,<br/>getAuthRedirect…"]
+    S --> P["services/providers/<br/>credentials.provider, google.provider"]
+    P --> A["domains/auth/auth.api.ts<br/>login, signUp, getCurrentTerms, forgotPassword"]
+    S --> A
+    A --> HTTP["shared/lib/api.ts<br/>axios + Bearer + refresh"]
+    S --> SES["shared/lib/session.ts<br/>cookie checkauto.session-token"]
+    HTTP --> SES
+```
+
+| next-auth                                             | aqui                                                    |
+| ----------------------------------------------------- | ------------------------------------------------------- |
+| `auth.ts` / `authOptions`                             | `domains/auth/services/auth.service.ts`                 |
+| `providers/credentials`, `providers/google`           | `domains/auth/services/providers/*.provider.ts`         |
+| `callbacks.session`, `pages.signIn` / `pages.newUser` | `authOptions.callbacks` / `authOptions.pages`           |
+| cookie `next-auth.session-token`                      | `checkauto.session-token` (`__Secure-` em https)        |
+| `useSession()` / `getSession()`                       | `shared/hooks/use-session.ts` / `shared/lib/session.ts` |
+| `middleware.ts`                                       | `clientMiddleware` da rota + `getAuthRedirect`          |
+
+**Decisões:**
+
+- **`auth.api.ts` × `auth.service.ts`:** o `auth.api.ts` só fala HTTP (endpoint e validação da resposta). O `auth.service.ts` tem a regra: provider, reCAPTCHA, a sessão e para onde redirecionar.
+- **Rotas de visitante e protegidas:** `/entrar` e `/cadastro` redirecionam quem já está logado na própria rota (`useSession` + `<Navigate>`), para continuar pré-renderizadas com o formulário. `/conta` e `/completar-cadastro` usam `clientMiddleware`, e o HTML pré-renderizado delas mostra só "Carregando…".
+- **Cadastro incompleto:** vem do campo `profile_complete` da resposta de login (⏳ backend). Sem o campo, a sessão é considerada completa.
+
+## 8. Referências
 
 - Corp: `src/shared/contexts/auth-context.tsx`, `src/shared/lib/api.ts`, `src/shared/lib/cookies.ts`, `src/features/auth/utils/must-change-password.ts`, `src/pages/Login/index.tsx`, `src/routes/index.tsx`.
 - Swagger: `docs/api/openapi.json` (conferido com a API publicada em 25/11/2026: mesmas 137 rotas) e o resumo em `docs/api/README.md`.

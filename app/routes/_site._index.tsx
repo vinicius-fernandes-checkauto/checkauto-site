@@ -1,13 +1,13 @@
-import { homeFaq } from "~/@content/faq";
-import { ClientsSection } from "~/features/site/components/clients-section";
-import { CtaSection } from "~/features/site/components/cta-section";
-import { DataSection } from "~/features/site/components/data-section";
-import { FaqSection } from "~/features/site/components/faq-section";
-import { HowSection } from "~/features/site/components/how-section";
-import { PlansSection } from "~/features/site/components/plans-section";
-import { HeroSection } from "~/features/site/components/sections/hero-section";
-import { MarqueeSection } from "~/features/site/components/sections/marquee-section";
-import { WhySection } from "~/features/site/components/sections/why-section";
+import { homeFaq } from "~/content/faq";
+import { ClientsSection } from "~/domains/site/components/clients-section";
+import { CtaSection } from "~/domains/site/components/cta-section";
+import { DataSection } from "~/domains/site/components/data-section";
+import { FaqSection } from "~/domains/site/components/faq-section";
+import { HowSection } from "~/domains/site/components/how-section";
+import { PlansSection } from "~/domains/site/components/plans-section";
+import { HeroSection } from "~/domains/site/components/sections/hero-section";
+import { MarqueeSection } from "~/domains/site/components/sections/marquee-section";
+import { WhySection } from "~/domains/site/components/sections/why-section";
 
 import type { Route } from "./+types/_site._index";
 

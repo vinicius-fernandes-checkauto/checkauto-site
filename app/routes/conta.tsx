@@ -1,23 +1,34 @@
-import { Outlet } from "react-router";
+import { Outlet, redirect } from "react-router";
 
-import { AccountHeader } from "~/features/account/components/account-header";
-import { AccountSidebar } from "~/features/account/components/account-sidebar";
+import { AccountHeader } from "~/domains/account/components/account-header";
+import { AccountSidebar } from "~/domains/account/components/account-sidebar";
 import {
-	accountMiddleware,
-	requireAccountSession,
-} from "~/features/account/lib/account-middleware";
-import { SiteFooter } from "~/features/site/components/site-footer";
+	authOptions,
+	getAuthRedirect,
+} from "~/domains/auth/services/auth.service";
+import { SiteFooter } from "~/domains/site/components/site-footer";
 import { SkipLink } from "~/shared/components/skip-link";
+import { getSession } from "~/shared/lib/session";
 
 import type { Route } from "./+types/conta";
 
+function requireSession() {
+	const session = getSession();
+	const redirectTo = getAuthRedirect(session);
+	if (!session || redirectTo) {
+		throw redirect(redirectTo ?? authOptions.pages.signIn);
+	}
+	return session;
+}
+
 export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
-	accountMiddleware,
+	() => {
+		requireSession();
+	},
 ];
 
 export function clientLoader() {
-	const { user } = requireAccountSession();
-	return { user };
+	return { user: requireSession().user };
 }
 
 export function HydrateFallback() {

@@ -16,7 +16,7 @@ Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular 
 | Autenticação    | `/entrar`, `/cadastro`, `/redefinir-senha`                                                   | `app/routes/_auth.tsx` |
 | Área do cliente | `/conta` (redireciona), `/conta/consultas`, `/conta/meus-dados`, `/conta/transacoes`         | `app/routes/conta.tsx` |
 
-**Fase atual: só interface.** Nada de integração com API, login real, pagamento ou envio de formulário. Estado de demonstração (dados fixos e `useState`) é o esperado. Ao entregar, diga quando a tela sugere um comportamento real que ainda não existe, como "Mensagem enviada".
+**Fase atual: interface pronta e integração com a API em andamento, começando pelo auth** (o que já está integrado fica no `PRODUCT.md` §5). O resto ainda usa dados de demonstração (`<domínio>.mock.ts` e `useState`). Ao entregar, diga quando a tela sugere um comportamento real que ainda não existe, como "Mensagem enviada".
 
 ## 2. Stack
 
@@ -60,51 +60,66 @@ Antes de dizer que terminou: **typecheck e Biome sem erro**. Se mexeu em rota, i
 app/
   app.css                tema (tokens do DS) — único arquivo de estilo global
   root.tsx               HTML base, metadados, página de erro
-  routes/                um arquivo por rota; só monta a página com peças de features/ e shared/
-  @assets/
+  routes/                um arquivo por rota: meta, clientLoader, clientMiddleware e composição
+  assets/
     brand/               logos e símbolos da marca
-    clients/              logos de clientes
-                          demais imagens soltas nesta pasta
-  @content/              dados e textos fixos do site: planos, FAQ, navegação, empresa (futuro Sanity)
-  features/
-    site/                site público
-      components/        seções da home, header/footer do site, página do pacote, carrinho, contato, jurídico
-      lib/               dados e funções do site (cart, contact, legal, plan-selection)
-      content/           textos longos (termos, privacidade, aviso legal)
-    auth/
+    clients/             logos de clientes
+                         demais imagens soltas nesta pasta
+  content/               dados e textos fixos do site: planos, FAQ, navegação, empresa (futuro Sanity)
+  domains/               regras de negócio, um domínio por pasta
+    auth/                entrar, sair, criar conta, Google, completar cadastro, senha
       components/        formulários e painel visual do login/cadastro
-      lib/               casos de uso (auth.ts), schemas, reCAPTCHA
-        providers/       um arquivo por forma de login (credentials-provider.ts, google-provider.ts), no padrão do next-auth
-      services/          integração HTTP com os endpoints de auth
-    account/
-      components/        header, sidebar, menu, cards e diálogos da área do cliente
-      lib/               dados de demonstração, schemas, middleware e helpers da conta
-  shared/                só o que mais de uma área usa
-    components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, LicensePlate, PlansComparison
+      hooks/             use-recaptcha-challenge
+      services/          auth.service.ts (authOptions, signIn, signOut, signUp…) + providers/
+      types/             auth.types.ts
+      utils/             auth.schema.ts, recaptcha.ts
+      auth.api.ts        endpoints do backend
+    account/             área do cliente
+      components/  types/  utils/ (account.schema.ts…)  account.mock.ts (dados de demonstração)
+    site/                site público (ainda na organização antiga: components/, lib/, content/)
+  shared/                só o que mais de um domínio usa; não conhece nenhum domínio
+    components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, CpfInput, PhoneInput…
     components/ui/       shadcn ajustado ao tema
     hooks/               useMediaQuery, useScrolled, useSession
-    lib/                 código de apoio: cn, gsap, session
-    utils/               funções reutilizáveis: form, placa, telefone
+    lib/                 api.ts (cliente HTTP), session.ts (cookie da sessão), cn, gsap, seo
+    utils/               funções reutilizáveis: form, cpf, placa, telefone
 ```
 
-`lib` e `utils` são **código**; `content` são **dados**. O `@content/` da raiz fica isolado de propósito, porque vai ser substituído pelo Sanity: ele **não importa nada** de `features/` nem de `shared/` (tipos ficam no próprio arquivo), e quem lê dele são as features e o `shared/`. Configuração fica em `lib/`. Esse é o mesmo padrão dos outros projetos do time e do shadcn (`lib/utils`).
+`content/` são **dados** e fica isolado de propósito, porque vai ser substituído pelo Sanity: ele **não importa nada** de `domains/` nem de `shared/`.
 
-O contrato da API do backend fica em `docs/api/` (`openapi.json` + `README.md` com os endpoints que o site usa e o que falta confirmar).
+O contrato da API do backend fica em `docs/api/`, e o fluxo e a arquitetura do auth em `docs/fluxo-auth.md`.
 
 Rotas:
 
 - `app/routes.ts` usa `flatRoutes()`: a URL sai do **nome do arquivo**. Ponto vira `/`, `$` é parâmetro e o prefixo `_` cria um layout sem segmento na URL (`_site.faq.tsx` → `/faq`, dentro de `_site.tsx`; `conta.consultas.tsx` → `/conta/consultas`, dentro de `conta.tsx`).
 - Página nova do site público: `_site.<nome>.tsx`. Rota com parâmetro precisa listar os caminhos no `prerender` de `react-router.config.ts`, senão não vira HTML.
 
+### Camadas de um domínio
+
+| Camada                 | Onde                            | Papel                                                                                                     |
+| ---------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| UI                     | `components/`                   | telas e formulários; chamam o `services/` (ou o `<domínio>.api.ts` quando não há regra)                   |
+| Estado e comportamento | `hooks/`                        | só quando encapsula estado reutilizável; **não** crie um hook por serviço ou endpoint                     |
+| Regras de negócio      | `services/<domínio>.service.ts` | o que o domínio faz. **Sem React e sem React Router.** Opcional: só existe quando há regra própria        |
+| Comunicação com a API  | `<domínio>.api.ts`              | um método por endpoint e a validação da resposta. Sem regra, sem sessão e sem chamar `services/`          |
+| Tipos                  | `types/<domínio>.types.ts`      | tipos e interfaces do domínio                                                                             |
+| Utilitários e schemas  | `utils/`                        | `<domínio>.schema.ts` (schemas zod de formulários e respostas da API), funções puras e adaptadores de SDK |
+
+Direção: `routes` → `components` → (`hooks`) → `services` → `<domínio>.api.ts` → `shared/lib/api`. `types/` e `utils/` servem a todas.
+
 Regras de organização:
 
-- `features/*` pode importar de `shared/` e de `@content/`; **`shared/` nunca importa de `features/`**; **`@content/` não importa de ninguém**.
-- Em `features/*` ficam pastas por tipo (`components`, `content`, `hooks`, `lib`, `services`, `utils`); `shared/` fica com `components`, `hooks`, `lib` e `utils`, sem `content` ou `services`. **Sem subpastas por página.** Não crie pasta nova (`config`, `helpers`, `constants`) sem combinar antes. Exceções combinadas: `features/auth/lib/providers/` e `features/*/services/`.
-- Chamadas HTTP aos endpoints do backend ficam em `features/<área>/services/`, separadas por domínio (por exemplo, `features/auth/services/auth-service.ts`). Casos de uso e orquestração ficam em `lib/`; componentes e rotas não chamam endpoints diretamente. Repita esse padrão em outras features quando elas passarem a consumir a API.
-- Schemas específicos de uma feature ficam em `features/<área>/lib/<área>-schema.ts` (por exemplo, `features/auth/lib/auth-schema.ts`). Só regras de validação realmente genéricas ficam em `shared/utils/`.
-- A sessão compartilhada fica em `shared/lib/session.ts` e seu hook em `shared/hooks/use-session.ts`; o middleware que protege `/conta` pertence a `features/account/lib/`.
-- Algo vai para `shared/` só quando **mais de uma área** usa. Se só o site usa, fica em `features/site`.
-- Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes na feature.
+- **Sem `index.ts` (barrel) nos domínios:** importe sempre direto do arquivo (`~/domains/auth/services/auth.service`). Vale para todos os domínios.
+- **Schemas zod ficam em `utils/<domínio>.schema.ts`**, em todos os domínios.
+- **`shared/` nunca importa de `domains/`. `content/` não importa de ninguém.**
+- `services/`, `types/`, `utils/`, `<domínio>.api.ts` e `<domínio>.mock.ts` não importam `react` nem `react-router`: navegação e redirecionamento ficam nas rotas e nos componentes.
+- O Biome garante essas regras (`noRestrictedImports` no `biome.json`, com curingas `app/domains/*/…`): domínio novo já entra coberto.
+- Nome dos arquivos de camada: `<domínio>.<camada>.ts` (`auth.api.ts`, `auth.service.ts`, `auth.types.ts`, `utils/auth.schema.ts`, `credentials.provider.ts`, `account.mock.ts`). Componentes, hooks e utilitários em kebab-case descritivo.
+- Pastas de um domínio: só as da tabela acima (e `services/providers/` no auth). **Sem subpastas por página.** Não crie pasta nova sem combinar antes.
+- Dados de demonstração ficam em `<domínio>.mock.ts` até a tela ser integrada; aí viram chamadas no `<domínio>.api.ts`.
+- Sessão: o armazenamento fica em `shared/lib/session.ts` (cookie `checkauto.session-token`) e o hook em `shared/hooks/use-session.ts`. A regra (entrar, sair, para onde redirecionar) fica em `domains/auth/services/auth.service.ts`. Área protegida usa `clientMiddleware` na rota com `getAuthRedirect`.
+- Algo vai para `shared/` só quando **mais de um domínio** usa.
+- Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes no domínio.
 - Imports sempre absolutos com `~/`. Relativo só entre arquivos da mesma pasta.
 - Nomes de arquivo em kebab-case; componente com o mesmo nome do arquivo (`site-header.tsx` → `SiteHeader`).
 - Ícones: adicione o ícone do lucide ao `export` de `~/shared/components/icons.tsx`, em ordem alfabética, e importe de lá. O Biome bloqueia `lucide-react` direto.
@@ -189,7 +204,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 
 ### Elementos da marca
 
-- **Arcos da marca, não bolhas nem blobs.** Use o símbolo `~/@assets/brand/symbol-ring-blue.webp` como máscara (`style={{ maskImage: url(...) }}` + `mask-contain mask-no-repeat`), pintado com `bg-brand-green/20` e afins. Também existe `symbol-ticks.webp`.
+- **Arcos da marca, não bolhas nem blobs.** Use o símbolo `~/assets/brand/symbol-ring-blue.webp` como máscara (`style={{ maskImage: url(...) }}` + `mask-contain mask-no-repeat`), pintado com `bg-brand-green/20` e afins. Também existe `symbol-ticks.webp`.
 - Estilo: **moderno, limpo, orgânico**. Muito respiro, poucos textos, cards arredondados, detalhes em verde sobre azul.
 
 ## 6. Layout e responsividade
@@ -231,7 +246,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Diga **"veículo"**, não "carro".
 - Não cite a **DEKRA**.
 - Não use **"lojista"** no header nem na navegação.
-- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/@content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
+- Pacotes sempre em **ordem crescente de preço**: Standard → Master → Plus. Os dados ficam em `~/content/plans.ts` e servem de fonte única para preço, itens e links (`/pacotes/checkauto-*`).
 - Números da empresa: abreviados e grandes ("+250 mil", não o número cheio).
 - Placa de exemplo: `ABC1D23` (Mercosul).
 
@@ -241,19 +256,19 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - Componentes como `function` nomeada e exportada. Props tipadas com `type XProps`.
 - Estado derivado em vez de `useEffect`. Para assinar eventos do navegador, use `useSyncExternalStore` (veja `use-scrolled.ts` e `use-media-query.ts`).
 - Classes condicionais com `cn(...)`. O Biome ordena as classes, então rode `--write --unsafe`.
-- Dados fixos ficam em `@content/` (o da raiz, ou `content/` da área para textos que só ela usa) e dados de demonstração no `lib/` da área, nunca soltos no JSX.
+- Dados fixos ficam em `content/` (o da raiz, ou `content/` do domínio para textos que só ele usa) e dados de demonstração no `<domínio>.mock.ts`, nunca soltos no JSX.
 - Não adicione dependência sem necessidade clara. Prefira o que já está no projeto.
 
 ### 10.1 Formulários (regra)
 
-**Todo formulário usa React Hook Form com zod**, montado com os componentes `Field` do shadcn (`~/shared/components/ui/field`). O modelo são as telas de auth (`features/auth`). Não valide à mão com `useState`, `FormData` ou `safeParse` no `onSubmit`, e não use `required`, `minLength` e afins do HTML para validar.
+**Todo formulário usa React Hook Form com zod**, montado com os componentes `Field` do shadcn (`~/shared/components/ui/field`). O modelo são as telas de auth (`domains/auth`). Não valide à mão com `useState`, `FormData` ou `safeParse` no `onSubmit`, e não use `required`, `minLength` e afins do HTML para validar.
 
 Responsabilidades separadas:
 
 | Peça       | Onde                                                                                                                                               | O que faz                                                                                                                                |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Schema zod | `features/<área>/lib/<área>-schema.ts` (ou `shared/utils` se for genérico, como a placa)                                                           | regras e mensagens, em português e no imperativo ("Informe o CEP."); exporta os tipos `…FormInput`/`…FormOutput` quando há transformação |
-| Formulário | `features/<área>/components/<nome>-form.tsx` (`SignInForm`, `SignUpForm`)                                                                          | `useForm`, campos e envio                                                                                                                |
+| Schema zod | `domains/<domínio>/utils/<domínio>.schema.ts` (ou `shared/utils` se for genérico, como a placa)                                                    | regras e mensagens, em português e no imperativo ("Informe o CEP."); exporta os tipos `…FormInput`/`…FormOutput` quando há transformação |
+| Formulário | `domains/<domínio>/components/<nome>-form.tsx` (`SignInForm`, `SignUpForm`)                                                                        | `useForm`, campos e envio                                                                                                                |
 | Rota       | `routes/*.tsx`                                                                                                                                     | só monta: heading, `<XForm />`, links. Nada de `useForm` na rota                                                                         |
 | Campos     | `~/shared/components/ui/*` (`Input`, `Checkbox`, `Label`, `Field…`) e compostos de `~/shared/components` (`PasswordInput`, `CpfInput`, `TextLink`) | visual vindo do DS; nada de input estilizado na mão                                                                                      |
 

@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 
-import { contact } from "~/@content/checkauto";
-import { ContactForm } from "~/features/site/components/contact-form";
-import { PageHeader } from "~/features/site/components/page-header";
+import { contact } from "~/content/checkauto";
+import { ContactForm } from "~/domains/site/components/contact-form";
+import { PageHeader } from "~/domains/site/components/page-header";
 import { MailIcon, PhoneIcon } from "~/shared/components/icons";
 
 import type { Route } from "./+types/_site.contato";
