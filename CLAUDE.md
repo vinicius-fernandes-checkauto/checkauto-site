@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Checkauto Site — spec para IA
 
-Contexto, regras e critérios para qualquer IA (ou pessoa) que for mexer neste projeto. Leia inteiro antes da primeira alteração. Quando uma regra daqui conflitar com um hábito seu, vale a regra daqui.
+Contexto, regras e critérios para qualquer IA (ou pessoa) que for mexer neste projeto. Leia inteiro antes da primeira alteração. Quando uma regra daqui conflitar com um hábito seu, vale a regra daqui. O contexto de produto (público, pacotes, jornadas, estado atual e voz) está no [`PRODUCT.md`](PRODUCT.md).
 
 ## 1. O que é
 
