@@ -15,22 +15,22 @@ A Checkauto vende **consulta de histórico veicular pela placa**. A pessoa infor
 
 ## 2. Para quem
 
-| Público | O que quer | Onde aparece |
-| --- | --- | --- |
-| **Pessoa física comprando um veículo usado** (principal) | Saber se o veículo tem problema antes de pagar | Home, pacotes, carrinho, conta |
-| **Pessoa vendendo o próprio veículo** | Mostrar ao comprador que o veículo está limpo | Home, pacotes |
-| **Empresas que vendem veículos** (revendas, multimarcas) | Volume de consultas e pacotes próprios | FAQ e contato comercial. **Não** é o foco do site; nunca usar "lojista" no header ou na navegação |
-| **Equipe interna** | Cadastrar e atender clientes | Fica no **Checkauto Corp**, outro sistema que usa a mesma API |
+| Público                                                  | O que quer                                     | Onde aparece                                                                                      |
+| -------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Pessoa física comprando um veículo usado** (principal) | Saber se o veículo tem problema antes de pagar | Home, pacotes, carrinho, conta                                                                    |
+| **Pessoa vendendo o próprio veículo**                    | Mostrar ao comprador que o veículo está limpo  | Home, pacotes                                                                                     |
+| **Empresas que vendem veículos** (revendas, multimarcas) | Volume de consultas e pacotes próprios         | FAQ e contato comercial. **Não** é o foco do site; nunca usar "lojista" no header ou na navegação |
+| **Equipe interna**                                       | Cadastrar e atender clientes                   | Fica no **Checkauto Corp**, outro sistema que usa a mesma API                                     |
 
 ## 3. Pacotes
 
 Sempre em **ordem crescente de preço**: Standard → Master → Plus. Detalhes, preços e itens em `app/@content/plans.ts` (fonte única).
 
-| Pacote | Posicionamento | O que acrescenta |
-| --- | --- | --- |
-| **Standard** | Essencial | Leilão, roubo e furto, restrições e bloqueios, débitos e multas, recall, histórico de quilometragem + informações cadastrais |
-| **Master** | Intermediário | Tudo do Standard + **indício de ocorrência** |
-| **Plus** | Mais completo (recomendado) | Tudo do Master + **gravame** |
+| Pacote       | Posicionamento              | O que acrescenta                                                                                                             |
+| ------------ | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Standard** | Essencial                   | Leilão, roubo e furto, restrições e bloqueios, débitos e multas, recall, histórico de quilometragem + informações cadastrais |
+| **Master**   | Intermediário               | Tudo do Standard + **indício de ocorrência**                                                                                 |
+| **Plus**     | Mais completo (recomendado) | Tudo do Master + **gravame**                                                                                                 |
 
 O que diferencia os pacotes é só **indício de ocorrência** e **gravame**. O resto (documentação, restrições, débitos, roubo e furto, KM, leilão, recall, FIPE) é comum aos três.
 

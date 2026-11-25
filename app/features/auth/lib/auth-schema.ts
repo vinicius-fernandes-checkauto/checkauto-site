@@ -34,6 +34,7 @@ export const signUpSchema = z.object({
 		.regex(/\d/, { error: "Inclua um número." })
 		.regex(/[^A-Za-z0-9]/, { error: "Inclua um símbolo." }),
 	terms: acceptedTerms,
+	marketing: z.boolean(),
 });
 
 export type SignUpFormInput = z.input<typeof signUpSchema>;

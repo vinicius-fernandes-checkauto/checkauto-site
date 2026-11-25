@@ -15,7 +15,7 @@ const sources = ["SENATRAN", "DETRANs", "Seguradoras", "Leiloeiros"];
 const topics = ["Leilão", "Roubo e furto", "Gravame", "Recall"];
 
 const card =
-	"relative flex min-h-56 flex-col justify-between gap-6 overflow-hidden rounded-3xl p-6 sm:rounded-4xl lg:min-h-0 lg:gap-4 lg:p-5";
+	"relative flex min-h-56 flex-col justify-between gap-6 overflow-hidden rounded-3xl p-6 transition-transform duration-200 hover:scale-102 sm:rounded-4xl lg:min-h-0 lg:gap-4 lg:p-5";
 
 const chip = "rounded-full px-3 py-1.5 text-sm/4 font-medium";
 

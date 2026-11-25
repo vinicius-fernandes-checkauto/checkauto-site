@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 
 import { legalNav } from "~/@content/navigation";
 import { RecaptchaV2 } from "~/features/auth/components/recaptcha-v2";
+import { useRecaptchaChallenge } from "~/features/auth/hooks/use-recaptcha-challenge";
 import { signIn } from "~/features/auth/lib/auth";
 import {
 	type SignInFormValues,
 	signInSchema,
 } from "~/features/auth/lib/auth-schema";
-import { loadRecaptcha } from "~/features/auth/lib/recaptcha";
+import { loadRecaptcha, recaptchaMessage } from "~/features/auth/lib/recaptcha";
 import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
 import { TextLink } from "~/shared/components/text-link";
@@ -23,13 +23,6 @@ import {
 import { Input } from "~/shared/components/ui/input";
 import { toApiError } from "~/shared/lib/api";
 
-const challengeMessages: Record<string, string> = {
-	recaptcha_fallback_required:
-		"Confirme que você não é um robô para continuar.",
-	recaptcha_failed:
-		"Não conseguimos confirmar a verificação. Marque a caixa de novo.",
-};
-
 const [privacyLink, termsLink] = legalNav;
 
 export function SignInForm() {
@@ -40,19 +33,10 @@ export function SignInForm() {
 
 	const navigate = useNavigate();
 
-	const [challengeKey, setChallengeKey] = useState(0);
-	const [recaptchaV2Token, setRecaptchaV2Token] = useState<string | null>(null);
-	const showChallenge = challengeKey > 0;
-
-	const onChallengeError = useCallback(() => {
-		form.setError("root", {
-			message:
-				"Não foi possível carregar a verificação. Recarregue a página e tente de novo.",
-		});
-	}, [form]);
+	const challenge = useRecaptchaChallenge();
 
 	async function submit({ email, password }: SignInFormValues) {
-		if (showChallenge && !recaptchaV2Token) {
+		if (challenge.missing) {
 			form.setError("root", { message: "Confirme que você não é um robô." });
 			return;
 		}
@@ -61,18 +45,15 @@ export function SignInForm() {
 			await signIn("credentials", {
 				email,
 				password,
-				recaptchaV2Token: recaptchaV2Token ?? undefined,
+				recaptchaV2Token: challenge.token ?? undefined,
 			});
 			navigate("/conta", { replace: true });
 		} catch (error) {
 			const { code, message } = toApiError(error);
-			if (showChallenge || code === "recaptcha_fallback_required") {
-				setRecaptchaV2Token(null);
-				setChallengeKey((key) => key + 1);
+			if (challenge.active || code === "recaptcha_fallback_required") {
+				challenge.restart();
 			}
-			form.setError("root", {
-				message: challengeMessages[code ?? ""] ?? message,
-			});
+			form.setError("root", { message: recaptchaMessage(code) ?? message });
 		}
 	}
 
@@ -144,11 +125,11 @@ export function SignInForm() {
 				</Link>
 			</FieldGroup>
 
-			{showChallenge && (
+			{challenge.active && (
 				<RecaptchaV2
-					key={challengeKey}
-					onChange={setRecaptchaV2Token}
-					onError={onChallengeError}
+					key={challenge.key}
+					action="LOGIN"
+					onChange={challenge.setToken}
 				/>
 			)}
 

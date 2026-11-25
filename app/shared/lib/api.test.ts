@@ -6,7 +6,7 @@ import {
 } from "axios";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ApiError, api, toApiError } from "./api";
+import { ApiError, api, fieldErrors, toApiError } from "./api";
 import { clearSession, getSession, setSession } from "./session";
 
 function httpError(status: number, data: unknown) {
@@ -137,5 +137,21 @@ describe("api com sessão", () => {
 		await expect(api.get("/order/list/")).rejects.toBeInstanceOf(ApiError);
 		expect(getSession()).toBeNull();
 		expect(replace).toHaveBeenCalledWith("/entrar");
+	});
+});
+
+describe("fieldErrors", () => {
+	it("pega a primeira mensagem de cada campo do Django", () => {
+		expect(
+			fieldErrors({
+				email: ["Já existe um usuário com este e-mail.", "Outro erro."],
+				accept_terms: "Aceite os termos.",
+				detail: "Confira os dados informados.",
+			}),
+		).toEqual({
+			email: "Já existe um usuário com este e-mail.",
+			accept_terms: "Aceite os termos.",
+		});
+		expect(fieldErrors(null)).toEqual({});
 	});
 });

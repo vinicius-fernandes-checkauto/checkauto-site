@@ -104,7 +104,6 @@ export function SiteHeader({ carCount = 0 }: SiteHeaderProps) {
 				</nav>
 
 				<div className="ml-auto flex shrink-0 items-center gap-1.5 xl:ml-0">
-					<HeaderCart count={carCount} />
 					{session ? (
 						<Link
 							to={accountNav.queries.to}
@@ -125,6 +124,7 @@ export function SiteHeader({ carCount = 0 }: SiteHeaderProps) {
 							<Link to="/entrar">Entrar</Link>
 						</Button>
 					)}
+					<HeaderCart count={carCount} />
 				</div>
 
 				<MobileMenu signedIn={status === "authenticated"} />

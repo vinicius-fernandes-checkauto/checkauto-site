@@ -73,14 +73,30 @@ export function toApiError(error: unknown): ApiError {
 export const api = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
 	timeout: 15_000,
-	// headers: {
-	// 	Accept: "application/json",
-	// 	"ngrok-skip-browser-warning": "true",
-	// },
+	headers: {
+		Accept: "application/json",
+		"ngrok-skip-browser-warning": "true",
+	},
 });
 
-function isAuthRoute(url = "") {
-	return url.replace(/^\//, "").startsWith("token/");
+const publicRoutes = ["token/", "signup/", "user/terms/"];
+
+function isPublicRoute(url = "") {
+	const path = url.replace(/^\//, "");
+	return publicRoutes.some((route) => path.startsWith(route));
+}
+
+export function fieldErrors(data: unknown): Record<string, string> {
+	if (!data || typeof data !== "object") return {};
+
+	const errors: Record<string, string> = {};
+	for (const [field, value] of Object.entries(data)) {
+		const message = Array.isArray(value) ? value[0] : value;
+		if (typeof message === "string" && field !== "detail" && field !== "code") {
+			errors[field] = message;
+		}
+	}
+	return errors;
 }
 
 let refreshing: Promise<string> | null = null;
@@ -108,7 +124,7 @@ function expireSession() {
 
 api.interceptors.request.use((config) => {
 	const session = getSession();
-	if (session && !isAuthRoute(config.url)) {
+	if (session && !isPublicRoute(config.url)) {
 		config.headers.Authorization = `Bearer ${session.accessToken}`;
 	}
 	return config;
@@ -122,7 +138,7 @@ api.interceptors.response.use(undefined, async (error) => {
 		error.response?.status !== 401 ||
 		!config ||
 		config._retry ||
-		isAuthRoute(config.url) ||
+		isPublicRoute(config.url) ||
 		!session
 	) {
 		throw toApiError(error);

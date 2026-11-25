@@ -22,6 +22,8 @@ declare global {
 	}
 }
 
+import { ApiError } from "~/shared/lib/api";
+
 const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 const siteKeyV2 = import.meta.env.VITE_RECAPTCHA_V2_SITE_KEY;
 
@@ -63,8 +65,26 @@ export function loadRecaptcha() {
 }
 
 export async function getRecaptchaToken(action: string) {
-	const grecaptcha = await loadRecaptcha();
-	return grecaptcha.execute(siteKey, { action });
+	try {
+		const grecaptcha = await loadRecaptcha();
+		return await grecaptcha.execute(siteKey, { action });
+	} catch {
+		throw new ApiError(
+			"Não foi possível verificar o reCAPTCHA. Recarregue a página e tente de novo.",
+			null,
+		);
+	}
+}
+
+const challengeMessages: Record<string, string> = {
+	recaptcha_fallback_required:
+		"Confirme que você não é um robô para continuar.",
+	recaptcha_failed:
+		"Não conseguimos confirmar a verificação. Marque a caixa de novo.",
+};
+
+export function recaptchaMessage(code: string | null) {
+	return code ? challengeMessages[code] : undefined;
 }
 
 function loadRecaptchaV2() {
@@ -88,12 +108,13 @@ function loadRecaptchaV2() {
 
 export async function renderRecaptchaV2(
 	container: HTMLElement,
+	action: string,
 	onChange: (token: string | null) => void,
 ) {
 	const enterprise = await loadRecaptchaV2();
 	enterprise.render(container, {
 		sitekey: siteKeyV2,
-		action: "LOGIN",
+		action,
 		callback: onChange,
 		"expired-callback": () => onChange(null),
 	});
