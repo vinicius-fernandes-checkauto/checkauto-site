@@ -2,18 +2,21 @@ import { Outlet } from "react-router";
 
 import { AccountHeader } from "~/features/account/components/account-header";
 import { AccountSidebar } from "~/features/account/components/account-sidebar";
-import { authMiddleware, sessionContext } from "~/features/auth/lib/auth";
+import {
+	accountMiddleware,
+	requireAccountSession,
+} from "~/features/account/lib/account-middleware";
 import { SiteFooter } from "~/features/site/components/site-footer";
 import { SkipLink } from "~/shared/components/skip-link";
 
 import type { Route } from "./+types/conta";
 
 export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
-	authMiddleware,
+	accountMiddleware,
 ];
 
-export function clientLoader({ context }: Route.ClientLoaderArgs) {
-	const { user } = context.get(sessionContext);
+export function clientLoader() {
+	const { user } = requireAccountSession();
 	return { user };
 }
 

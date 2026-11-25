@@ -8,6 +8,14 @@ const acceptedTerms = z.boolean().refine((accepted) => accepted, {
 	error: "Aceite os termos para continuar.",
 });
 
+export const currentTermsSchema = z.object({
+	version: z.string(),
+	content: z.string(),
+	published_at: z.string().optional(),
+});
+
+export type CurrentTerms = z.infer<typeof currentTermsSchema>;
+
 export const signInSchema = z.object({
 	email,
 	password: z.string().min(1, { error: "Informe sua senha." }),

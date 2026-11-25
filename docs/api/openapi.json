@@ -4,12 +4,8 @@
 		"title": "Info Magic Service",
 		"description": "Informações num passe de mágica",
 		"termsOfService": "No terms",
-		"contact": {
-			"email": "suporte@infomagic.com"
-		},
-		"license": {
-			"name": "No License"
-		},
+		"contact": { "email": "suporte@infomagic.com" },
+		"license": { "name": "No License" },
 		"version": "v1"
 	},
 	"host": "dashiest-frazzledly-vihaan.ngrok-free.dev",
@@ -24,11 +20,7 @@
 			"in": "header"
 		}
 	},
-	"security": [
-		{
-			"Auth Token eg [Bearer (JWT) ]": []
-		}
-	],
+	"security": [{ "Auth Token eg [Bearer (JWT) ]": [] }],
 	"paths": {
 		"/api/create/": {
 			"post": {
@@ -39,17 +31,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Api"
-						}
+						"schema": { "$ref": "#/definitions/Api" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Api"
-						}
+						"schema": { "$ref": "#/definitions/Api" }
 					}
 				},
 				"tags": ["api"]
@@ -65,17 +53,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/DescriptionAPI"
-						}
+						"schema": { "$ref": "#/definitions/DescriptionAPI" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/DescriptionAPI"
-						}
+						"schema": { "$ref": "#/definitions/DescriptionAPI" }
 					}
 				},
 				"tags": ["api"]
@@ -91,17 +75,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/DefaultApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/DefaultApiFailureMessage" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/DefaultApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/DefaultApiFailureMessage" }
 					}
 				},
 				"tags": ["api"]
@@ -113,11 +93,7 @@
 				"operationId": "api_default-failure-message_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["api"]
 			},
 			"parameters": [
@@ -151,9 +127,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -166,9 +140,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/DefaultApiFailureMessage"
-									}
+									"items": { "$ref": "#/definitions/DefaultApiFailureMessage" }
 								}
 							}
 						}
@@ -186,9 +158,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/DefaultApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/DefaultApiFailureMessage" }
 					}
 				},
 				"tags": ["api"]
@@ -213,17 +183,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/DefaultApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/DefaultApiFailureMessage" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/DefaultApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/DefaultApiFailureMessage" }
 					}
 				},
 				"tags": ["api"]
@@ -244,11 +210,7 @@
 				"operationId": "api_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["api"]
 			},
 			"parameters": [
@@ -282,9 +244,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -297,9 +257,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Api"
-									}
+									"items": { "$ref": "#/definitions/Api" }
 								}
 							}
 						}
@@ -329,9 +287,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -344,9 +300,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Api"
-									}
+									"items": { "$ref": "#/definitions/Api" }
 								}
 							}
 						}
@@ -376,9 +330,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -391,9 +343,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Api"
-									}
+									"items": { "$ref": "#/definitions/Api" }
 								}
 							}
 						}
@@ -432,9 +382,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -447,9 +395,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/DescriptionAPI"
-									}
+									"items": { "$ref": "#/definitions/DescriptionAPI" }
 								}
 							}
 						}
@@ -467,9 +413,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Api"
-						}
+						"schema": { "$ref": "#/definitions/Api" }
 					}
 				},
 				"tags": ["api"]
@@ -494,17 +438,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ApiTokenObtainPair"
-						}
+						"schema": { "$ref": "#/definitions/ApiTokenObtainPair" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ApiTokenObtainPair"
-						}
+						"schema": { "$ref": "#/definitions/ApiTokenObtainPair" }
 					}
 				},
 				"tags": ["api"]
@@ -520,17 +460,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Api"
-						}
+						"schema": { "$ref": "#/definitions/Api" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Api"
-						}
+						"schema": { "$ref": "#/definitions/Api" }
 					}
 				},
 				"tags": ["api"]
@@ -551,20 +487,11 @@
 				"operationId": "call_availability_list",
 				"description": "Reporta, por produto/API da Call, se a última CallResponse daquela API é uma\nfalha (elegível para reconsulta) — usado pelo front pra decidir se mostra o\nbotão \"reconsultar\". Não é `gateway.List`: a resposta é uma estrutura\ncomputada (produtos -> apis), não uma listagem de instâncias de model, então\no mixin ListModelMixin/queryset obrigatório de `gateway.List` não se aplica.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["call"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/call/create/": {
@@ -576,17 +503,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/CreateCall"
-						}
+						"schema": { "$ref": "#/definitions/CreateCall" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CreateCall"
-						}
+						"schema": { "$ref": "#/definitions/CreateCall" }
 					}
 				},
 				"tags": ["call"]
@@ -627,9 +550,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -642,9 +563,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/CallList"
-									}
+									"items": { "$ref": "#/definitions/CallList" }
 								}
 							}
 						}
@@ -674,9 +593,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -689,9 +606,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/CallResponse"
-									}
+									"items": { "$ref": "#/definitions/CallResponse" }
 								}
 							}
 						}
@@ -710,17 +625,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/CreateCall"
-						}
+						"schema": { "$ref": "#/definitions/CreateCall" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CreateCall"
-						}
+						"schema": { "$ref": "#/definitions/CreateCall" }
 					}
 				},
 				"tags": ["call"]
@@ -732,20 +643,11 @@
 				"operationId": "call_requery_create",
 				"description": "Dispara reconsulta seletiva (is_requery) de uma Call com insumo elegível,\nmesmo critério do `Availability`. Rejeita com 409 se já em execução.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["call"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/call/retrieve/response/{id}/": {
@@ -756,9 +658,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CallResponse"
-						}
+						"schema": { "$ref": "#/definitions/CallResponse" }
 					}
 				},
 				"tags": ["call"]
@@ -782,9 +682,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Call"
-						}
+						"schema": { "$ref": "#/definitions/Call" }
 					}
 				},
 				"tags": ["call"]
@@ -809,17 +707,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/CompanyApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/CompanyApiFailureMessage" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CompanyApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/CompanyApiFailureMessage" }
 					}
 				},
 				"tags": ["company"]
@@ -831,11 +725,7 @@
 				"operationId": "company_api-failure-message_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["company"]
 			},
 			"parameters": [
@@ -869,9 +759,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -884,9 +772,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/CompanyApiFailureMessage"
-									}
+									"items": { "$ref": "#/definitions/CompanyApiFailureMessage" }
 								}
 							}
 						}
@@ -904,9 +790,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CompanyApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/CompanyApiFailureMessage" }
 					}
 				},
 				"tags": ["company"]
@@ -931,17 +815,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/CompanyApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/CompanyApiFailureMessage" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/CompanyApiFailureMessage"
-						}
+						"schema": { "$ref": "#/definitions/CompanyApiFailureMessage" }
 					}
 				},
 				"tags": ["company"]
@@ -963,11 +843,7 @@
 				"summary": "Histórico do limite de uma empresa pós-paga: consumo, alterações de limite, viradas de mês e abertura.",
 				"description": "O administrador (perfil 3) vê qualquer empresa ativa; o representante (perfil 2) só a própria, e outra empresa\nresponde 404. Somente leitura, paginado, com filtro de período (`date_from`, `date_to`).",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["company"]
 			},
 			"parameters": [
@@ -988,17 +864,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				},
 				"tags": ["company"]
@@ -1010,11 +882,7 @@
 				"operationId": "company_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["company"]
 			},
 			"parameters": [
@@ -1048,9 +916,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1063,9 +929,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Company"
-									}
+									"items": { "$ref": "#/definitions/Company" }
 								}
 							}
 						}
@@ -1102,9 +966,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1117,9 +979,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Company"
-									}
+									"items": { "$ref": "#/definitions/Company" }
 								}
 							}
 						}
@@ -1156,9 +1016,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1171,9 +1029,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Company"
-									}
+									"items": { "$ref": "#/definitions/Company" }
 								}
 							}
 						}
@@ -1201,17 +1057,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				},
 				"tags": ["company"]
@@ -1246,30 +1098,14 @@
 						"schema": {
 							"type": "object",
 							"properties": {
-								"balance": {
-									"type": "string"
-								},
-								"current_balance_query": {
-									"type": "string"
-								},
-								"current_balance_processing": {
-									"type": "string"
-								},
-								"current_balance_checkmatch": {
-									"type": "string"
-								},
-								"current_balance_onboarding": {
-									"type": "string"
-								},
-								"used_balance": {
-									"type": "string"
-								},
-								"current_balance": {
-									"type": "string"
-								},
-								"has_balance": {
-									"type": "boolean"
-								}
+								"balance": { "type": "string" },
+								"current_balance_query": { "type": "string" },
+								"current_balance_processing": { "type": "string" },
+								"current_balance_checkmatch": { "type": "string" },
+								"current_balance_onboarding": { "type": "string" },
+								"used_balance": { "type": "string" },
+								"current_balance": { "type": "string" },
+								"has_balance": { "type": "boolean" }
 							}
 						}
 					}
@@ -1321,9 +1157,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1336,9 +1170,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Company"
-									}
+									"items": { "$ref": "#/definitions/Company" }
 								}
 							}
 						}
@@ -1382,9 +1214,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1397,9 +1227,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Company"
-									}
+									"items": { "$ref": "#/definitions/Company" }
 								}
 							}
 						}
@@ -1429,9 +1257,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1444,9 +1270,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Invoice"
-									}
+									"items": { "$ref": "#/definitions/Invoice" }
 								}
 							}
 						}
@@ -1473,9 +1297,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				},
 				"tags": ["company"]
@@ -1500,17 +1322,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				},
 				"tags": ["company"]
@@ -1533,17 +1351,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/PriceList"
-						}
+						"schema": { "$ref": "#/definitions/PriceList" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/PriceList"
-						}
+						"schema": { "$ref": "#/definitions/PriceList" }
 					}
 				},
 				"tags": ["company"]
@@ -1568,17 +1382,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Company"
-						}
+						"schema": { "$ref": "#/definitions/Company" }
 					}
 				},
 				"tags": ["company"]
@@ -1599,11 +1409,7 @@
 				"operationId": "licensing_month_list",
 				"description": "`GET /licensing/month/` — mês de licenciamento por uf/placa/ano.\nSó admin ou bearer de sistema.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["licensing"]
 			},
 			"parameters": []
@@ -1617,17 +1423,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/LicensingMonthRule"
-						}
+						"schema": { "$ref": "#/definitions/LicensingMonthRule" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/LicensingMonthRule"
-						}
+						"schema": { "$ref": "#/definitions/LicensingMonthRule" }
 					}
 				},
 				"tags": ["licensing"]
@@ -1639,11 +1441,7 @@
 				"operationId": "licensing_rules_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["licensing"]
 			},
 			"parameters": [
@@ -1677,9 +1475,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1692,9 +1488,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/LicensingMonthRule"
-									}
+									"items": { "$ref": "#/definitions/LicensingMonthRule" }
 								}
 							}
 						}
@@ -1712,9 +1506,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/LicensingMonthRule"
-						}
+						"schema": { "$ref": "#/definitions/LicensingMonthRule" }
 					}
 				},
 				"tags": ["licensing"]
@@ -1739,17 +1531,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/LicensingMonthRule"
-						}
+						"schema": { "$ref": "#/definitions/LicensingMonthRule" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/LicensingMonthRule"
-						}
+						"schema": { "$ref": "#/definitions/LicensingMonthRule" }
 					}
 				},
 				"tags": ["licensing"]
@@ -1799,9 +1587,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1814,9 +1600,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/APILogList"
-									}
+									"items": { "$ref": "#/definitions/APILogList" }
 								}
 							}
 						}
@@ -1834,9 +1618,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/APILogDetail"
-						}
+						"schema": { "$ref": "#/definitions/APILogDetail" }
 					}
 				},
 				"tags": ["logs"]
@@ -1860,17 +1642,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Onboarding"
-						}
+						"schema": { "$ref": "#/definitions/Onboarding" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Onboarding"
-						}
+						"schema": { "$ref": "#/definitions/Onboarding" }
 					}
 				},
 				"tags": ["onboarding"]
@@ -1882,11 +1660,7 @@
 				"operationId": "onboarding_createPdf_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["onboarding"]
 			},
 			"parameters": []
@@ -1896,11 +1670,7 @@
 				"operationId": "onboarding_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["onboarding"]
 			},
 			"parameters": [
@@ -1934,9 +1704,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1949,9 +1717,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Onboarding"
-									}
+									"items": { "$ref": "#/definitions/Onboarding" }
 								}
 							}
 						}
@@ -1981,9 +1747,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -1996,9 +1760,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Onboarding"
-									}
+									"items": { "$ref": "#/definitions/Onboarding" }
 								}
 							}
 						}
@@ -2026,17 +1788,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Onboarding"
-						}
+						"schema": { "$ref": "#/definitions/Onboarding" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Onboarding"
-						}
+						"schema": { "$ref": "#/definitions/Onboarding" }
 					}
 				},
 				"tags": ["onboarding"]
@@ -2057,20 +1815,11 @@
 				"operationId": "order_cancel",
 				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/order/checkout/{id}/": {
@@ -2078,20 +1827,11 @@
 				"operationId": "order_checkout",
 				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/order/create/": {
@@ -2099,11 +1839,7 @@
 				"operationId": "order_create_create",
 				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": []
@@ -2113,11 +1849,7 @@
 				"operationId": "order_list_list",
 				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": []
@@ -2127,20 +1859,11 @@
 				"operationId": "order_refresh",
 				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/order/retrieve/{id}/": {
@@ -2148,20 +1871,11 @@
 				"operationId": "order_retrieve_read",
 				"description": "Perfil 4 vê e cria só os próprios pedidos; perfil 3 vê todos e cria por um cliente; os demais recebem 403.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/order/update/{id}/": {
@@ -2169,20 +1883,11 @@
 				"operationId": "order_update_partial_update",
 				"description": "Só o perfil 3 altera, e só a placa de pedido não pago; demais campos são ignorados.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["order"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/payment/webhook/{provider_code}/": {
@@ -2190,11 +1895,7 @@
 				"operationId": "payment_webhook_create",
 				"description": "Recebe a notificação do gateway: valida a assinatura, grava o evento e responde logo; o trabalho vai à fila.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["payment"]
 			},
 			"parameters": [
@@ -2211,22 +1912,14 @@
 				"operationId": "precificador_door-count-rules_list",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"post": {
 				"operationId": "precificador_door-count-rules_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"parameters": []
@@ -2236,11 +1929,7 @@
 				"operationId": "precificador_door-count-rules_options_list",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"parameters": []
@@ -2250,31 +1939,18 @@
 				"operationId": "precificador_door-count-rules_read",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"patch": {
 				"operationId": "precificador_door-count-rules_partial_update",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/precificador/upload/": {
@@ -2282,22 +1958,14 @@
 				"operationId": "precificador_upload_list",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"post": {
 				"operationId": "precificador_upload_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"parameters": []
@@ -2307,31 +1975,18 @@
 				"operationId": "precificador_upload_read",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"delete": {
 				"operationId": "precificador_upload_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/precificador/upload/{id}/match/": {
@@ -2339,20 +1994,11 @@
 				"operationId": "precificador_upload_match_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["precificador"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/processing/cadaster/fenebrave/": {
@@ -2360,11 +2006,7 @@
 				"operationId": "processing_cadaster_fenebrave_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["processing"]
 			},
 			"parameters": []
@@ -2374,11 +2016,7 @@
 				"operationId": "processing_create_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["processing"]
 			},
 			"parameters": []
@@ -2403,9 +2041,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -2418,9 +2054,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Process"
-									}
+									"items": { "$ref": "#/definitions/Process" }
 								}
 							}
 						}
@@ -2439,17 +2073,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ProductApiFallback"
-						}
+						"schema": { "$ref": "#/definitions/ProductApiFallback" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProductApiFallback"
-						}
+						"schema": { "$ref": "#/definitions/ProductApiFallback" }
 					}
 				},
 				"tags": ["product"]
@@ -2461,11 +2091,7 @@
 				"operationId": "product_api-fallback_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": [
@@ -2499,9 +2125,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -2514,9 +2138,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ProductApiFallback"
-									}
+									"items": { "$ref": "#/definitions/ProductApiFallback" }
 								}
 							}
 						}
@@ -2544,17 +2166,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ProductApiParameterBinding"
-						}
+						"schema": { "$ref": "#/definitions/ProductApiParameterBinding" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProductApiParameterBinding"
-						}
+						"schema": { "$ref": "#/definitions/ProductApiParameterBinding" }
 					}
 				},
 				"tags": ["product"]
@@ -2566,11 +2184,7 @@
 				"operationId": "product_api-parameter-binding_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": [
@@ -2604,9 +2218,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -2660,9 +2272,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -2705,17 +2315,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				},
 				"tags": ["product"]
@@ -2727,11 +2333,7 @@
 				"operationId": "product_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": [
@@ -2772,9 +2374,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -2787,9 +2387,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Product"
-									}
+									"items": { "$ref": "#/definitions/Product" }
 								}
 							}
 						}
@@ -2826,9 +2424,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -2841,9 +2437,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Product"
-									}
+									"items": { "$ref": "#/definitions/Product" }
 								}
 							}
 						}
@@ -2862,17 +2456,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				},
 				"tags": ["product"]
@@ -2892,13 +2482,8 @@
 							"required": ["final_api_id", "parameter_name"],
 							"type": "object",
 							"properties": {
-								"final_api_id": {
-									"type": "string",
-									"format": "uuid"
-								},
-								"parameter_name": {
-									"type": "string"
-								},
+								"final_api_id": { "type": "string", "format": "uuid" },
+								"parameter_name": { "type": "string" },
 								"selected": {
 									"description": "Valores já escolhidos nos parâmetros anteriores",
 									"type": "object"
@@ -2908,15 +2493,9 @@
 					}
 				],
 				"responses": {
-					"200": {
-						"description": "Opções do parâmetro"
-					},
-					"400": {
-						"description": "Parâmetros inválidos"
-					},
-					"404": {
-						"description": "API ou parâmetro não encontrado"
-					}
+					"200": { "description": "Opções do parâmetro" },
+					"400": { "description": "Parâmetros inválidos" },
+					"404": { "description": "API ou parâmetro não encontrado" }
 				},
 				"tags": ["product"]
 			},
@@ -2931,17 +2510,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ReportTemplate"
-						}
+						"schema": { "$ref": "#/definitions/ReportTemplate" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ReportTemplate"
-						}
+						"schema": { "$ref": "#/definitions/ReportTemplate" }
 					}
 				},
 				"tags": ["product"]
@@ -2953,11 +2528,7 @@
 				"operationId": "product_report-template_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": [
@@ -2998,9 +2569,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -3013,9 +2582,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ReportTemplate"
-									}
+									"items": { "$ref": "#/definitions/ReportTemplate" }
 								}
 							}
 						}
@@ -3046,23 +2613,11 @@
 							"items": {
 								"type": "object",
 								"properties": {
-									"id": {
-										"type": "string",
-										"format": "uuid"
-									},
-									"name": {
-										"type": "string"
-									},
-									"provider_name": {
-										"type": "string"
-									},
-									"category": {
-										"type": "string"
-									},
-									"structure": {
-										"type": "object",
-										"x-nullable": true
-									}
+									"id": { "type": "string", "format": "uuid" },
+									"name": { "type": "string" },
+									"provider_name": { "type": "string" },
+									"category": { "type": "string" },
+									"structure": { "type": "object", "x-nullable": true }
 								}
 							}
 						}
@@ -3096,13 +2651,9 @@
 				"responses": {
 					"200": {
 						"description": "HTML renderizado",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					},
-					"400": {
-						"description": "Config inválida"
-					}
+					"400": { "description": "Config inválida" }
 				},
 				"tags": ["product"]
 			},
@@ -3116,9 +2667,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ReportTemplate"
-						}
+						"schema": { "$ref": "#/definitions/ReportTemplate" }
 					}
 				},
 				"tags": ["product"]
@@ -3143,17 +2692,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ReportTemplate"
-						}
+						"schema": { "$ref": "#/definitions/ReportTemplate" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ReportTemplate"
-						}
+						"schema": { "$ref": "#/definitions/ReportTemplate" }
 					}
 				},
 				"tags": ["product"]
@@ -3174,11 +2719,7 @@
 				"operationId": "product_report_pdf_list",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": []
@@ -3189,20 +2730,11 @@
 				"summary": "PDF oficial do extrato a partir de uma Call/Product reais.",
 				"description": "Com ReportSnapshot (fluxo normal, criado na hora da consulta — ver\napps/call/views.py): serve o PDF já cacheado (`pdf_status == 'ready'`) ou\ndispara `generate_report_pdf` (Celery, fila dedicada) e responde 202 com o\nstatus atual — não bloqueia a request gerando na hora. A task usa o config\nCONGELADO em `snapshot.config_snapshot` (ver apps/product/tasks.py).\n\nSem ReportSnapshot (call antiga, anterior a este recurso, nunca teve cache):\nmantém o comportamento 100% síncrono de antes — gera na hora com o config\natual do template e não persiste nada.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": [
-				{
-					"name": "call_id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				},
+				{ "name": "call_id", "in": "path", "required": true, "type": "string" },
 				{
 					"name": "product_id",
 					"in": "path",
@@ -3216,11 +2748,7 @@
 				"operationId": "product_report_preview_list",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["product"]
 			},
 			"parameters": []
@@ -3233,9 +2761,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				},
 				"tags": ["product"]
@@ -3259,9 +2785,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				},
 				"tags": ["product"]
@@ -3286,17 +2810,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Product"
-						}
+						"schema": { "$ref": "#/definitions/Product" }
 					}
 				},
 				"tags": ["product"]
@@ -3321,17 +2841,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Provider"
-						}
+						"schema": { "$ref": "#/definitions/Provider" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Provider"
-						}
+						"schema": { "$ref": "#/definitions/Provider" }
 					}
 				},
 				"tags": ["provider"]
@@ -3343,11 +2859,7 @@
 				"operationId": "provider_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["provider"]
 			},
 			"parameters": [
@@ -3388,9 +2900,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -3403,9 +2913,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Provider"
-									}
+									"items": { "$ref": "#/definitions/Provider" }
 								}
 							}
 						}
@@ -3423,9 +2931,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Provider"
-						}
+						"schema": { "$ref": "#/definitions/Provider" }
 					}
 				},
 				"tags": ["provider"]
@@ -3450,17 +2956,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Provider"
-						}
+						"schema": { "$ref": "#/definitions/Provider" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Provider"
-						}
+						"schema": { "$ref": "#/definitions/Provider" }
 					}
 				},
 				"tags": ["provider"]
@@ -3485,17 +2987,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ProviderCertificate"
-						}
+						"schema": { "$ref": "#/definitions/ProviderCertificate" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProviderCertificate"
-						}
+						"schema": { "$ref": "#/definitions/ProviderCertificate" }
 					}
 				},
 				"tags": ["provider"]
@@ -3534,13 +3032,9 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Provider"
-						}
+						"schema": { "$ref": "#/definitions/Provider" }
 					},
-					"502": {
-						"description": "Falha ao gerar o certificado"
-					}
+					"502": { "description": "Falha ao gerar o certificado" }
 				},
 				"tags": ["provider"]
 			},
@@ -3575,9 +3069,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -3601,12 +3093,7 @@
 				"tags": ["provider"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/provider/{id}/certificate/remove/": {
@@ -3614,11 +3101,7 @@
 				"operationId": "provider_certificate_remove_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["provider"]
 			},
 			"parameters": [
@@ -3667,17 +3150,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				},
 				"tags": ["report"]
@@ -3689,11 +3168,7 @@
 				"operationId": "report_response-classification_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["report"]
 			},
 			"parameters": [
@@ -3734,9 +3209,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -3788,9 +3261,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -3824,17 +3295,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				},
 				"tags": ["report"]
@@ -3858,9 +3325,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				},
 				"tags": ["report"]
@@ -3885,17 +3350,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/ProviderResponseClassification"
-						}
+						"schema": { "$ref": "#/definitions/ProviderResponseClassification" }
 					}
 				},
 				"tags": ["report"]
@@ -3911,6 +3372,16 @@
 				}
 			]
 		},
+		"/signup/": {
+			"post": {
+				"operationId": "signup_create",
+				"description": "Cadastro do site (`POST /signup/`): público e sem autenticação, então um token vencido no navegador não\nderruba o cadastro nem faz o visitante contar como equipe.",
+				"parameters": [],
+				"responses": { "201": { "description": "" } },
+				"tags": ["signup"]
+			},
+			"parameters": []
+		},
 		"/token/": {
 			"post": {
 				"operationId": "token_create",
@@ -3920,17 +3391,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/MyTokenObtainPair"
-						}
+						"schema": { "$ref": "#/definitions/MyTokenObtainPair" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/MyTokenObtainPair"
-						}
+						"schema": { "$ref": "#/definitions/MyTokenObtainPair" }
 					}
 				},
 				"tags": ["token"]
@@ -3946,17 +3413,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/TokenRefresh"
-						}
+						"schema": { "$ref": "#/definitions/TokenRefresh" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/TokenRefresh"
-						}
+						"schema": { "$ref": "#/definitions/TokenRefresh" }
 					}
 				},
 				"tags": ["token"]
@@ -3972,17 +3435,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/TokenVerify"
-						}
+						"schema": { "$ref": "#/definitions/TokenVerify" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/TokenVerify"
-						}
+						"schema": { "$ref": "#/definitions/TokenVerify" }
 					}
 				},
 				"tags": ["token"]
@@ -3994,20 +3453,11 @@
 				"operationId": "user_block_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["user"]
 			},
 			"parameters": [
-				{
-					"name": "id",
-					"in": "path",
-					"required": true,
-					"type": "string"
-				}
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
 			]
 		},
 		"/user/change-password/": {
@@ -4015,11 +3465,7 @@
 				"operationId": "user_change-password_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["user"]
 			},
 			"parameters": []
@@ -4033,17 +3479,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/User"
-						}
+						"schema": { "$ref": "#/definitions/User" }
 					}
 				],
 				"responses": {
 					"201": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/User"
-						}
+						"schema": { "$ref": "#/definitions/User" }
 					}
 				},
 				"tags": ["user"]
@@ -4055,11 +3497,7 @@
 				"operationId": "user_destroy_delete",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"204": {
-						"description": ""
-					}
-				},
+				"responses": { "204": { "description": "" } },
 				"tags": ["user"]
 			},
 			"parameters": [
@@ -4078,11 +3516,7 @@
 				"operationId": "user_forgot-password_create",
 				"description": "",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["user"]
 			},
 			"parameters": []
@@ -4107,9 +3541,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -4122,9 +3554,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/UserList"
-									}
+									"items": { "$ref": "#/definitions/UserList" }
 								}
 							}
 						}
@@ -4154,9 +3584,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -4169,9 +3597,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/UserList"
-									}
+									"items": { "$ref": "#/definitions/UserList" }
 								}
 							}
 						}
@@ -4210,9 +3636,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -4225,9 +3649,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/UserList"
-									}
+									"items": { "$ref": "#/definitions/UserList" }
 								}
 							}
 						}
@@ -4257,9 +3679,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -4272,9 +3692,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Permissions"
-									}
+									"items": { "$ref": "#/definitions/Permissions" }
 								}
 							}
 						}
@@ -4304,9 +3722,7 @@
 							"required": ["count", "results"],
 							"type": "object",
 							"properties": {
-								"count": {
-									"type": "integer"
-								},
+								"count": { "type": "integer" },
 								"next": {
 									"type": "string",
 									"format": "uri",
@@ -4319,9 +3735,7 @@
 								},
 								"results": {
 									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Product"
-									}
+									"items": { "$ref": "#/definitions/Product" }
 								}
 							}
 						}
@@ -4339,9 +3753,7 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/UserDetail"
-						}
+						"schema": { "$ref": "#/definitions/UserDetail" }
 					}
 				},
 				"tags": ["user"]
@@ -4360,13 +3772,19 @@
 		"/user/signup/": {
 			"post": {
 				"operationId": "user_signup_create",
-				"description": "",
+				"description": "Cadastro de cliente Web feito pela equipe (`POST user/signup/`, tela \"Usuário Web\" do Corp): só admin;\no aceite do contrato fica registrado como atestado pela equipe.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
+		"/user/terms/current/": {
+			"get": {
+				"operationId": "user_terms_current_list",
+				"description": "Contrato vigente (texto e versão) para o cadastro e para a página \"Meus dados\".",
+				"parameters": [],
+				"responses": { "200": { "description": "" } },
 				"tags": ["user"]
 			},
 			"parameters": []
@@ -4380,17 +3798,13 @@
 						"name": "data",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/User"
-						}
+						"schema": { "$ref": "#/definitions/User" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/User"
-						}
+						"schema": { "$ref": "#/definitions/User" }
 					}
 				},
 				"tags": ["user"]
@@ -4412,11 +3826,7 @@
 				"summary": "Recarga ou débito manual feito por administrador (perfil 3), sempre registrado como movimento.",
 				"description": "`user_id` ajusta a carteira que paga as consultas daquele usuário (a da empresa, quando a empresa é pré-paga);\n`company_id` ajusta a carteira da empresa pré-paga.",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
+				"responses": { "201": { "description": "" } },
 				"tags": ["wallet"]
 			},
 			"parameters": []
@@ -4427,11 +3837,7 @@
 				"summary": "Extrato de carteira pré-paga: consumo, créditos por pedido, estornos e ajustes.",
 				"description": "O usuário web (perfil 4) vê só a carteira que paga as consultas dele e não pode usar filtro de dono (403, mesmo\ncom o próprio id). O administrador (perfil 3) vê todas as carteiras ou filtra por `user_id` (a carteira que paga\nas consultas daquele usuário) ou `company_id`, e vê o autor e o dono de cada linha. Os demais perfis recebem 403.\nMovimentos do limite pós-pago ficam no histórico da empresa. Somente leitura, paginado, com período.",
 				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
+				"responses": { "200": { "description": "" } },
 				"tags": ["wallet"]
 			},
 			"parameters": []
@@ -4448,11 +3854,7 @@
 					"format": "uuid",
 					"readOnly": true
 				},
-				"provider": {
-					"title": "Provider",
-					"type": "string",
-					"format": "uuid"
-				},
+				"provider": { "title": "Provider", "type": "string", "format": "uuid" },
 				"provider_name": {
 					"title": "Provider name",
 					"type": "string",
@@ -4495,10 +3897,7 @@
 					"maxLength": 255,
 					"minLength": 1
 				},
-				"dynamic_token": {
-					"title": "Dynamic token",
-					"type": "boolean"
-				},
+				"dynamic_token": { "title": "Dynamic token", "type": "boolean" },
 				"dynamic_token_id": {
 					"title": "Dynamic token id",
 					"type": "string",
@@ -4520,10 +3919,7 @@
 					"type": "string",
 					"x-nullable": true
 				},
-				"webhook": {
-					"title": "Webhook",
-					"type": "boolean"
-				},
+				"webhook": { "title": "Webhook", "type": "boolean" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -4536,14 +3932,8 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				},
-				"cache_enabled": {
-					"title": "Cache enabled",
-					"type": "boolean"
-				},
+				"is_active": { "title": "Is active", "type": "boolean" },
+				"cache_enabled": { "title": "Cache enabled", "type": "boolean" },
 				"cache_ttl_days": {
 					"title": "Cache ttl days",
 					"type": "integer",
@@ -4591,10 +3981,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"DefaultApiFailureMessage": {
@@ -4607,21 +3994,14 @@
 					"format": "uuid",
 					"readOnly": true
 				},
-				"api": {
-					"title": "Api",
-					"type": "string",
-					"format": "uuid"
-				},
+				"api": { "title": "Api", "type": "string", "format": "uuid" },
 				"api_name": {
 					"title": "Api name",
 					"type": "string",
 					"readOnly": true,
 					"minLength": 1
 				},
-				"rules": {
-					"title": "Rules",
-					"type": "object"
-				},
+				"rules": { "title": "Rules", "type": "object" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -4640,16 +4020,8 @@
 			"required": ["username", "password"],
 			"type": "object",
 			"properties": {
-				"username": {
-					"title": "Username",
-					"type": "string",
-					"minLength": 1
-				},
-				"password": {
-					"title": "Password",
-					"type": "string",
-					"minLength": 1
-				}
+				"username": { "title": "Username", "type": "string", "minLength": 1 },
+				"password": { "title": "Password", "type": "string", "minLength": 1 }
 			}
 		},
 		"CreateCall": {
@@ -4679,34 +4051,19 @@
 					"minLength": 1,
 					"x-nullable": true
 				},
-				"hash": {
-					"title": "Hash",
-					"type": "string",
-					"minLength": 1
-				},
+				"hash": { "title": "Hash", "type": "string", "minLength": 1 },
 				"products": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
-				"apis": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Api"
-					}
-				},
+				"apis": { "type": "array", "items": { "$ref": "#/definitions/Api" } },
 				"status": {
 					"title": "Status",
 					"type": "string",
 					"enum": ["1", "2", "3", "4", "5"]
 				},
-				"data": {
-					"title": "Data",
-					"type": "object"
-				},
+				"data": { "title": "Data", "type": "object" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -4717,10 +4074,7 @@
 					"type": "string",
 					"format": "date-time"
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"CallList": {
@@ -4758,17 +4112,12 @@
 				},
 				"products": {
 					"type": "array",
-					"items": {
-						"type": "string"
-					},
+					"items": { "type": "string" },
 					"uniqueItems": true
 				},
 				"apis": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"status": {
@@ -4781,14 +4130,8 @@
 					"type": "string",
 					"readOnly": true
 				},
-				"data": {
-					"title": "Data",
-					"type": "object"
-				},
-				"checkmatch": {
-					"title": "Checkmatch",
-					"type": "boolean"
-				},
+				"data": { "title": "Data", "type": "object" },
+				"checkmatch": { "title": "Checkmatch", "type": "boolean" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -4799,10 +4142,7 @@
 					"type": "string",
 					"format": "date-time"
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"CallResponse": {
@@ -4826,11 +4166,7 @@
 					"maxLength": 100,
 					"x-nullable": true
 				},
-				"data": {
-					"title": "Data",
-					"type": "object",
-					"x-nullable": true
-				},
+				"data": { "title": "Data", "type": "object", "x-nullable": true },
 				"response_type": {
 					"title": "Response type",
 					"type": "string",
@@ -4847,11 +4183,7 @@
 					"maxLength": 10,
 					"x-nullable": true
 				},
-				"price": {
-					"title": "Price",
-					"type": "string",
-					"format": "decimal"
-				},
+				"price": { "title": "Price", "type": "string", "format": "decimal" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -4864,10 +4196,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"PriceList": {
@@ -4922,11 +4251,7 @@
 					"maxLength": 25,
 					"x-nullable": true
 				},
-				"cnpj": {
-					"title": "Cnpj",
-					"type": "string",
-					"minLength": 1
-				},
+				"cnpj": { "title": "Cnpj", "type": "string", "minLength": 1 },
 				"fantasy_name": {
 					"title": "Fantasy name",
 					"type": "string",
@@ -5048,10 +4373,7 @@
 					"type": "object",
 					"x-nullable": true
 				},
-				"using_onboarding": {
-					"title": "Using onboarding",
-					"type": "boolean"
-				},
+				"using_onboarding": { "title": "Using onboarding", "type": "boolean" },
 				"price_onboarding": {
 					"title": "Price onboarding",
 					"type": "object",
@@ -5074,9 +4396,7 @@
 				},
 				"prices_list": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/PriceList"
-					}
+					"items": { "$ref": "#/definitions/PriceList" }
 				},
 				"checkmatch_token": {
 					"title": "Checkmatch token",
@@ -5084,10 +4404,7 @@
 					"maxLength": 255,
 					"x-nullable": true
 				},
-				"checkmatch": {
-					"title": "Checkmatch",
-					"type": "boolean"
-				},
+				"checkmatch": { "title": "Checkmatch", "type": "boolean" },
 				"current_balance_query": {
 					"title": "Current balance query",
 					"type": "string",
@@ -5124,10 +4441,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"Permissions": {
@@ -5146,10 +4460,7 @@
 					"maxLength": 50,
 					"minLength": 1
 				},
-				"status": {
-					"title": "Status",
-					"type": "boolean"
-				},
+				"status": { "title": "Status", "type": "boolean" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -5253,9 +4564,7 @@
 					"maxLength": 3,
 					"x-nullable": true
 				},
-				"company": {
-					"$ref": "#/definitions/Company"
-				},
+				"company": { "$ref": "#/definitions/Company" },
 				"profile": {
 					"title": "Profile",
 					"type": "string",
@@ -5263,25 +4572,17 @@
 				},
 				"permissions_products": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"permissions_system": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"permissions_user": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Permissions"
-					},
+					"items": { "$ref": "#/definitions/Permissions" },
 					"readOnly": true
 				},
 				"last_login": {
@@ -5306,6 +4607,17 @@
 					"title": "Ativo",
 					"description": "Indica que o usuário será tratado como ativo. Ao invés de excluir contas de usuário, desmarque isso.",
 					"type": "boolean"
+				},
+				"marketing_consent": {
+					"title": "Marketing consent",
+					"type": "boolean"
+				},
+				"marketing_consent_at": {
+					"title": "Marketing consent at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true,
+					"x-nullable": true
 				}
 			}
 		},
@@ -5325,9 +4637,7 @@
 					"readOnly": true,
 					"minLength": 1
 				},
-				"created_by": {
-					"$ref": "#/definitions/User"
-				},
+				"created_by": { "$ref": "#/definitions/User" },
 				"ip": {
 					"title": "Ip",
 					"type": "string",
@@ -5342,9 +4652,7 @@
 				},
 				"products": {
 					"type": "array",
-					"items": {
-						"type": "string"
-					},
+					"items": { "type": "string" },
 					"uniqueItems": true
 				},
 				"extrato_products": {
@@ -5354,10 +4662,7 @@
 				},
 				"apis": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"status": {
@@ -5370,23 +4675,10 @@
 					"type": "string",
 					"readOnly": true
 				},
-				"data": {
-					"title": "Data",
-					"type": "object"
-				},
-				"files": {
-					"title": "Files",
-					"type": "string",
-					"readOnly": true
-				},
-				"checkmatch": {
-					"title": "Checkmatch",
-					"type": "boolean"
-				},
-				"onboarding": {
-					"title": "Onboarding",
-					"type": "boolean"
-				},
+				"data": { "title": "Data", "type": "object" },
+				"files": { "title": "Files", "type": "string", "readOnly": true },
+				"checkmatch": { "title": "Checkmatch", "type": "boolean" },
+				"onboarding": { "title": "Onboarding", "type": "boolean" },
 				"responses": {
 					"title": "Responses",
 					"type": "string",
@@ -5407,10 +4699,7 @@
 					"type": "string",
 					"format": "date-time"
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"CompanyApiFailureMessage": {
@@ -5423,32 +4712,21 @@
 					"format": "uuid",
 					"readOnly": true
 				},
-				"company": {
-					"title": "Company",
-					"type": "string",
-					"format": "uuid"
-				},
+				"company": { "title": "Company", "type": "string", "format": "uuid" },
 				"company_name": {
 					"title": "Company name",
 					"type": "string",
 					"readOnly": true,
 					"minLength": 1
 				},
-				"api": {
-					"title": "Api",
-					"type": "string",
-					"format": "uuid"
-				},
+				"api": { "title": "Api", "type": "string", "format": "uuid" },
 				"api_name": {
 					"title": "Api name",
 					"type": "string",
 					"readOnly": true,
 					"minLength": 1
 				},
-				"rules": {
-					"title": "Rules",
-					"type": "object"
-				},
+				"rules": { "title": "Rules", "type": "object" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -5488,21 +4766,13 @@
 					"type": "string",
 					"readOnly": true
 				},
-				"call__ip": {
-					"title": "Call  ip",
-					"type": "string",
-					"readOnly": true
-				},
+				"call__ip": { "title": "Call  ip", "type": "string", "readOnly": true },
 				"product__name": {
 					"title": "Product  name",
 					"type": "string",
 					"readOnly": true
 				},
-				"price": {
-					"title": "Price",
-					"type": "string",
-					"format": "decimal"
-				},
+				"price": { "title": "Price", "type": "string", "format": "decimal" },
 				"price__sum": {
 					"title": "Price  sum",
 					"type": "string",
@@ -5617,10 +4887,7 @@
 					"format": "uri",
 					"maxLength": 200
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				},
+				"is_active": { "title": "Is active", "type": "boolean" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -5646,11 +4913,7 @@
 			],
 			"type": "object",
 			"properties": {
-				"id": {
-					"title": "Id",
-					"type": "integer",
-					"readOnly": true
-				},
+				"id": { "title": "Id", "type": "integer", "readOnly": true },
 				"added_on": {
 					"title": "Added on",
 					"type": "string",
@@ -5714,11 +4977,7 @@
 			],
 			"type": "object",
 			"properties": {
-				"id": {
-					"title": "Id",
-					"type": "integer",
-					"readOnly": true
-				},
+				"id": { "title": "Id", "type": "integer", "readOnly": true },
 				"added_on": {
 					"title": "Added on",
 					"type": "string",
@@ -5731,16 +4990,8 @@
 					"maxLength": 1024,
 					"minLength": 1
 				},
-				"headers": {
-					"title": "Headers",
-					"type": "string",
-					"minLength": 1
-				},
-				"body": {
-					"title": "Body",
-					"type": "string",
-					"minLength": 1
-				},
+				"headers": { "title": "Headers", "type": "string", "minLength": 1 },
+				"body": { "title": "Body", "type": "string", "minLength": 1 },
 				"method": {
 					"title": "Method",
 					"type": "string",
@@ -5753,11 +5004,7 @@
 					"maxLength": 50,
 					"minLength": 1
 				},
-				"response": {
-					"title": "Response",
-					"type": "string",
-					"minLength": 1
-				},
+				"response": { "title": "Response", "type": "string", "minLength": 1 },
 				"status_code": {
 					"title": "Status code",
 					"description": "Response status code",
@@ -5861,11 +5108,7 @@
 					"type": "string",
 					"readOnly": true
 				},
-				"product": {
-					"title": "Product",
-					"type": "string",
-					"format": "uuid"
-				},
+				"product": { "title": "Product", "type": "string", "format": "uuid" },
 				"product__name": {
 					"title": "Product  name",
 					"type": "string",
@@ -5881,15 +5124,8 @@
 					"type": "string",
 					"readOnly": true
 				},
-				"data": {
-					"title": "Data",
-					"type": "object"
-				},
-				"lines": {
-					"title": "Lines",
-					"type": "string",
-					"readOnly": true
-				},
+				"data": { "title": "Data", "type": "object" },
+				"lines": { "title": "Lines", "type": "string", "readOnly": true },
 				"price_product": {
 					"title": "Price product",
 					"type": "string",
@@ -5925,10 +5161,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"ProductApiFallback": {
@@ -5941,16 +5174,8 @@
 					"format": "uuid",
 					"readOnly": true
 				},
-				"product": {
-					"title": "Product",
-					"type": "string",
-					"format": "uuid"
-				},
-				"root_api": {
-					"title": "Root api",
-					"type": "string",
-					"format": "uuid"
-				},
+				"product": { "title": "Product", "type": "string", "format": "uuid" },
+				"root_api": { "title": "Root api", "type": "string", "format": "uuid" },
 				"root_api_name": {
 					"title": "Root api name",
 					"type": "string",
@@ -5997,16 +5222,8 @@
 					"format": "uuid",
 					"readOnly": true
 				},
-				"product": {
-					"title": "Product",
-					"type": "string",
-					"format": "uuid"
-				},
-				"api": {
-					"title": "Api",
-					"type": "string",
-					"format": "uuid"
-				},
+				"product": { "title": "Product", "type": "string", "format": "uuid" },
+				"api": { "title": "Api", "type": "string", "format": "uuid" },
 				"api_name": {
 					"title": "Api name",
 					"type": "string",
@@ -6088,17 +5305,10 @@
 				},
 				"apis": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
-				"price": {
-					"title": "Price",
-					"type": "string",
-					"format": "decimal"
-				},
+				"price": { "title": "Price", "type": "string", "format": "decimal" },
 				"price__display": {
 					"title": "Price  display",
 					"type": "string",
@@ -6119,24 +5329,15 @@
 					"type": "boolean",
 					"x-nullable": true
 				},
-				"is_default_web": {
-					"title": "Is default web",
-					"type": "boolean"
-				},
-				"background": {
-					"title": "Background",
-					"type": "boolean"
-				},
+				"is_default_web": { "title": "Is default web", "type": "boolean" },
+				"background": { "title": "Background", "type": "boolean" },
 				"validation_onboarding": {
 					"title": "Validation onboarding",
 					"type": "string",
 					"maxLength": 100,
 					"x-nullable": true
 				},
-				"extrato_enabled": {
-					"title": "Extrato enabled",
-					"type": "boolean"
-				},
+				"extrato_enabled": { "title": "Extrato enabled", "type": "boolean" },
 				"report_template": {
 					"title": "Report template",
 					"type": "string",
@@ -6155,10 +5356,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"ReportTemplate": {
@@ -6183,10 +5381,7 @@
 					"maxLength": 50,
 					"minLength": 1
 				},
-				"config": {
-					"title": "Config",
-					"type": "object"
-				},
+				"config": { "title": "Config", "type": "object" },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -6199,10 +5394,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				}
+				"is_active": { "title": "Is active", "type": "boolean" }
 			}
 		},
 		"Provider": {
@@ -6227,11 +5419,7 @@
 					"maxLength": 25,
 					"x-nullable": true
 				},
-				"cnpj": {
-					"title": "Cnpj",
-					"type": "string",
-					"minLength": 1
-				},
+				"cnpj": { "title": "Cnpj", "type": "string", "minLength": 1 },
 				"fantasy_name": {
 					"title": "Fantasy name",
 					"type": "string",
@@ -6250,10 +5438,7 @@
 					"format": "date-time",
 					"readOnly": true
 				},
-				"is_active": {
-					"title": "Is active",
-					"type": "boolean"
-				},
+				"is_active": { "title": "Is active", "type": "boolean" },
 				"cert_status": {
 					"title": "Cert status",
 					"type": "string",
@@ -6363,11 +5548,7 @@
 					"format": "uuid",
 					"readOnly": true
 				},
-				"api": {
-					"title": "Api",
-					"type": "string",
-					"format": "uuid"
-				},
+				"api": { "title": "Api", "type": "string", "format": "uuid" },
 				"api_name": {
 					"title": "Api name",
 					"type": "string",
@@ -6401,11 +5582,7 @@
 					"type": "string",
 					"enum": ["green", "yellow", "red", "gray"]
 				},
-				"label": {
-					"title": "Label",
-					"type": "string",
-					"maxLength": 255
-				},
+				"label": { "title": "Label", "type": "string", "maxLength": 255 },
 				"created_at": {
 					"title": "Created at",
 					"type": "string",
@@ -6439,35 +5616,20 @@
 			"required": ["username", "password"],
 			"type": "object",
 			"properties": {
-				"recaptcha_token": {
-					"title": "Recaptcha token",
-					"type": "string"
-				},
+				"recaptcha_token": { "title": "Recaptcha token", "type": "string" },
 				"recaptcha_token_v2": {
 					"title": "Recaptcha token v2",
 					"type": "string"
 				},
-				"username": {
-					"title": "Username",
-					"type": "string",
-					"minLength": 1
-				},
-				"password": {
-					"title": "Password",
-					"type": "string",
-					"minLength": 1
-				}
+				"username": { "title": "Username", "type": "string", "minLength": 1 },
+				"password": { "title": "Password", "type": "string", "minLength": 1 }
 			}
 		},
 		"TokenRefresh": {
 			"required": ["refresh"],
 			"type": "object",
 			"properties": {
-				"refresh": {
-					"title": "Refresh",
-					"type": "string",
-					"minLength": 1
-				},
+				"refresh": { "title": "Refresh", "type": "string", "minLength": 1 },
 				"access": {
 					"title": "Access",
 					"type": "string",
@@ -6480,11 +5642,7 @@
 			"required": ["token"],
 			"type": "object",
 			"properties": {
-				"token": {
-					"title": "Token",
-					"type": "string",
-					"minLength": 1
-				}
+				"token": { "title": "Token", "type": "string", "minLength": 1 }
 			}
 		},
 		"CompanyMinimal": {
@@ -6509,11 +5667,7 @@
 					"maxLength": 255,
 					"minLength": 1
 				},
-				"cnpj": {
-					"title": "Cnpj",
-					"type": "string",
-					"minLength": 1
-				}
+				"cnpj": { "title": "Cnpj", "type": "string", "minLength": 1 }
 			}
 		},
 		"UserList": {
@@ -6605,9 +5759,7 @@
 					"maxLength": 3,
 					"x-nullable": true
 				},
-				"company": {
-					"$ref": "#/definitions/CompanyMinimal"
-				},
+				"company": { "$ref": "#/definitions/CompanyMinimal" },
 				"profile": {
 					"title": "Profile",
 					"type": "string",
@@ -6615,25 +5767,17 @@
 				},
 				"permissions_products": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"permissions_system": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"permissions_user": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Permissions"
-					},
+					"items": { "$ref": "#/definitions/Permissions" },
 					"readOnly": true
 				},
 				"last_login": {
@@ -6658,6 +5802,17 @@
 					"title": "Ativo",
 					"description": "Indica que o usuário será tratado como ativo. Ao invés de excluir contas de usuário, desmarque isso.",
 					"type": "boolean"
+				},
+				"marketing_consent": {
+					"title": "Marketing consent",
+					"type": "boolean"
+				},
+				"marketing_consent_at": {
+					"title": "Marketing consent at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true,
+					"x-nullable": true
 				}
 			}
 		},
@@ -6750,9 +5905,7 @@
 					"maxLength": 3,
 					"x-nullable": true
 				},
-				"company": {
-					"$ref": "#/definitions/Company"
-				},
+				"company": { "$ref": "#/definitions/Company" },
 				"profile": {
 					"title": "Profile",
 					"type": "string",
@@ -6760,25 +5913,17 @@
 				},
 				"permissions_products": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"permissions_system": {
 					"type": "array",
-					"items": {
-						"type": "string",
-						"format": "uuid"
-					},
+					"items": { "type": "string", "format": "uuid" },
 					"uniqueItems": true
 				},
 				"permissions_user": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Permissions"
-					},
+					"items": { "$ref": "#/definitions/Permissions" },
 					"readOnly": true
 				},
 				"last_login": {
@@ -6804,8 +5949,25 @@
 					"description": "Indica que o usuário será tratado como ativo. Ao invés de excluir contas de usuário, desmarque isso.",
 					"type": "boolean"
 				},
-				"billing": {
-					"title": "Billing",
+				"marketing_consent": {
+					"title": "Marketing consent",
+					"type": "boolean"
+				},
+				"marketing_consent_at": {
+					"title": "Marketing consent at",
+					"type": "string",
+					"format": "date-time",
+					"readOnly": true,
+					"x-nullable": true
+				},
+				"billing": { "title": "Billing", "type": "string", "readOnly": true },
+				"terms_accepted_version": {
+					"title": "Terms accepted version",
+					"type": "string",
+					"readOnly": true
+				},
+				"terms_accepted_at": {
+					"title": "Terms accepted at",
 					"type": "string",
 					"readOnly": true
 				}

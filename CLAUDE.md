@@ -73,16 +73,17 @@ app/
       content/           textos longos (termos, privacidade, aviso legal)
     auth/
       components/        formulários e painel visual do login/cadastro
-      lib/               signIn (auth.ts), schemas, reCAPTCHA
+      lib/               casos de uso (auth.ts), schemas, reCAPTCHA
         providers/       um arquivo por forma de login (credentials-provider.ts, google-provider.ts), no padrão do next-auth
+      services/          integração HTTP com os endpoints de auth
     account/
       components/        header, sidebar, menu, cards e diálogos da área do cliente
-      lib/               dados de demonstração, schemas e helpers da conta
+      lib/               dados de demonstração, schemas, middleware e helpers da conta
   shared/                só o que mais de uma área usa
     components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, LicensePlate, PlansComparison
     components/ui/       shadcn ajustado ao tema
-    hooks/               useMediaQuery, useScrolled
-    lib/                 código de apoio: cn, gsap
+    hooks/               useMediaQuery, useScrolled, useSession
+    lib/                 código de apoio: cn, gsap, session
     utils/               funções reutilizáveis: form, placa, telefone
 ```
 
@@ -98,7 +99,10 @@ Rotas:
 Regras de organização:
 
 - `features/*` pode importar de `shared/` e de `@content/`; **`shared/` nunca importa de `features/`**; **`@content/` não importa de ninguém**.
-- Dentro de cada área e em `shared/` ficam só pastas por tipo (`components`, `content`, `hooks`, `lib`, `utils`; `shared/` não tem `content`). **Sem subpastas por página.** Não crie pasta nova (`config`, `helpers`, `constants`) sem combinar antes. Exceção combinada: `features/auth/lib/providers/`.
+- Em `features/*` ficam pastas por tipo (`components`, `content`, `hooks`, `lib`, `services`, `utils`); `shared/` fica com `components`, `hooks`, `lib` e `utils`, sem `content` ou `services`. **Sem subpastas por página.** Não crie pasta nova (`config`, `helpers`, `constants`) sem combinar antes. Exceções combinadas: `features/auth/lib/providers/` e `features/*/services/`.
+- Chamadas HTTP aos endpoints do backend ficam em `features/<área>/services/`, separadas por domínio (por exemplo, `features/auth/services/auth-service.ts`). Casos de uso e orquestração ficam em `lib/`; componentes e rotas não chamam endpoints diretamente. Repita esse padrão em outras features quando elas passarem a consumir a API.
+- Schemas específicos de uma feature ficam em `features/<área>/lib/<área>-schema.ts` (por exemplo, `features/auth/lib/auth-schema.ts`). Só regras de validação realmente genéricas ficam em `shared/utils/`.
+- A sessão compartilhada fica em `shared/lib/session.ts` e seu hook em `shared/hooks/use-session.ts`; o middleware que protege `/conta` pertence a `features/account/lib/`.
 - Algo vai para `shared/` só quando **mais de uma área** usa. Se só o site usa, fica em `features/site`.
 - Arquivo de rota fica enxuto: `meta`, estado da página e composição. Blocos grandes viram componentes na feature.
 - Imports sempre absolutos com `~/`. Relativo só entre arquivos da mesma pasta.

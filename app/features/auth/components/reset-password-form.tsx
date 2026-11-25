@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 
 import { resetPasswordSchema } from "~/features/auth/lib/auth-schema";
-import { Button } from "~/shared/components/ui/button";
+import { FormButton } from "~/shared/components/form-button";
 import {
 	Field,
 	FieldError,
@@ -10,9 +10,10 @@ import {
 	FieldLabel,
 } from "~/shared/components/ui/field";
 import { Input } from "~/shared/components/ui/input";
+import { toApiError } from "~/shared/lib/api";
 
 type ResetPasswordFormProps = {
-	onSubmit: (email: string) => void;
+	onSubmit: (email: string) => Promise<void>;
 };
 
 export function ResetPasswordForm({ onSubmit }: ResetPasswordFormProps) {
@@ -21,10 +22,18 @@ export function ResetPasswordForm({ onSubmit }: ResetPasswordFormProps) {
 		defaultValues: { email: "" },
 	});
 
+	async function submit(email: string) {
+		try {
+			await onSubmit(email);
+		} catch (error) {
+			form.setError("root", { message: toApiError(error).message });
+		}
+	}
+
 	return (
 		<form
 			noValidate
-			onSubmit={form.handleSubmit(({ email }) => onSubmit(email))}
+			onSubmit={form.handleSubmit(({ email }) => submit(email))}
 			className="flex flex-col gap-5"
 		>
 			<FieldGroup>
@@ -53,9 +62,19 @@ export function ResetPasswordForm({ onSubmit }: ResetPasswordFormProps) {
 				/>
 			</FieldGroup>
 
-			<Button type="submit" className="w-full">
+			{form.formState.errors.root && (
+				<FieldError
+					className="text-center"
+					errors={[form.formState.errors.root]}
+				/>
+			)}
+
+			<FormButton
+				isSubmitting={form.formState.isSubmitting}
+				submittingText="Enviando…"
+			>
 				Enviar link
-			</Button>
+			</FormButton>
 		</form>
 	);
 }

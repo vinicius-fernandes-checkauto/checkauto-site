@@ -7,6 +7,7 @@ import {
 } from "~/features/auth/components/auth-heading";
 import { AuthSwitch } from "~/features/auth/components/auth-switch";
 import { ResetPasswordForm } from "~/features/auth/components/reset-password-form";
+import { forgotPassword } from "~/features/auth/lib/auth";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 
@@ -29,9 +30,9 @@ export default function ResetPassword() {
 					<AuthHeading>
 						<AuthHeadingTitle>Confira seu e-mail</AuthHeadingTitle>
 						<AuthHeadingDescription>
-							Enviamos o link para{" "}
+							Se houver uma conta cadastrada, enviaremos instruções para{" "}
 							<strong className="font-medium text-heading">{sentTo}</strong>.
-							Não achou? Veja também a caixa de spam.
+							Confira também a caixa de spam.
 						</AuthHeadingDescription>
 					</AuthHeading>
 				</div>
@@ -54,12 +55,17 @@ export default function ResetPassword() {
 			<AuthHeading>
 				<AuthHeadingTitle>Redefinir senha</AuthHeadingTitle>
 				<AuthHeadingDescription>
-					Informe o e-mail da sua conta e enviamos um link para criar uma nova
-					senha.
+					Informe o e-mail da sua conta para receber instruções de redefinição
+					de senha.
 				</AuthHeadingDescription>
 			</AuthHeading>
 
-			<ResetPasswordForm onSubmit={setSentTo} />
+			<ResetPasswordForm
+				onSubmit={async (email) => {
+					await forgotPassword(email);
+					setSentTo(email);
+				}}
+			/>
 
 			<AuthSwitch question="Lembrou a senha?" to="/entrar">
 				Entrar

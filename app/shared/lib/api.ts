@@ -79,7 +79,12 @@ export const api = axios.create({
 	},
 });
 
-const publicRoutes = ["token/", "signup/", "user/terms/"];
+const publicRoutes = [
+	"token/",
+	"signup/",
+	"user/forgot-password/",
+	"user/terms/",
+];
 
 function isPublicRoute(url = "") {
 	const path = url.replace(/^\//, "");

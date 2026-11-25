@@ -51,6 +51,11 @@ describe("toApiError", () => {
 
 type Reply = { status: number; data: unknown };
 
+function jwt(exp: number) {
+	const payload = Buffer.from(JSON.stringify({ exp })).toString("base64url");
+	return `header.${payload}.signature`;
+}
+
 function useServer(handler: (config: InternalAxiosRequestConfig) => Reply) {
 	const calls: InternalAxiosRequestConfig[] = [];
 	api.defaults.adapter = async (config) => {
@@ -79,22 +84,34 @@ function useServer(handler: (config: InternalAxiosRequestConfig) => Reply) {
 
 const replace = vi.fn();
 
-beforeEach(() => {
-	const data = new Map<string, string>();
-	vi.stubGlobal("window", {
-		localStorage: {
-			getItem: (key: string) => data.get(key) ?? null,
-			setItem: (key: string, value: string) => data.set(key, value),
-			removeItem: (key: string) => data.delete(key),
+function cookieDocument() {
+	const values = new Map<string, string>();
+
+	return Object.defineProperty({}, "cookie", {
+		get: () =>
+			Array.from(values, ([name, value]) => `${name}=${value}`).join("; "),
+		set: (cookie: string) => {
+			const [pair, ...attributes] = cookie.split("; ");
+			const separator = pair.indexOf("=");
+			const name = pair.slice(0, separator);
+			const value = pair.slice(separator + 1);
+			if (attributes.includes("Max-Age=0")) values.delete(name);
+			else values.set(name, value);
 		},
+	}) as Document;
+}
+
+beforeEach(() => {
+	vi.stubGlobal("window", {
 		location: { pathname: "/conta/consultas", search: "", replace },
 		addEventListener: vi.fn(),
 		removeEventListener: vi.fn(),
 	});
+	vi.stubGlobal("document", cookieDocument());
 	setSession({
 		user: { id: "1", name: "Cliente", email: "c@exemplo.com", profile: "4" },
 		accessToken: "velho",
-		refreshToken: "refresh",
+		refreshToken: jwt(Math.floor((Date.now() + 60_000) / 1000)),
 		expires: Date.now() + 60_000,
 	});
 });
@@ -137,6 +154,14 @@ describe("api com sessão", () => {
 		await expect(api.get("/order/list/")).rejects.toBeInstanceOf(ApiError);
 		expect(getSession()).toBeNull();
 		expect(replace).toHaveBeenCalledWith("/entrar");
+	});
+
+	it("não anexa sessão às chamadas públicas", async () => {
+		const calls = useServer(() => ({ status: 201, data: {} }));
+
+		await api.post("/signup/", {});
+
+		expect(calls[0].headers.Authorization).toBeUndefined();
 	});
 });
 

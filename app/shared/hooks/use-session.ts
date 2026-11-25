@@ -1,14 +1,14 @@
 import { useSyncExternalStore } from "react";
 
 import {
-	getSession,
-	type Session,
+	getPublicSession,
+	type PublicSession,
 	subscribeSession,
 } from "~/shared/lib/session";
 
 type SessionState =
 	| { data: undefined; status: "loading" }
-	| { data: Session; status: "authenticated" }
+	| { data: PublicSession; status: "authenticated" }
 	| { data: null; status: "unauthenticated" };
 
 const getServerSnapshot = () => undefined;
@@ -16,7 +16,7 @@ const getServerSnapshot = () => undefined;
 export function useSession(): SessionState {
 	const session = useSyncExternalStore(
 		subscribeSession,
-		getSession,
+		getPublicSession,
 		getServerSnapshot,
 	);
 

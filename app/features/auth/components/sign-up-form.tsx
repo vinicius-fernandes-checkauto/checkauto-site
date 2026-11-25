@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, type FieldPath, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
@@ -7,16 +8,28 @@ import { RecaptchaV2 } from "~/features/auth/components/recaptcha-v2";
 import { useRecaptchaChallenge } from "~/features/auth/hooks/use-recaptcha-challenge";
 import { signIn, signUp } from "~/features/auth/lib/auth";
 import {
+	type CurrentTerms,
 	type SignUpFormInput,
 	type SignUpFormOutput,
 	signUpSchema,
 } from "~/features/auth/lib/auth-schema";
 import { loadRecaptcha, recaptchaMessage } from "~/features/auth/lib/recaptcha";
+import { fetchCurrentTerms } from "~/features/auth/services/auth-service";
 import { CpfInput } from "~/shared/components/cpf-input";
 import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
 import { TextLink } from "~/shared/components/text-link";
+import { Button } from "~/shared/components/ui/button";
 import { Checkbox } from "~/shared/components/ui/checkbox";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "~/shared/components/ui/dialog";
 import {
 	Field,
 	FieldContent,
@@ -52,8 +65,39 @@ export function SignUpForm() {
 
 	const navigate = useNavigate();
 	const challenge = useRecaptchaChallenge();
+	const privacyLink = legalNav.find(
+		({ label }) => label === "Política de privacidade",
+	);
+	const [terms, setTerms] = useState<CurrentTerms | null>(null);
+	const [termsError, setTermsError] = useState<string | null>(null);
+	const [termsLoading, setTermsLoading] = useState(true);
+	const [termsOpen, setTermsOpen] = useState(false);
+
+	const loadTerms = useCallback(async () => {
+		setTermsLoading(true);
+		try {
+			setTerms(await fetchCurrentTerms());
+			setTermsError(null);
+		} catch (error) {
+			setTerms(null);
+			setTermsError(toApiError(error).message);
+		} finally {
+			setTermsLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		void loadTerms();
+	}, [loadTerms]);
 
 	async function submit(values: SignUpFormOutput) {
+		if (!terms) {
+			form.setError("root", {
+				message: "Carregue e leia o contrato antes de criar sua conta.",
+			});
+			return;
+		}
+
 		if (challenge.missing) {
 			form.setError("root", { message: "Confirme que você não é um robô." });
 			return;
@@ -62,6 +106,7 @@ export function SignUpForm() {
 		try {
 			await signUp({
 				...values,
+				termsVersion: terms.version,
 				recaptchaV2Token: challenge.token ?? undefined,
 			});
 		} catch (error) {
@@ -70,13 +115,24 @@ export function SignUpForm() {
 				challenge.restart();
 			}
 
-			const fields = Object.entries(fieldErrors(data)).filter(
+			const errors = fieldErrors(data);
+			const termsChanged = Boolean(errors.terms_version);
+			if (termsChanged) {
+				form.setValue("terms", false, { shouldValidate: true });
+				form.setError("root", {
+					message:
+						"O contrato foi atualizado. Leia e aceite a versão vigente para continuar.",
+				});
+				await loadTerms();
+			}
+
+			const fields = Object.entries(errors).filter(
 				([field]) => field in apiFields,
 			);
 			for (const [field, fieldMessage] of fields) {
 				form.setError(apiFields[field], { message: fieldMessage });
 			}
-			if (fields.length === 0) {
+			if (fields.length === 0 && !termsChanged) {
 				form.setError("root", { message: recaptchaMessage(code) ?? message });
 			}
 			return;
@@ -92,11 +148,6 @@ export function SignUpForm() {
 			navigate("/entrar", { replace: true });
 		}
 	}
-
-	const termsLink = legalNav.find(({ label }) => label === "Termos de compra");
-	const privacyLink = legalNav.find(
-		({ label }) => label === "Política de privacidade",
-	);
 
 	return (
 		<form
@@ -225,20 +276,15 @@ export function SignUpForm() {
 								onCheckedChange={field.onChange}
 								onBlur={field.onBlur}
 								ref={field.ref}
+								disabled={!terms}
 								aria-invalid={fieldState.invalid}
 								aria-describedby={fieldState.error ? "terms-error" : undefined}
 							/>
 							<FieldContent className="flex-row flex-wrap gap-1">
 								<FieldLabel htmlFor="terms" className="inline-flex font-normal">
-									Aceito os
+									Li e aceito o contrato vigente
+									{terms ? ` (${terms.version})` : ""}
 								</FieldLabel>
-								<TextLink to={termsLink?.to ?? "/contrato"}>
-									Termos de compra
-								</TextLink>
-								<span>e a</span>
-								<TextLink to={privacyLink?.to ?? "/politica-de-privacidade"}>
-									Política de privacidade
-								</TextLink>
 							</FieldContent>
 						</div>
 						{fieldState.error && (
@@ -247,6 +293,55 @@ export function SignUpForm() {
 					</Field>
 				)}
 			/>
+
+			{terms && (
+				<Dialog open={termsOpen} onOpenChange={setTermsOpen}>
+					<DialogTrigger asChild>
+						<Button type="button" variant="link" className="self-center">
+							Ler contrato {terms.version}
+						</Button>
+					</DialogTrigger>
+					<DialogContent className="max-h-[min(85svh,48rem)] overflow-hidden">
+						<DialogHeader>
+							<DialogTitle>Contrato de prestação de serviços</DialogTitle>
+							<DialogDescription>
+								Versão {terms.version}. Leia o texto antes de aceitar.
+							</DialogDescription>
+						</DialogHeader>
+						<div className="max-h-[60svh] overflow-y-auto rounded-2xl border border-border bg-muted p-4 text-sm/6 whitespace-pre-wrap">
+							{terms.content}
+						</div>
+						<DialogFooter>
+							<Button
+								type="button"
+								onClick={() => {
+									form.setValue("terms", true, { shouldValidate: true });
+									setTermsOpen(false);
+								}}
+							>
+								Li e aceito
+							</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
+			)}
+
+			{termsLoading && (
+				<p role="status" className="text-center text-sm text-muted-foreground">
+					Carregando contrato vigente…
+				</p>
+			)}
+
+			{termsError && (
+				<div className="flex flex-col items-center">
+					<p role="alert" className="text-center text-sm text-destructive">
+						Não foi possível carregar o contrato: {termsError}
+					</p>
+					<Button type="button" variant="link" onClick={() => void loadTerms()}>
+						Tentar novamente
+					</Button>
+				</div>
+			)}
 
 			<Controller
 				name="marketing"
@@ -268,6 +363,14 @@ export function SignUpForm() {
 				)}
 			/>
 
+			<p className="text-center text-sm/6 text-muted-foreground">
+				Consulte também a{" "}
+				<TextLink to={privacyLink?.to ?? "/politica-de-privacidade"}>
+					política de privacidade
+				</TextLink>
+				.
+			</p>
+
 			{challenge.active && (
 				<RecaptchaV2
 					key={challenge.key}
@@ -286,6 +389,7 @@ export function SignUpForm() {
 			<FormButton
 				isSubmitting={form.formState.isSubmitting}
 				submittingText="Criando conta…"
+				disabled={!terms}
 			>
 				Criar conta
 			</FormButton>
