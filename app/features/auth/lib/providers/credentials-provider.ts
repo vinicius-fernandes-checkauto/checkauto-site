@@ -7,6 +7,7 @@ import { type Session, tokenExpiresAt } from "~/shared/lib/session";
 export type Credentials = {
 	email: string;
 	password: string;
+	recaptchaV2Token?: string;
 };
 
 const responseSchema = z.object({
@@ -30,11 +31,16 @@ async function recaptchaToken() {
 }
 
 export const CredentialsProvider = {
-	async authorize({ email, password }: Credentials): Promise<Session> {
+	async authorize({
+		email,
+		password,
+		recaptchaV2Token,
+	}: Credentials): Promise<Session> {
 		const { data } = await api.post("/token/", {
 			username: email,
 			password,
 			recaptcha_token: await recaptchaToken(),
+			...(recaptchaV2Token && { recaptcha_token_v2: recaptchaV2Token }),
 		});
 
 		const { access, refresh, ...user } = responseSchema.parse(data);

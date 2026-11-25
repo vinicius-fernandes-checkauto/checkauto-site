@@ -8,7 +8,7 @@ As páginas são geradas como HTML estático no build (`ssr: false` e `prerender
 
 ```bash
 npm install        # instala as dependências
-npm run dev        # servidor de desenvolvimento em http://localhost:5173
+npm run dev        # servidor de desenvolvimento em http://localhost:3000
 npm run typecheck  # gera os tipos das rotas e roda o TypeScript
 npm run build      # gera o site estático em build/client
 npm run lint       # Biome: formatação, lint e ordem dos imports e das classes do Tailwind

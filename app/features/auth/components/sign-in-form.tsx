@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router";
 
 import { legalNav } from "~/@content/navigation";
+import { RecaptchaV2 } from "~/features/auth/components/recaptcha-v2";
 import { safeCallbackUrl, signIn } from "~/features/auth/lib/auth";
 import {
 	type SignInFormValues,
@@ -33,14 +35,39 @@ export function SignInForm() {
 	const [searchParams] = useSearchParams();
 	const termsLink = legalNav.find(({ label }) => label === "Termos de compra");
 
+	const [challengeKey, setChallengeKey] = useState(0);
+	const [recaptchaV2Token, setRecaptchaV2Token] = useState<string | null>(null);
+	const showChallenge = challengeKey > 0;
+
+	const onChallengeError = useCallback(() => {
+		form.setError("root", {
+			message:
+				"Não foi possível carregar a verificação. Recarregue a página e tente de novo.",
+		});
+	}, [form]);
+
 	async function submit({ email, password }: SignInFormValues) {
+		if (showChallenge && !recaptchaV2Token) {
+			form.setError("root", { message: "Confirme que você não é um robô." });
+			return;
+		}
+
 		try {
-			await signIn("credentials", { email, password });
+			await signIn("credentials", {
+				email,
+				password,
+				recaptchaV2Token: recaptchaV2Token ?? undefined,
+			});
 			navigate(safeCallbackUrl(searchParams.get("callbackUrl")), {
 				replace: true,
 			});
 		} catch (error) {
-			form.setError("root", { message: toApiError(error).message });
+			const { code, message } = toApiError(error);
+			if (showChallenge || code === "recaptcha_fallback_required") {
+				setRecaptchaV2Token(null);
+				setChallengeKey((key) => key + 1);
+			}
+			form.setError("root", { message });
 		}
 	}
 
@@ -143,6 +170,14 @@ export function SignInForm() {
 					</Field>
 				)}
 			/>
+
+			{showChallenge && (
+				<RecaptchaV2
+					key={challengeKey}
+					onChange={setRecaptchaV2Token}
+					onError={onChallengeError}
+				/>
+			)}
 
 			{form.formState.errors.root && (
 				<FieldError
