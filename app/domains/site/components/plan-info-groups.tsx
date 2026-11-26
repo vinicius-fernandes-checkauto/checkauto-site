@@ -1,4 +1,4 @@
-import { type Plan, planIncludes, planInfoGroups } from "~/content/plans";
+import { type Plan, planComparisonItems, planIncludes } from "~/content/plans";
 import {
 	IncludedMark,
 	MissingMark,
@@ -24,70 +24,52 @@ export function PlanInfoGroups({ plan }: { plan: Plan }) {
 							<span className="text-highlight">{plan.shortName}</span>
 						</h2>
 					</div>
-					<p className="max-w-sm text-[0.9375rem]/6 text-muted-foreground">
+					<p className="max-w-sm text-base/6 text-muted-foreground">
 						Em linguagem simples: o que é cada item e por que ele importa na
 						hora de comprar.
 					</p>
 				</div>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{planInfoGroups.map((group) => {
-						const included = group.items.filter((item) =>
-							planIncludes(plan, item),
-						).length;
+				<ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					{planComparisonItems.map((item) => {
+						const has = planIncludes(plan, item);
 
 						return (
-							<article
-								key={group.title}
+							<li
+								key={item.name}
 								className={cn(
-									"flex flex-col gap-3.5 rounded-3xl border p-5.5",
-									group.differentiator
-										? "border-highlight/25 bg-[color-mix(in_oklab,var(--color-brand-green)_10%,var(--card))]"
+									"flex flex-col gap-2 rounded-3xl border p-4.5",
+									item.requires && has
+										? "border-highlight/25 bg-brand-green/10"
 										: "border-border bg-background",
+									!has && "opacity-55",
 								)}
 							>
-								<div className="flex items-center justify-between gap-2">
-									<h3 className="text-[1.0625rem] font-semibold text-heading">
-										{group.title}
+								<div className="flex items-start gap-2.5">
+									{has ? (
+										<IncludedMark className="mt-0.5" />
+									) : (
+										<MissingMark className="mt-0.5 text-heading" />
+									)}
+									<h3 className="text-sm/5 font-semibold text-heading">
+										{item.name}
+										{!has && <span className="sr-only"> (não incluso)</span>}
 									</h3>
-									<span className="text-xs font-semibold text-muted-foreground">
-										{group.differentiator
-											? `${included} de ${group.items.length} neste pacote`
-											: `${group.items.length} infos`}
-									</span>
 								</div>
-								<ul className="flex flex-col gap-3">
-									{group.items.map((item) => {
-										const has = planIncludes(plan, item);
-
-										return (
-											<li
-												key={item.name}
-												className={cn("flex gap-2.5", !has && "opacity-55")}
-											>
-												{has ? (
-													<IncludedMark className="mt-0.5" />
-												) : (
-													<MissingMark className="mt-0.5 text-heading" />
-												)}
-												<span className="flex flex-col gap-0.5">
-													<span className="text-sm font-semibold text-heading">
-														{item.name}
-														{!has && (
-															<span className="sr-only"> (não incluso)</span>
-														)}
-													</span>
-													<span className="text-[0.8125rem]/5 text-muted-foreground">
-														{item.description}
-													</span>
-												</span>
-											</li>
-										);
-									})}
-								</ul>
-							</article>
+								<p className="text-sm/5 text-muted-foreground">
+									{item.description}
+								</p>
+								{!has && (
+									<span
+										aria-hidden="true"
+										className="mt-auto text-xs font-semibold text-heading"
+									>
+										Não incluso neste pacote
+									</span>
+								)}
+							</li>
 						);
 					})}
-				</div>
+				</ul>
 			</div>
 		</section>
 	);
