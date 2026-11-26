@@ -68,7 +68,7 @@ export function AccessSettings({ email }: { email: string }) {
 
 			{!passwordEnabled && (
 				<p className="mt-4 text-sm text-muted-foreground">
-					Você entra com sua conta Google, sem senha da Checkauto.
+					Você entra na Checkauto com a sua conta Google.
 				</p>
 			)}
 
