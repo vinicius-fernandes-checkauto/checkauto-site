@@ -5,6 +5,7 @@ import type { userDetailSchema } from "~/domains/account/utils/account.schema";
 export type AccountUser = {
 	name: string;
 	email: string;
+	picture?: string;
 };
 
 export type UserDetail = z.infer<typeof userDetailSchema>;

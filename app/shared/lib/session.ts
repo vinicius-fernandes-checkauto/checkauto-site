@@ -10,6 +10,7 @@ const sessionUserSchema = z.object({
 	email: z.string(),
 	profile: z.string(),
 	authProvider: z.enum(["credentials", "google"]).default("credentials"),
+	picture: z.string().optional(),
 });
 
 const storedSessionSchema = z.object({

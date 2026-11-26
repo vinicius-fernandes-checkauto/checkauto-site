@@ -15,6 +15,7 @@ import type {
 } from "~/domains/auth/utils/auth.schema";
 import {
 	clearPendingGoogleSignUp,
+	readGooglePicture,
 	readPendingGoogleSignUp,
 } from "~/domains/auth/utils/google-identity";
 import { getRecaptchaToken } from "~/domains/auth/utils/recaptcha";
@@ -40,6 +41,7 @@ export const authOptions = {
 		session(
 			login: LoginResponse,
 			authProvider: SessionUser["authProvider"] = "credentials",
+			picture?: string,
 		): Session {
 			const expires = tokenExpiresAt(login.refresh);
 			if (expires <= Date.now()) {
@@ -56,6 +58,7 @@ export const authOptions = {
 					email: login.email,
 					profile: login.profile,
 					authProvider,
+					...(picture && { picture }),
 				},
 				accessToken: login.access,
 				refreshToken: login.refresh,
@@ -68,8 +71,9 @@ export const authOptions = {
 function startSession(
 	login: LoginResponse,
 	authProvider: SessionUser["authProvider"],
+	picture?: string,
 ) {
-	const session = authOptions.callbacks.session(login, authProvider);
+	const session = authOptions.callbacks.session(login, authProvider, picture);
 	setSession(session);
 	return session;
 }
@@ -79,7 +83,9 @@ export async function signIn<P extends AuthProvider>(
 	input: ProviderInput<P>,
 ) {
 	const login = await authOptions.providers[provider].authorize(input);
-	return startSession(login, provider);
+	const picture =
+		"idToken" in input ? readGooglePicture(input.idToken) : undefined;
+	return startSession(login, provider, picture);
 }
 
 export function signOut() {
@@ -167,7 +173,7 @@ export async function completeGoogleSignUp(
 			...profileBody(values, version),
 		});
 		clearPendingGoogleSignUp();
-		return startSession(login, "google");
+		return startSession(login, "google", readGooglePicture(pending.idToken));
 	} catch (error) {
 		const { code } = toApiError(error);
 		if (

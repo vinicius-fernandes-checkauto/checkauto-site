@@ -266,6 +266,7 @@ sequenceDiagram
   - `google_token_invalid` e `google_email_not_verified` pedem o Google de novo;
   - nos três casos, o cadastro pendente é limpo.
 - **Conta do Google não tem senha:** "Alterar senha" some em Meus dados. O "Esqueci a senha" dessa conta responde `google_account`, e o site mostra "Essa conta entra com outro método de autenticação.".
+- **Foto de perfil:** o `id_token` do Google traz o endereço da foto (`picture`). O site lê esse campo no navegador (`readGooglePicture`), guarda na sessão (`user.picture`) e mostra no avatar da conta e do header; sem foto, ou se a imagem falhar, fica o ícone padrão. Não passa pelo backend, vale só para quem entra pelo Google e é lida de novo a cada login. O token não é validado para isso, porque é só exibição; quem valida continua sendo o backend.
 - **Chave do Google:** o site usa só o **Client ID** (`VITE_GOOGLE_CLIENT_ID`). O secret fica no backend.
 - **Cliente HTTP:** `user/login/google/` e `user/signup/google/` estão fora do interceptor de 401, porque `user_blocked` também volta como 401.
 

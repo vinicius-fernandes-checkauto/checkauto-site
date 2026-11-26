@@ -116,3 +116,21 @@ export function readPendingGoogleSignUp(): PendingGoogleSignUp | null {
 export function clearPendingGoogleSignUp() {
 	pendingStorage()?.removeItem(PENDING_KEY);
 }
+
+export function readGooglePicture(idToken: string) {
+	try {
+		const payload = idToken.split(".")[1] ?? "";
+		const bytes = Uint8Array.from(
+			atob(payload.replace(/-/g, "+").replace(/_/g, "/")),
+			(char) => char.charCodeAt(0),
+		);
+		const { picture } = JSON.parse(new TextDecoder().decode(bytes)) as {
+			picture?: unknown;
+		};
+		return typeof picture === "string" && picture.startsWith("https://")
+			? picture
+			: undefined;
+	} catch {
+		return undefined;
+	}
+}

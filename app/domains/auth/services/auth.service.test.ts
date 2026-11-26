@@ -79,3 +79,21 @@ describe("canChangePassword", () => {
 		expect(canChangePassword(googleSession)).toBe(false);
 	});
 });
+
+describe("foto do Google na sessão", () => {
+	it("guarda a foto quando ela é informada", () => {
+		const withPicture = authOptions.callbacks.session(
+			login(),
+			"google",
+			"https://lh3.googleusercontent.com/a/foto",
+		);
+
+		expect(withPicture.user.picture).toBe(
+			"https://lh3.googleusercontent.com/a/foto",
+		);
+	});
+
+	it("não cria o campo quando não há foto", () => {
+		expect(googleSession.user).not.toHaveProperty("picture");
+	});
+});

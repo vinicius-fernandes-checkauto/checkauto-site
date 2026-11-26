@@ -23,6 +23,7 @@ vi.mock("~/domains/auth/auth.api", () => ({
 vi.mock("~/domains/auth/utils/google-identity", () => ({
 	readPendingGoogleSignUp: vi.fn(() => ({ idToken: "id-token-google" })),
 	clearPendingGoogleSignUp: vi.fn(),
+	readGooglePicture: vi.fn(() => undefined),
 }));
 
 function jwt(exp: number) {

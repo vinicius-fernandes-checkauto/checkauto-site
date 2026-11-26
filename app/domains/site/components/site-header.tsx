@@ -110,7 +110,7 @@ export function SiteHeader({ carCount = 0 }: SiteHeaderProps) {
 							aria-label={`Minha conta: ${session.user.name}`}
 							className="hidden rounded-full sm:inline-flex"
 						>
-							<BrandAvatar />
+							<BrandAvatar src={session.user.picture} />
 						</Link>
 					) : (
 						<Button

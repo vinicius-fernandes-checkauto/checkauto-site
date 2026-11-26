@@ -1,12 +1,18 @@
+import { useState } from "react";
+
 import ring from "~/assets/brand/symbol-ring-blue.webp";
 import { User2Icon } from "~/shared/components/icons";
 import { cn } from "~/shared/lib/utils";
 
 type BrandAvatarProps = {
 	className?: string;
+	src?: string;
 };
 
-export function BrandAvatar({ className }: BrandAvatarProps) {
+export function BrandAvatar({ className, src }: BrandAvatarProps) {
+	const [failedSrc, setFailedSrc] = useState<string | null>(null);
+	const picture = src && src !== failedSrc ? src : null;
+
 	return (
 		<span
 			aria-hidden="true"
@@ -18,8 +24,18 @@ export function BrandAvatar({ className }: BrandAvatarProps) {
 				}}
 				className="absolute inset-0 bg-brand-green mask-intersect mask-contain mask-center mask-no-repeat"
 			/>
-			<span className="absolute inset-[13%] flex items-center justify-center rounded-full bg-brand-blue text-[27cqw] font-semibold tracking-wide text-white">
-				<User2Icon />
+			<span className="absolute inset-[13%] flex items-center justify-center overflow-hidden rounded-full bg-brand-blue text-[27cqw] font-semibold tracking-wide text-white">
+				{picture ? (
+					<img
+						src={picture}
+						alt=""
+						referrerPolicy="no-referrer"
+						onError={() => setFailedSrc(picture)}
+						className="size-full object-cover"
+					/>
+				) : (
+					<User2Icon />
+				)}
 			</span>
 		</span>
 	);
