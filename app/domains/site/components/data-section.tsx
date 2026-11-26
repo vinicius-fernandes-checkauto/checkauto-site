@@ -128,13 +128,13 @@ export function DataSection() {
 
 	useEffect(() => {
 		const diagram = diagramRef.current;
-		if (!diagram) return;
+		if (!diagram || !isDesktop) return;
 
 		const close = () => setOpenId(null);
 		diagram.addEventListener("mouseleave", close);
 
 		return () => diagram.removeEventListener("mouseleave", close);
-	}, []);
+	}, [isDesktop]);
 
 	useEffect(() => {
 		if (!openId || !isDesktop) return;
