@@ -84,7 +84,7 @@ export function WhySection() {
 							</IconBadge>
 							<div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
 								<div className="flex flex-col gap-1.5">
-									<strong className="text-6xl/[0.9] font-medium tracking-tighter text-heading">
+									<strong className="text-5xl/[0.9] font-medium tracking-tighter text-heading">
 										+40
 									</strong>
 									<h3 className="text-xl/snug font-semibold tracking-tight text-heading">
@@ -144,7 +144,7 @@ export function WhySection() {
 						</li>
 					</ul>
 
-					<div className="pt-8 lg:pt-10">
+					<div className="pt-16 pb-8 lg:pt-24 lg:pb-16">
 						<WhyNumbers />
 					</div>
 				</div>

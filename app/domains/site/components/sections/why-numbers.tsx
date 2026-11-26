@@ -14,16 +14,24 @@ type Stat = {
 
 const stats: Stat[] = [
 	{
-		value: 13,
-		prefix: "+",
-		suffix: " mi",
+		value: 1,
+		suffix: "º",
 		fill: 100,
-		before: "de ",
-		highlight: "consultas realizadas",
-		after: " desde 2000",
+		before: "",
+		highlight: "site de consultas",
+		after: " do país, aberto ao público",
 	},
 	{
-		value: 80,
+		value: 400,
+		prefix: "+",
+		suffix: " mil",
+		fill: 80,
+		before: "",
+		highlight: "clientes",
+		after: " atendidos",
+	},
+	{
+		value: 150,
 		prefix: "+",
 		suffix: " mi",
 		fill: 100,
@@ -32,21 +40,13 @@ const stats: Stat[] = [
 		after: " na nossa base de dados",
 	},
 	{
-		value: 70,
+		value: 800,
 		prefix: "+",
 		suffix: " mil",
 		fill: 90,
 		before: "",
-		highlight: "usuários cadastrados",
-		after: " consultando com a Checkauto",
-	},
-	{
-		value: 2_000,
-		prefix: "+",
-		fill: 80,
-		before: "",
-		highlight: "empresas",
-		after: " atendidas, de lojistas a bancos e seguradoras",
+		highlight: "consultas realizadas",
+		after: " por mês",
 	},
 ];
 
@@ -114,7 +114,7 @@ export function WhyNumbers() {
 						<div className="flex flex-col gap-3 pt-1">
 							<strong
 								data-count={index}
-								className="text-5xl/none font-medium tracking-tighter text-heading tabular-nums"
+								className="text-4xl/none font-medium tracking-tighter text-heading tabular-nums"
 							>
 								{format(stat, stat.value)}
 							</strong>
