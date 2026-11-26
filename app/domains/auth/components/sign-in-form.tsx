@@ -31,10 +31,12 @@ import { toApiError } from "~/shared/lib/api";
 
 const [privacyLink, termsLink] = legalNav;
 
-export function SignInForm() {
+type SignInFormProps = { defaultEmail?: string };
+
+export function SignInForm({ defaultEmail = "" }: SignInFormProps) {
 	const form = useForm({
 		resolver: zodResolver(signInSchema),
-		defaultValues: { email: "", password: "" },
+		defaultValues: { email: defaultEmail, password: "" },
 	});
 
 	const navigate = useNavigate();
@@ -56,6 +58,10 @@ export function SignInForm() {
 			navigate(redirectAfterSignIn(session), { replace: true });
 		} catch (error) {
 			const { code, message } = toApiError(error);
+			if (code === "password_setup_required") {
+				navigate("/definir-senha", { state: { email } });
+				return;
+			}
 			if (challenge.active || code === "recaptcha_fallback_required") {
 				challenge.restart();
 			}

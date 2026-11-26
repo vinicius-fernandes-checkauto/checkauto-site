@@ -8,9 +8,9 @@ import type {
 	AddressField,
 	ProfileFormValues,
 } from "~/domains/account/utils/account.schema";
-import { brazilianStates, formatZip } from "~/domains/account/utils/addresses";
 import { ChevronDownIcon } from "~/shared/components/icons";
 import { cn } from "~/shared/lib/utils";
+import { brazilianStates, formatZip } from "~/shared/utils/address";
 import { errorProps, withMask } from "~/shared/utils/form";
 
 type AddressFieldsProps = {

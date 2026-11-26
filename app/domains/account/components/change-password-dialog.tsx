@@ -1,12 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useId } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 import {
 	type PasswordField,
+	type PasswordFormValues,
 	passwordSchema,
 } from "~/domains/account/utils/account.schema";
-import { CircleCheckIcon } from "~/shared/components/icons";
+import { changePassword } from "~/domains/auth/services/auth.service";
+import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
 import { Button } from "~/shared/components/ui/button";
 import {
@@ -24,7 +27,7 @@ import {
 	FieldGroup,
 	FieldLabel,
 } from "~/shared/components/ui/field";
-import { errorProps } from "~/shared/utils/form";
+import { fieldErrors, toApiError } from "~/shared/lib/api";
 
 type ChangePasswordDialogProps = {
 	open: boolean;
@@ -44,14 +47,26 @@ export function ChangePasswordDialog({
 	);
 }
 
+const fields = [
+	{ name: "currentPassword", label: "Senha atual", auto: "current-password" },
+	{ name: "newPassword", label: "Nova senha", auto: "new-password" },
+	{
+		name: "confirmPassword",
+		label: "Confirmar nova senha",
+		auto: "new-password",
+	},
+] as const;
+
+const apiFields: Record<string, PasswordField> = {
+	current_password: "currentPassword",
+	new_password: "newPassword",
+	new_password_again: "confirmPassword",
+};
+
 function ChangePasswordForm() {
 	const baseId = useId();
-	const [done, setDone] = useState(false);
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
+	const navigate = useNavigate();
+	const form = useForm({
 		resolver: zodResolver(passwordSchema),
 		defaultValues: {
 			currentPassword: "",
@@ -61,81 +76,86 @@ function ChangePasswordForm() {
 	});
 
 	const fieldId = (field: PasswordField) => `${baseId}-${field}`;
-	if (done) {
-		return (
-			<div role="status" className="flex flex-col items-start gap-4">
-				<span className="flex size-12 items-center justify-center rounded-full bg-brand-green/15 text-highlight">
-					<CircleCheckIcon aria-hidden="true" className="size-6" />
-				</span>
-				<DialogHeader>
-					<DialogTitle>Senha alterada</DialogTitle>
-					<DialogDescription className="text-[0.9375rem]/6">
-						Use a nova senha no próximo acesso.
-					</DialogDescription>
-				</DialogHeader>
-				<DialogClose asChild>
-					<Button size="sm">Concluir</Button>
-				</DialogClose>
-			</div>
-		);
-	}
 
-	const fields = [
-		{ name: "currentPassword", label: "Senha atual", auto: "current-password" },
-		{ name: "newPassword", label: "Nova senha", auto: "new-password" },
-		{
-			name: "confirmPassword",
-			label: "Confirmar nova senha",
-			auto: "new-password",
-		},
-	] as const;
+	async function submit(values: PasswordFormValues) {
+		try {
+			await changePassword(values);
+			navigate("/entrar", {
+				replace: true,
+				state: { notice: "Senha alterada. Entre com a nova senha." },
+			});
+		} catch (error) {
+			const { message, data } = toApiError(error);
+			const errors = Object.entries(fieldErrors(data)).filter(
+				([field]) => field in apiFields,
+			);
+			for (const [field, fieldMessage] of errors) {
+				form.setError(apiFields[field], { message: fieldMessage });
+			}
+			if (errors.length === 0) form.setError("root", { message });
+		}
+	}
 
 	return (
 		<>
 			<DialogHeader className="pr-12">
 				<DialogTitle>Alterar senha</DialogTitle>
-				<DialogDescription className="text-[0.9375rem]/6">
-					A nova senha precisa ter pelo menos 8 caracteres.
+				<DialogDescription className="text-base/6">
+					Use de 8 a 16 caracteres, com maiúscula, minúscula, número e símbolo.
+					Depois de alterar, entre de novo com a nova senha.
 				</DialogDescription>
 			</DialogHeader>
 			<form
 				noValidate
-				onSubmit={handleSubmit(() => setDone(true))}
+				onSubmit={form.handleSubmit(submit)}
 				className="flex flex-col gap-6"
 			>
 				<FieldGroup className="gap-4">
-					{fields.map((field) => {
-						const error = errors[field.name];
-
-						return (
-							<Field key={field.name} data-invalid={Boolean(error)}>
-								<FieldLabel htmlFor={fieldId(field.name)}>
-									{field.label}
-								</FieldLabel>
-								<PasswordInput
-									id={fieldId(field.name)}
-									{...register(field.name)}
-									autoComplete={field.auto}
-									{...errorProps(fieldId(field.name), error)}
-								/>
-								{error?.message && (
-									<FieldError id={`${fieldId(field.name)}-erro`}>
-										{error.message}
-									</FieldError>
-								)}
-							</Field>
-						);
-					})}
+					{fields.map(({ name, label, auto }) => (
+						<Controller
+							key={name}
+							name={name}
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor={fieldId(name)}>{label}</FieldLabel>
+									<PasswordInput
+										{...field}
+										id={fieldId(name)}
+										autoComplete={auto}
+										aria-invalid={fieldState.invalid}
+										aria-describedby={
+											fieldState.error ? `${fieldId(name)}-error` : undefined
+										}
+									/>
+									{fieldState.error && (
+										<FieldError
+											id={`${fieldId(name)}-error`}
+											errors={[fieldState.error]}
+										/>
+									)}
+								</Field>
+							)}
+						/>
+					))}
 				</FieldGroup>
+				{form.formState.errors.root && (
+					<FieldError errors={[form.formState.errors.root]} />
+				)}
 				<DialogFooter>
 					<DialogClose asChild>
 						<Button type="button" variant="outline" size="sm">
 							Cancelar
 						</Button>
 					</DialogClose>
-					<Button type="submit" size="sm" className="sm:min-w-36">
+					<FormButton
+						size="sm"
+						className="w-auto sm:min-w-36"
+						isSubmitting={form.formState.isSubmitting}
+						submittingText="Alterando…"
+					>
 						Alterar senha
-					</Button>
+					</FormButton>
 				</DialogFooter>
 			</form>
 		</>

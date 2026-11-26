@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 import {
 	AuthHeading,
@@ -9,6 +9,7 @@ import { AuthSwitch } from "~/domains/auth/components/auth-switch";
 import { SignInForm } from "~/domains/auth/components/sign-in-form";
 import { SocialSignIn } from "~/domains/auth/components/social-sign-in";
 import { getGuestRedirect } from "~/domains/auth/services/auth.service";
+import { readNotice } from "~/domains/auth/utils/notice";
 import { useSession } from "~/shared/hooks/use-session";
 
 import type { Route } from "./+types/_auth.entrar";
@@ -23,6 +24,8 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export default function SignIn() {
+	const location = useLocation();
+	const notice = readNotice(location.state);
 	const { data: session } = useSession();
 	const redirectTo = getGuestRedirect(session ?? null);
 
@@ -38,7 +41,16 @@ export default function SignIn() {
 				</AuthHeadingDescription>
 			</AuthHeading>
 
-			<SignInForm />
+			{notice && (
+				<p
+					role="status"
+					className="rounded-2xl bg-brand-green/15 px-4 py-3 text-center text-sm text-heading"
+				>
+					{notice.notice}
+				</p>
+			)}
+
+			<SignInForm defaultEmail={notice?.email} />
 
 			<SocialSignIn action="Entrar" />
 

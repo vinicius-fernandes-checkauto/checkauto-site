@@ -35,3 +35,43 @@ export type Credentials = {
 	password: string;
 	recaptchaV2Token?: string;
 };
+
+export type ChangePasswordBody = {
+	current_password: string;
+	new_password: string;
+	new_password_again: string;
+};
+
+export type SetPasswordBody = {
+	email: string;
+	password: string;
+};
+
+export type GoogleProfile = {
+	email: string;
+	name: string;
+	firstName: string;
+	lastName: string;
+};
+
+export type GoogleSignUpBody = {
+	id_token: string;
+	person_type: "pf" | "pj";
+	cpf?: string;
+	cnpj?: string;
+	corporate_name?: string;
+	fantasy_name?: string;
+	first_name: string;
+	last_name: string;
+	phone: string;
+	cep: string;
+	street: string;
+	number_address: string;
+	district: string;
+	city: string;
+	uf: string;
+	complement?: string;
+	accept_terms: true;
+	terms_version: string;
+	marketing_consent: boolean;
+};

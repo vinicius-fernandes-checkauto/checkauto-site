@@ -1,14 +1,17 @@
 import type {
+	ChangePasswordBody,
 	CurrentTerms,
+	GoogleSignUpBody,
 	LoginBody,
 	LoginResponse,
+	SetPasswordBody,
 	SignUpBody,
 } from "~/domains/auth/types/auth.types";
 import {
 	currentTermsSchema,
 	loginResponseSchema,
 } from "~/domains/auth/utils/auth.schema";
-import { ApiError, api } from "~/shared/lib/api";
+import { ApiError, api, unwrapContent } from "~/shared/lib/api";
 
 export function parseLoginResponse(data: unknown): LoginResponse {
 	const parsed = loginResponseSchema.safeParse(data);
@@ -48,4 +51,24 @@ export async function getCurrentTerms() {
 
 export async function forgotPassword(email: string) {
 	await api.post("/user/forgot-password/", { email });
+}
+
+export async function changePassword(body: ChangePasswordBody) {
+	await api.post("/user/change-password/", body);
+}
+
+export async function setPassword(body: SetPasswordBody) {
+	await api.post("/user/password/set/", body);
+}
+
+export async function loginWithGoogle(idToken: string) {
+	const { data } = await api.post<unknown>("/user/login/google/", {
+		id_token: idToken,
+	});
+	return parseLoginResponse(data);
+}
+
+export async function signUpWithGoogle(body: GoogleSignUpBody) {
+	const { data } = await api.post<unknown>("/user/signup/google/", body);
+	return parseLoginResponse(unwrapContent(data));
 }

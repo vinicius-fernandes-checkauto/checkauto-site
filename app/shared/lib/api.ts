@@ -15,11 +15,6 @@ declare module "axios" {
 	}
 }
 
-type ErrorBody = {
-	detail?: unknown;
-	code?: unknown;
-};
-
 const messagesByStatus: Record<number, string> = {
 	400: "Confira os dados informados.",
 	401: "Sua sessão expirou. Entre novamente.",
@@ -49,24 +44,34 @@ function text(value: unknown) {
 	return typeof value === "string" && value.trim() ? value : null;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+export function unwrapContent(data: unknown): unknown {
+	return isRecord(data) && "content" in data ? data.content : data;
+}
+
 export function toApiError(error: unknown): ApiError {
 	if (error instanceof ApiError) return error;
 
-	if (!isAxiosError<ErrorBody>(error) || !error.response) {
+	if (!isAxiosError(error) || !error.response) {
 		return new ApiError(networkErrorMessage, null);
 	}
 
-	const { status, data } = error.response;
+	const { status } = error.response;
+	const body = unwrapContent(error.response.data);
+	const fields = isRecord(body) ? body : {};
 	const fallback =
 		status >= 500
 			? serverErrorMessage
 			: (messagesByStatus[status] ?? "Algo deu errado. Tente de novo.");
 
 	return new ApiError(
-		text(data?.detail) ?? fallback,
+		text(fields.detail) ?? text(fields.message) ?? fallback,
 		status,
-		text(data?.code),
-		data,
+		text(fields.code),
+		body,
 	);
 }
 
@@ -83,6 +88,9 @@ const publicRoutes = [
 	"token/",
 	"signup/",
 	"user/forgot-password/",
+	"user/login/google/",
+	"user/signup/google/",
+	"user/password/set/",
 	"user/terms/",
 ];
 
@@ -92,12 +100,14 @@ function isPublicRoute(url = "") {
 }
 
 export function fieldErrors(data: unknown): Record<string, string> {
-	if (!data || typeof data !== "object") return {};
+	const body = unwrapContent(data);
+	if (!isRecord(body)) return {};
 
+	const ignored = new Set(["detail", "code", "message"]);
 	const errors: Record<string, string> = {};
-	for (const [field, value] of Object.entries(data)) {
+	for (const [field, value] of Object.entries(body)) {
 		const message = Array.isArray(value) ? value[0] : value;
-		if (typeof message === "string" && field !== "detail" && field !== "code") {
+		if (typeof message === "string" && !ignored.has(field)) {
 			errors[field] = message;
 		}
 	}

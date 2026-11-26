@@ -15,7 +15,6 @@ import {
 	type ProfileFormValues,
 	profileSchema,
 } from "~/domains/account/utils/account.schema";
-import { formatZip } from "~/domains/account/utils/addresses";
 import {
 	CircleCheckIcon,
 	FileTextIcon,
@@ -23,6 +22,7 @@ import {
 } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
 import { cn } from "~/shared/lib/utils";
+import { formatZip } from "~/shared/utils/address";
 import { errorProps, withMask } from "~/shared/utils/form";
 import { formatPhone } from "~/shared/utils/phone";
 

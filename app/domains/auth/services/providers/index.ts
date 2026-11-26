@@ -8,7 +8,7 @@ import { GoogleProvider } from "./google.provider";
 
 type ProviderInputs = {
 	credentials: Credentials;
-	google: undefined;
+	google: { idToken: string };
 };
 
 export type AuthProvider = keyof ProviderInputs;

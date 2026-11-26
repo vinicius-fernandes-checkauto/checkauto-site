@@ -114,7 +114,7 @@ beforeEach(() => {
 			name: "Cliente",
 			email: "c@exemplo.com",
 			profile: "4",
-			profileComplete: true,
+			authProvider: "credentials",
 		},
 		accessToken: "velho",
 		refreshToken: jwt(Math.floor((Date.now() + 60_000) / 1000)),
@@ -184,5 +184,33 @@ describe("fieldErrors", () => {
 			accept_terms: "Aceite os termos.",
 		});
 		expect(fieldErrors(null)).toEqual({});
+	});
+});
+
+describe("envelope { user, content }", () => {
+	it("lê detail e code de dentro do content", () => {
+		const error = toApiError(
+			httpError(400, {
+				user: null,
+				content: {
+					detail: "Complete o desafio.",
+					code: "recaptcha_fallback_required",
+				},
+			}),
+		);
+		expect(error.message).toBe("Complete o desafio.");
+		expect(error.code).toBe("recaptcha_fallback_required");
+	});
+
+	it("lê message e erros de campo do content", () => {
+		const error = toApiError(
+			httpError(400, {
+				content: { message: "Conta do Google.", code: "google_account" },
+			}),
+		);
+		expect(error.message).toBe("Conta do Google.");
+		expect(
+			fieldErrors({ user: null, content: { cpf: ["CPF já cadastrado."] } }),
+		).toEqual({ cpf: "CPF já cadastrado." });
 	});
 });

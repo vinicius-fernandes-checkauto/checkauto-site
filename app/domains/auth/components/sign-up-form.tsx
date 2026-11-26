@@ -145,8 +145,16 @@ export function SignUpForm() {
 			return;
 		}
 
-		navigate(session ? redirectAfterSignIn(session) : "/entrar", {
+		if (session) {
+			navigate(redirectAfterSignIn(session), { replace: true });
+			return;
+		}
+		navigate("/entrar", {
 			replace: true,
+			state: {
+				notice: "Conta criada. Entre com seu e-mail e senha.",
+				email: values.email,
+			},
 		});
 	}
 

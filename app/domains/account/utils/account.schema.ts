@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 import { plans } from "~/content/plans";
-import { brazilianStates } from "~/domains/account/utils/addresses";
+import { strongPassword } from "~/domains/auth/utils/auth.schema";
+import { brazilianStates } from "~/shared/utils/address";
 import { plateSchema } from "~/shared/utils/plate";
 
 export const addressSchema = z.object({
@@ -53,7 +54,7 @@ export type ProfileField = Exclude<keyof ProfileFormValues, "address">;
 export const passwordSchema = z
 	.object({
 		currentPassword: z.string().min(1, { error: "Informe a senha atual." }),
-		newPassword: z.string().min(8, { error: "Use pelo menos 8 caracteres." }),
+		newPassword: strongPassword,
 		confirmPassword: z.string(),
 	})
 	.refine((data) => data.newPassword === data.confirmPassword, {
@@ -62,6 +63,7 @@ export const passwordSchema = z
 	});
 
 export type PasswordField = keyof z.input<typeof passwordSchema>;
+export type PasswordFormValues = z.infer<typeof passwordSchema>;
 
 export const emailChangeSchema = z.object({
 	code: z

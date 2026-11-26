@@ -4,6 +4,7 @@ import type { LoginResponse } from "~/domains/auth/types/auth.types";
 
 import {
 	authOptions,
+	canChangePassword,
 	getAuthRedirect,
 	getCompleteProfileRedirect,
 	getGuestRedirect,
@@ -27,24 +28,23 @@ function login(overrides: Partial<LoginResponse> = {}): LoginResponse {
 	};
 }
 
-const complete = authOptions.callbacks.session(login());
-const incomplete = authOptions.callbacks.session(
-	login({ profile_complete: false }),
-);
+const session = authOptions.callbacks.session(login());
+const googleSession = authOptions.callbacks.session(login(), "google");
 
 describe("callbacks.session", () => {
 	it("transforma a resposta do login em sessão", () => {
-		expect(complete).toMatchObject({
+		expect(session).toMatchObject({
 			user: {
 				id: "u1",
 				name: "Cliente Teste",
 				email: "cliente@exemplo.com",
 				profile: "4",
-				profileComplete: true,
+				authProvider: "credentials",
 			},
 			accessToken: "access",
 		});
-		expect(complete.expires).toBeGreaterThan(Date.now());
+		expect(session.expires).toBeGreaterThan(Date.now());
+		expect(googleSession.user.authProvider).toBe("google");
 	});
 
 	it("recusa refresh token vencido", () => {
@@ -57,24 +57,25 @@ describe("callbacks.session", () => {
 describe("redirecionamentos", () => {
 	it("protege a conta", () => {
 		expect(getAuthRedirect(null)).toBe("/entrar");
-		expect(getAuthRedirect(incomplete)).toBe("/completar-cadastro");
-		expect(getAuthRedirect(complete)).toBeNull();
+		expect(getAuthRedirect(session)).toBeNull();
 	});
 
 	it("tira quem já entrou das telas de login", () => {
 		expect(getGuestRedirect(null)).toBeNull();
-		expect(getGuestRedirect(complete)).toBe("/conta");
-		expect(getGuestRedirect(incomplete)).toBe("/completar-cadastro");
+		expect(getGuestRedirect(session)).toBe("/conta");
+		expect(redirectAfterSignIn(session)).toBe("/conta");
 	});
 
-	it("decide o destino depois do login", () => {
-		expect(redirectAfterSignIn(complete)).toBe("/conta");
-		expect(redirectAfterSignIn(incomplete)).toBe("/completar-cadastro");
+	it("libera completar cadastro só com o cadastro do Google pendente", () => {
+		expect(getCompleteProfileRedirect(null, true)).toBeNull();
+		expect(getCompleteProfileRedirect(null, false)).toBe("/entrar");
+		expect(getCompleteProfileRedirect(session, false)).toBe("/conta");
 	});
+});
 
-	it("libera completar cadastro só para quem precisa", () => {
-		expect(getCompleteProfileRedirect(null)).toBe("/entrar");
-		expect(getCompleteProfileRedirect(complete)).toBe("/conta");
-		expect(getCompleteProfileRedirect(incomplete)).toBeNull();
+describe("canChangePassword", () => {
+	it("esconde a troca de senha para conta do Google", () => {
+		expect(canChangePassword(session)).toBe(true);
+		expect(canChangePassword(googleSession)).toBe(false);
 	});
 });

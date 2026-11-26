@@ -7,6 +7,7 @@ import {
 } from "~/domains/auth/components/auth-heading";
 import { CompleteProfileForm } from "~/domains/auth/components/complete-profile-form";
 import { getCompleteProfileRedirect } from "~/domains/auth/services/auth.service";
+import { readPendingGoogleSignUp } from "~/domains/auth/utils/google-identity";
 import { getSession } from "~/shared/lib/session";
 
 import type { Route } from "./+types/_auth.completar-cadastro";
@@ -17,7 +18,10 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 function requireIncompleteProfile() {
-	const redirectTo = getCompleteProfileRedirect(getSession());
+	const redirectTo = getCompleteProfileRedirect(
+		getSession(),
+		Boolean(readPendingGoogleSignUp()),
+	);
 	if (redirectTo) throw redirect(redirectTo);
 }
 

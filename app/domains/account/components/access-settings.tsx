@@ -3,13 +3,18 @@ import { useId, useState } from "react";
 import { AccountSection } from "~/domains/account/components/account-section";
 import { ChangeEmailDialog } from "~/domains/account/components/change-email-dialog";
 import { ChangePasswordDialog } from "~/domains/account/components/change-password-dialog";
+import { canChangePassword } from "~/domains/auth/services/auth.service";
 import { LockIcon, MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
+import { useSession } from "~/shared/hooks/use-session";
 
 export function AccessSettings({ email }: { email: string }) {
 	const id = useId();
 	const [currentEmail, setCurrentEmail] = useState(email);
 	const [dialog, setDialog] = useState<"email" | "password" | null>(null);
+
+	const { data: session } = useSession();
+	const passwordEnabled = canChangePassword(session ?? null);
 
 	const rows = [
 		{
@@ -18,12 +23,16 @@ export function AccessSettings({ email }: { email: string }) {
 			label: "E-mail de acesso",
 			value: currentEmail,
 		},
-		{
-			key: "password",
-			icon: LockIcon,
-			label: "Senha",
-			value: "••••••••••",
-		},
+		...(passwordEnabled
+			? [
+					{
+						key: "password",
+						icon: LockIcon,
+						label: "Senha",
+						value: "••••••••••",
+					} as const,
+				]
+			: []),
 	] as const;
 
 	return (
@@ -60,6 +69,12 @@ export function AccessSettings({ email }: { email: string }) {
 					</li>
 				))}
 			</ul>
+
+			{!passwordEnabled && (
+				<p className="mt-4 text-sm text-muted-foreground">
+					Você entra com sua conta Google, sem senha da Checkauto.
+				</p>
+			)}
 
 			<ChangeEmailDialog
 				open={dialog === "email"}

@@ -26,7 +26,7 @@ function session(expires: number): Session {
 			name: "Cliente Teste",
 			email: "cliente@exemplo.com",
 			profile: "4",
-			profileComplete: true,
+			authProvider: "credentials",
 		},
 		accessToken: "access",
 		refreshToken: `header.${refreshPayload}.signature`,

@@ -21,7 +21,10 @@ npx biome format --write docs/api/openapi.json
 | Validar token         | `POST /token/verify/`                                | `token`                                                                      |
 | Cadastro              | `POST /signup/` (raiz, público)                      | campos em `cadastro-aceite-contrato.md`; `user/signup/` é só do Corp (admin) |
 | Esqueci a senha       | `POST /user/forgot-password/`                        | corpo não documentado no Swagger                                             |
-| Trocar senha          | `POST /user/change-password/`                        | corpo não documentado no Swagger                                             |
+| Trocar senha          | `POST /user/change-password/`                        | `current_password`, `new_password`, `new_password_again` (formato do Corp)   |
+| Login com Google      | `POST /user/login/google/`                           | fora do Swagger; `{ id_token }`; resposta na raiz, como o `/token/`          |
+| Cadastro com Google   | `POST /user/signup/google/`                          | fora do Swagger; `id_token`, PF/PJ, endereço, aceite; resposta em `content`  |
+| Definir senha         | `POST /user/password/set/`                           | migrados; o site envia `email`, `password` (a confirmar)                     |
 | Meus dados e endereço | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/` | nome, e-mail, CPF, telefone e um único endereço (`cep`, `street`…)           |
 | Créditos              | `GET /wallet/movements/`                             | usuário web (perfil 4) vê só a própria carteira                              |
 | Pedidos               | `GET /order/list/`, `GET /order/retrieve/{id}/`      | perfil 4 vê só os próprios pedidos                                           |
