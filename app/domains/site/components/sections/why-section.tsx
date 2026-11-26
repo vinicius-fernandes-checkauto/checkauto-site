@@ -10,7 +10,7 @@ import {
 } from "~/shared/components/icons";
 import { cn } from "~/shared/lib/utils";
 
-const sources = ["SENATRAN", "DETRANs", "Seguradoras", "Leiloeiros"];
+const sources = ["SENATRAN", "DETRANs", "PRODESP", "Leiloeiros"];
 
 const topics = ["Leilão", "Roubo e furto", "Gravame", "Recall"];
 
