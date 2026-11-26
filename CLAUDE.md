@@ -10,11 +10,11 @@ Contexto, regras e critérios para qualquer IA (ou pessoa) que for mexer neste p
 
 Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular pela placa, vendida em pacotes (Standard, Master, Plus). O projeto é o **redesign** do site, com três áreas:
 
-| Área            | Rotas                                                                                        | Layout                 |
-| --------------- | -------------------------------------------------------------------------------------------- | ---------------------- |
-| Site público    | `/`, `/pacotes/:planId`, `/faq`, `/contato`, `/carrinho`, páginas institucionais e jurídicas | `app/routes/_site.tsx` |
-| Autenticação    | `/entrar`, `/cadastro`, `/redefinir-senha`                                                   | `app/routes/_auth.tsx` |
-| Área do cliente | `/conta` (redireciona), `/conta/consultas`, `/conta/meus-dados`, `/conta/transacoes`         | `app/routes/conta.tsx` |
+| Área            | Rotas                                                                                              | Layout                 |
+| --------------- | -------------------------------------------------------------------------------------------------- | ---------------------- |
+| Site público    | `/`, `/pacotes/:planId`, `/faq`, `/contato`, `/carrinho`, páginas institucionais e jurídicas       | `app/routes/_site.tsx` |
+| Autenticação    | `/entrar`, `/cadastro`, `/completar-cadastro`, `/redefinir-senha`, `/nova-senha`, `/definir-senha` | `app/routes/_auth.tsx` |
+| Área do cliente | `/conta` (redireciona), `/conta/consultas`, `/conta/meus-dados`, `/conta/transacoes`               | `app/routes/conta.tsx` |
 
 **Fase atual: interface pronta e integração com a API em andamento, começando pelo auth** (o que já está integrado fica no `PRODUCT.md` §5). O resto ainda usa dados de demonstração (`<domínio>.mock.ts` e `useState`). Ao entregar, diga quando a tela sugere um comportamento real que ainda não existe, como "Mensagem enviada".
 
@@ -88,6 +88,8 @@ app/
 `content/` são **dados** e fica isolado de propósito, porque vai ser substituído pelo Sanity: ele **não importa nada** de `domains/` nem de `shared/`.
 
 O contrato da API do backend fica em `docs/api/`, e o fluxo e a arquitetura do auth em `docs/fluxo-auth.md`.
+
+**A pasta `docs/` fica sempre atualizada (regra).** Mudou rota, endpoint, corpo de requisição, fluxo ou descobriu algo do backend num teste? Atualize o documento correspondente na mesma entrega e liste na resposta final o que mudou em `docs/`.
 
 Rotas:
 
@@ -324,4 +326,5 @@ Padrão do campo:
 - [ ] Formulários com React Hook Form + zod (seção 10.1).
 - [ ] Sem comentários novos no código.
 - [ ] Typecheck, Biome e (quando necessário) build passando.
+- [ ] `docs/` atualizada com o que mudou (seção 4).
 - [ ] Na entrega, apontar o que é só interface e o que ficou pendente.

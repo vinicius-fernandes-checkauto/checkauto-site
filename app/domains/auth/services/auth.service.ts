@@ -204,6 +204,10 @@ export function setPassword({ email, password }: SetPasswordFormValues) {
 	return authApi.setPassword({ email, password });
 }
 
+export function resetPassword(token: string, password: string) {
+	return authApi.resetPassword({ token, password });
+}
+
 export async function forgotPassword(email: string) {
 	try {
 		await authApi.forgotPassword(email);

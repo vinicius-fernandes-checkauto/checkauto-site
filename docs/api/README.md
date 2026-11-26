@@ -2,7 +2,7 @@
 
 Especificações complementares do backend: [`cadastro-aceite-contrato.md`](cadastro-aceite-contrato.md) (aceite do contrato, consentimento de marketing, reCAPTCHA no cadastro, login com Google).
 
-`openapi.json` é uma cópia do Swagger do backend (Info Magic Service, Swagger 2.0, 137 endpoints), atualizada em 25/11/2026 a partir de `https://dashiest-frazzledly-vihaan.ngrok-free.dev/swagger/`.
+`openapi.json` é uma cópia do Swagger do backend (Info Magic Service, Swagger 2.0, 139 endpoints), atualizada em 26/11/2026 a partir de `https://dashiest-frazzledly-vihaan.ngrok-free.dev/swagger/`.
 
 O endereço do ngrok muda quando o túnel reinicia. Para atualizar a cópia com o endereço novo:
 
@@ -14,20 +14,21 @@ npx biome format --write docs/api/openapi.json
 
 ## Endpoints que o site usa
 
-| Fluxo                 | Método e rota                                        | Observação                                                                   |
-| --------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Login                 | `POST /token/`                                       | `username`, `password` (+ `recaptcha_token`/`recaptcha_token_v2`). JWT       |
-| Renovar sessão        | `POST /token/refresh/`                               | `refresh` → `access`                                                         |
-| Validar token         | `POST /token/verify/`                                | `token`                                                                      |
-| Cadastro              | `POST /signup/` (raiz, público)                      | campos em `cadastro-aceite-contrato.md`; `user/signup/` é só do Corp (admin) |
-| Esqueci a senha       | `POST /user/forgot-password/`                        | corpo não documentado no Swagger                                             |
-| Trocar senha          | `POST /user/change-password/`                        | `current_password`, `new_password`, `new_password_again` (formato do Corp)   |
-| Login com Google      | `POST /user/login/google/`                           | fora do Swagger; `{ id_token }`; resposta na raiz, como o `/token/`          |
-| Cadastro com Google   | `POST /user/signup/google/`                          | fora do Swagger; `id_token`, PF/PJ, endereço, aceite; resposta em `content`  |
-| Definir senha         | `POST /user/password/set/`                           | migrados; o site envia `email`, `password` (a confirmar)                     |
-| Meus dados e endereço | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/` | nome, e-mail, CPF, telefone e um único endereço (`cep`, `street`…)           |
-| Créditos              | `GET /wallet/movements/`                             | usuário web (perfil 4) vê só a própria carteira                              |
-| Pedidos               | `GET /order/list/`, `GET /order/retrieve/{id}/`      | perfil 4 vê só os próprios pedidos                                           |
+| Fluxo                 | Método e rota                                        | Observação                                                                                     |
+| --------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Login                 | `POST /token/`                                       | `username`, `password` (+ `recaptcha_token`/`recaptcha_token_v2`). JWT                         |
+| Renovar sessão        | `POST /token/refresh/`                               | `refresh` → `access`                                                                           |
+| Validar token         | `POST /token/verify/`                                | `token`                                                                                        |
+| Cadastro              | `POST /signup/` (raiz, público)                      | campos em `cadastro-aceite-contrato.md`; `user/signup/` é só do Corp (admin)                   |
+| Esqueci a senha       | `POST /user/forgot-password/`                        | corpo não documentado no Swagger                                                               |
+| Trocar senha          | `POST /user/change-password/`                        | `current_password`, `new_password`, `new_password_again` (formato do Corp)                     |
+| Login com Google      | `POST /user/login/google/`                           | no Swagger sem corpo descrito; `{ id_token }`; resposta na raiz, como o `/token/`              |
+| Cadastro com Google   | `POST /user/signup/google/`                          | no Swagger sem corpo descrito; `id_token`, PF/PJ, endereço, aceite; resposta em `content`      |
+| Definir senha         | `POST /user/password/set/`                           | migrados; o site envia `email`, `password` (a confirmar). Em 26/11/2026: `404`                 |
+| Criar senha nova      | `POST /user/password/reset/`                         | **não existe no backend**; rota suposta pela tela `/nova-senha`, que envia `token`, `password` |
+| Meus dados e endereço | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/` | nome, e-mail, CPF, telefone e um único endereço (`cep`, `street`…)                             |
+| Créditos              | `GET /wallet/movements/`                             | usuário web (perfil 4) vê só a própria carteira                                                |
+| Pedidos               | `GET /order/list/`, `GET /order/retrieve/{id}/`      | perfil 4 vê só os próprios pedidos                                                             |
 
 Autenticação: header `Authorization: Bearer <access>`.
 
@@ -47,6 +48,9 @@ integralmente pelo backend.
 - O Swagger repete o corpo da requisição como resposta em `/token/` e `/token/refresh/`; confirmar o formato real (esperado: `access` e `refresh`).
 - `forgot-password` e `change-password` não têm corpo documentado. A chamada de recuperação usa `{ "email": ... }`, conforme o fluxo legado do CK-CORP, até confirmação do backend.
 - O Swagger lista `POST /signup/` e `GET /user/terms/current/`, mas não descreve o corpo do cadastro nem a resposta dos termos. Os campos do cadastro e o formato do contrato estão em `cadastro-aceite-contrato.md`.
+- `forgot-password` com e-mail sem conta responde `400` com `{ content: { message: "Opss.. Por favor tente novamente mais tarde!" } }` (26/11/2026). Confirmar se é o esperado.
+- Depois do e-mail de recuperação: falta a rota que cria a senha nova (o site supõe `POST /user/password/reset/ { token, password }`).
+- CORS: `http://localhost:3000` liberado; o domínio da Vercel ainda não (26/11/2026).
 - O usuário tem **um** endereço nos campos do próprio cadastro; a tela de endereços do redesign permite vários.
 - Não há rota de "meu usuário" (`/me`): o `id` precisa vir do token ou do login.
 - Recuperação de senha por código e troca obrigatória no próximo acesso (CKCORP1-63) não aparecem no contrato.

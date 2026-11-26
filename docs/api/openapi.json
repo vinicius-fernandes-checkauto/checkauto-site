@@ -3745,6 +3745,17 @@
 			},
 			"parameters": []
 		},
+		"/user/login/google/": {
+			"post": {
+				"operationId": "user_login_google_create",
+				"summary": "Login com Google (`POST user/login/google/`), aberto: o front envia o `id_token` do Google Identity Services.",
+				"description": "Responde no formato do `/token/` (JSON puro, tokens e dados do usuário na raiz). Só perfil Web entra por aqui.\nE-mail sem cadastro devolve 404 `google_signup_required` e NÃO cria usuário (o cadastro é `signup/google/`).\nA conta é identificada pelo `sub` do Google; o e-mail só a localiza na primeira vez, e só uma conta que ainda\nnão tem senha utilizável (cliente migrado) é vinculada ao Google, depois disso a senha não volta a existir.",
+				"parameters": [],
+				"responses": { "201": { "description": "" } },
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
 		"/user/retrieve/{id}/": {
 			"get": {
 				"operationId": "user_retrieve_read",
@@ -3779,10 +3790,21 @@
 			},
 			"parameters": []
 		},
+		"/user/signup/google/": {
+			"post": {
+				"operationId": "user_signup_google_create",
+				"summary": "Cadastro de cliente Web pelo Google (`POST user/signup/google/`), aberto.",
+				"description": "Revalida o `id_token` (o mesmo do `login/google/`), cria o usuário com as regras do cadastro público (PF/PJ,\nCPF/CNPJ, endereço, aceite do contrato) e senha inutilizável, e já devolve os tokens de login. Não pede reCAPTCHA:\no Google prova a identidade. Responde no envelope do `/signup/`.",
+				"parameters": [],
+				"responses": { "201": { "description": "" } },
+				"tags": ["user"]
+			},
+			"parameters": []
+		},
 		"/user/terms/current/": {
 			"get": {
 				"operationId": "user_terms_current_list",
-				"description": "Contrato vigente (texto e versão) para o cadastro e para a página \"Meus dados\".",
+				"description": "Contrato vigente (texto e versão) para o cadastro e para a página \"Meus dados\". Público e sem autenticação:\ntoken vencido no navegador não pode dar 401 aqui.",
 				"parameters": [],
 				"responses": { "200": { "description": "" } },
 				"tags": ["user"]
