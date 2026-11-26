@@ -71,7 +71,7 @@ export function SocialSignIn({
 					id={GOOGLE_SIGN_IN_ID}
 					ref={mount}
 					data-highlighted={highlighted || undefined}
-					className="flex min-h-11 w-full scroll-mt-24 justify-center *:rounded-full *:transition-shadow data-highlighted:*:ring-3 data-highlighted:*:ring-primary data-highlighted:*:ring-offset-4 data-highlighted:*:ring-offset-background"
+					className="flex min-h-11 w-full scroll-mt-24 justify-center *:rounded-full *:transition-shadow data-highlighted:*:animate-pulse data-highlighted:*:ring-3 data-highlighted:*:ring-primary data-highlighted:*:ring-offset-4 data-highlighted:*:ring-offset-background motion-reduce:*:animate-none"
 				/>
 				{/* <button
 					type="button"

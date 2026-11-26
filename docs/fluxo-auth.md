@@ -112,7 +112,7 @@ sequenceDiagram
     end
 ```
 
-- **Conta do Google no login por senha** (backend, 27/11/2026): se o e-mail for de uma conta criada ou vinculada ao Google, o `POST /token/` responde `401` com `{ detail, code: "google_account" }`, qualquer que seja a senha. O site mostra o `detail` embaixo do formulário, destaca o botão do Google (anel verde) e rola a tela até ele.
+- **Conta do Google no login por senha** (backend, 27/11/2026): se o e-mail for de uma conta criada ou vinculada ao Google, o `POST /token/` responde `401` com `{ detail, code: "google_account" }`, qualquer que seja a senha. O site mostra o `detail` embaixo do formulário, destaca o botão do Google (anel verde pulsando, parado para quem pede menos movimento) e rola a tela até ele.
 - **Senha errada em conta normal:** continua `401` com `"Usuário e/ou senha incorreto(s)"`, **sem** `code`.
 - **Ordem das checagens:** o reCAPTCHA vem antes. Sem token válido, o erro é o do reCAPTCHA, não o `google_account`.
 
