@@ -1,16 +1,22 @@
-import { useId, useState } from "react";
+import { debounce, useQueryStates } from "nuqs";
+import { useEffect, useId, useState } from "react";
+import { useNavigation, useRevalidator } from "react-router";
+import { toast } from "sonner";
 
-import { fieldControlClassName } from "~/domains/account/components/form-field";
 import { Pagination } from "~/domains/account/components/pagination";
 import { StatusBadge } from "~/domains/account/components/status-badge";
+import { requeryQuery } from "~/domains/account/services/account.service";
 import type {
-	QueryFilters,
+	QueryPage,
 	VehicleQuery,
 } from "~/domains/account/types/account.types";
 import {
-	filterQueries,
-	formatDateTime,
+	canRequery,
+	isRunning,
+	MAX_QUERY_MONTHS,
 	QUERIES_PER_PAGE,
+	queryPeriod,
+	querySearchParams,
 	queryStatus,
 } from "~/domains/account/utils/queries";
 import {
@@ -18,157 +24,186 @@ import {
 	RefreshCwIcon,
 	SearchIcon,
 } from "~/shared/components/icons";
+import { PeriodFilter } from "~/shared/components/period-filter";
 import { Button } from "~/shared/components/ui/button";
+import {
+	Empty,
+	EmptyDescription,
+	EmptyMedia,
+	EmptyTitle,
+} from "~/shared/components/ui/empty";
+import { Field, FieldLabel } from "~/shared/components/ui/field";
+import { Input } from "~/shared/components/ui/input";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "~/shared/components/ui/tooltip";
+import { toApiError } from "~/shared/lib/api";
 import { cn } from "~/shared/lib/utils";
 
-const emptyFilters: QueryFilters = { plate: "", from: "", to: "" };
+const POLL_INTERVAL = 30_000;
 
-function RetryButton({
-	query,
-	onRetry,
-}: {
+type RequeryButtonProps = {
 	query: VehicleQuery;
-	onRetry: (code: string) => void;
-}) {
+	disabled: boolean;
+	onRequery: (query: VehicleQuery) => void;
+};
+
+function RequeryButton({ query, disabled, onRequery }: RequeryButtonProps) {
 	return (
-		<Button
-			type="button"
-			size="sm"
-			className="h-9 min-h-9 px-4 text-xs"
-			onClick={() => onRetry(query.code)}
-		>
-			<RefreshCwIcon aria-hidden="true" />
-			Consultar
-			<span className="sr-only"> novamente a placa {query.plate}</span>
-		</Button>
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<Button
+					type="button"
+					size="icon-sm"
+					disabled={disabled}
+					onClick={() => onRequery(query)}
+				>
+					<RefreshCwIcon aria-hidden="true" />
+					<span className="sr-only">Reconsultar a placa {query.plate}</span>
+				</Button>
+			</TooltipTrigger>
+			<TooltipContent>Reconsultar</TooltipContent>
+		</Tooltip>
 	);
 }
 
-export function QueryHistory({
-	queries: initial,
-}: {
-	queries: VehicleQuery[];
-}) {
+export function QueryHistory({ queries, total }: QueryPage) {
 	const baseId = useId();
-	const [queries, setQueries] = useState(initial);
-	const [filters, setFilters] = useState(emptyFilters);
-	const [page, setPage] = useState(1);
+	const [filters, setFilters] = useQueryStates(querySearchParams, {
+		shallow: false,
+		history: "replace",
+	});
+	const navigation = useNavigation();
+	const revalidator = useRevalidator();
+	const [requerying, setRequerying] = useState<string | null>(null);
 
-	const filtered = filterQueries(queries, filters);
-	const pageCount = Math.max(1, Math.ceil(filtered.length / QUERIES_PER_PAGE));
-	const current = Math.min(page, pageCount);
-	const visible = filtered.slice(
-		(current - 1) * QUERIES_PER_PAGE,
-		current * QUERIES_PER_PAGE,
-	);
-	const hasFilters = Boolean(filters.plate || filters.from || filters.to);
+	const loading =
+		navigation.state === "loading" || revalidator.state === "loading";
+	const pageCount = Math.max(1, Math.ceil(total / QUERIES_PER_PAGE));
+	const page = Math.min(Math.max(1, filters.pagina), pageCount);
+	const hasFilters = Boolean(filters.placa || filters.de || filters.ate);
+	const period = queryPeriod(filters);
+	const running = queries.some(({ status }) => isRunning(status));
 
-	function updateFilter(name: keyof QueryFilters, value: string) {
-		setFilters((previous) => ({ ...previous, [name]: value }));
-		setPage(1);
-	}
+	useEffect(() => {
+		if (!running) return;
 
-	function retry(code: string) {
-		setQueries((previous) =>
-			previous.map((query) =>
-				query.code === code ? { ...query, status: "processing" } : query,
-			),
-		);
+		const timer = setInterval(() => {
+			void revalidator.revalidate();
+		}, POLL_INTERVAL);
+		return () => clearInterval(timer);
+	}, [running, revalidator]);
+
+	async function requery(query: VehicleQuery) {
+		setRequerying(query.id);
+		try {
+			await requeryQuery(query.id);
+			toast.success("Reconsulta iniciada", {
+				description: `Placa ${query.plate}. O resultado aparece aqui em instantes.`,
+			});
+			await revalidator.revalidate();
+		} catch (error) {
+			toast.error(toApiError(error).message);
+		} finally {
+			setRequerying(null);
+		}
 	}
 
 	return (
 		<section aria-label="Consultas realizadas" className="flex flex-col gap-4">
-			<fieldset className="grid grid-cols-2 gap-3 rounded-3xl border border-border bg-card p-4 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end">
+			<fieldset className="grid grid-cols-2 gap-3 rounded-3xl border border-border bg-card p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end">
 				<legend className="sr-only">Filtrar consultas</legend>
-				<label className="col-span-2 flex flex-col gap-1.5 sm:col-span-1">
-					<span className="px-1 text-[0.8125rem] font-medium text-heading">
-						Placa
-					</span>
-					<span className="relative">
+				<Field className="col-span-2 sm:col-span-1">
+					<FieldLabel htmlFor={`${baseId}-placa`}>Placa</FieldLabel>
+					<div className="relative">
 						<SearchIcon
 							aria-hidden="true"
 							className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
 						/>
-						<input
+						<Input
+							id={`${baseId}-placa`}
 							type="search"
-							value={filters.plate}
-							onChange={(event) => updateFilter("plate", event.target.value)}
+							value={filters.placa}
+							onChange={(event) =>
+								void setFilters(
+									{ placa: event.target.value, pagina: 1 },
+									{ limitUrlUpdates: debounce(400) },
+								)
+							}
 							placeholder="Buscar placa"
 							autoComplete="off"
-							className={cn(
-								fieldControlClassName,
-								"pl-10 uppercase placeholder:normal-case",
-							)}
+							className="pl-10 uppercase placeholder:normal-case"
 						/>
-					</span>
-				</label>
-				<label className="flex flex-col gap-1.5">
-					<span className="px-1 text-[0.8125rem] font-medium text-heading">
-						De
-					</span>
-					<input
-						type="date"
-						value={filters.from}
-						max={filters.to || undefined}
-						onChange={(event) => updateFilter("from", event.target.value)}
-						className={cn(
-							fieldControlClassName,
-							"px-3 max-sm:text-[0.8125rem]",
-						)}
+					</div>
+				</Field>
+				<Field className="col-span-2 sm:col-span-1">
+					<FieldLabel htmlFor={`${baseId}-periodo`}>Período</FieldLabel>
+					<PeriodFilter
+						id={`${baseId}-periodo`}
+						value={
+							filters.de && filters.ate
+								? { from: filters.de, to: filters.ate }
+								: null
+						}
+						onChange={(next) =>
+							void setFilters({
+								de: next?.from ?? null,
+								ate: next?.to ?? null,
+								pagina: 1,
+							})
+						}
+						defaultLabel={`Últimos ${MAX_QUERY_MONTHS} meses`}
+						maxMonths={MAX_QUERY_MONTHS}
 					/>
-				</label>
-				<label className="flex flex-col gap-1.5">
-					<span className="px-1 text-[0.8125rem] font-medium text-heading">
-						Até
-					</span>
-					<input
-						type="date"
-						value={filters.to}
-						min={filters.from || undefined}
-						onChange={(event) => updateFilter("to", event.target.value)}
-						className={cn(
-							fieldControlClassName,
-							"px-3 max-sm:text-[0.8125rem]",
-						)}
-					/>
-				</label>
+				</Field>
 				<Button
 					type="button"
 					variant="ghost"
 					size="sm"
 					disabled={!hasFilters}
-					onClick={() => {
-						setFilters(emptyFilters);
-						setPage(1);
-					}}
+					onClick={() => void setFilters(null)}
 					className="col-span-2 sm:col-span-1"
 				>
 					Limpar filtros
 				</Button>
+				{period.exceeded && (
+					<p className="col-span-2 px-1 text-xs/5 text-muted-foreground sm:col-span-3">
+						O período máximo é de {MAX_QUERY_MONTHS} meses. Mostrando as
+						consultas dos {MAX_QUERY_MONTHS} meses anteriores à data final.
+					</p>
+				)}
 			</fieldset>
 
 			<p id={`${baseId}-resultado`} role="status" className="sr-only">
-				{filtered.length} consultas encontradas
+				{loading ? "Carregando consultas…" : `${total} consultas encontradas`}
 			</p>
 
-			{visible.length === 0 ? (
-				<div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-brand-blue/20 px-6 py-12 text-center">
-					<span className="flex size-12 items-center justify-center rounded-full bg-brand-blue/6 text-heading">
-						<FileSearchIcon aria-hidden="true" className="size-5" />
-					</span>
-					<p className="font-semibold text-heading">
+			{queries.length === 0 ? (
+				<Empty>
+					<EmptyMedia>
+						<FileSearchIcon />
+					</EmptyMedia>
+					<EmptyTitle>
 						{hasFilters
 							? "Nenhuma consulta encontrada"
 							: "Nenhuma consulta ainda"}
-					</p>
-					<p className="max-w-[40ch] text-sm/6 text-muted-foreground">
+					</EmptyTitle>
+					<EmptyDescription>
 						{hasFilters
 							? "Confira a placa ou o período e tente de novo."
-							: "As consultas que você fizer aparecem aqui."}
-					</p>
-				</div>
+							: `As consultas dos últimos ${MAX_QUERY_MONTHS} meses aparecem aqui.`}
+					</EmptyDescription>
+				</Empty>
 			) : (
-				<div className="overflow-hidden rounded-3xl border border-border bg-card">
+				<div
+					aria-busy={loading}
+					className={cn(
+						"overflow-hidden rounded-3xl border border-border bg-card transition-opacity",
+						loading && "opacity-60",
+					)}
+				>
 					<table className="w-full text-left text-sm max-md:hidden">
 						<thead className="border-b border-border text-xs font-medium tracking-wide text-muted-foreground uppercase">
 							<tr>
@@ -193,8 +228,8 @@ export function QueryHistory({
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-border">
-							{visible.map((query) => (
-								<tr key={query.code}>
+							{queries.map((query) => (
+								<tr key={query.id}>
 									<td className="py-3 pl-6 font-medium text-heading tabular-nums">
 										{query.code}
 									</td>
@@ -205,7 +240,7 @@ export function QueryHistory({
 										{query.plan}
 									</td>
 									<td className="px-4 py-3 whitespace-nowrap text-muted-foreground tabular-nums">
-										{formatDateTime(query.date)}
+										{query.date}
 									</td>
 									<td className="px-4 py-3">
 										<StatusBadge tone={queryStatus[query.status].tone}>
@@ -213,8 +248,12 @@ export function QueryHistory({
 										</StatusBadge>
 									</td>
 									<td className="py-2 pr-6 text-right">
-										{query.status === "error" && (
-											<RetryButton query={query} onRetry={retry} />
+										{canRequery(query.status) && (
+											<RequeryButton
+												query={query}
+												disabled={requerying !== null}
+												onRequery={requery}
+											/>
 										)}
 									</td>
 								</tr>
@@ -223,27 +262,31 @@ export function QueryHistory({
 					</table>
 
 					<ul className="divide-y divide-border md:hidden">
-						{visible.map((query) => (
-							<li key={query.code} className="flex flex-col gap-2 p-4">
-								<div className="flex items-start justify-between gap-3">
-									<span className="text-sm/5 font-semibold tracking-wider text-heading">
-										{query.plate}
-									</span>
-									<StatusBadge tone={queryStatus[query.status].tone}>
-										{queryStatus[query.status].label}
-									</StatusBadge>
-								</div>
-								<p className="text-xs/5 text-muted-foreground">
-									Consulta <span className="tabular-nums">{query.code}</span> ·{" "}
-									{query.plan}
-								</p>
-								<p className="text-xs/5 text-muted-foreground tabular-nums">
-									{formatDateTime(query.date)}
-								</p>
-								{query.status === "error" && (
-									<div>
-										<RetryButton query={query} onRetry={retry} />
+						{queries.map((query) => (
+							<li key={query.id} className="flex items-center gap-3 p-4">
+								<div className="flex min-w-0 flex-1 flex-col gap-2">
+									<div className="flex items-start justify-between gap-3">
+										<span className="text-sm/5 font-semibold tracking-wider text-heading">
+											{query.plate}
+										</span>
+										<StatusBadge tone={queryStatus[query.status].tone}>
+											{queryStatus[query.status].label}
+										</StatusBadge>
 									</div>
+									<p className="text-xs/5 text-muted-foreground">
+										Consulta <span className="tabular-nums">{query.code}</span>{" "}
+										· {query.plan}
+									</p>
+									<p className="text-xs/5 text-muted-foreground tabular-nums">
+										{query.date}
+									</p>
+								</div>
+								{canRequery(query.status) && (
+									<RequeryButton
+										query={query}
+										disabled={requerying !== null}
+										onRequery={requery}
+									/>
 								)}
 							</li>
 						))}
@@ -251,13 +294,15 @@ export function QueryHistory({
 				</div>
 			)}
 
-			{filtered.length > QUERIES_PER_PAGE && (
+			{total > QUERIES_PER_PAGE && (
 				<Pagination
-					page={current}
+					page={page}
 					pageCount={pageCount}
-					total={filtered.length}
+					total={total}
 					pageSize={QUERIES_PER_PAGE}
-					onPageChange={setPage}
+					onPageChange={(pagina) =>
+						void setFilters({ pagina }, { history: "push" })
+					}
 					label="Páginas do histórico de consultas"
 				/>
 			)}

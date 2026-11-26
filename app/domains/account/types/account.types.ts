@@ -1,6 +1,9 @@
 import type { z } from "zod";
 
-import type { userDetailSchema } from "~/domains/account/utils/account.schema";
+import type {
+	callListSchema,
+	userDetailSchema,
+} from "~/domains/account/utils/account.schema";
 
 export type AccountUser = {
 	name: string;
@@ -49,9 +52,15 @@ export type AccountProfile = {
 	termsAcceptedAt: string;
 };
 
-export type QueryStatus = "done" | "processing" | "error";
+export type QueryStatus =
+	| "queued"
+	| "processing"
+	| "done"
+	| "error"
+	| "unavailable";
 
 export type VehicleQuery = {
+	id: string;
 	code: string;
 	plate: string;
 	plan: string;
@@ -60,9 +69,25 @@ export type VehicleQuery = {
 };
 
 export type QueryFilters = {
-	plate: string;
-	from: string;
-	to: string;
+	placa: string;
+	de: string;
+	ate: string;
+	pagina: number;
+};
+
+export type QueryPage = {
+	queries: VehicleQuery[];
+	total: number;
+};
+
+export type CallList = z.infer<typeof callListSchema>;
+
+export type CallListParams = {
+	initial_date: string;
+	final_date: string;
+	page: number;
+	page_size: number;
+	search?: string;
 };
 
 export type TransactionStatus = "paid" | "pending" | "refunded";

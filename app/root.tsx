@@ -1,3 +1,4 @@
+import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
 import {
 	isRouteErrorResponse,
 	Links,
@@ -10,6 +11,7 @@ import {
 import logo from "~/assets/brand/checkauto-logo.png";
 import { ErrorPage } from "~/shared/components/error-page";
 import { Toaster } from "~/shared/components/ui/sonner";
+import { TooltipProvider } from "~/shared/components/ui/tooltip";
 import { jsonLdScript, organizationJsonLd } from "~/shared/lib/seo";
 
 import type { Route } from "./+types/root";
@@ -45,7 +47,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return <Outlet />;
+	return (
+		<NuqsAdapter>
+			<TooltipProvider>
+				<Outlet />
+			</TooltipProvider>
+		</NuqsAdapter>
+	);
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -8,6 +8,7 @@ export {
 	BadgeCheckIcon,
 	BanIcon,
 	Building2Icon,
+	CalendarDaysIcon,
 	CarFrontIcon,
 	CarIcon,
 	CheckIcon,

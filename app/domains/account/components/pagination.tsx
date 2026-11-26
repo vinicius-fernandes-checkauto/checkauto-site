@@ -13,6 +13,26 @@ type PaginationProps = {
 const arrowClassName =
 	"flex size-11 items-center justify-center rounded-full border border-border bg-card text-heading transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40";
 
+function pageItems(page: number, pageCount: number) {
+	if (pageCount <= 7) {
+		return Array.from({ length: pageCount }, (_, index) => index + 1);
+	}
+
+	const numbers = [1, page - 1, page, page + 1, pageCount].filter(
+		(number, index, list) =>
+			number >= 1 && number <= pageCount && list.indexOf(number) === index,
+	);
+	const items: (number | string)[] = [];
+	for (const number of numbers) {
+		const previous = items.at(-1);
+		if (typeof previous === "number" && number - previous > 1) {
+			items.push(`gap-${number}`);
+		}
+		items.push(number);
+	}
+	return items;
+}
+
 export function Pagination({
 	page,
 	pageCount,
@@ -42,22 +62,30 @@ export function Pagination({
 					<ChevronLeftIcon aria-hidden="true" className="size-4.5" />
 					<span className="sr-only">Página anterior</span>
 				</button>
-				{Array.from({ length: pageCount }, (_, index) => index + 1).map(
-					(number) => (
+				{pageItems(page, pageCount).map((item) =>
+					typeof item === "string" ? (
+						<span
+							key={item}
+							aria-hidden="true"
+							className="flex size-8 items-center justify-center text-sm text-muted-foreground"
+						>
+							…
+						</span>
+					) : (
 						<button
-							key={number}
+							key={item}
 							type="button"
-							onClick={() => onPageChange(number)}
-							aria-current={number === page ? "page" : undefined}
+							onClick={() => onPageChange(item)}
+							aria-current={item === page ? "page" : undefined}
 							className={cn(
 								"flex size-11 items-center justify-center rounded-full text-sm font-medium tabular-nums transition-colors",
-								number === page
+								item === page
 									? "bg-secondary text-secondary-foreground"
 									: "text-muted-foreground hover:bg-muted hover:text-heading",
 							)}
 						>
 							<span className="sr-only">Página </span>
-							{number}
+							{item}
 						</button>
 					),
 				)}

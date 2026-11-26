@@ -1,6 +1,6 @@
 # Fluxo de autenticação
 
-Como o login funciona hoje no **Checkauto Corp** e como vai funcionar no **site novo**: entrar com e-mail e senha, sessão em cookies, cadastro, login com Google, completar cadastro, esqueci a senha e primeiro acesso.
+Como o login funciona no **Checkauto Corp** e no **site novo**: entrar com e-mail e senha, sessão em cookies, cadastro, login com Google, completar cadastro, esqueci a senha e primeiro acesso.
 
 Os diagramas usam [Mermaid](https://mermaid.js.org/) e aparecem desenhados no GitHub e no VS Code (com a extensão de preview de Markdown com Mermaid).
 
@@ -17,29 +17,29 @@ flowchart LR
     S <-->|"cookies da sessão<br/>access, refresh, usuário"| C[("Cookies do<br/>navegador")]
     S <-->|"JSON + Authorization: Bearer"| A["API Checkauto<br/>(Django)"]
     S <-->|"reCAPTCHA v3 / v2"| R["Google reCAPTCHA"]
-    S <-.->|"⏳ login com Google"| G["Google"]
-    A -.->|"⏳ valida a conta Google"| G
+    S <-->|"login com Google"| G["Google"]
+    A -->|"valida a conta Google"| G
 ```
 
 - **Site:** é estático (sem servidor próprio). Tudo acontece no navegador, que chama a API diretamente.
-- **Cookies:** guardam a sessão (access token, refresh token e dados básicos do usuário). Como quem grava é o JavaScript do site, **não** são `HttpOnly`; o mesmo modelo do Corp.
+- **Cookie:** um só (`checkauto.session-token`) guarda a sessão (access token, refresh token e dados básicos do usuário). Como quem grava é o JavaScript do site, **não** são `HttpOnly`; o mesmo modelo do Corp.
 - **API:** autentica por JWT. Toda rota protegida recebe `Authorization: Bearer <access>`.
 - **Tokens:** o `access` abre as rotas protegidas; o `refresh` serve só para pedir um `access` novo quando ele vence.
 
 ## 2. Rotas de auth do backend
 
-| Fluxo               | Rota                                                                                     | Token? | Situação                                 |
-| ------------------- | ---------------------------------------------------------------------------------------- | ------ | ---------------------------------------- |
-| Login               | `POST /token/` (`username`, `password`, `recaptcha_token`, `recaptcha_token_v2`)         | não    | ✅                                       |
-| Renovar sessão      | `POST /token/refresh/` (`refresh`)                                                       | não    | ✅                                       |
-| Validar token       | `POST /token/verify/` (`token`)                                                          | não    | ✅ (não precisamos usar)                 |
-| Texto do contrato   | `GET /user/terms/current/`                                                               | não    | ✅                                       |
-| Cadastro do site    | `POST /signup/`                                                                          | não    | ✅ rota; ⏳ corpo completo               |
-| Esqueci a senha     | `POST /user/forgot-password/` (`email`)                                                  | não    | ✅ rota; ⏳ o que vem depois do e-mail   |
-| Trocar senha        | `POST /user/change-password/` (`current_password`, `new_password`, `new_password_again`) | sim    | ✅ (formato usado pelo Corp)             |
-| Meus dados          | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/`                                     | sim    | ✅                                       |
-| Login com Google    | `POST /user/login/google/` (`id_token`)                                                  | não    | ✅ contrato do backend (fora do Swagger) |
-| Cadastro com Google | `POST /user/signup/google/` (`id_token`, PF/PJ, endereço, aceite)                        | não    | ✅ contrato do backend (fora do Swagger) |
+| Fluxo               | Rota                                                                                     | Token? | Situação                                                |
+| ------------------- | ---------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------- |
+| Login               | `POST /token/` (`username`, `password`, `recaptcha_token`, `recaptcha_token_v2`)         | não    | ✅                                                      |
+| Renovar sessão      | `POST /token/refresh/` (`refresh`)                                                       | não    | ✅                                                      |
+| Validar token       | `POST /token/verify/` (`token`)                                                          | não    | ✅ (não precisamos usar)                                |
+| Texto do contrato   | `GET /user/terms/current/`                                                               | não    | ✅                                                      |
+| Cadastro do site    | `POST /signup/`                                                                          | não    | ✅ corpo completo em `cadastro-aceite-contrato.md` (A6) |
+| Esqueci a senha     | `POST /user/forgot-password/` (`email`)                                                  | não    | ✅ envia e-mail com senha provisória                    |
+| Trocar senha        | `POST /user/change-password/` (`current_password`, `new_password`, `new_password_again`) | sim    | ✅ (formato usado pelo Corp)                            |
+| Meus dados          | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/`                                     | sim    | ✅                                                      |
+| Login com Google    | `POST /user/login/google/` (`id_token`)                                                  | não    | ✅ contrato do backend (fora do Swagger)                |
+| Cadastro com Google | `POST /user/signup/google/` (`id_token`, PF/PJ, endereço, aceite)                        | não    | ✅ contrato do backend (fora do Swagger)                |
 
 Resposta do login (`POST /token/`): `access`, `refresh`, `id`, `name`, `email`, `profile`, `first_login`, `corporate_id`, `corporate_name`, `checkmatch`, `checkmatch_token`. Erros vêm como `{ "detail": "...", "code": "..." }`.
 
@@ -79,7 +79,7 @@ sequenceDiagram
 - **Esqueci a senha:** `POST /user/forgot-password/` com `{ email }`; o backend responde com uma mensagem e manda o e-mail.
 - **Não existe** no Corp: cadastro público, login com Google, completar cadastro.
 
-## 4. Como vai funcionar no site
+## 4. Como funciona no site
 
 ### 4.1 Entrar com e-mail e senha
 
@@ -119,9 +119,9 @@ sequenceDiagram
     participant K as Cookies
     participant API as API
 
-    Tela->>Site: buscar dados (ex.: pedidos)
+    Tela->>Site: buscar dados (ex.: Meus dados)
     Site->>K: lê o access
-    Site->>API: GET /order/list/ + Bearer access
+    Site->>API: GET /user/retrieve/{id}/ + Bearer access
     alt access válido
         API-->>Tela: dados
     else access vencido
@@ -131,7 +131,7 @@ sequenceDiagram
         alt refresh válido
             API-->>Site: access novo (e refresh novo, se houver)
             Site->>K: atualiza a sessão
-            Site->>API: repete GET /order/list/
+            Site->>API: repete GET /user/retrieve/{id}/
             API-->>Tela: dados
         else refresh vencido
             Site->>K: apaga a sessão
@@ -148,13 +148,13 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    A["Pessoa abre /conta/..."] --> B{"Tem sessão nos cookies?"}
+    A["Pessoa abre /conta/..."] --> B{"Tem sessão no cookie?"}
     B -->|Não| C["Vai para /entrar"]
-    B -->|Sim| D{"⏳ Cadastro completo?"}
-    D -->|"Não (veio do Google)"| E["Vai para /completar-cadastro"]
-    D -->|Sim| F["Mostra a página"]
+    B -->|Sim| F["Mostra a página"]
     F --> G["Cada chamada à API ainda é<br/>validada pelo backend"]
 ```
+
+O caminho inverso também vale: quem já está logado e abre `/entrar` ou `/cadastro` vai direto para `/conta`. Quem entra pelo Google sem cadastro só ganha sessão depois de concluir o `/completar-cadastro` (4.5).
 
 A proteção no navegador só decide **qual tela mostrar**. Quem protege os dados de verdade é o backend, que exige o token em cada rota.
 
@@ -307,13 +307,13 @@ stateDiagram-v2
     [*] --> Visitante
     Visitante --> Logado: entrar com e-mail e senha
     Visitante --> Logado: criar conta
-    Visitante --> CadastroIncompleto: ⏳ Google (conta nova)
-    Visitante --> Logado: ⏳ Google (conta completa)
+    Visitante --> CadastroIncompleto: Google (conta nova)
+    Visitante --> Logado: Google (conta que já existe)
     CadastroIncompleto --> Logado: completar cadastro
     Logado --> Logado: token renovado em silêncio
     Logado --> Visitante: sair
     Logado --> Visitante: refresh vencido
-    CadastroIncompleto --> Visitante: sair
+    CadastroIncompleto --> Visitante: desiste
 ```
 
 ## 5. Corp × site
@@ -321,11 +321,11 @@ stateDiagram-v2
 | Assunto            | Corp                                      | Site                                                           |
 | ------------------ | ----------------------------------------- | -------------------------------------------------------------- |
 | Quem usa           | equipe e empresas (perfis internos)       | cliente final (perfil 4)                                       |
-| Sessão             | 3 cookies via JavaScript                  | 3 cookies via JavaScript (mesmo modelo)                        |
-| Login              | e-mail e senha + reCAPTCHA v3/v2          | igual, mais Google ⏳                                          |
+| Sessão             | 3 cookies via JavaScript                  | 1 cookie via JavaScript (mesmo modelo)                         |
+| Login              | e-mail e senha + reCAPTCHA v3/v2          | igual, mais Google                                             |
 | Cadastro           | feito pela equipe (`user/signup/`, admin) | a própria pessoa (`/signup/`, público, com reCAPTCHA e aceite) |
 | Primeiro acesso    | troca de senha obrigatória                | não se aplica                                                  |
-| Completar cadastro | não existe                                | ⏳ depois do Google                                            |
+| Completar cadastro | não existe                                | depois do Google                                               |
 | Token vencido      | refresh automático; falhou → login        | igual                                                          |
 
 ## 6. Perguntas para o backend

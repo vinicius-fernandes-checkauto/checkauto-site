@@ -88,3 +88,17 @@ export const newQuerySchema = z.object({
 
 export type NewQueryValues = z.input<typeof newQuerySchema>;
 export type NewQuery = z.output<typeof newQuerySchema>;
+
+export const callListSchema = z.object({
+	count: z.number(),
+	results: z.array(
+		z.object({
+			id: z.coerce.string().min(1),
+			query_code: z.coerce.string().nullish(),
+			products: z.array(z.unknown()).default([]),
+			status: z.coerce.string(),
+			data: z.unknown().optional(),
+			created_at: z.string().nullish(),
+		}),
+	),
+});

@@ -1,72 +1,13 @@
 import type {
 	AccountUser,
 	CreditEntry,
-	QueryStatus,
 	Transaction,
-	VehicleQuery,
 } from "~/domains/account/types/account.types";
 
 export const demoAccount: AccountUser = {
 	name: "Teste Veículos Ltda",
 	email: "contato@testeveiculos.com.br",
 };
-
-const plates = [
-	"XYZ4E56",
-	"ABC1D23",
-	"ABC1D23",
-	"QRS4T56",
-	"FHE8B03",
-	"BRA2E19",
-	"UPX9028",
-	"FMN4212",
-	"BRF3P97",
-	"GHT7K21",
-	"JKL5M88",
-	"MNO2P34",
-	"RST6U77",
-	"VWX8Y90",
-	"QWE1R23",
-	"ASD4F56",
-	"ZXC7V89",
-	"POI0U98",
-	"LKJ7H65",
-	"MNB4V32",
-	"TYU1I23",
-	"GHJ4K56",
-	"CVB7N89",
-];
-
-const planNames = ["Checkauto Master", "Checkauto Plus", "Checkauto Standard"];
-
-const linkedToTransactions = [
-	{ code: "12320812", plan: "Checkauto Master" },
-	{ code: "12320791", plan: "Checkauto Plus" },
-	{ code: "12318840", plan: "Checkauto Plus" },
-	{ code: "12301177", plan: "Checkauto Standard" },
-	{ code: "12287305", plan: "Checkauto Master" },
-];
-
-const fixedStatus: Record<number, QueryStatus> = {
-	0: "processing",
-	2: "error",
-	9: "error",
-};
-
-export const demoQueries: VehicleQuery[] = plates.map((plate, index) => {
-	const date = new Date(Date.UTC(2026, 10, 23, 14, 32));
-	date.setUTCDate(date.getUTCDate() - index * 4);
-	date.setUTCHours(9 + ((index * 3) % 9), (index * 17) % 60);
-
-	return {
-		code: linkedToTransactions[index]?.code ?? String(12280000 - index * 1979),
-		plate,
-		plan:
-			linkedToTransactions[index]?.plan ?? planNames[index % planNames.length],
-		date: date.toISOString(),
-		status: fixedStatus[index] ?? "done",
-	};
-});
 
 export const demoCreditEntries: CreditEntry[] = [
 	{

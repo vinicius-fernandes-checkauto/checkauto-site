@@ -58,6 +58,30 @@ Conferido no Corp em 26/11/2026 (`src/pages/User/CreateOrUpdateUserWeb/`): ao ed
 
 No Corp, o endereço de conta PJ vem em `content.company` quando os campos do usuário estão vazios; o site lê do usuário e cai para `company` nesse caso.
 
+### Histórico de consultas: como o site usa a API
+
+`GET /call/list/`. O Swagger documenta só `search`, `ordering` e `page`; os demais parâmetros vêm do Corp (`src/pages/Query/Queries/index.tsx`), que usa a mesma rota.
+
+| Parâmetro                    | O que o site envia                                                                                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initial_date`, `final_date` | sempre, em `AAAA-MM-DD`. Sem filtro: os últimos 12 meses. Com filtro: o período escolhido, limitado a 12 meses antes da data final (mesmo limite do Corp) |
+| `page`                       | a página atual, começando em 1                                                                                                                            |
+| `page_size`                  | 10                                                                                                                                                        |
+| `search`                     | a placa digitada, só letras e números em maiúsculas; não é enviado quando vazio                                                                           |
+
+- **Sem filtro por status:** a rota não tem esse parâmetro (nem no Swagger, nem no Corp). ⏳ Pedir ao backend se for necessário.
+- **`ordering`:** existe no Swagger, mas o site não usa; a ordem é a do backend.
+- **Resposta:** `{ count, results }`, com ou sem o envelope `{ user, content }`. De cada item o site lê `id`, `query_code`, `products`, `status`, `data` e `created_at`.
+  - **Placa:** vem de `data`, no parâmetro cuja chave ou descrição fala em placa; se não houver, o primeiro valor.
+  - **Pacote:** o nome em `products`; com mais de um, "Consulta múltipla".
+  - **Data:** aceita o texto já formatado do backend (`DD/MM/AAAA às HH:MM`) e data ISO.
+  - **Status:** `1` na fila, `2` em andamento, `3` finalizada, `4` erro, `5` informações indisponíveis.
+- **Reconsultar:** `POST /call/requery/{id}/`, oferecido nos status `4` e `5`. O backend recusa com `409` se a consulta já está em execução; o site mostra a mensagem em toast.
+- **Atualização automática:** enquanto houver consulta na fila ou em andamento na página, o site busca a lista de novo a cada 30 segundos.
+- **Filtro de período:** componente `PeriodFilter`, no modelo do Corp (abre num `Popover` no desktop e num painel de baixo para cima em telas menores que 640px): atalhos (Hoje, Ontem, Últimos 7 dias, 30 dias, 3, 6 e 12 meses) e intervalo personalizado de até 12 meses, com "Aplicar" e "Limpar". Sem período escolhido, mostra "Últimos 12 meses", que é o que o site envia por padrão.
+- **Filtros na URL (nuqs):** `?placa=`, `?de=`, `?ate=` e `?pagina=`. Mudar um filtro refaz a busca pelo `clientLoader` da rota; a busca por placa espera 400 ms depois da digitação.
+- **Fora desta entrega:** abrir o extrato em PDF (`GET /product/report/pdf/{call_id}/{product_id}/`, com espera pelo status) e o detalhe da consulta (`GET /call/retrieve/{id}/`).
+
 ### Situação da integração na área do cliente (26/11/2026)
 
 | Tela                                          | Situação                                                                                                                                      |
@@ -67,7 +91,8 @@ No Corp, o endereço de conta PJ vem em `content.company` quando os campos do us
 | Meus dados: contrato                          | só leitura: mostra `terms_accepted_at` e `terms_accepted_version`; sem opção de desfazer (especificação A3). "Ler contrato" abre em outra aba |
 | Meus dados: nome, CPF e dados da empresa (PJ) | só leitura (`first_name`, `last_name`, `cpf` e `company.corporate_name`, `fantasy_name`, `cnpj`, `state_registration`)                        |
 | Meus dados: e-mail de acesso                  | só leitura; não há rota de troca de e-mail no contrato                                                                                        |
-| Histórico de consultas e de transações        | **dados de demonstração**                                                                                                                     |
+| Histórico de consultas                        | integrado em 26/11/2026: `GET /call/list/` e `POST /call/requery/{id}/`. Ainda sem conferência com dados reais                                |
+| Histórico de transações                       | **dados de demonstração**                                                                                                                     |
 
 ## Sessão no redesign
 

@@ -26,6 +26,7 @@ Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular 
 - **shadcn/ui** (estilo `radix-maia`, Radix) em `app/shared/components/ui`.
 - **GSAP** + ScrollTrigger via `~/shared/lib/gsap` (`gsap`, `ScrollTrigger`, `useGSAP`, `MOTION_OK`).
 - **sonner** para toasts (`toast.success`, `toast.error`).
+- **nuqs** para filtros e paginação na URL (`useQueryStates`). O adaptador (`NuqsAdapter`) já está no `root.tsx`. Os parsers ficam em `utils/` importando de `nuqs/server`; o `clientLoader` da rota lê os mesmos parâmetros com `createLoader`, e o componente usa `shallow: false` para a mudança de filtro refazer a busca.
 - **React Hook Form** + **zod 4** (`@hookform/resolvers/zod`) para todos os formulários.
 - **lucide-react**, mas só importado por `~/shared/components/icons`.
 - **Biome** para lint, formatação e ordem de imports e de classes. **Vitest** para testes.
@@ -77,7 +78,7 @@ app/
       auth.api.ts        endpoints do backend
     account/             área do cliente
       components/  services/ (account.service.ts)  types/  utils/ (account.schema.ts…)
-      account.api.ts (Meus dados)  account.mock.ts (dados de demonstração das outras telas)
+      account.api.ts (Meus dados, consultas)  account.mock.ts (dados de demonstração das outras telas)
     site/                site público (ainda na organização antiga: components/, lib/, content/)
   shared/                só o que mais de um domínio usa; não conhece nenhum domínio
     components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, CpfInput, PhoneInput, TextField, AddressFields…
@@ -202,6 +203,9 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 - **Button** (`~/shared/components/ui/button`). Variantes: `default` (verde escuro), `secondary` (azul), `outline`, `ghost`, `destructive`, `link`. Tamanhos: `default` h-12, `sm` h-11, `lg` h-14, `icon`, `icon-sm`. Área de toque mínima de 44px (`min-h-11`).
 - **Dialog**, **Sheet**, **DropdownMenu**, **Accordion** do shadcn.
 - **Toast** (`sonner`): o `<Toaster />` (`~/shared/components/ui/sonner`) já está no `root.tsx` e vale para o app todo. Para avisar que uma ação deu certo, use `toast.success("…")` de `sonner`, sem modal de confirmação e sem mensagem solta na tela. Erro de formulário continua embaixo do campo (`FieldError`), não em toast.
+- **Empty** (`~/shared/components/ui/empty`), para lista ou busca sem resultado, por composição: `<Empty>` com `<EmptyMedia>` (ícone), `<EmptyTitle>`, `<EmptyDescription>` e, se houver ação, `<EmptyContent>`.
+- **PeriodFilter** (`~/shared/components/period-filter`): filtro de período com atalhos (Hoje, Últimos 7 dias…) e intervalo personalizado; abre num `Popover` no desktop e num `Sheet` de baixo para cima no mobile. Recebe `value` (`{ from, to }` em `AAAA-MM-DD`, ou `null`), `onChange`, `defaultLabel` e `maxMonths`. As contas de data ficam em `~/shared/utils/period`.
+- **Tooltip** (`~/shared/components/ui/tooltip`), para explicar botão só de ícone; o `TooltipProvider` já está no `root.tsx`. O botão continua com o texto em `sr-only`.
 - **Select** (`~/shared/components/ui/select`). **Nunca use `<select>` nativo:** lista de opções é sempre o `Select` do shadcn, com `Controller` (`value={field.value}` e `onValueChange={field.onChange}`).
 - **BrandAvatar** (`~/shared/components/brand-avatar`): iniciais sobre azul com o arco verde da marca em volta. O tamanho vem pelo `className`, e o arco e o texto acompanham.
 - **CheckautoLogo**: `variant="default" | "white"`.

@@ -1,9 +1,15 @@
 import * as accountApi from "~/domains/account/account.api";
 import type {
 	AccountProfile,
+	QueryFilters,
+	QueryPage,
 	UserDetail,
 } from "~/domains/account/types/account.types";
 import type { ProfileFormValues } from "~/domains/account/utils/account.schema";
+import {
+	toCallListParams,
+	toVehicleQueries,
+} from "~/domains/account/utils/queries";
 import { ApiError } from "~/shared/lib/api";
 import { getSession } from "~/shared/lib/session";
 
@@ -70,4 +76,15 @@ export async function saveProfile(
 	});
 
 	return toProfile(user);
+}
+
+export async function getQueries(filters: QueryFilters): Promise<QueryPage> {
+	requireSession();
+	const list = await accountApi.listCalls(toCallListParams(filters));
+
+	return { queries: toVehicleQueries(list), total: list.count };
+}
+
+export function requeryQuery(id: string) {
+	return accountApi.requeryCall(id);
 }

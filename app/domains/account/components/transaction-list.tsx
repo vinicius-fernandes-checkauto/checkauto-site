@@ -3,6 +3,12 @@ import type { Transaction } from "~/domains/account/types/account.types";
 import { formatCurrency, formatDate } from "~/domains/account/utils/credits";
 import { transactionStatus } from "~/domains/account/utils/transactions";
 import { ReceiptTextIcon } from "~/shared/components/icons";
+import {
+	Empty,
+	EmptyDescription,
+	EmptyMedia,
+	EmptyTitle,
+} from "~/shared/components/ui/empty";
 import { cn } from "~/shared/lib/utils";
 
 function TransactionStatusBadge({ status }: { status: Transaction["status"] }) {
@@ -33,15 +39,15 @@ export function TransactionList({
 }) {
 	if (transactions.length === 0) {
 		return (
-			<div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-brand-blue/20 px-6 py-12 text-center">
-				<span className="flex size-12 items-center justify-center rounded-full bg-brand-blue/6 text-heading">
-					<ReceiptTextIcon aria-hidden="true" className="size-5" />
-				</span>
-				<p className="font-semibold text-heading">Nenhuma transação</p>
-				<p className="max-w-[40ch] text-sm/6 text-muted-foreground">
+			<Empty>
+				<EmptyMedia>
+					<ReceiptTextIcon />
+				</EmptyMedia>
+				<EmptyTitle>Nenhuma transação</EmptyTitle>
+				<EmptyDescription>
 					Os pagamentos das suas consultas aparecem aqui.
-				</p>
-			</div>
+				</EmptyDescription>
+			</Empty>
 		);
 	}
 
