@@ -4,11 +4,18 @@ import * as accountApi from "~/domains/account/account.api";
 import { userDetailSchema } from "~/domains/account/utils/account.schema";
 import { getSession } from "~/shared/lib/session";
 
-import { getProfile, saveProfile, toProfile } from "./account.service";
+import {
+	getProfile,
+	getStatementUrl,
+	saveProfile,
+	toProfile,
+} from "./account.service";
 
 vi.mock("~/domains/account/account.api", () => ({
 	getUser: vi.fn(),
 	updateUser: vi.fn(),
+	getCall: vi.fn(),
+	getReportPdf: vi.fn(),
 }));
 
 vi.mock("~/shared/lib/session", () => ({
@@ -150,5 +157,44 @@ describe("saveProfile", () => {
 			uf: "SP",
 			marketing_consent: false,
 		});
+	});
+});
+
+describe("getStatementUrl", () => {
+	const call = {
+		id: "c1",
+		extrato_products: [{ id: "p1", extrato_enabled: true }],
+	};
+
+	it("espera o PDF ficar pronto e devolve o endereço", async () => {
+		vi.useFakeTimers();
+		vi.mocked(accountApi.getCall).mockResolvedValue(call);
+		vi.mocked(accountApi.getReportPdf)
+			.mockReset()
+			.mockResolvedValueOnce({ pdf_status: "pending" })
+			.mockResolvedValueOnce({ pdf_status: "processing" })
+			.mockResolvedValueOnce({
+				pdf_status: "ready",
+				download_url: "https://exemplo.com/extrato.pdf",
+			});
+
+		const url = getStatementUrl("c1");
+		await vi.advanceTimersByTimeAsync(6_000);
+
+		await expect(url).resolves.toBe("https://exemplo.com/extrato.pdf");
+		expect(accountApi.getReportPdf).toHaveBeenCalledTimes(3);
+		expect(accountApi.getReportPdf).toHaveBeenCalledWith("c1", "p1");
+		vi.useRealTimers();
+	});
+
+	it("avisa quando a consulta não tem extrato", async () => {
+		vi.mocked(accountApi.getCall).mockResolvedValue({
+			id: "c1",
+			extrato_products: [],
+		});
+
+		await expect(getStatementUrl("c1")).rejects.toThrow(
+			"Essa consulta não tem extrato disponível.",
+		);
 	});
 });

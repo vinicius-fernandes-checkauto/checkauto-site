@@ -5,22 +5,28 @@ import { toast } from "sonner";
 
 import { Pagination } from "~/domains/account/components/pagination";
 import { StatusBadge } from "~/domains/account/components/status-badge";
-import { requeryQuery } from "~/domains/account/services/account.service";
+import {
+	getStatementUrl,
+	requeryQuery,
+} from "~/domains/account/services/account.service";
 import type {
 	QueryPage,
 	VehicleQuery,
 } from "~/domains/account/types/account.types";
 import {
-	canRequery,
+	canOpenStatement,
 	isRunning,
 	MAX_QUERY_MONTHS,
-	QUERIES_PER_PAGE,
+	PAGE_SIZES,
+	pageSize,
 	queryPeriod,
 	querySearchParams,
 	queryStatus,
 } from "~/domains/account/utils/queries";
 import {
 	FileSearchIcon,
+	FileTextIcon,
+	LoaderCircleIcon,
 	RefreshCwIcon,
 	SearchIcon,
 } from "~/shared/components/icons";
@@ -69,6 +75,83 @@ function RequeryButton({ query, disabled, onRequery }: RequeryButtonProps) {
 	);
 }
 
+type StatementButtonProps = {
+	query: VehicleQuery;
+	loading: boolean;
+	disabled: boolean;
+	onOpen: (query: VehicleQuery) => void;
+};
+
+function StatementButton({
+	query,
+	loading,
+	disabled,
+	onOpen,
+}: StatementButtonProps) {
+	return (
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<Button
+					type="button"
+					variant="outline"
+					size="icon-sm"
+					disabled={disabled}
+					aria-busy={loading}
+					onClick={() => onOpen(query)}
+				>
+					{loading ? (
+						<LoaderCircleIcon aria-hidden="true" className="animate-spin" />
+					) : (
+						<FileTextIcon aria-hidden="true" />
+					)}
+					<span className="sr-only">
+						{loading
+							? `Gerando o extrato da placa ${query.plate}`
+							: `Ver extrato da placa ${query.plate} (abre em nova aba)`}
+					</span>
+				</Button>
+			</TooltipTrigger>
+			<TooltipContent>Ver extrato</TooltipContent>
+		</Tooltip>
+	);
+}
+
+type QueryActionsProps = {
+	query: VehicleQuery;
+	requerying: boolean;
+	onRequery: (query: VehicleQuery) => void;
+	opening: string | null;
+	onOpen: (query: VehicleQuery) => void;
+};
+
+function QueryActions({
+	query,
+	requerying,
+	onRequery,
+	opening,
+	onOpen,
+}: QueryActionsProps) {
+	return (
+		<div className="flex items-center justify-end gap-2">
+			{query.canRequery && (
+				<RequeryButton
+					query={query}
+					disabled={requerying}
+					onRequery={onRequery}
+				/>
+			)}
+			{canOpenStatement(query.status) && (
+				<StatementButton
+					query={query}
+					loading={opening === query.id}
+					disabled={opening !== null}
+					onOpen={onOpen}
+				/>
+			)}
+		</div>
+	);
+}
+
 export function QueryHistory({ queries, total }: QueryPage) {
 	const baseId = useId();
 	const [filters, setFilters] = useQueryStates(querySearchParams, {
@@ -78,12 +161,14 @@ export function QueryHistory({ queries, total }: QueryPage) {
 	const navigation = useNavigation();
 	const revalidator = useRevalidator();
 	const [requerying, setRequerying] = useState<string | null>(null);
+	const [opening, setOpening] = useState<string | null>(null);
 
 	const loading =
 		navigation.state === "loading" || revalidator.state === "loading";
-	const pageCount = Math.max(1, Math.ceil(total / QUERIES_PER_PAGE));
+	const size = pageSize(filters.itens);
+	const pageCount = Math.max(1, Math.ceil(total / size));
 	const page = Math.min(Math.max(1, filters.pagina), pageCount);
-	const hasFilters = Boolean(filters.placa || filters.de || filters.ate);
+	const hasFilters = Boolean(filters.busca || filters.de || filters.ate);
 	const period = queryPeriod(filters);
 	const running = queries.some(({ status }) => isRunning(status));
 
@@ -111,30 +196,56 @@ export function QueryHistory({ queries, total }: QueryPage) {
 		}
 	}
 
+	async function openStatement(query: VehicleQuery) {
+		setOpening(query.id);
+		try {
+			const url = await getStatementUrl(query.id);
+			const tab = window.open(url, "_blank");
+			if (tab) {
+				tab.opener = null;
+			} else {
+				toast.success("Extrato pronto", {
+					description: `Placa ${query.plate}. O navegador bloqueou a nova aba.`,
+					duration: Number.POSITIVE_INFINITY,
+					action: {
+						label: "Abrir extrato",
+						onClick: () => window.open(url, "_blank", "noopener"),
+					},
+				});
+			}
+		} catch (error) {
+			toast.error("Não foi possível abrir o extrato", {
+				description: toApiError(error).message,
+			});
+		} finally {
+			setOpening(null);
+		}
+	}
+
 	return (
 		<section aria-label="Consultas realizadas" className="flex flex-col gap-4">
 			<fieldset className="grid grid-cols-2 gap-3 rounded-3xl border border-border bg-card p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end">
 				<legend className="sr-only">Filtrar consultas</legend>
 				<Field className="col-span-2 sm:col-span-1">
-					<FieldLabel htmlFor={`${baseId}-placa`}>Placa</FieldLabel>
+					<FieldLabel htmlFor={`${baseId}-busca`}>Busca</FieldLabel>
 					<div className="relative">
 						<SearchIcon
 							aria-hidden="true"
 							className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
 						/>
 						<Input
-							id={`${baseId}-placa`}
+							id={`${baseId}-busca`}
 							type="search"
-							value={filters.placa}
+							value={filters.busca}
 							onChange={(event) =>
 								void setFilters(
-									{ placa: event.target.value, pagina: 1 },
+									{ busca: event.target.value, pagina: 1 },
 									{ limitUrlUpdates: debounce(400) },
 								)
 							}
-							placeholder="Buscar placa"
+							placeholder="Placa, chassi ou código"
 							autoComplete="off"
-							className="pl-10 uppercase placeholder:normal-case"
+							className="pl-10"
 						/>
 					</div>
 				</Field>
@@ -163,7 +274,9 @@ export function QueryHistory({ queries, total }: QueryPage) {
 					variant="ghost"
 					size="sm"
 					disabled={!hasFilters}
-					onClick={() => void setFilters(null)}
+					onClick={() =>
+						void setFilters({ busca: null, de: null, ate: null, pagina: 1 })
+					}
 					className="col-span-2 sm:col-span-1"
 				>
 					Limpar filtros
@@ -192,7 +305,7 @@ export function QueryHistory({ queries, total }: QueryPage) {
 					</EmptyTitle>
 					<EmptyDescription>
 						{hasFilters
-							? "Confira a placa ou o período e tente de novo."
+							? "Confira a busca ou o período e tente de novo."
 							: `As consultas dos últimos ${MAX_QUERY_MONTHS} meses aparecem aqui.`}
 					</EmptyDescription>
 				</Empty>
@@ -247,14 +360,14 @@ export function QueryHistory({ queries, total }: QueryPage) {
 											{queryStatus[query.status].label}
 										</StatusBadge>
 									</td>
-									<td className="py-2 pr-6 text-right">
-										{canRequery(query.status) && (
-											<RequeryButton
-												query={query}
-												disabled={requerying !== null}
-												onRequery={requery}
-											/>
-										)}
+									<td className="py-2 pr-6">
+										<QueryActions
+											query={query}
+											requerying={requerying !== null}
+											onRequery={requery}
+											opening={opening}
+											onOpen={openStatement}
+										/>
 									</td>
 								</tr>
 							))}
@@ -281,28 +394,30 @@ export function QueryHistory({ queries, total }: QueryPage) {
 										{query.date}
 									</p>
 								</div>
-								{canRequery(query.status) && (
-									<RequeryButton
-										query={query}
-										disabled={requerying !== null}
-										onRequery={requery}
-									/>
-								)}
+								<QueryActions
+									query={query}
+									requerying={requerying !== null}
+									onRequery={requery}
+									opening={opening}
+									onOpen={openStatement}
+								/>
 							</li>
 						))}
 					</ul>
 				</div>
 			)}
 
-			{total > QUERIES_PER_PAGE && (
+			{total > PAGE_SIZES[0] && (
 				<Pagination
 					page={page}
 					pageCount={pageCount}
 					total={total}
-					pageSize={QUERIES_PER_PAGE}
+					pageSize={size}
+					pageSizes={PAGE_SIZES}
 					onPageChange={(pagina) =>
 						void setFilters({ pagina }, { history: "push" })
 					}
+					onPageSizeChange={(itens) => void setFilters({ itens, pagina: 1 })}
 					label="Páginas do histórico de consultas"
 				/>
 			)}

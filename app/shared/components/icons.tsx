@@ -19,6 +19,7 @@ export {
 	CircleCheckIcon,
 	ClockIcon,
 	DatabaseIcon,
+	ExternalLinkIcon,
 	EyeIcon,
 	EyeOffIcon,
 	FileSearchIcon,

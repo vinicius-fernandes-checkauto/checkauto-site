@@ -1,4 +1,14 @@
+import { useId } from "react";
+
 import { ChevronLeftIcon, ChevronRightIcon } from "~/shared/components/icons";
+import { Label } from "~/shared/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "~/shared/components/ui/select";
 import { cn } from "~/shared/lib/utils";
 
 type PaginationProps = {
@@ -7,6 +17,8 @@ type PaginationProps = {
 	total: number;
 	pageSize: number;
 	onPageChange: (page: number) => void;
+	pageSizes?: readonly number[];
+	onPageSizeChange?: (pageSize: number) => void;
 	label?: string;
 };
 
@@ -39,8 +51,11 @@ export function Pagination({
 	total,
 	pageSize,
 	onPageChange,
+	pageSizes,
+	onPageSizeChange,
 	label = "Paginação",
 }: PaginationProps) {
+	const sizeId = useId();
 	const first = (page - 1) * pageSize + 1;
 	const last = Math.min(page * pageSize, total);
 
@@ -49,9 +64,36 @@ export function Pagination({
 			aria-label={label}
 			className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between"
 		>
-			<p className="text-sm text-muted-foreground tabular-nums">
-				Mostrando {first}–{last} de {total}
-			</p>
+			<div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+				<p className="text-sm text-muted-foreground tabular-nums">
+					Mostrando {first}–{last} de {total}
+				</p>
+				{pageSizes && onPageSizeChange && (
+					<div className="flex items-center gap-2">
+						<Label
+							htmlFor={sizeId}
+							className="text-sm font-normal text-muted-foreground"
+						>
+							Por página
+						</Label>
+						<Select
+							value={String(pageSize)}
+							onValueChange={(value) => onPageSizeChange(Number(value))}
+						>
+							<SelectTrigger id={sizeId} className="w-20">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{pageSizes.map((size) => (
+									<SelectItem key={size} value={String(size)}>
+										{size}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
+				)}
+			</div>
 			<div className="flex items-center gap-1.5">
 				<button
 					type="button"

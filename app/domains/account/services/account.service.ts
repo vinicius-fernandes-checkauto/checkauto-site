@@ -7,10 +7,13 @@ import type {
 } from "~/domains/account/types/account.types";
 import type { ProfileFormValues } from "~/domains/account/utils/account.schema";
 import {
+	failedStatusCodes,
+	isRequeryEligible,
+	statementProductId,
 	toCallListParams,
 	toVehicleQueries,
 } from "~/domains/account/utils/queries";
-import { ApiError } from "~/shared/lib/api";
+import { ApiError, toApiError } from "~/shared/lib/api";
 import { getSession } from "~/shared/lib/session";
 
 const digits = (value: string) => value.replace(/\D/g, "");
@@ -82,9 +85,72 @@ export async function getQueries(filters: QueryFilters): Promise<QueryPage> {
 	requireSession();
 	const list = await accountApi.listCalls(toCallListParams(filters));
 
-	return { queries: toVehicleQueries(list), total: list.count };
+	const failed = list.results.filter((call) =>
+		failedStatusCodes.includes(call.status),
+	);
+	const checks = await Promise.allSettled(
+		failed.map((call) => accountApi.getCallAvailability(call.id)),
+	);
+	const requeryable = new Set(
+		failed
+			.filter((_, index) => {
+				const check = checks[index];
+				return check.status === "fulfilled" && isRequeryEligible(check.value);
+			})
+			.map((call) => call.id),
+	);
+
+	return { queries: toVehicleQueries(list, requeryable), total: list.count };
 }
 
 export function requeryQuery(id: string) {
 	return accountApi.requeryCall(id);
+}
+
+const statementErrors: Record<number, string> = {
+	403: "Essa consulta não pertence à sua conta.",
+	404: "Essa consulta não tem extrato disponível.",
+	503: "Não foi possível carregar o extrato agora. Tente de novo em instantes.",
+};
+
+function toStatementError(error: unknown) {
+	const apiError = toApiError(error);
+	const message = apiError.status
+		? statementErrors[apiError.status]
+		: undefined;
+	return message
+		? new ApiError(message, apiError.status, apiError.code)
+		: apiError;
+}
+
+const STATEMENT_POLL_INTERVAL = 3_000;
+const STATEMENT_MAX_TRIES = 30;
+
+const wait = (ms: number) =>
+	new Promise<void>((resolve) => {
+		setTimeout(resolve, ms);
+	});
+
+export async function getStatementUrl(callId: string) {
+	try {
+		const productId = statementProductId(await accountApi.getCall(callId));
+		if (!productId) {
+			throw new ApiError("Essa consulta não tem extrato disponível.", 404);
+		}
+
+		for (let tries = 0; tries < STATEMENT_MAX_TRIES; tries++) {
+			const report = await accountApi.getReportPdf(callId, productId);
+			if (report.pdf_status === "ready" && report.download_url) {
+				return report.download_url;
+			}
+			await wait(STATEMENT_POLL_INTERVAL);
+		}
+	} catch (error) {
+		throw toStatementError(error);
+	}
+
+	throw new ApiError(
+		"O extrato está demorando mais que o normal. Tente de novo em instantes.",
+		null,
+	);
 }

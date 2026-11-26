@@ -102,3 +102,32 @@ export const callListSchema = z.object({
 		}),
 	),
 });
+
+export const callDetailSchema = z.object({
+	id: z.coerce.string().min(1),
+	extrato_products: z
+		.array(
+			z.object({
+				id: z.coerce.string().min(1),
+				extrato_enabled: z.boolean().default(false),
+			}),
+		)
+		.nullish(),
+});
+
+export const callAvailabilitySchema = z.object({
+	products: z
+		.array(
+			z.object({
+				apis: z
+					.array(z.object({ requery_eligible: z.boolean().default(false) }))
+					.default([]),
+			}),
+		)
+		.default([]),
+});
+
+export const reportPdfSchema = z.object({
+	pdf_status: z.enum(["pending", "processing", "failed", "ready"]),
+	download_url: z.string().nullish(),
+});

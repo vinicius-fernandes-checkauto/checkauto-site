@@ -1,7 +1,10 @@
 import type { z } from "zod";
 
 import type {
+	callAvailabilitySchema,
+	callDetailSchema,
 	callListSchema,
+	reportPdfSchema,
 	userDetailSchema,
 } from "~/domains/account/utils/account.schema";
 
@@ -66,13 +69,15 @@ export type VehicleQuery = {
 	plan: string;
 	date: string;
 	status: QueryStatus;
+	canRequery: boolean;
 };
 
 export type QueryFilters = {
-	placa: string;
+	busca: string;
 	de: string;
 	ate: string;
 	pagina: number;
+	itens: number;
 };
 
 export type QueryPage = {
@@ -81,6 +86,9 @@ export type QueryPage = {
 };
 
 export type CallList = z.infer<typeof callListSchema>;
+export type CallDetail = z.infer<typeof callDetailSchema>;
+export type CallAvailability = z.infer<typeof callAvailabilitySchema>;
+export type ReportPdf = z.infer<typeof reportPdfSchema>;
 
 export type CallListParams = {
 	initial_date: string;

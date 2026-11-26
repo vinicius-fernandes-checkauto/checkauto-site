@@ -4,13 +4,15 @@ import { callListSchema } from "~/domains/account/utils/account.schema";
 
 import {
 	formatDateTime,
+	isRequeryEligible,
 	queryPeriod,
+	statementProductId,
 	toCallListParams,
 	toVehicleQueries,
 } from "./queries";
 
 const today = new Date(2026, 10, 26);
-const empty = { placa: "", de: "", ate: "", pagina: 1 };
+const empty = { busca: "", de: "", ate: "", pagina: 1, itens: 10 };
 
 describe("queryPeriod", () => {
 	it("sem filtro, usa os últimos 12 meses", () => {
@@ -43,20 +45,27 @@ describe("queryPeriod", () => {
 describe("toCallListParams", () => {
 	it("monta os parâmetros do GET /call/list/", () => {
 		expect(
-			toCallListParams({ ...empty, placa: "abc-1d23", pagina: 3 }, today),
+			toCallListParams(
+				{ ...empty, busca: " ABC1D23 ", pagina: 3, itens: 20 },
+				today,
+			),
 		).toEqual({
 			initial_date: "2025-11-26",
 			final_date: "2026-11-26",
 			page: 3,
-			page_size: 10,
+			page_size: 20,
 			search: "ABC1D23",
 		});
 	});
 
-	it("não envia search vazio nem página menor que 1", () => {
-		const params = toCallListParams({ ...empty, pagina: 0 }, today);
+	it("não envia busca curta, página menor que 1 nem tamanho fora da lista", () => {
+		const params = toCallListParams(
+			{ ...empty, busca: "a", pagina: 0, itens: 999 },
+			today,
+		);
 
 		expect(params.page).toBe(1);
+		expect(params.page_size).toBe(10);
 		expect(params).not.toHaveProperty("search");
 	});
 });
@@ -85,7 +94,7 @@ describe("toVehicleQueries", () => {
 	});
 
 	it("converte as consultas da API para a tela", () => {
-		expect(toVehicleQueries(list)).toEqual([
+		expect(toVehicleQueries(list, new Set(["c2"]))).toEqual([
 			{
 				id: "c1",
 				code: "12320812",
@@ -93,6 +102,7 @@ describe("toVehicleQueries", () => {
 				plan: "Checkauto Master",
 				date: "23/11/2026 · 06:00",
 				status: "done",
+				canRequery: false,
 			},
 			{
 				id: "c2",
@@ -101,6 +111,7 @@ describe("toVehicleQueries", () => {
 				plan: "Consulta múltipla",
 				date: "19/11/2026 · 09:17",
 				status: "unavailable",
+				canRequery: true,
 			},
 		]);
 	});
@@ -110,5 +121,35 @@ describe("formatDateTime", () => {
 	it("aceita data já formatada pelo backend e data ISO", () => {
 		expect(formatDateTime("23/11/2026 às 06:00")).toBe("23/11/2026 · 06:00");
 		expect(formatDateTime("2026-11-19T12:17:00Z")).toBe("19/11/2026 · 09:17");
+	});
+});
+
+describe("reconsulta e extrato", () => {
+	it("só é elegível quando alguma API da consulta pode ser reconsultada", () => {
+		expect(
+			isRequeryEligible({
+				products: [{ apis: [{ requery_eligible: false }] }],
+			}),
+		).toBe(false);
+		expect(
+			isRequeryEligible({
+				products: [
+					{ apis: [{ requery_eligible: false }, { requery_eligible: true }] },
+				],
+			}),
+		).toBe(true);
+	});
+
+	it("usa o primeiro produto com extrato habilitado", () => {
+		expect(
+			statementProductId({
+				id: "c1",
+				extrato_products: [
+					{ id: "p1", extrato_enabled: false },
+					{ id: "p2", extrato_enabled: true },
+				],
+			}),
+		).toBe("p2");
+		expect(statementProductId({ id: "c1", extrato_products: null })).toBeNull();
 	});
 });

@@ -2,6 +2,8 @@ import { createLoader, parseAsInteger, parseAsString } from "nuqs/server";
 
 import type { StatusTone } from "~/domains/account/components/status-badge";
 import type {
+	CallAvailability,
+	CallDetail,
 	CallList,
 	CallListParams,
 	QueryFilters,
@@ -29,15 +31,21 @@ const statusByCode: Record<string, QueryStatus> = {
 	"5": "unavailable",
 };
 
-export const QUERIES_PER_PAGE = 10;
+export const PAGE_SIZES = [10, 20, 50] as const;
+export const DEFAULT_PAGE_SIZE = PAGE_SIZES[0];
+export const MIN_SEARCH_LENGTH = 2;
 export const MAX_QUERY_MONTHS = 12;
 
 export const querySearchParams = {
-	placa: parseAsString.withDefault(""),
+	busca: parseAsString.withDefault(""),
 	de: parseAsString.withDefault(""),
 	ate: parseAsString.withDefault(""),
 	pagina: parseAsInteger.withDefault(1),
+	itens: parseAsInteger.withDefault(DEFAULT_PAGE_SIZE),
 };
+
+export const pageSize = (itens: number) =>
+	PAGE_SIZES.find((size) => size === itens) ?? DEFAULT_PAGE_SIZE;
 
 export const loadQuerySearchParams = createLoader(querySearchParams);
 
@@ -55,14 +63,14 @@ export function toCallListParams(
 	today = new Date(),
 ): CallListParams {
 	const { from, to } = queryPeriod(filters, today);
-	const search = filters.placa.replace(/[^a-z0-9]/gi, "").toUpperCase();
+	const search = filters.busca.trim();
 
 	return {
 		initial_date: from,
 		final_date: to,
 		page: Math.max(1, filters.pagina),
-		page_size: QUERIES_PER_PAGE,
-		...(search && { search }),
+		page_size: pageSize(filters.itens),
+		...(search.length >= MIN_SEARCH_LENGTH && { search }),
 	};
 }
 
@@ -120,7 +128,10 @@ export function formatDateTime(value: string) {
 	return dateTime.format(date).replace(",", " ·");
 }
 
-export function toVehicleQueries(list: CallList): VehicleQuery[] {
+export function toVehicleQueries(
+	list: CallList,
+	requeryable: ReadonlySet<string> = new Set(),
+): VehicleQuery[] {
 	return list.results.map((call) => {
 		const products = call.products.map(productName).filter(Boolean);
 
@@ -131,12 +142,28 @@ export function toVehicleQueries(list: CallList): VehicleQuery[] {
 			plan: products.length > 1 ? "Consulta múltipla" : (products[0] ?? ""),
 			date: formatDateTime(call.created_at ?? ""),
 			status: statusByCode[call.status] ?? "processing",
+			canRequery: requeryable.has(call.id),
 		};
 	});
 }
 
-export const canRequery = (status: QueryStatus) =>
-	status === "error" || status === "unavailable";
+export const failedStatusCodes = ["4", "5"];
+
+export const canOpenStatement = (status: QueryStatus) =>
+	status === "done" || status === "unavailable";
+
+export function isRequeryEligible(availability: CallAvailability) {
+	return availability.products.some((product) =>
+		product.apis.some((api) => api.requery_eligible),
+	);
+}
+
+export function statementProductId(call: CallDetail) {
+	return (
+		call.extrato_products?.find((product) => product.extrato_enabled)?.id ??
+		null
+	);
+}
 
 export const isRunning = (status: QueryStatus) =>
 	status === "queued" || status === "processing";
