@@ -56,7 +56,10 @@ export function WhySection() {
 								<FlagIcon aria-hidden="true" />
 							</IconBadge>
 							<div className="relative flex flex-col gap-2.5">
-								<strong className="text-7xl/[0.9] font-medium tracking-tighter text-brand-green">
+								<strong className="flex flex-col gap-1.5 text-7xl/[0.9] font-medium tracking-tighter text-brand-green">
+									<span className="text-base/none font-medium tracking-normal text-white">
+										Desde
+									</span>
 									2000
 								</strong>
 								<h3 className="text-xl/snug font-semibold tracking-tight text-white">
