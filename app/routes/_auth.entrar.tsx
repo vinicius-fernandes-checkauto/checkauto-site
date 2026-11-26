@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navigate, useLocation } from "react-router";
 
 import {
@@ -7,7 +8,10 @@ import {
 } from "~/domains/auth/components/auth-heading";
 import { AuthSwitch } from "~/domains/auth/components/auth-switch";
 import { SignInForm } from "~/domains/auth/components/sign-in-form";
-import { SocialSignIn } from "~/domains/auth/components/social-sign-in";
+import {
+	GOOGLE_SIGN_IN_ID,
+	SocialSignIn,
+} from "~/domains/auth/components/social-sign-in";
 import { getGuestRedirect } from "~/domains/auth/services/auth.service";
 import { readNotice } from "~/domains/auth/utils/notice";
 import { useSession } from "~/shared/hooks/use-session";
@@ -28,6 +32,7 @@ export default function SignIn() {
 	const notice = readNotice(location.state);
 	const { data: session } = useSession();
 	const redirectTo = getGuestRedirect(session ?? null);
+	const [highlightGoogle, setHighlightGoogle] = useState(false);
 
 	if (redirectTo) return <Navigate to={redirectTo} replace />;
 
@@ -50,9 +55,17 @@ export default function SignIn() {
 				</p>
 			)}
 
-			<SocialSignIn action="Entrar" />
+			<SocialSignIn action="Entrar" highlighted={highlightGoogle} />
 
-			<SignInForm defaultEmail={notice?.email} />
+			<SignInForm
+				defaultEmail={notice?.email}
+				onGoogleAccount={() => {
+					setHighlightGoogle(true);
+					document
+						.getElementById(GOOGLE_SIGN_IN_ID)
+						?.scrollIntoView({ block: "center" });
+				}}
+			/>
 
 			<AuthSwitch question="Não tem conta?" to="/cadastro">
 				Criar conta

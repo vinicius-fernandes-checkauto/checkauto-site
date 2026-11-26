@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { resetPasswordSchema } from "~/domains/auth/utils/auth.schema";
 import { FormButton } from "~/shared/components/form-button";
+import { TextLink } from "~/shared/components/text-link";
 import {
 	Field,
 	FieldError,
@@ -22,11 +24,16 @@ export function ResetPasswordForm({ onSubmit }: ResetPasswordFormProps) {
 		defaultValues: { email: "" },
 	});
 
+	const [googleAccount, setGoogleAccount] = useState(false);
+
 	async function submit(email: string) {
+		setGoogleAccount(false);
 		try {
 			await onSubmit(email);
 		} catch (error) {
-			form.setError("root", { message: toApiError(error).message });
+			const { code, message } = toApiError(error);
+			setGoogleAccount(code === "google_account");
+			form.setError("root", { message });
 		}
 	}
 
@@ -63,10 +70,15 @@ export function ResetPasswordForm({ onSubmit }: ResetPasswordFormProps) {
 			</FieldGroup>
 
 			{form.formState.errors.root && (
-				<FieldError
-					className="text-center"
-					errors={[form.formState.errors.root]}
-				/>
+				<div className="flex flex-col items-center gap-2">
+					<FieldError
+						className="text-center"
+						errors={[form.formState.errors.root]}
+					/>
+					{googleAccount && (
+						<TextLink to="/entrar">Entrar com o Google</TextLink>
+					)}
+				</div>
 			)}
 
 			<FormButton

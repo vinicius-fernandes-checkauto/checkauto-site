@@ -202,6 +202,25 @@ describe("envelope { user, content }", () => {
 		expect(error.code).toBe("recaptcha_fallback_required");
 	});
 
+	it("lê detail e code do 401 de conta do Google no login", () => {
+		const error = toApiError(
+			httpError(401, {
+				detail: "Esta conta entra com o Google.",
+				code: "google_account",
+			}),
+		);
+		expect(error.message).toBe("Esta conta entra com o Google.");
+		expect(error.code).toBe("google_account");
+	});
+
+	it("401 de senha errada não tem code", () => {
+		const error = toApiError(
+			httpError(401, { detail: "Usuário e/ou senha incorreto(s)" }),
+		);
+		expect(error.message).toBe("Usuário e/ou senha incorreto(s)");
+		expect(error.code).toBeNull();
+	});
+
 	it("lê message e erros de campo do content", () => {
 		const error = toApiError(
 			httpError(400, {

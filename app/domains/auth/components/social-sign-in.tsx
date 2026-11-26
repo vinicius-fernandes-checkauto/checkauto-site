@@ -11,9 +11,17 @@ import {
 } from "~/domains/auth/utils/google-identity";
 import { toApiError } from "~/shared/lib/api";
 
-type SocialSignInProps = { action: "Entrar" | "Criar conta" };
+export const GOOGLE_SIGN_IN_ID = "entrar-com-google";
 
-export function SocialSignIn({ action }: SocialSignInProps) {
+type SocialSignInProps = {
+	action: "Entrar" | "Criar conta";
+	highlighted?: boolean;
+};
+
+export function SocialSignIn({
+	action,
+	highlighted = false,
+}: SocialSignInProps) {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -59,7 +67,12 @@ export function SocialSignIn({ action }: SocialSignInProps) {
 	return (
 		<div className="flex flex-col items-center gap-4">
 			<div className="flex w-full justify-center gap-3">
-				<div ref={mount} className="flex min-h-11 w-full justify-center" />
+				<div
+					id={GOOGLE_SIGN_IN_ID}
+					ref={mount}
+					data-highlighted={highlighted || undefined}
+					className="flex min-h-11 w-full scroll-mt-24 justify-center *:rounded-full *:transition-shadow data-highlighted:*:ring-3 data-highlighted:*:ring-primary data-highlighted:*:ring-offset-4 data-highlighted:*:ring-offset-background"
+				/>
 				{/* <button
 					type="button"
 					aria-label={`${action} com Facebook`}

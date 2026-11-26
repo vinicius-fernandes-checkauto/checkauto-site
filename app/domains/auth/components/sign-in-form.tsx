@@ -31,9 +31,15 @@ import { toApiError } from "~/shared/lib/api";
 
 const [privacyLink, termsLink] = legalNav;
 
-type SignInFormProps = { defaultEmail?: string };
+type SignInFormProps = {
+	defaultEmail?: string;
+	onGoogleAccount?: () => void;
+};
 
-export function SignInForm({ defaultEmail = "" }: SignInFormProps) {
+export function SignInForm({
+	defaultEmail = "",
+	onGoogleAccount,
+}: SignInFormProps) {
 	const form = useForm({
 		resolver: zodResolver(signInSchema),
 		defaultValues: { email: defaultEmail, password: "" },
@@ -61,6 +67,7 @@ export function SignInForm({ defaultEmail = "" }: SignInFormProps) {
 			if (challenge.active || code === "recaptcha_fallback_required") {
 				challenge.restart();
 			}
+			if (code === "google_account") onGoogleAccount?.();
 			form.setError("root", { message: recaptchaMessage(code) ?? message });
 		}
 	}

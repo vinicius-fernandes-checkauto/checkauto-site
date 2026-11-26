@@ -205,20 +205,8 @@ export async function changePassword({
 	});
 }
 
-export async function forgotPassword(email: string) {
-	try {
-		await authApi.forgotPassword(email);
-	} catch (error) {
-		const apiError = toApiError(error);
-		if (apiError.code === "google_account") {
-			throw new ApiError(
-				"Essa conta entra com outro método de autenticação.",
-				apiError.status,
-				apiError.code,
-			);
-		}
-		throw apiError;
-	}
+export function forgotPassword(email: string) {
+	return authApi.forgotPassword(email);
 }
 
 export function canChangePassword(session: PublicSession | null) {

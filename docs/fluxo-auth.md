@@ -99,8 +99,11 @@ sequenceDiagram
         P->>Site: resolve o desafio
         Site->>API: POST /token/ + v3 + v2
     end
-    alt credenciais erradas
-        API-->>Site: 401 com detail
+    alt conta do Google (code = google_account)
+        API-->>Site: 401 com detail (qualquer senha digitada)
+        Site->>P: mensagem embaixo do formulário e destaca o botão do Google
+    else credenciais erradas
+        API-->>Site: 401 com detail, sem code
         Site->>P: mensagem embaixo do formulário
     else sucesso
         API-->>Site: access, refresh, id, name, email, profile
@@ -108,6 +111,10 @@ sequenceDiagram
         Site->>P: vai para /conta
     end
 ```
+
+- **Conta do Google no login por senha** (backend, 27/11/2026): se o e-mail for de uma conta criada ou vinculada ao Google, o `POST /token/` responde `401` com `{ detail, code: "google_account" }`, qualquer que seja a senha. O site mostra o `detail` embaixo do formulário, destaca o botão do Google (anel verde) e rola a tela até ele.
+- **Senha errada em conta normal:** continua `401` com `"Usuário e/ou senha incorreto(s)"`, **sem** `code`.
+- **Ordem das checagens:** o reCAPTCHA vem antes. Sem token válido, o erro é o do reCAPTCHA, não o `google_account`.
 
 ### 4.2 Sessão, chamadas e saída
 
@@ -265,7 +272,9 @@ sequenceDiagram
   - `google_already_registered` volta para `/entrar`;
   - `google_token_invalid` e `google_email_not_verified` pedem o Google de novo;
   - nos três casos, o cadastro pendente é limpo.
-- **Conta do Google não tem senha:** "Alterar senha" some em Meus dados. O "Esqueci a senha" dessa conta responde `google_account`, e o site mostra "Essa conta entra com outro método de autenticação.".
+- **Conta do Google não tem senha:** "Alterar senha" some em Meus dados.
+  - **Login por senha:** o `POST /token/` responde `401` com `code: "google_account"` (ver 4.1).
+  - **Esqueci a senha:** o `POST /user/forgot-password/` responde `400` com `content = { message, code: "google_account" }`, com a mesma frase do login. O site mostra a frase do backend e um link "Entrar com o Google" para `/entrar`.
 - **Foto de perfil:** o `id_token` do Google traz o endereço da foto (`picture`). O site lê esse campo no navegador (`readGooglePicture`), guarda na sessão (`user.picture`) e mostra no avatar da conta e do header; sem foto, ou se a imagem falhar, fica o ícone padrão. Não passa pelo backend, vale só para quem entra pelo Google e é lida de novo a cada login. O token não é validado para isso, porque é só exibição; quem valida continua sendo o backend.
 - **Chave do Google:** o site usa só o **Client ID** (`VITE_GOOGLE_CLIENT_ID`). O secret fica no backend.
 - **Cliente HTTP:** `user/login/google/` e `user/signup/google/` estão fora do interceptor de 401, porque `user_blocked` também volta como 401.
@@ -404,22 +413,23 @@ Rodada de 26/11/2026, com o site em `localhost:3000` e o backend no túnel ngrok
 
 Feitos no navegador, em `localhost:3000`, contra o backend do túnel de desenvolvimento.
 
-| Fluxo                                                                      | Resultado                                                                                                                                                                        |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Cadastro de PF por e-mail e senha                                          | ✅ o `POST /signup/` saiu com todos os campos do contrato e o backend respondeu `201` com `id`, `first_name`, `last_name`, `email`, `profile: "4"` e `company: null`, sem tokens |
-| Cadastro de PJ por e-mail e senha                                          | ✅                                                                                                                                                                               |
-| Login automático depois do cadastro                                        | ✅                                                                                                                                                                               |
-| Erro do backend em campo de outra etapa (e-mail, CPF ou CNPJ já usado)     | ✅ a tela volta para a etapa do campo                                                                                                                                            |
-| Login com senha certa e com senha errada                                   | ✅                                                                                                                                                                               |
-| Sair                                                                       | ✅                                                                                                                                                                               |
-| Login e cadastro com Google, até o fim de `/completar-cadastro`            | ✅                                                                                                                                                                               |
-| Entrar pelo Google com e-mail que já tem senha (`google_link_not_allowed`) | ✅ mostra a mensagem do backend                                                                                                                                                  |
-| Esqueci a senha: envio do e-mail                                           | ✅ chega com a senha provisória                                                                                                                                                  |
-| Esqueci a senha com conta Google (`google_account`)                        | ✅                                                                                                                                                                               |
-| "Reenviar e-mail"                                                          | ✅                                                                                                                                                                               |
-| Entrar com a senha provisória e trocá-la em Meus dados                     | ✅                                                                                                                                                                               |
-| Alterar senha em Meus dados                                                | ✅ continua logado e mostra o toast                                                                                                                                              |
-| Renovação do token                                                         | ✅ com o `access` invalidado à mão no cookie: `GET /user/retrieve/…` → `401`, `POST /token/refresh/` → `200`, o mesmo `GET` → `200`; a tela carregou e a sessão continuou        |
+| Fluxo                                                                              | Resultado                                                                                                                                                                        |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cadastro de PF por e-mail e senha                                                  | ✅ o `POST /signup/` saiu com todos os campos do contrato e o backend respondeu `201` com `id`, `first_name`, `last_name`, `email`, `profile: "4"` e `company: null`, sem tokens |
+| Cadastro de PJ por e-mail e senha                                                  | ✅                                                                                                                                                                               |
+| Login automático depois do cadastro                                                | ✅                                                                                                                                                                               |
+| Erro do backend em campo de outra etapa (e-mail, CPF ou CNPJ já usado)             | ✅ a tela volta para a etapa do campo                                                                                                                                            |
+| Login com senha certa e com senha errada                                           | ✅                                                                                                                                                                               |
+| Sair                                                                               | ✅                                                                                                                                                                               |
+| Login e cadastro com Google, até o fim de `/completar-cadastro`                    | ✅                                                                                                                                                                               |
+| Entrar pelo Google com e-mail que já tem senha (`google_link_not_allowed`)         | ✅ mostra a mensagem do backend                                                                                                                                                  |
+| Esqueci a senha: envio do e-mail                                                   | ✅ chega com a senha provisória                                                                                                                                                  |
+| Esqueci a senha com conta Google (`google_account`)                                | ✅                                                                                                                                                                               |
+| Login por senha com conta Google (`google_account` no `/token/`, desde 27/11/2026) | ⏳ ainda não testado                                                                                                                                                             |
+| "Reenviar e-mail"                                                                  | ✅                                                                                                                                                                               |
+| Entrar com a senha provisória e trocá-la em Meus dados                             | ✅                                                                                                                                                                               |
+| Alterar senha em Meus dados                                                        | ✅ continua logado e mostra o toast                                                                                                                                              |
+| Renovação do token                                                                 | ✅ com o `access` invalidado à mão no cookie: `GET /user/retrieve/…` → `401`, `POST /token/refresh/` → `200`, o mesmo `GET` → `200`; a tela carregou e a sessão continuou        |
 
 **Duração dos tokens, medida em 26/11/2026:** o `access` dura **24 h** (1440 min) e o `refresh` também dura **24 h**. Como os dois são emitidos juntos e vencem juntos, a renovação nunca acontece no uso real: quando o `access` vence, o `refresh` já venceu, e a pessoa volta para `/entrar` um dia depois do login. O mecanismo do site funciona (linha acima), mas só foi exercitado com o token invalidado de propósito.
 
