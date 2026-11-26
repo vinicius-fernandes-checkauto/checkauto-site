@@ -25,12 +25,11 @@ export type PlanInfoItem = {
 export type PlanInfoGroup = {
 	title: string;
 	items: PlanInfoItem[];
-	differentiator?: boolean;
 };
 
 export const planInfoGroups: PlanInfoGroup[] = [
 	{
-		title: "Documentação",
+		title: "Dados do veículo",
 		items: [
 			{
 				name: "Dados cadastrais nacionais",
@@ -43,90 +42,13 @@ export const planInfoGroups: PlanInfoGroup[] = [
 					"Situação do veículo no DETRAN do estado onde está registrado.",
 			},
 			{
-				name: "Quantidade de proprietários",
-				description: "Quantos donos o veículo teve a partir de 2012.",
-			},
-			{
 				name: "Decodificação do chassi",
 				description:
 					"Confere se o chassi bate com o modelo e o ano informados.",
 			},
-		],
-	},
-	{
-		title: "Restrições e bloqueios",
-		items: [
 			{
-				name: "Restrições federais",
-				highlight: true,
-				description:
-					"Impedimentos na base nacional que podem travar a transferência.",
-			},
-			{
-				name: "Restrições estaduais",
-				description: "Bloqueios administrativos registrados no DETRAN.",
-			},
-			{
-				name: "Bloqueios judiciais (RENAJUD)",
-				description: "Restrições determinadas pela Justiça sobre o veículo.",
-			},
-		],
-	},
-	{
-		title: "Débitos e multas",
-		items: [
-			{
-				name: "Débitos e multas",
-				highlight: true,
-				description:
-					"IPVA, licenciamento e multas em aberto antes de você assumir a conta.",
-			},
-			{
-				name: "Multas de outros estados (RENAINF)",
-				description: "Infrações cometidas fora do estado de registro.",
-			},
-		],
-	},
-	{
-		title: "Histórico do veículo",
-		items: [
-			{
-				name: "Roubo e furto",
-				highlight: true,
-				description:
-					"Ocorrências de roubo e furto, inclusive as já recuperadas.",
-			},
-			{
-				name: "Histórico de quilometragem",
-				highlight: true,
-				description:
-					"Leituras de KM registradas, que ajudam a perceber adulteração.",
-			},
-			{
-				name: "Consultas anteriores",
-				description: "Quantas vezes o veículo já foi consultado.",
-			},
-		],
-	},
-	{
-		title: "Leilão",
-		items: [
-			{
-				name: "Oferta em leilão (2 bases)",
-				highlight: true,
-				description:
-					"Se o veículo já foi ofertado em leilão, com lote e condição.",
-			},
-		],
-	},
-	{
-		title: "Recall e preço",
-		items: [
-			{
-				name: "Recall e pendências",
-				highlight: true,
-				description:
-					"Chamados do fabricante e reparos que ainda estão pendentes.",
+				name: "Quantidade de proprietários",
+				description: "Quantos donos o veículo teve a partir de 2012.",
 			},
 			{
 				name: "Preço de referência FIPE",
@@ -135,20 +57,71 @@ export const planInfoGroups: PlanInfoGroup[] = [
 		],
 	},
 	{
-		title: "O que diferencia os pacotes",
-		differentiator: true,
+		title: "Restrições do veículo",
 		items: [
 			{
-				name: "Indício de ocorrência",
+				name: "Restrições federais",
+				highlight: true,
 				description:
-					"Registros de ocorrência informados por seguradoras e órgãos públicos.",
-				requires: "Indício de ocorrência",
+					"Impedimentos na base nacional que podem travar a transferência.",
+			},
+			{
+				name: "Bloqueios judiciais (RENAJUD)",
+				description: "Restrições determinadas pela Justiça sobre o veículo.",
+			},
+			{
+				name: "Multas de outros estados (RENAINF)",
+				description: "Infrações cometidas fora do estado de registro.",
+			},
+			{
+				name: "Restrições estaduais",
+				description: "Bloqueios administrativos registrados no DETRAN.",
+			},
+			{
+				name: "Débitos e multas",
+				highlight: true,
+				description:
+					"IPVA, licenciamento e multas em aberto antes de você assumir a conta.",
 			},
 			{
 				name: "Gravame",
 				description:
 					"Se há gravame registrado no veículo, o que pode restringir a transferência.",
 				requires: "Gravame",
+			},
+			{
+				name: "Roubo e furto",
+				highlight: true,
+				description:
+					"Ocorrências de roubo e furto, inclusive as já recuperadas.",
+			},
+			{
+				name: "Oferta em leilão (2 bases)",
+				highlight: true,
+				description:
+					"Se o veículo já foi ofertado em leilão, com lote e condição.",
+			},
+			{
+				name: "Indício de ocorrência",
+				description:
+					"Registros de ocorrência informados por fontes públicas e privadas.",
+				requires: "Indício de ocorrência",
+			},
+			{
+				name: "Histórico de quilometragem",
+				highlight: true,
+				description:
+					"Leituras de KM registradas, que ajudam a perceber adulteração.",
+			},
+			{
+				name: "Recall e pendências",
+				highlight: true,
+				description:
+					"Chamados do fabricante e reparos que ainda estão pendentes.",
+			},
+			{
+				name: "Consultas anteriores",
+				description: "Quantas vezes o veículo já foi consultado.",
 			},
 		],
 	},

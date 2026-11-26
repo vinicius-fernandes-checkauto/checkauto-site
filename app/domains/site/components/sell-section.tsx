@@ -271,9 +271,11 @@ export function SellSection() {
 							className="flex h-59 flex-col items-center justify-center gap-2 rounded-t-3xl bg-highlight text-center text-card-foreground"
 						>
 							<strong className="text-6xl/none font-medium tracking-tight">
-								+250 mil
+								+800 mil
 							</strong>
-							<span className="text-[0.9375rem]">consultas realizadas</span>
+							<span className="text-[0.9375rem]">
+								consultas realizadas por mês
+							</span>
 						</div>
 					</div>
 				</div>

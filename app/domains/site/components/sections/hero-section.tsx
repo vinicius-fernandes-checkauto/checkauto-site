@@ -51,7 +51,7 @@ const features: Feature[] = [
 	{
 		title: "Indício de ocorrência",
 		description:
-			"Aponta registros de ocorrência informados por seguradoras e órgãos públicos.",
+			"Aponta registros de ocorrência informados por fontes públicas e privadas.",
 		icon: TriangleAlertIcon,
 		x: 0.17,
 		y: 0.13,

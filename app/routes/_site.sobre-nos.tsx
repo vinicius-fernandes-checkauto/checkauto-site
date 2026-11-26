@@ -19,9 +19,9 @@ export const meta: Route.MetaFunction = () =>
 	});
 
 const stats = [
-	{ value: "13", label: "milhões de consultas realizadas" },
-	{ value: "80", label: "milhões de registros processados" },
-	{ value: "70", label: "mil usuários cadastrados" },
+	{ value: "400", label: "mil clientes atendidos" },
+	{ value: "150", label: "milhões de registros na base de dados" },
+	{ value: "800", label: "mil consultas realizadas por mês" },
 ];
 
 const headingClassName =
@@ -171,7 +171,7 @@ export default function About() {
 									className="flex items-center gap-5 border-b border-border py-5"
 								>
 									<dt className="sr-only">{label}</dt>
-									<dd className="text-6xl/none lg:text-7xl/none flex w-28 shrink-0 items-start gap-1 font-light tracking-tight text-heading tabular-nums lg:w-32">
+									<dd className="text-6xl/none lg:text-7xl/none flex w-36 shrink-0 items-start gap-1 font-light tracking-tight text-heading tabular-nums lg:w-44">
 										<span className="text-2xl/none pt-1 font-medium text-highlight">
 											+
 										</span>

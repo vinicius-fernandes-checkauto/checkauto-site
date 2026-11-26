@@ -31,8 +31,8 @@ export function AuthShowcase() {
 
 				<p className="relative z-10 flex items-center gap-2 text-sm text-muted-foreground">
 					<span className="size-2 rounded-full bg-brand-green ring-4 ring-brand-green/20" />
-					<strong className="font-semibold text-heading">+13 milhões</strong>
-					consultas realizadas
+					<strong className="font-semibold text-heading">+800 mil</strong>
+					consultas realizadas por mês
 				</p>
 			</div>
 		</div>

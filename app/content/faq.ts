@@ -84,7 +84,7 @@ export const faq: FaqItem[] = [
 		category: "informacoes",
 		question: "De onde vêm as informações da consulta?",
 		answer:
-			"De bases de dados públicas e privadas, como SENATRAN, DETRANs, seguradoras e leiloeiros, consultadas em tempo real.",
+			"De bases de dados públicas e privadas, como SENATRAN, DETRANs, PRODESP e leiloeiros, consultadas em tempo real.",
 	},
 	{
 		category: "pagamento",

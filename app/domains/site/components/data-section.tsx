@@ -69,7 +69,7 @@ const topics: Topic[] = [
 		title: "Indício de ocorrência",
 		icon: TriangleAlertIcon,
 		description:
-			"Verifique a possibilidade de indícios de ocorrência no veículo, com informações provenientes de fontes públicas e privadas, como órgãos administrativos e seguradoras. Essas informações podem não ser divulgadas pelo informante e não garantem a ausência de sinistros. Recomendamos uma vistoria física para avaliação completa e conclusiva sobre alterações que possam afetar a integridade do veículo.",
+			"Verifique a possibilidade de indícios de ocorrência no veículo, com informações provenientes de fontes públicas e privadas. Essas informações podem não ser divulgadas pelo informante e não garantem a ausência de sinistros. Recomendamos uma vistoria física para avaliação completa e conclusiva sobre alterações que possam afetar a integridade do veículo.",
 	},
 	{
 		id: "gravame",
