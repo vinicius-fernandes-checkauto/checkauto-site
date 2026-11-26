@@ -6,7 +6,7 @@ import { CheckautoLogo } from "~/shared/components/checkauto-logo";
 
 export function AccountHeader({ user }: { user: AccountUser }) {
 	return (
-		<header className="sticky top-0 z-40 border-b border-border bg-background">
+		<header className="z-40 border-b border-border bg-background max-lg:sticky max-lg:top-0">
 			<div className="mx-auto flex min-h-19 w-full max-w-7xl items-center gap-2 px-4 sm:px-8">
 				<CheckautoLogo className="h-6 sm:h-7" />
 				<div className="ml-auto flex shrink-0 items-center gap-3">

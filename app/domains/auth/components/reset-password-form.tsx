@@ -73,7 +73,7 @@ export function ResetPasswordForm({ onSubmit }: ResetPasswordFormProps) {
 				isSubmitting={form.formState.isSubmitting}
 				submittingText="Enviando…"
 			>
-				Enviar link
+				Enviar e-mail
 			</FormButton>
 		</form>
 	);

@@ -1,7 +1,6 @@
 import { useId, useState } from "react";
 
 import { AccountSection } from "~/domains/account/components/account-section";
-import { ChangeEmailDialog } from "~/domains/account/components/change-email-dialog";
 import { ChangePasswordDialog } from "~/domains/account/components/change-password-dialog";
 import { canChangePassword } from "~/domains/auth/services/auth.service";
 import { LockIcon, MailIcon } from "~/shared/components/icons";
@@ -10,30 +9,10 @@ import { useSession } from "~/shared/hooks/use-session";
 
 export function AccessSettings({ email }: { email: string }) {
 	const id = useId();
-	const [currentEmail, setCurrentEmail] = useState(email);
-	const [dialog, setDialog] = useState<"email" | "password" | null>(null);
+	const [passwordOpen, setPasswordOpen] = useState(false);
 
 	const { data: session } = useSession();
 	const passwordEnabled = canChangePassword(session ?? null);
-
-	const rows = [
-		{
-			key: "email",
-			icon: MailIcon,
-			label: "E-mail de acesso",
-			value: currentEmail,
-		},
-		...(passwordEnabled
-			? [
-					{
-						key: "password",
-						icon: LockIcon,
-						label: "Senha",
-						value: "••••••••••",
-					} as const,
-				]
-			: []),
-	] as const;
 
 	return (
 		<AccountSection
@@ -42,18 +21,35 @@ export function AccessSettings({ email }: { email: string }) {
 			description="E-mail e senha usados para entrar na Checkauto."
 		>
 			<ul className="flex flex-col divide-y divide-border">
-				{rows.map(({ key, icon: Icon, label, value }) => (
-					<li
-						key={key}
-						className="flex items-center gap-3.5 py-4 first:pt-0 last:pb-0"
-					>
+				<li className="flex items-center gap-3.5 py-4 first:pt-0 last:pb-0">
+					<span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-blue/6 text-heading">
+						<MailIcon aria-hidden="true" className="size-4.5" />
+					</span>
+					<div className="flex min-w-0 flex-1 flex-col">
+						<span className="text-xs/5 text-muted-foreground">
+							E-mail de acesso
+						</span>
+						<span className="truncate text-sm/6 font-semibold text-heading">
+							{email}
+						</span>
+						<span className="text-xs/5 text-muted-foreground">
+							Para alterar o e-mail, fale com o atendimento.
+						</span>
+					</div>
+					<LockIcon
+						aria-hidden="true"
+						className="size-4 shrink-0 text-muted-foreground"
+					/>
+				</li>
+				{passwordEnabled && (
+					<li className="flex items-center gap-3.5 py-4 first:pt-0 last:pb-0">
 						<span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-blue/6 text-heading">
-							<Icon aria-hidden="true" className="size-4.5" />
+							<LockIcon aria-hidden="true" className="size-4.5" />
 						</span>
 						<div className="flex min-w-0 flex-1 flex-col">
-							<span className="text-xs/5 text-muted-foreground">{label}</span>
+							<span className="text-xs/5 text-muted-foreground">Senha</span>
 							<span className="truncate text-sm/6 font-semibold text-heading">
-								{value}
+								••••••••••
 							</span>
 						</div>
 						<Button
@@ -61,13 +57,13 @@ export function AccessSettings({ email }: { email: string }) {
 							variant="outline"
 							size="sm"
 							className="h-10 text-sm"
-							onClick={() => setDialog(key)}
+							onClick={() => setPasswordOpen(true)}
 						>
 							Alterar
-							<span className="sr-only"> {label.toLowerCase()}</span>
+							<span className="sr-only"> senha</span>
 						</Button>
 					</li>
-				))}
+				)}
 			</ul>
 
 			{!passwordEnabled && (
@@ -76,15 +72,9 @@ export function AccessSettings({ email }: { email: string }) {
 				</p>
 			)}
 
-			<ChangeEmailDialog
-				open={dialog === "email"}
-				email={currentEmail}
-				onOpenChange={(open) => !open && setDialog(null)}
-				onChanged={setCurrentEmail}
-			/>
 			<ChangePasswordDialog
-				open={dialog === "password"}
-				onOpenChange={(open) => !open && setDialog(null)}
+				open={passwordOpen}
+				onOpenChange={setPasswordOpen}
 			/>
 		</AccountSection>
 	);

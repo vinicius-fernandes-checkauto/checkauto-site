@@ -26,7 +26,7 @@ export function AccountSidebar({ user }: { user: AccountUser }) {
 	return (
 		<aside
 			aria-label="Minha conta"
-			className="hidden min-w-0 flex-col gap-3 lg:sticky lg:top-24 lg:flex"
+			className="hidden min-w-0 flex-col gap-3 lg:sticky lg:top-6 lg:flex"
 		>
 			<div className="flex items-center gap-3 px-2 pb-2">
 				<BrandAvatar className="size-13" />

@@ -1,208 +1,227 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useId, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, type FieldPath, useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 import { AccountSection } from "~/domains/account/components/account-section";
-import { AddressFields } from "~/domains/account/components/address-fields";
-import {
-	FormField,
-	fieldControlClassName,
-} from "~/domains/account/components/form-field";
+import { saveProfile } from "~/domains/account/services/account.service";
 import type { AccountProfile } from "~/domains/account/types/account.types";
 import {
-	type ProfileField,
+	type ProfileFormInput,
 	type ProfileFormValues,
 	profileSchema,
 } from "~/domains/account/utils/account.schema";
+import { AddressFields } from "~/shared/components/address-fields";
+import { FormButton } from "~/shared/components/form-button";
 import {
 	CircleCheckIcon,
 	FileTextIcon,
 	LockIcon,
 } from "~/shared/components/icons";
+import { PhoneInput } from "~/shared/components/phone-input";
+import { TextField } from "~/shared/components/text-field";
 import { Button } from "~/shared/components/ui/button";
-import { cn } from "~/shared/lib/utils";
-import { formatZip } from "~/shared/utils/address";
-import { errorProps, withMask } from "~/shared/utils/form";
+import { Checkbox } from "~/shared/components/ui/checkbox";
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+} from "~/shared/components/ui/field";
+import { Input } from "~/shared/components/ui/input";
+import { fieldErrors, toApiError } from "~/shared/lib/api";
+import { brazilianStates, formatZip } from "~/shared/utils/address";
+import { formatCnpj } from "~/shared/utils/cnpj";
+import { formatCpf } from "~/shared/utils/cpf";
 import { formatPhone } from "~/shared/utils/phone";
 
-const acceptedAt = new Intl.DateTimeFormat("pt-BR", {
+const acceptedAtFormat = new Intl.DateTimeFormat("pt-BR", {
 	day: "2-digit",
 	month: "long",
 	year: "numeric",
-	timeZone: "UTC",
 });
 
-const consentOptions = [
-	{
-		value: "sim",
-		title: "Sim, concordo",
-		description: "Usamos seus dados para melhorar ofertas e serviços.",
-	},
-	{
-		value: "nao",
-		title: "Não concordo",
-		description: "Seus dados ficam só para a prestação do serviço.",
-	},
-] as const;
+function formatAcceptedAt(value: string) {
+	const date = new Date(value);
+	return Number.isNaN(date.getTime()) ? null : acceptedAtFormat.format(date);
+}
+
+const apiFields: Record<string, FieldPath<ProfileFormInput>> = {
+	phone: "phone",
+	cep: "zip",
+	street: "street",
+	number_address: "number",
+	complement: "complement",
+	district: "district",
+	city: "city",
+	uf: "state",
+};
+
+type ReadOnlyFieldProps = {
+	id: string;
+	label: string;
+	value: string;
+	className?: string;
+};
+
+function ReadOnlyField({ id, label, value, className }: ReadOnlyFieldProps) {
+	return (
+		<Field className={className}>
+			<FieldLabel htmlFor={id}>{label}</FieldLabel>
+			<div className="relative">
+				<Input
+					id={id}
+					value={value}
+					readOnly
+					disabled
+					className="pr-11 tabular-nums"
+				/>
+				<LockIcon
+					aria-hidden="true"
+					className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-muted-foreground"
+				/>
+			</div>
+		</Field>
+	);
+}
+
+function toFormValues(profile: AccountProfile): ProfileFormInput {
+	const state = brazilianStates.find((item) => item === profile.state);
+
+	return {
+		phone: formatPhone(profile.phone),
+		zip: formatZip(profile.zip),
+		street: profile.street,
+		number: profile.number,
+		complement: profile.complement,
+		district: profile.district,
+		city: profile.city,
+		state: state ?? ("" as ProfileFormInput["state"]),
+		marketing: profile.marketingConsent,
+	};
+}
 
 export function ProfileForm({ profile }: { profile: AccountProfile }) {
 	const baseId = useId();
-	const company = profile.personType === "Pessoa jurídica";
-	const [saved, setSaved] = useState(false);
-	const {
-		register,
-		handleSubmit,
-		watch,
-		clearErrors,
-		formState: { errors },
-	} = useForm<ProfileFormValues>({
+	const [current, setCurrent] = useState(profile);
+	const form = useForm<ProfileFormInput, unknown, ProfileFormValues>({
 		resolver: zodResolver(profileSchema),
-		defaultValues: {
-			name: profile.name,
-			stateRegistration: profile.stateRegistration,
-			stateRegistrationExempt: !company || profile.stateRegistrationExempt,
-			phone: profile.phone,
-			secondaryPhone: profile.secondaryPhone,
-			address: {
-				...profile.address,
-				zip: formatZip(profile.address.zip),
-			},
-			shareData: profile.shareData ? "sim" : "nao",
-		},
+		defaultValues: toFormValues(profile),
 	});
-	const exempt = watch("stateRegistrationExempt");
 
-	const fieldId = (field: ProfileField) => `${baseId}-${field}`;
-	const describe = (field: ProfileField) =>
-		errorProps(fieldId(field), errors[field]);
+	const { company } = current;
+	const acceptedAt = formatAcceptedAt(current.termsAcceptedAt);
+
+	async function submit(values: ProfileFormValues) {
+		try {
+			const updated = await saveProfile(current, values);
+			setCurrent(updated);
+			form.reset(toFormValues(updated));
+			toast.success("Alterações salvas");
+		} catch (error) {
+			const { message, data } = toApiError(error);
+			const errors = Object.entries(fieldErrors(data)).filter(
+				([field]) => field in apiFields,
+			);
+			for (const [field, fieldMessage] of errors) {
+				form.setError(
+					apiFields[field],
+					{ message: fieldMessage },
+					{ shouldFocus: true },
+				);
+			}
+			if (errors.length === 0) form.setError("root", { message });
+		}
+	}
 
 	return (
 		<form
 			noValidate
-			onSubmit={handleSubmit(() => setSaved(true))}
-			onChange={() => setSaved(false)}
-			className="flex flex-col gap-5"
+			onSubmit={form.handleSubmit(submit)}
+			className="flex flex-col gap-6"
 		>
 			<AccountSection
 				id={`${baseId}-dados`}
-				title={company ? "Dados da empresa" : "Dados pessoais"}
-				description="Aparecem na nota fiscal e nos contatos sobre seus pedidos."
+				title="Dados pessoais"
+				description="Para alterar nome ou documento, fale com o atendimento."
 			>
-				<div className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2">
-					<FormField
-						id={fieldId("name")}
-						label={company ? "Razão social" : "Nome completo"}
-						error={errors.name?.message}
-						className="sm:col-span-2"
-					>
-						<input
-							id={fieldId("name")}
-							{...register("name")}
-							autoComplete={company ? "organization" : "name"}
-							{...describe("name")}
-							className={fieldControlClassName}
+				<FieldGroup className="grid gap-4 sm:grid-cols-2">
+					<ReadOnlyField
+						id={`${baseId}-nome`}
+						label="Nome"
+						value={current.firstName}
+					/>
+					<ReadOnlyField
+						id={`${baseId}-sobrenome`}
+						label="Sobrenome"
+						value={current.lastName}
+					/>
+					{current.cpf && (
+						<ReadOnlyField
+							id={`${baseId}-cpf`}
+							label="CPF"
+							value={formatCpf(current.cpf)}
 						/>
-					</FormField>
-					<FormField
-						id={`${baseId}-documento`}
-						label={company ? "CNPJ" : "CPF"}
-						hint="Para alterar, fale com o atendimento."
-					>
-						<div className="relative">
-							<input
-								id={`${baseId}-documento`}
-								value={profile.document}
-								readOnly
-								disabled
-								aria-describedby={`${baseId}-documento-dica`}
-								className={cn(fieldControlClassName, "pr-11 tabular-nums")}
-							/>
-							<LockIcon
-								aria-hidden="true"
-								className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-muted-foreground"
-							/>
-						</div>
-					</FormField>
-					{company && (
-						<FormField
-							id={fieldId("stateRegistration")}
-							label="Inscrição estadual"
-							error={errors.stateRegistration?.message}
-						>
-							<div className="flex items-center gap-3">
-								<input
-									id={fieldId("stateRegistration")}
-									{...register("stateRegistration", { disabled: exempt })}
-									inputMode="numeric"
-									placeholder={exempt ? "Isento" : undefined}
-									{...describe("stateRegistration")}
-									className={fieldControlClassName}
-								/>
-								<label className="flex shrink-0 cursor-pointer items-center gap-2 text-sm font-medium text-heading">
-									<input
-										type="checkbox"
-										{...register("stateRegistrationExempt", {
-											onChange: () => clearErrors("stateRegistration"),
-										})}
-										className="size-4.5 accent-primary"
-									/>
-									Isento
-								</label>
-							</div>
-						</FormField>
 					)}
-					<FormField
-						id={fieldId("phone")}
-						label="Telefone principal"
-						error={errors.phone?.message}
-					>
-						<input
-							id={fieldId("phone")}
-							{...withMask(register("phone"), formatPhone)}
-							type="tel"
-							inputMode="tel"
-							autoComplete="tel-national"
-							placeholder="(00) 00000-0000"
-							{...describe("phone")}
-							className={fieldControlClassName}
-						/>
-					</FormField>
-					<FormField
-						id={fieldId("secondaryPhone")}
-						label="Telefone secundário"
-						optional
-						error={errors.secondaryPhone?.message}
-					>
-						<input
-							id={fieldId("secondaryPhone")}
-							{...withMask(register("secondaryPhone"), formatPhone)}
-							type="tel"
-							inputMode="tel"
-							placeholder="(00) 00000-0000"
-							{...describe("secondaryPhone")}
-							className={fieldControlClassName}
-						/>
-					</FormField>
-				</div>
+					<TextField
+						form={form}
+						name="phone"
+						label="Telefone com DDD"
+						as={PhoneInput}
+						type="tel"
+						inputMode="numeric"
+						autoComplete="tel-national"
+					/>
+				</FieldGroup>
 			</AccountSection>
+
+			{company && (
+				<AccountSection
+					id={`${baseId}-empresa`}
+					title="Dados da empresa"
+					description="Para alterar os dados da empresa, fale com o atendimento."
+				>
+					<FieldGroup className="grid gap-4 sm:grid-cols-2">
+						<ReadOnlyField
+							id={`${baseId}-razao-social`}
+							label="Razão social"
+							value={company.corporateName}
+							className="sm:col-span-2"
+						/>
+						<ReadOnlyField
+							id={`${baseId}-nome-fantasia`}
+							label="Nome fantasia"
+							value={company.fantasyName}
+						/>
+						<ReadOnlyField
+							id={`${baseId}-cnpj`}
+							label="CNPJ"
+							value={formatCnpj(company.cnpj)}
+						/>
+						{company.stateRegistration && (
+							<ReadOnlyField
+								id={`${baseId}-inscricao-estadual`}
+								label="Inscrição estadual"
+								value={company.stateRegistration}
+							/>
+						)}
+					</FieldGroup>
+				</AccountSection>
+			)}
 
 			<AccountSection
 				id={`${baseId}-endereco`}
 				title="Endereço"
 				description="Usado na nota fiscal das suas consultas."
 			>
-				<AddressFields
-					baseId={baseId}
-					register={register}
-					errors={errors.address}
-				/>
+				<AddressFields form={form} showLegend={false} />
 			</AccountSection>
 
 			<AccountSection
 				id={`${baseId}-privacidade`}
 				title="Contrato e privacidade"
-				description="Como seus dados são usados pela Checkauto."
+				description="O contrato que você aceitou e suas preferências de comunicação."
 			>
 				<div className="flex flex-col gap-4 rounded-2xl bg-brand-blue/4 p-4 sm:flex-row sm:items-center">
 					<div className="flex min-w-0 flex-1 items-center gap-4">
@@ -213,14 +232,18 @@ export function ProfileForm({ profile }: { profile: AccountProfile }) {
 							<p className="text-sm/5 font-semibold text-heading">
 								Contrato de fornecimento de informações
 							</p>
-							<p className="flex items-center gap-1.5 text-xs/5 text-muted-foreground">
-								<CircleCheckIcon
-									aria-hidden="true"
-									className="size-3.5 text-highlight"
-								/>
-								Aceito em{" "}
-								{acceptedAt.format(new Date(profile.contractAcceptedAt))}
-							</p>
+							{(acceptedAt || current.termsAcceptedVersion) && (
+								<p className="flex items-center gap-1.5 text-xs/5 text-muted-foreground">
+									<CircleCheckIcon
+										aria-hidden="true"
+										className="size-3.5 text-highlight"
+									/>
+									Aceito
+									{acceptedAt && ` em ${acceptedAt}`}
+									{current.termsAcceptedVersion &&
+										` (versão ${current.termsAcceptedVersion})`}
+								</p>
+							)}
 						</div>
 					</div>
 					<Button
@@ -229,56 +252,48 @@ export function ProfileForm({ profile }: { profile: AccountProfile }) {
 						size="sm"
 						className="h-10 text-sm max-sm:w-full"
 					>
-						<Link to="/contrato">Ler contrato</Link>
+						<Link to="/contrato" target="_blank" rel="noopener noreferrer">
+							Ler contrato
+							<span className="sr-only"> (abre em nova aba)</span>
+						</Link>
 					</Button>
 				</div>
 
-				<fieldset className="flex flex-col gap-3">
-					<legend className="mb-3 text-sm/6 font-medium text-heading">
-						Você permite o compartilhamento dos seus dados com parceiros da
-						Checkauto?
-					</legend>
-					<div className="grid gap-3 sm:grid-cols-2">
-						{consentOptions.map((option) => (
-							<label
-								key={option.value}
-								className="flex cursor-pointer gap-3 rounded-2xl border border-border p-4 transition-colors hover:border-brand-blue/25 has-checked:border-primary has-checked:bg-brand-green/8"
+				<Controller
+					name="marketing"
+					control={form.control}
+					render={({ field }) => (
+						<Field orientation="horizontal">
+							<Checkbox
+								id={`${baseId}-marketing`}
+								name={field.name}
+								checked={field.value}
+								onCheckedChange={field.onChange}
+								onBlur={field.onBlur}
+								ref={field.ref}
+							/>
+							<FieldLabel
+								htmlFor={`${baseId}-marketing`}
+								className="font-normal"
 							>
-								<input
-									type="radio"
-									{...register("shareData")}
-									value={option.value}
-									className="mt-0.5 size-4.5 shrink-0 accent-primary"
-								/>
-								<span className="flex flex-col gap-0.5">
-									<span className="text-sm font-semibold text-heading">
-										{option.title}
-									</span>
-									<span className="text-xs/5 text-muted-foreground">
-										{option.description}
-									</span>
-								</span>
-							</label>
-						))}
-					</div>
-				</fieldset>
+								Quero receber novidades e ofertas por e-mail
+							</FieldLabel>
+						</Field>
+					)}
+				/>
 			</AccountSection>
 
 			<div className="flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-end">
-				<p
-					role="status"
-					className="flex items-center justify-center gap-2 text-sm font-medium text-highlight"
+				{form.formState.errors.root && (
+					<FieldError errors={[form.formState.errors.root]} />
+				)}
+				<FormButton
+					className="sm:w-auto sm:min-w-48"
+					isSubmitting={form.formState.isSubmitting}
+					submittingText="Salvando…"
 				>
-					{saved && (
-						<>
-							<CircleCheckIcon aria-hidden="true" className="size-4.5" />
-							Alterações salvas
-						</>
-					)}
-				</p>
-				<Button type="submit" className="sm:min-w-48">
 					Salvar alterações
-				</Button>
+				</FormButton>
 			</div>
 		</form>
 	);

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router";
+import { toast } from "sonner";
 
 import {
 	AuthHeading,
@@ -10,6 +12,7 @@ import { ResetPasswordForm } from "~/domains/auth/components/reset-password-form
 import { forgotPassword } from "~/domains/auth/services/auth.service";
 import { MailIcon } from "~/shared/components/icons";
 import { Button } from "~/shared/components/ui/button";
+import { toApiError } from "~/shared/lib/api";
 
 import type { Route } from "./+types/_auth.redefinir-senha";
 
@@ -19,6 +22,19 @@ export const meta: Route.MetaFunction = () => [
 
 export default function ResetPassword() {
 	const [sentTo, setSentTo] = useState<string | null>(null);
+	const [resending, setResending] = useState(false);
+
+	async function resend(email: string) {
+		setResending(true);
+		try {
+			await forgotPassword(email);
+			toast.success("E-mail reenviado");
+		} catch (error) {
+			toast.error(toApiError(error).message);
+		} finally {
+			setResending(false);
+		}
+	}
 
 	if (sentTo !== null) {
 		return (
@@ -30,22 +46,35 @@ export default function ResetPassword() {
 					<AuthHeading>
 						<AuthHeadingTitle>Confira seu e-mail</AuthHeadingTitle>
 						<AuthHeadingDescription>
-							Se houver uma conta cadastrada, enviaremos instruções para{" "}
+							Enviamos uma senha provisória para{" "}
 							<strong className="font-medium text-heading">{sentTo}</strong>.
-							Confira também a caixa de spam.
+							Entre com ela e depois crie a sua senha em Meus dados. Confira
+							também a caixa de spam.
 						</AuthHeadingDescription>
 					</AuthHeading>
 				</div>
-				<Button
-					type="button"
-					className="w-full"
-					onClick={() => setSentTo(null)}
-				>
-					Reenviar e-mail
-				</Button>
-				<AuthSwitch question="Lembrou a senha?" to="/entrar">
-					Entrar
-				</AuthSwitch>
+				<div className="flex flex-col gap-2">
+					<Button asChild className="w-full">
+						<Link
+							to="/entrar"
+							state={{
+								notice: "Entre com a senha provisória que enviamos por e-mail.",
+								email: sentTo,
+							}}
+						>
+							Entrar com a senha provisória
+						</Link>
+					</Button>
+					<Button
+						type="button"
+						variant="ghost"
+						className="w-full"
+						disabled={resending}
+						onClick={() => void resend(sentTo)}
+					>
+						{resending ? "Reenviando…" : "Reenviar e-mail"}
+					</Button>
+				</div>
 			</>
 		);
 	}
@@ -55,8 +84,8 @@ export default function ResetPassword() {
 			<AuthHeading>
 				<AuthHeadingTitle>Redefinir senha</AuthHeadingTitle>
 				<AuthHeadingDescription>
-					Informe o e-mail da sua conta para receber instruções de redefinição
-					de senha.
+					Informe o e-mail da sua conta. Enviamos uma senha provisória para você
+					entrar e criar uma nova.
 				</AuthHeadingDescription>
 			</AuthHeading>
 

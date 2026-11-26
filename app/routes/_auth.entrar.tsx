@@ -50,9 +50,9 @@ export default function SignIn() {
 				</p>
 			)}
 
-			<SignInForm defaultEmail={notice?.email} />
-
 			<SocialSignIn action="Entrar" />
+
+			<SignInForm defaultEmail={notice?.email} />
 
 			<AuthSwitch question="Não tem conta?" to="/cadastro">
 				Criar conta

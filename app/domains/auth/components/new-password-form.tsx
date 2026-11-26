@@ -6,6 +6,7 @@ import { resetPassword } from "~/domains/auth/services/auth.service";
 import {
 	type NewPasswordFormValues,
 	newPasswordSchema,
+	passwordHint,
 } from "~/domains/auth/utils/auth.schema";
 import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
@@ -94,9 +95,7 @@ export function NewPasswordForm({ token }: NewPasswordFormProps) {
 					/>
 				))}
 
-				<FieldDescription className="px-1.5">
-					8 a 16 caracteres, com maiúscula, minúscula, número e símbolo.
-				</FieldDescription>
+				<FieldDescription className="px-1.5">{passwordHint}</FieldDescription>
 			</FieldGroup>
 
 			{form.formState.errors.root && (

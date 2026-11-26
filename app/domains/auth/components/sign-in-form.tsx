@@ -131,7 +131,7 @@ export function SignInForm({ defaultEmail = "" }: SignInFormProps) {
 
 				<Link
 					to="/redefinir-senha"
-					className="inline-flex min-h-11 items-center self-end px-1.5 text-sm text-muted-foreground transition-colors hover:text-heading"
+					className="inline-flex min-h-11 items-center self-end px-1.5 text-sm font-medium text-heading hover:underline hover:underline-offset-4"
 				>
 					Esqueci minha senha?
 				</Link>

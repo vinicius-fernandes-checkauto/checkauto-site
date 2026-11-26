@@ -51,6 +51,73 @@ O `POST /signup/` vai exigir reCAPTCHA (hoje não exige), igual ao login:
 
 Formato observado no login (`POST /token/` sem reCAPTCHA): `401` com `{ "detail": "...", "code": "recaptcha_fallback_required" }`.
 
+### A6. Corpo completo do `POST /signup/` (recebido em 26/11/2026)
+
+A pessoa se cadastra com **CPF (PF)** ou **CNPJ (PJ)**, no mesmo esquema do "Usuário Web" do Corp. `Content-Type: application/json`.
+
+Pessoa física:
+
+```json
+{
+	"person_type": "pf",
+	"first_name": "Maria",
+	"last_name": "Silva",
+	"email": "maria@exemplo.com",
+	"password": "<senha>",
+	"cpf": "<CPF>",
+	"phone": "11988887777",
+	"cep": "01310100",
+	"street": "Av Paulista",
+	"number_address": "1000",
+	"complement": "Apto 12",
+	"district": "Bela Vista",
+	"city": "São Paulo",
+	"uf": "SP",
+	"accept_terms": true,
+	"terms_version": "2026-11",
+	"marketing_consent": false,
+	"recaptcha_token": "<token v3 com a ação signup>"
+}
+```
+
+Pessoa jurídica (muda só o bloco de documento e empresa):
+
+```json
+{
+	"person_type": "pj",
+	"cnpj": "<CNPJ>",
+	"corporate_name": "Empresa Teste Ltda",
+	"fantasy_name": "Empresa Teste",
+	"business_area": "Despachante",
+	"municipal_registration": "",
+	"state_registration": ""
+}
+```
+
+| Grupo        | Campos                                                                                                                                                                                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Obrigatórios | `person_type`, `first_name`, `last_name`, `email`, `password`, `phone`, `cep`, `street`, `number_address`, `district`, `city`, `uf`, `accept_terms` (`true`), `terms_version`, `recaptcha_token` |
+| Só PF        | `cpf`                                                                                                                                                                                            |
+| Só PJ        | `cnpj`, `corporate_name`, `fantasy_name` (o `cpf`, se vier, é ignorado)                                                                                                                          |
+| Opcionais    | `complement`, `marketing_consent` (padrão `false`), `business_area`, `municipal_registration`, `state_registration`                                                                              |
+
+Regras:
+
+- `terms_version`: a `version` de `GET user/terms/current/`. Versão desatualizada dá `400`.
+- `accept_terms`: tem de ser `true`.
+- `marketing_consent`: sem pré-seleção; só `true` se a pessoa marcou.
+- `password`: mínimo de 8 caracteres, com minúscula, maiúscula, número e um símbolo entre `_ @ ! ( ) & + $` (outros, como `#` e `*`, não contam), sem espaços. O site limita a 16, como o Corp.
+- `cpf`/`cnpj`: podem ir com máscara; o backend normaliza. O site envia só dígitos.
+- `recaptcha_token`: v3 com a ação `"signup"`. Se vier `recaptcha_fallback_required`, mostrar o desafio v2 e reenviar o **mesmo** formulário com `recaptcha_token_v2`.
+
+Resposta (envelope `{ user, content }`):
+
+- `201`: `content = { id, first_name, last_name, email, profile, company }`. **Não traz tokens:** depois do `201`, fazer o login em `POST /token/` (com `recaptcha_token` da ação `"login"`).
+- `400` com erros por campo, por exemplo `email`, `cpf`, `password`, `terms_version`, cada um com uma lista de mensagens.
+- `400` com `{ "detail": "...", "code": "recaptcha_fallback_required" | "recaptcha_failed" }`. O erro de reCAPTCHA vem **antes** dos erros de campo: sem token, só ele aparece.
+
+**No site:** o formulário não tem `business_area`, `municipal_registration` nem `state_registration` (opcionais).
+
 ### A5. Próxima branch (preparar)
 
 - Login e cadastro pelo Google — **caminhos finais a confirmar** na próxima branch. O cadastro pelo Google exige o mesmo aceite (`accept_terms`, `terms_version`) e os dados que o Google não traz (CPF/CNPJ, telefone, endereço).

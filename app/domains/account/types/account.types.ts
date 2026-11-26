@@ -1,22 +1,51 @@
-import type { Address } from "~/domains/account/utils/account.schema";
+import type { z } from "zod";
+
+import type { userDetailSchema } from "~/domains/account/utils/account.schema";
 
 export type AccountUser = {
 	name: string;
 	email: string;
 };
 
-export type AccountProfile = {
-	personType: "Pessoa física" | "Pessoa jurídica";
-	name: string;
-	document: string;
-	stateRegistration: string;
-	stateRegistrationExempt: boolean;
+export type UserDetail = z.infer<typeof userDetailSchema>;
+
+export type UpdateUserBody = {
 	phone: string;
-	secondaryPhone: string;
+	cep: string;
+	street: string;
+	number_address: string;
+	complement: string;
+	district: string;
+	city: string;
+	uf: string;
+	marketing_consent: boolean;
+};
+
+export type AccountCompany = {
+	corporateName: string;
+	fantasyName: string;
+	cnpj: string;
+	stateRegistration: string;
+};
+
+export type AccountProfile = {
+	id: string;
+	firstName: string;
+	lastName: string;
 	email: string;
-	address: Address;
-	contractAcceptedAt: string;
-	shareData: boolean;
+	cpf: string;
+	company: AccountCompany | null;
+	phone: string;
+	zip: string;
+	street: string;
+	number: string;
+	complement: string;
+	district: string;
+	city: string;
+	state: string;
+	marketingConsent: boolean;
+	termsAcceptedVersion: string;
+	termsAcceptedAt: string;
 };
 
 export type QueryStatus = "done" | "processing" | "error";

@@ -34,3 +34,13 @@ export function formatZip(value: string) {
 		? `${digits.slice(0, 5)}-${digits.slice(5)}`
 		: digits;
 }
+
+export type AddressValues = {
+	zip: string;
+	street: string;
+	number: string;
+	complement: string;
+	district: string;
+	city: string;
+	state: string;
+};

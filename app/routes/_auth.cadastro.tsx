@@ -1,5 +1,6 @@
 import { Navigate } from "react-router";
 
+import { AuthFooter } from "~/domains/auth/components/auth-footer";
 import {
 	AuthHeading,
 	AuthHeadingDescription,
@@ -7,7 +8,6 @@ import {
 } from "~/domains/auth/components/auth-heading";
 import { AuthSwitch } from "~/domains/auth/components/auth-switch";
 import { SignUpForm } from "~/domains/auth/components/sign-up-form";
-import { SocialSignIn } from "~/domains/auth/components/social-sign-in";
 import { getGuestRedirect } from "~/domains/auth/services/auth.service";
 import { useSession } from "~/shared/hooks/use-session";
 
@@ -18,7 +18,7 @@ export const meta: Route.MetaFunction = () => [
 	{
 		name: "description",
 		content:
-			"Crie sua conta Checkauto em menos de um minuto e consulte o histórico de qualquer veículo.",
+			"Crie sua conta Checkauto e consulte o histórico de qualquer veículo.",
 	},
 ];
 
@@ -33,17 +33,17 @@ export default function SignUp() {
 			<AuthHeading>
 				<AuthHeadingTitle>Crie sua conta</AuthHeadingTitle>
 				<AuthHeadingDescription>
-					Leva menos de um minuto. Endereço só se você precisar de nota fiscal.
+					São três etapas rápidas para começar a consultar.
 				</AuthHeadingDescription>
 			</AuthHeading>
 
 			<SignUpForm />
 
-			<SocialSignIn action="Criar conta" />
-
 			<AuthSwitch question="Já tem conta?" to="/entrar">
 				Entrar
 			</AuthSwitch>
+
+			<AuthFooter />
 		</>
 	);
 }

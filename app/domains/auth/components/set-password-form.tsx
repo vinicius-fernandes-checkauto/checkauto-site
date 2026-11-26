@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 import { setPassword } from "~/domains/auth/services/auth.service";
 import {
+	passwordHint,
 	type SetPasswordFormValues,
 	setPasswordSchema,
 } from "~/domains/auth/utils/auth.schema";
@@ -118,9 +119,7 @@ export function SetPasswordForm({ defaultEmail = "" }: SetPasswordFormProps) {
 					/>
 				))}
 
-				<FieldDescription className="px-1.5">
-					8 a 16 caracteres, com maiúscula, minúscula, número e símbolo.
-				</FieldDescription>
+				<FieldDescription className="px-1.5">{passwordHint}</FieldDescription>
 			</FieldGroup>
 
 			{form.formState.errors.root && (

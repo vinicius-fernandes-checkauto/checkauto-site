@@ -4,19 +4,22 @@ import {
 	type ProviderInput,
 	providers,
 } from "~/domains/auth/services/providers";
-import type { LoginResponse } from "~/domains/auth/types/auth.types";
-import {
-	type CompleteProfileFormValues,
-	loginResponseSchema,
-	type SetPasswordFormValues,
-	type SignUpFormOutput,
+import type {
+	LoginResponse,
+	ProfileBody,
+} from "~/domains/auth/types/auth.types";
+import type {
+	CompleteProfileFormValues,
+	ProfileFieldsValues,
+	SetPasswordFormValues,
+	SignUpFormValues,
 } from "~/domains/auth/utils/auth.schema";
 import {
 	clearPendingGoogleSignUp,
 	readPendingGoogleSignUp,
 } from "~/domains/auth/utils/google-identity";
 import { getRecaptchaToken } from "~/domains/auth/utils/recaptcha";
-import { ApiError, toApiError, unwrapContent } from "~/shared/lib/api";
+import { ApiError, toApiError } from "~/shared/lib/api";
 import {
 	clearSession,
 	type PublicSession,
@@ -84,47 +87,66 @@ export function signOut() {
 	clearSession();
 }
 
-export type SignUpInput = SignUpFormOutput & {
+const digits = (value: string) => value.replace(/\D/g, "");
+
+function profileBody(
+	values: ProfileFieldsValues,
+	termsVersion: string,
+): ProfileBody {
+	const company = values.personType === "pj";
+
+	return {
+		person_type: values.personType,
+		...(company
+			? {
+					cnpj: digits(values.cnpj),
+					corporate_name: values.corporateName,
+					fantasy_name: values.fantasyName,
+				}
+			: { cpf: digits(values.cpf) }),
+		first_name: values.firstName,
+		last_name: values.lastName,
+		phone: digits(values.phone),
+		cep: digits(values.zip),
+		street: values.street,
+		number_address: values.number,
+		district: values.district,
+		city: values.city,
+		uf: values.state,
+		...(values.complement && { complement: values.complement }),
+		accept_terms: true,
+		terms_version: termsVersion,
+		marketing_consent: values.marketing,
+	};
+}
+
+export type SignUpInput = SignUpFormValues & {
 	termsVersion: string;
 	recaptchaV2Token?: string;
 };
 
 export async function signUp({
-	name,
-	email,
-	cpf,
-	password,
-	marketing,
 	termsVersion,
 	recaptchaV2Token,
+	...values
 }: SignUpInput): Promise<Session | null> {
-	const [firstName = "", ...lastName] = name.split(/\s+/);
-
-	const data = await authApi.signUp({
-		person_type: "pf",
-		first_name: firstName,
-		last_name: lastName.join(" "),
-		email,
-		cpf,
-		password,
-		accept_terms: true,
-		terms_version: termsVersion,
-		marketing_consent: marketing,
+	await authApi.signUp({
+		...profileBody(values, termsVersion),
+		email: values.email,
+		password: values.password,
 		recaptcha_token: await getRecaptchaToken("signup"),
 		...(recaptchaV2Token && { recaptcha_token_v2: recaptchaV2Token }),
 	});
 
-	const login = loginResponseSchema.safeParse(unwrapContent(data));
-	if (login.success) return startSession(login.data, "credentials");
-
 	try {
-		return await signIn("credentials", { email, password });
+		return await signIn("credentials", {
+			email: values.email,
+			password: values.password,
+		});
 	} catch {
 		return null;
 	}
 }
-
-const digits = (value: string) => value.replace(/\D/g, "");
 
 export async function completeGoogleSignUp(
 	values: CompleteProfileFormValues,
@@ -139,32 +161,11 @@ export async function completeGoogleSignUp(
 	}
 
 	const { version } = await authApi.getCurrentTerms();
-	const company = values.personType === "pj";
 
 	try {
 		const login = await authApi.signUpWithGoogle({
 			id_token: pending.idToken,
-			person_type: values.personType,
-			...(company
-				? {
-						cnpj: digits(values.cnpj),
-						corporate_name: values.corporateName,
-						fantasy_name: values.fantasyName,
-					}
-				: { cpf: digits(values.cpf) }),
-			first_name: values.firstName,
-			last_name: values.lastName,
-			phone: digits(values.phone),
-			cep: digits(values.zip),
-			street: values.street,
-			number_address: values.number,
-			district: values.district,
-			city: values.city,
-			uf: values.state,
-			...(values.complement && { complement: values.complement }),
-			accept_terms: true,
-			terms_version: version,
-			marketing_consent: values.marketing,
+			...profileBody(values, version),
 		});
 		clearPendingGoogleSignUp();
 		return startSession(login, "google");
@@ -197,7 +198,6 @@ export async function changePassword({
 		new_password: newPassword,
 		new_password_again: confirmPassword,
 	});
-	signOut();
 }
 
 export function setPassword({ email, password }: SetPasswordFormValues) {

@@ -19,9 +19,3 @@ export function formatToday(date: Date) {
 	}).format(date);
 	return text.charAt(0).toUpperCase() + text.slice(1);
 }
-
-export function maskEmail(email: string) {
-	const [user, domain] = email.split("@");
-	if (!domain) return email;
-	return `${user.slice(0, 2)}${"•".repeat(Math.max(user.length - 2, 3))}@${domain}`;
-}

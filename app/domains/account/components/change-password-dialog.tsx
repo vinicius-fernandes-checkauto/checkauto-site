@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useId } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 import {
 	type PasswordField,
@@ -9,6 +9,7 @@ import {
 	passwordSchema,
 } from "~/domains/account/utils/account.schema";
 import { changePassword } from "~/domains/auth/services/auth.service";
+import { passwordHint } from "~/domains/auth/utils/auth.schema";
 import { FormButton } from "~/shared/components/form-button";
 import { PasswordInput } from "~/shared/components/password-input";
 import { Button } from "~/shared/components/ui/button";
@@ -41,7 +42,7 @@ export function ChangePasswordDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:p-8">
-				{open && <ChangePasswordForm />}
+				{open && <ChangePasswordForm onDone={() => onOpenChange(false)} />}
 			</DialogContent>
 		</Dialog>
 	);
@@ -63,9 +64,8 @@ const apiFields: Record<string, PasswordField> = {
 	new_password_again: "confirmPassword",
 };
 
-function ChangePasswordForm() {
+function ChangePasswordForm({ onDone }: { onDone: () => void }) {
 	const baseId = useId();
-	const navigate = useNavigate();
 	const form = useForm({
 		resolver: zodResolver(passwordSchema),
 		defaultValues: {
@@ -80,10 +80,10 @@ function ChangePasswordForm() {
 	async function submit(values: PasswordFormValues) {
 		try {
 			await changePassword(values);
-			navigate("/entrar", {
-				replace: true,
-				state: { notice: "Senha alterada. Entre com a nova senha." },
+			toast.success("Senha alterada", {
+				description: "Use a nova senha na próxima vez que entrar.",
 			});
+			onDone();
 		} catch (error) {
 			const { message, data } = toApiError(error);
 			const errors = Object.entries(fieldErrors(data)).filter(
@@ -101,8 +101,7 @@ function ChangePasswordForm() {
 			<DialogHeader className="pr-12">
 				<DialogTitle>Alterar senha</DialogTitle>
 				<DialogDescription className="text-base/6">
-					Use de 8 a 16 caracteres, com maiúscula, minúscula, número e símbolo.
-					Depois de alterar, entre de novo com a nova senha.
+					{passwordHint}.
 				</DialogDescription>
 			</DialogHeader>
 			<form

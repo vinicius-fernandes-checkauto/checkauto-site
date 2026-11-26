@@ -58,7 +58,6 @@ export function SocialSignIn({ action }: SocialSignInProps) {
 
 	return (
 		<div className="flex flex-col items-center gap-4">
-			<p className="text-sm text-muted-foreground">ou continue com</p>
 			<div className="flex w-full justify-center gap-3">
 				<div ref={mount} className="flex min-h-11 w-full justify-center" />
 				{/* <button
@@ -79,6 +78,7 @@ export function SocialSignIn({ action }: SocialSignInProps) {
 					{error}
 				</p>
 			)}
+			<p className="text-sm text-muted-foreground">ou</p>
 		</div>
 	);
 }

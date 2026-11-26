@@ -25,6 +25,7 @@ Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular 
 - **Tailwind CSS v4**, com o tema em `app/app.css`. Não existe `tailwind.config`.
 - **shadcn/ui** (estilo `radix-maia`, Radix) em `app/shared/components/ui`.
 - **GSAP** + ScrollTrigger via `~/shared/lib/gsap` (`gsap`, `ScrollTrigger`, `useGSAP`, `MOTION_OK`).
+- **sonner** para toasts (`toast.success`, `toast.error`).
 - **React Hook Form** + **zod 4** (`@hookform/resolvers/zod`) para todos os formulários.
 - **lucide-react**, mas só importado por `~/shared/components/icons`.
 - **Biome** para lint, formatação e ordem de imports e de classes. **Vitest** para testes.
@@ -75,10 +76,11 @@ app/
       utils/             auth.schema.ts, recaptcha.ts
       auth.api.ts        endpoints do backend
     account/             área do cliente
-      components/  types/  utils/ (account.schema.ts…)  account.mock.ts (dados de demonstração)
+      components/  services/ (account.service.ts)  types/  utils/ (account.schema.ts…)
+      account.api.ts (Meus dados)  account.mock.ts (dados de demonstração das outras telas)
     site/                site público (ainda na organização antiga: components/, lib/, content/)
   shared/                só o que mais de um domínio usa; não conhece nenhum domínio
-    components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, CpfInput, PhoneInput…
+    components/          logo, ícones, BrandAvatar, SkipLink, ErrorPage, CpfInput, PhoneInput, TextField, AddressFields…
     components/ui/       shadcn ajustado ao tema
     hooks/               useMediaQuery, useScrolled, useSession
     lib/                 api.ts (cliente HTTP), session.ts (cookie da sessão), cn, gsap, seo
@@ -199,6 +201,8 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
 
 - **Button** (`~/shared/components/ui/button`). Variantes: `default` (verde escuro), `secondary` (azul), `outline`, `ghost`, `destructive`, `link`. Tamanhos: `default` h-12, `sm` h-11, `lg` h-14, `icon`, `icon-sm`. Área de toque mínima de 44px (`min-h-11`).
 - **Dialog**, **Sheet**, **DropdownMenu**, **Accordion** do shadcn.
+- **Toast** (`sonner`): o `<Toaster />` (`~/shared/components/ui/sonner`) já está no `root.tsx` e vale para o app todo. Para avisar que uma ação deu certo, use `toast.success("…")` de `sonner`, sem modal de confirmação e sem mensagem solta na tela. Erro de formulário continua embaixo do campo (`FieldError`), não em toast.
+- **Select** (`~/shared/components/ui/select`). **Nunca use `<select>` nativo:** lista de opções é sempre o `Select` do shadcn, com `Controller` (`value={field.value}` e `onValueChange={field.onChange}`).
 - **BrandAvatar** (`~/shared/components/brand-avatar`): iniciais sobre azul com o arco verde da marca em volta. O tamanho vem pelo `className`, e o arco e o texto acompanham.
 - **CheckautoLogo**: `variant="default" | "white"`.
 - **HeaderCart** (site), **AccountMenu** (conta), **AccountPageHeader** (título, descrição e ação das páginas da conta).
@@ -220,7 +224,7 @@ Use **só os tokens semânticos do shadcn** definidos em `:root` do `app/app.css
   - **Nunca** use GSAP, `useEffect` ou medição em JS para dimensionar.
   - Mantenha conteúdo moderado (≲ 560px de altura) e confira em 1366×657, 1536×730 e 1920×969.
 - **Header do site**: sticky só abaixo de `lg`, com sombra ao rolar (`useScrolled`). No desktop ele rola junto com a página.
-- **Header da conta**: branco, sticky em todos os tamanhos, com sombra ao rolar.
+- **Header da conta**: sticky só abaixo de `lg`, como o do site. No desktop ele rola junto com a página, e a sidebar é que fica fixa (`lg:sticky lg:top-6`).
   - Desktop: só "Ajuda". "Nova consulta" fica no topo do menu da conta, em destaque.
   - Mobile: só o avatar, que abre o `AccountMenu`.
   - A sidebar da conta só aparece em `lg`.

@@ -9,6 +9,7 @@ import {
 
 import logo from "~/assets/brand/checkauto-logo.png";
 import { ErrorPage } from "~/shared/components/error-page";
+import { Toaster } from "~/shared/components/ui/sonner";
 import { jsonLdScript, organizationJsonLd } from "~/shared/lib/seo";
 
 import type { Route } from "./+types/root";
@@ -35,6 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				{children}
+				<Toaster />
 				<ScrollRestoration />
 				<Scripts />
 			</body>

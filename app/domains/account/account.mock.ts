@@ -1,5 +1,4 @@
 import type {
-	AccountProfile,
 	AccountUser,
 	CreditEntry,
 	QueryStatus,
@@ -10,28 +9,6 @@ import type {
 export const demoAccount: AccountUser = {
 	name: "Teste Veículos Ltda",
 	email: "contato@testeveiculos.com.br",
-};
-
-export const demoProfile: AccountProfile = {
-	personType: "Pessoa jurídica",
-	name: "Teste Veículos Ltda",
-	document: "01.689.272/0001-03",
-	stateRegistration: "",
-	stateRegistrationExempt: true,
-	phone: "(11) 90000-0000",
-	secondaryPhone: "",
-	email: "contato@testeveiculos.com.br",
-	address: {
-		zip: "04543011",
-		street: "Avenida Brigadeiro Faria Lima",
-		number: "3477",
-		complement: "Conjunto 92",
-		district: "Itaim Bibi",
-		city: "São Paulo",
-		state: "SP",
-	},
-	contractAcceptedAt: "2025-03-12",
-	shareData: true,
 };
 
 const plates = [
