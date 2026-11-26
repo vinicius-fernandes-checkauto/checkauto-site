@@ -58,10 +58,6 @@ export function SignInForm({ defaultEmail = "" }: SignInFormProps) {
 			navigate(redirectAfterSignIn(session), { replace: true });
 		} catch (error) {
 			const { code, message } = toApiError(error);
-			if (code === "password_setup_required") {
-				navigate("/definir-senha", { state: { email } });
-				return;
-			}
 			if (challenge.active || code === "recaptcha_fallback_required") {
 				challenge.restart();
 			}

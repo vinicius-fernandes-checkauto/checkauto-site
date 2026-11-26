@@ -24,8 +24,6 @@ npx biome format --write docs/api/openapi.json
 | Trocar senha          | `POST /user/change-password/`                        | `current_password`, `new_password`, `new_password_again` (formato do Corp)                                                                                                     |
 | Login com Google      | `POST /user/login/google/`                           | no Swagger sem corpo descrito; `{ id_token }`; resposta na raiz, como o `/token/`                                                                                              |
 | Cadastro com Google   | `POST /user/signup/google/`                          | no Swagger sem corpo descrito; `id_token`, PF/PJ, endereço, aceite; resposta em `content`                                                                                      |
-| Definir senha         | `POST /user/password/set/`                           | migrados; o site envia `email`, `password` (a confirmar). Em 26/11/2026: `404`                                                                                                 |
-| Criar senha nova      | `POST /user/password/reset/`                         | **não existe no backend**; rota suposta pela tela `/nova-senha`, que envia `token`, `password`                                                                                 |
 | Meus dados e endereço | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/` | nome, e-mail, CPF, telefone e um único endereço (`cep`, `street`…)                                                                                                             |
 | Créditos              | `GET /wallet/movements/`                             | usuário web (perfil 4) vê só a própria carteira                                                                                                                                |
 | Pedidos               | `GET /order/list/`, `GET /order/retrieve/{id}/`      | perfil 4 vê só os próprios pedidos                                                                                                                                             |
@@ -88,7 +86,6 @@ integralmente pelo backend.
 - `forgot-password` e `change-password` não têm corpo documentado. A chamada de recuperação usa `{ "email": ... }`, conforme o fluxo legado do CK-CORP, até confirmação do backend.
 - O Swagger lista `POST /signup/` e `GET /user/terms/current/`, mas não descreve o corpo do cadastro nem a resposta dos termos. Os campos do cadastro e o formato do contrato estão em `cadastro-aceite-contrato.md`.
 - `forgot-password` com e-mail sem conta responde `400` com `{ content: { message: "Opss.. Por favor tente novamente mais tarde!" } }` (26/11/2026). Confirmar se é o esperado.
-- Depois do e-mail de recuperação: falta a rota que cria a senha nova (o site supõe `POST /user/password/reset/ { token, password }`).
 - CORS: `http://localhost:3000` liberado; o domínio da Vercel ainda não (26/11/2026).
 - O usuário tem **um** endereço nos campos do próprio cadastro; a tela de endereços do redesign permite vários.
 - Não há rota de "meu usuário" (`/me`): o `id` precisa vir do token ou do login.

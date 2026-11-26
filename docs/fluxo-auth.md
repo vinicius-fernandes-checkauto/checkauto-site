@@ -28,20 +28,18 @@ flowchart LR
 
 ## 2. Rotas de auth do backend
 
-| Fluxo                    | Rota                                                                                     | Token? | Situação                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------- |
-| Login                    | `POST /token/` (`username`, `password`, `recaptcha_token`, `recaptcha_token_v2`)         | não    | ✅                                                                  |
-| Renovar sessão           | `POST /token/refresh/` (`refresh`)                                                       | não    | ✅                                                                  |
-| Validar token            | `POST /token/verify/` (`token`)                                                          | não    | ✅ (não precisamos usar)                                            |
-| Texto do contrato        | `GET /user/terms/current/`                                                               | não    | ✅                                                                  |
-| Cadastro do site         | `POST /signup/`                                                                          | não    | ✅ rota; ⏳ corpo completo                                          |
-| Esqueci a senha          | `POST /user/forgot-password/` (`email`)                                                  | não    | ✅ rota; ⏳ o que vem depois do e-mail                              |
-| Trocar senha             | `POST /user/change-password/` (`current_password`, `new_password`, `new_password_again`) | sim    | ✅ (formato usado pelo Corp)                                        |
-| Meus dados               | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/`                                     | sim    | ✅                                                                  |
-| Login com Google         | `POST /user/login/google/` (`id_token`)                                                  | não    | ✅ contrato do backend (fora do Swagger)                            |
-| Cadastro com Google      | `POST /user/signup/google/` (`id_token`, PF/PJ, endereço, aceite)                        | não    | ✅ contrato do backend (fora do Swagger)                            |
-| Definir senha (migrados) | `POST /user/password/set/`                                                               | —      | ⏳ só na especificação, "se aprovada"; em 26/11/2026 responde `404` |
-| Criar senha nova (link)  | `POST /user/password/reset/` (`token`, `password`)                                       | não    | ⏳ rota e corpo **supostos pelo site**; não existe no backend       |
+| Fluxo               | Rota                                                                                     | Token? | Situação                                 |
+| ------------------- | ---------------------------------------------------------------------------------------- | ------ | ---------------------------------------- |
+| Login               | `POST /token/` (`username`, `password`, `recaptcha_token`, `recaptcha_token_v2`)         | não    | ✅                                       |
+| Renovar sessão      | `POST /token/refresh/` (`refresh`)                                                       | não    | ✅                                       |
+| Validar token       | `POST /token/verify/` (`token`)                                                          | não    | ✅ (não precisamos usar)                 |
+| Texto do contrato   | `GET /user/terms/current/`                                                               | não    | ✅                                       |
+| Cadastro do site    | `POST /signup/`                                                                          | não    | ✅ rota; ⏳ corpo completo               |
+| Esqueci a senha     | `POST /user/forgot-password/` (`email`)                                                  | não    | ✅ rota; ⏳ o que vem depois do e-mail   |
+| Trocar senha        | `POST /user/change-password/` (`current_password`, `new_password`, `new_password_again`) | sim    | ✅ (formato usado pelo Corp)             |
+| Meus dados          | `GET /user/retrieve/{id}/`, `PUT /user/update/{id}/`                                     | sim    | ✅                                       |
+| Login com Google    | `POST /user/login/google/` (`id_token`)                                                  | não    | ✅ contrato do backend (fora do Swagger) |
+| Cadastro com Google | `POST /user/signup/google/` (`id_token`, PF/PJ, endereço, aceite)                        | não    | ✅ contrato do backend (fora do Swagger) |
 
 Resposta do login (`POST /token/`): `access`, `refresh`, `id`, `name`, `email`, `profile`, `first_login`, `corporate_id`, `corporate_name`, `checkmatch`, `checkmatch_token`. Erros vêm como `{ "detail": "...", "code": "..." }`.
 
@@ -104,9 +102,6 @@ sequenceDiagram
     alt credenciais erradas
         API-->>Site: 401 com detail
         Site->>P: mensagem embaixo do formulário
-    else ⏳ code = password_setup_required (cliente migrado)
-        API-->>Site: pede para criar senha
-        Site->>P: vai para /definir-senha (ver 4.7)
     else sucesso
         API-->>Site: access, refresh, id, name, email, profile
         Site->>K: grava a sessão
@@ -198,7 +193,7 @@ sequenceDiagram
 - **Tela em 3 etapas** (`components/sign-up-form.tsx` + `hooks/use-form-steps.ts`): **1. Acesso** (e-mail e senha; o botão do Google aparece só aqui), **2. Seus dados** (PF ou PJ, nome, CPF ou CNPJ, telefone) e **3. Endereço** (endereço, aceite do contrato, marketing e "Criar conta"). "Continuar" valida só os campos da etapa; "Voltar" mantém o que já foi preenchido. Nada vai para o backend antes da última etapa, que envia o corpo completo num único `POST /signup/`. Se o backend devolver erro num campo de outra etapa, a tela volta para ela.
 - **CEP:** ao completar os 8 dígitos, o site consulta o ViaCEP (`https://viacep.com.br/ws/<cep>/json/`, em `shared/lib/zip-lookup.ts`) e preenche rua, bairro, cidade e UF; o foco vai para "Número". CEP inexistente mostra "CEP não encontrado."; se o serviço falhar, a pessoa preenche à mão. Vale para `/cadastro` e `/completar-cadastro`. É uma chamada a um serviço externo, fora da API da Checkauto.
 - **UF:** usa o `Select` do shadcn (`shared/components/ui/select.tsx`), não o `<select>` nativo.
-- **Senha:** 8 a 16 caracteres, com maiúscula, minúscula, número e um símbolo entre `_ @ ! ( ) & + $`, sem espaços. A mesma regra vale em `/nova-senha`, `/definir-senha` e "Alterar senha".
+- **Senha:** 8 a 16 caracteres, com maiúscula, minúscula, número e um símbolo entre `_ @ ! ( ) & + $`, sem espaços. A mesma regra vale em "Alterar senha".
 - Os campos de pessoa e de endereço são os mesmos do `/completar-cadastro` (`components/profile-fields.tsx`), e os dois formulários montam o corpo pela mesma função (`profileBody` em `auth.service.ts`).
 
 **Corpo enviado: Corp × site** (o do site é travado pelo teste `services/auth.service.sign-up.test.ts`)
@@ -297,30 +292,12 @@ sequenceDiagram
 - ✅ **Confirmado em teste real (26/11/2026):** a rota envia o e-mail de verdade, e ele traz uma **senha provisória** (não é link nem código). É o mesmo esquema do Corp.
 - **Tela de sucesso:** explica a senha provisória, leva para `/entrar` com o e-mail preenchido e tem "Reenviar e-mail", que chama a rota de novo e avisa por toast.
 - **Troca da senha provisória:** hoje é manual, em Meus dados → "Alterar senha". O Corp obriga a troca quando o login devolve `first_login ≠ "0"`, mas isenta o perfil 4. ⏳ Perguntar ao backend se, depois do "esqueci a senha", o login do cliente do site sinaliza a senha provisória; se sim, o site pode obrigar a troca logo após entrar.
-- **Tela `/nova-senha`:** foi criada supondo um link com `?token=` e `POST /user/password/reset/`. Com a senha provisória, **esse caminho não é usado**; a tela e a rota suposta ficam sem função até a decisão de removê-las ou reaproveitá-las para a troca obrigatória.
 - **Problemas no e-mail (são do backend):** o link "Fazer login" sai quebrado, como `[/login]Fazer login`, sem endereço; o logo é o antigo; e a senha provisória vai em texto puro.
 - **E-mail sem conta:** `POST /user/forgot-password/` respondeu `400` com `{ content: { message: "Opss.. Por favor tente novamente mais tarde!" } }`, e o site mostra essa mensagem como erro. Isso revela quais e-mails têm conta; confirmar com o backend se é o esperado.
 
-### 4.7 Primeiro acesso de cliente migrado ⏳
+### 4.7 Primeiro acesso de cliente migrado
 
-Só se o backend aprovar (está na especificação como "se aprovada").
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor P as Pessoa
-    participant Site as Site
-    participant API as API
-
-    P->>Site: tenta entrar em /entrar
-    Site->>API: POST /token/
-    API-->>Site: ⏳ code = password_setup_required
-    Site->>P: /definir-senha
-    P->>Site: nova senha
-    Site-->>API: ⏳ POST /user/password/set/
-    API-->>Site: senha criada
-    Site->>P: entra normalmente (4.1)
-```
+Não implementado. A especificação do backend cita, "se aprovada", um código `password_setup_required` no login e um `POST /user/password/set/`; em 26/11/2026 essa rota respondia `404`. O site chegou a ter uma tela `/definir-senha` para isso e uma `/nova-senha` (que supunha um link com token no "esqueci a senha"); as duas foram **removidas em 26/11/2026** por não terem uso. Se o backend criar a rota, a tela volta a partir desta descrição.
 
 ### 4.8 Estados da pessoa no site
 
@@ -346,7 +323,7 @@ stateDiagram-v2
 | Sessão             | 3 cookies via JavaScript                  | 3 cookies via JavaScript (mesmo modelo)                        |
 | Login              | e-mail e senha + reCAPTCHA v3/v2          | igual, mais Google ⏳                                          |
 | Cadastro           | feito pela equipe (`user/signup/`, admin) | a própria pessoa (`/signup/`, público, com reCAPTCHA e aceite) |
-| Primeiro acesso    | troca de senha obrigatória                | não se aplica; ⏳ "definir senha" para migrados                |
+| Primeiro acesso    | troca de senha obrigatória                | não se aplica                                                  |
 | Completar cadastro | não existe                                | ⏳ depois do Google                                            |
 | Token vencido      | refresh automático; falhou → login        | igual                                                          |
 
@@ -356,11 +333,12 @@ stateDiagram-v2
 2. **Cadastro incompleto:** resolvido pelo fluxo do Google (`google_signup_required` → `/completar-cadastro`). Não há `profile_complete`.
 3. **`/signup/`:** ✅ respondido em 26/11/2026: PF ou PJ, telefone e endereço obrigatórios, `201` sem tokens (ver 4.4).
 4. **Esqueci a senha:** ✅ respondido em 26/11/2026: o e-mail traz senha provisória. Em aberto: o login sinaliza a senha provisória para o perfil 4 (para obrigar a troca)? O link "Fazer login" do e-mail está quebrado. E-mail sem conta deve responder erro (`400`, como hoje) ou sucesso genérico?
-5. **Migrados:** o `password_setup_required` e o `POST /user/password/set/` vão existir? Qual o corpo? Hoje a rota responde `404`.
+5. **Migrados:** o `password_setup_required` e o `POST /user/password/set/` vão existir? Qual o corpo? Hoje a rota responde `404` e o site não tem tela para isso.
 6. **Logout:** vai existir rota para invalidar o refresh (blacklist)?
 7. **Senha para conta Google:** qual rota cria a primeira senha de quem se cadastrou pelo Google (sem senha atual)?
-8. **Cookies `HttpOnly` (futuro):** o backend pode passar a gravar o refresh num cookie `HttpOnly`? Hoje fica com o JavaScript, igual ao Corp.
-9. **CORS:** liberar `http://localhost:3000` e os domínios de preview e produção do site. Em 26/11/2026 o `localhost:3000` está liberado; o domínio da Vercel não.
+8. **Duração dos tokens:** hoje `access` e `refresh` duram 24 h cada e vencem juntos (medido em 26/11/2026), então a renovação não serve para nada e a pessoa é deslogada todo dia. Dá para encurtar o `access` (por exemplo 15 min) e alongar o `refresh` (dias ou semanas)?
+9. **Cookies `HttpOnly` (futuro):** o backend pode passar a gravar o refresh num cookie `HttpOnly`? Hoje fica com o JavaScript, igual ao Corp.
+10. **CORS:** liberar `http://localhost:3000` e os domínios de preview e produção do site. Em 26/11/2026 o `localhost:3000` está liberado; o domínio da Vercel não.
 
 ## 7. Arquitetura no código
 
@@ -368,12 +346,12 @@ O auth fica em `app/domains/auth`, em camadas. Cada camada só chama as de baixo
 
 ```mermaid
 flowchart TD
-    R["routes/<br/>_auth.entrar, _auth.cadastro, _auth.completar-cadastro,<br/>_auth.redefinir-senha, _auth.nova-senha, _auth.definir-senha, conta"] --> C["domains/auth/components/<br/>SignInForm, SignUpForm, CompleteProfileForm,<br/>ResetPasswordForm, NewPasswordForm, SetPasswordForm"]
+    R["routes/<br/>_auth.entrar, _auth.cadastro, _auth.completar-cadastro,<br/>_auth.redefinir-senha, conta"] --> C["domains/auth/components/<br/>SignInForm, SignUpForm, CompleteProfileForm,<br/>ResetPasswordForm"]
     R -->|"clientMiddleware"| S
     C --> H["domains/auth/hooks/<br/>use-recaptcha-challenge"]
     C --> S["domains/auth/services/auth.service.ts<br/>authOptions, signIn, signOut, signUp,<br/>getAuthRedirect…"]
     S --> P["services/providers/<br/>credentials.provider, google.provider"]
-    P --> A["domains/auth/auth.api.ts<br/>login, signUp, getCurrentTerms, forgotPassword, resetPassword"]
+    P --> A["domains/auth/auth.api.ts<br/>login, signUp, getCurrentTerms, forgotPassword"]
     S --> A
     A --> HTTP["shared/lib/api.ts<br/>axios + Bearer + refresh"]
     S --> SES["shared/lib/session.ts<br/>cookie checkauto.session-token"]
@@ -396,7 +374,6 @@ flowchart TD
 - **Cadastro pelo Google:** `/completar-cadastro` só abre com um cadastro do Google pendente na aba; sem ele, vai para `/entrar` (ou `/conta`, se já tiver sessão).
 - **Layout das telas de auth (`routes/_auth.tsx`):** arte num painel arredondado à esquerda (`components/auth-showcase.tsx`, com a ilustração `assets/auth-showcase.svg`) e formulário à direita. A arte só aparece a partir de `lg`; no mobile fica só a logo. Em 26/11/2026 foram testados e descartados: só a logo com o formulário centralizado, a arte em faixa colada na borda direita e uma foto de veículo no lugar da ilustração.
 - **Login social primeiro:** em `/entrar` e `/cadastro` o botão do Google vem antes do formulário, seguido de "ou".
-- **`/nova-senha`:** página pública que lê o `token` no `clientLoader` (a query string não existe no HTML pré-renderizado, que mostra só "Carregando…").
 - **Alterar senha (Meus dados):** depois do `POST /user/change-password/` o diálogo fecha, a pessoa **continua logada** e vê o toast "Senha alterada"; a senha nova vale no próximo login. (O Corp desloga depois da troca; o site não.) Se o backend passar a invalidar os tokens na troca, a sessão cai sozinha no próximo `401` e a pessoa volta para `/entrar`.
 - **`authProvider` na sessão:** `credentials` ou `google`, para esconder "Alterar senha" de quem entra pelo Google.
 
@@ -415,20 +392,37 @@ Rodada de 26/11/2026, com o site em `localhost:3000` e o backend no túnel ngrok
 | `/conta` sem sessão                                                     | ✅ vai para `/entrar`                                                                                                                     |
 | `/entrar` e `/cadastro` com sessão                                      | ✅ vão para `/conta/consultas`                                                                                                            |
 | `/completar-cadastro` sem cadastro do Google pendente                   | ✅ vai para `/entrar`                                                                                                                     |
-| Validação de `/entrar`, `/cadastro`, `/redefinir-senha` e `/nova-senha` | ✅ envio vazio mostra os erros e foca o primeiro campo                                                                                    |
+| Validação de `/entrar`, `/cadastro` e `/redefinir-senha`                | ✅ envio vazio mostra os erros e foca o primeiro campo                                                                                    |
 | Contrato no cadastro                                                    | ✅ carrega a versão `2026-11` da API; o link "contrato vigente" abre o texto num painel que sobe de baixo, e "Li e aceito" marca o aceite |
 | Botão do Google em `/entrar` e `/cadastro`                              | ✅ script e botão carregam                                                                                                                |
 | Etapas do cadastro (1 e 2: validação por etapa, voltar mantém os dados) | ✅ no navegador, sem enviar ao backend                                                                                                    |
 | Corpo do `POST /signup/` (PF e PJ)                                      | ✅ teste automático (`auth.service.sign-up.test.ts`)                                                                                      |
 | `POST /user/forgot-password/` com e-mail sem conta                      | ⚠️ `400` com mensagem de erro (ver 4.6)                                                                                                   |
-| `POST /user/password/set/`                                              | ❌ `404`                                                                                                                                  |
 
-**Cadastro de PF de ponta a ponta (teste manual do dono, 26/11/2026):** ✅ o `POST /signup/` saiu com todos os campos do contrato (PF, telefone, endereço com complemento, aceite, `marketing_consent: true`, e-mail, senha e `recaptcha_token`) e o backend respondeu `201` com `id`, `first_name`, `last_name`, `email`, `profile: "4"` e `company: null`, sem tokens.
+### Testes manuais de ponta a ponta (dono do projeto, 26/11/2026)
 
-**Ainda sem teste de ponta a ponta** (dependem de senha, CPF, desafio do reCAPTCHA ou caixa de e-mail reais):
+Feitos no navegador, em `localhost:3000`, contra o backend do túnel de desenvolvimento.
 
-- cadastro de **PJ**, o desafio "não sou um robô" no cadastro e o login automático depois do `201` (confirmar que a pessoa cai em `/conta`);
-- login com senha errada e certa, e sair;
-- login e cadastro com Google, até o fim de `/completar-cadastro`;
-- alterar senha em Meus dados;
-- entrar com a senha provisória recebida por e-mail e trocá-la em Meus dados.
+| Fluxo                                                                      | Resultado                                                                                                                                                                        |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cadastro de PF por e-mail e senha                                          | ✅ o `POST /signup/` saiu com todos os campos do contrato e o backend respondeu `201` com `id`, `first_name`, `last_name`, `email`, `profile: "4"` e `company: null`, sem tokens |
+| Cadastro de PJ por e-mail e senha                                          | ✅                                                                                                                                                                               |
+| Login automático depois do cadastro                                        | ✅                                                                                                                                                                               |
+| Erro do backend em campo de outra etapa (e-mail, CPF ou CNPJ já usado)     | ✅ a tela volta para a etapa do campo                                                                                                                                            |
+| Login com senha certa e com senha errada                                   | ✅                                                                                                                                                                               |
+| Sair                                                                       | ✅                                                                                                                                                                               |
+| Login e cadastro com Google, até o fim de `/completar-cadastro`            | ✅                                                                                                                                                                               |
+| Entrar pelo Google com e-mail que já tem senha (`google_link_not_allowed`) | ✅ mostra a mensagem do backend                                                                                                                                                  |
+| Esqueci a senha: envio do e-mail                                           | ✅ chega com a senha provisória                                                                                                                                                  |
+| Esqueci a senha com conta Google (`google_account`)                        | ✅                                                                                                                                                                               |
+| "Reenviar e-mail"                                                          | ✅                                                                                                                                                                               |
+| Entrar com a senha provisória e trocá-la em Meus dados                     | ✅                                                                                                                                                                               |
+| Alterar senha em Meus dados                                                | ✅ continua logado e mostra o toast                                                                                                                                              |
+| Renovação do token                                                         | ✅ com o `access` invalidado à mão no cookie: `GET /user/retrieve/…` → `401`, `POST /token/refresh/` → `200`, o mesmo `GET` → `200`; a tela carregou e a sessão continuou        |
+
+**Duração dos tokens, medida em 26/11/2026:** o `access` dura **24 h** (1440 min) e o `refresh` também dura **24 h**. Como os dois são emitidos juntos e vencem juntos, a renovação nunca acontece no uso real: quando o `access` vence, o `refresh` já venceu, e a pessoa volta para `/entrar` um dia depois do login. O mecanismo do site funciona (linha acima), mas só foi exercitado com o token invalidado de propósito.
+
+**Ainda sem teste:**
+
+- o desafio "não sou um robô" (reCAPTCHA v2) no login e no cadastro, que só aparece quando o backend pede a verificação extra;
+- os mesmos fluxos no endereço da Vercel, depois de um deploy apontando para um backend com as rotas novas.

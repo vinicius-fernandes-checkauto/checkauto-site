@@ -4,8 +4,6 @@ import type {
 	GoogleSignUpBody,
 	LoginBody,
 	LoginResponse,
-	ResetPasswordBody,
-	SetPasswordBody,
 	SignUpBody,
 } from "~/domains/auth/types/auth.types";
 import {
@@ -56,14 +54,6 @@ export async function forgotPassword(email: string) {
 
 export async function changePassword(body: ChangePasswordBody) {
 	await api.post("/user/change-password/", body);
-}
-
-export async function setPassword(body: SetPasswordBody) {
-	await api.post("/user/password/set/", body);
-}
-
-export async function resetPassword(body: ResetPasswordBody) {
-	await api.post("/user/password/reset/", body);
 }
 
 export async function loginWithGoogle(idToken: string) {

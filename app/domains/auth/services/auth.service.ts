@@ -11,7 +11,6 @@ import type {
 import type {
 	CompleteProfileFormValues,
 	ProfileFieldsValues,
-	SetPasswordFormValues,
 	SignUpFormValues,
 } from "~/domains/auth/utils/auth.schema";
 import {
@@ -198,14 +197,6 @@ export async function changePassword({
 		new_password: newPassword,
 		new_password_again: confirmPassword,
 	});
-}
-
-export function setPassword({ email, password }: SetPasswordFormValues) {
-	return authApi.setPassword({ email, password });
-}
-
-export function resetPassword(token: string, password: string) {
-	return authApi.resetPassword({ token, password });
 }
 
 export async function forgotPassword(email: string) {

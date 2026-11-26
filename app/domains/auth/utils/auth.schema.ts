@@ -32,31 +32,6 @@ export type SignInFormValues = z.infer<typeof signInSchema>;
 
 export const resetPasswordSchema = z.object({ email });
 
-export const setPasswordSchema = z
-	.object({
-		email,
-		password: strongPassword,
-		confirmPassword: z.string(),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		path: ["confirmPassword"],
-		error: "As senhas não são iguais.",
-	});
-
-export type SetPasswordFormValues = z.infer<typeof setPasswordSchema>;
-
-export const newPasswordSchema = z
-	.object({
-		password: strongPassword,
-		confirmPassword: z.string(),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		path: ["confirmPassword"],
-		error: "As senhas não são iguais.",
-	});
-
-export type NewPasswordFormValues = z.infer<typeof newPasswordSchema>;
-
 const digits = (value: string) => value.replace(/\D/g, "");
 
 const profileFields = {

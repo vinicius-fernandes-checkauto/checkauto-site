@@ -56,16 +56,6 @@ export type ChangePasswordBody = {
 	new_password_again: string;
 };
 
-export type SetPasswordBody = {
-	email: string;
-	password: string;
-};
-
-export type ResetPasswordBody = {
-	token: string;
-	password: string;
-};
-
 export type GoogleProfile = {
 	email: string;
 	name: string;

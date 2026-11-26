@@ -6,9 +6,3 @@ export function readNotice(state: unknown): AuthNotice | null {
 	if (typeof notice !== "string") return null;
 	return { notice, email: typeof email === "string" ? email : undefined };
 }
-
-export function readEmail(state: unknown) {
-	if (!state || typeof state !== "object") return "";
-	const { email } = state as Record<string, unknown>;
-	return typeof email === "string" ? email : "";
-}
