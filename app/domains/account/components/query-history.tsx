@@ -1,27 +1,26 @@
 import { debounce, useQueryStates } from "nuqs";
-import { useEffect, useId, useState } from "react";
-import { useNavigation, useRevalidator } from "react-router";
-import { toast } from "sonner";
+import { useEffect, useId } from "react";
+import { Link, useNavigation, useRevalidator } from "react-router";
 
 import { Pagination } from "~/domains/account/components/pagination";
 import { StatusBadge } from "~/domains/account/components/status-badge";
-import {
-	getStatementUrl,
-	requeryQuery,
-} from "~/domains/account/services/account.service";
+import { useQueryActions } from "~/domains/account/hooks/use-query-actions";
 import type {
 	QueryPage,
 	VehicleQuery,
 } from "~/domains/account/types/account.types";
 import {
 	canOpenStatement,
+	compactStatusLabel,
+	formatAmount,
 	isRunning,
 	MAX_QUERY_MONTHS,
+	orderStatuses,
 	PAGE_SIZES,
 	pageSize,
 	queryPeriod,
 	querySearchParams,
-	queryStatus,
+	statusTone,
 } from "~/domains/account/utils/queries";
 import {
 	FileSearchIcon,
@@ -41,14 +40,22 @@ import {
 import { Field, FieldLabel } from "~/shared/components/ui/field";
 import { Input } from "~/shared/components/ui/input";
 import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "~/shared/components/ui/select";
+import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from "~/shared/components/ui/tooltip";
-import { toApiError } from "~/shared/lib/api";
 import { cn } from "~/shared/lib/utils";
 
 const POLL_INTERVAL = 30_000;
+const REQUERY_POLL_INTERVAL = 4_000;
+const ALL_STATUSES = "todas";
 
 type RequeryButtonProps = {
 	query: VehicleQuery;
@@ -57,6 +64,20 @@ type RequeryButtonProps = {
 };
 
 function RequeryButton({ query, disabled, onRequery }: RequeryButtonProps) {
+	if (query.requerying) {
+		return (
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button type="button" size="icon-sm" disabled aria-busy>
+						<LoaderCircleIcon aria-hidden="true" className="animate-spin" />
+						<span className="sr-only">Reconsultando a placa {query.plate}</span>
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent>Reconsultando…</TooltipContent>
+			</Tooltip>
+		);
+	}
+
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
@@ -133,7 +154,7 @@ function QueryActions({
 }: QueryActionsProps) {
 	return (
 		<div className="flex items-center justify-end gap-2">
-			{query.canRequery && (
+			{(query.canRequery || query.requerying) && (
 				<RequeryButton
 					query={query}
 					disabled={requerying}
@@ -152,6 +173,41 @@ function QueryActions({
 	);
 }
 
+function QueryStatusBadge({ query }: { query: VehicleQuery }) {
+	const label = compactStatusLabel(query.status, query.statusLabel);
+	const badge = (
+		<StatusBadge tone={statusTone(query.status)} className="max-w-36">
+			<span className="truncate">{label}</span>
+			{label !== query.statusLabel && (
+				<span className="sr-only">: {query.statusLabel}</span>
+			)}
+		</StatusBadge>
+	);
+
+	if (label === query.statusLabel && label.length <= 20) return badge;
+
+	return (
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<span className="inline-flex cursor-default">{badge}</span>
+			</TooltipTrigger>
+			<TooltipContent>{query.statusLabel}</TooltipContent>
+		</Tooltip>
+	);
+}
+
+function OrderNumberLink({ query }: { query: VehicleQuery }) {
+	return (
+		<Link
+			to={`/conta/consultas/${query.id}`}
+			className="font-medium text-muted-foreground tabular-nums underline-offset-4 transition-colors hover:text-heading hover:underline"
+		>
+			{query.number}
+			<span className="sr-only"> — ver detalhes do pedido</span>
+		</Link>
+	);
+}
+
 export function QueryHistory({ queries, total }: QueryPage) {
 	const baseId = useId();
 	const [filters, setFilters] = useQueryStates(querySearchParams, {
@@ -160,71 +216,37 @@ export function QueryHistory({ queries, total }: QueryPage) {
 	});
 	const navigation = useNavigation();
 	const revalidator = useRevalidator();
-	const [requerying, setRequerying] = useState<string | null>(null);
-	const [opening, setOpening] = useState<string | null>(null);
+	const { requerying, opening, requery, openStatement } = useQueryActions(() =>
+		revalidator.revalidate(),
+	);
 
 	const loading =
 		navigation.state === "loading" || revalidator.state === "loading";
 	const size = pageSize(filters.itens);
 	const pageCount = Math.max(1, Math.ceil(total / size));
 	const page = Math.min(Math.max(1, filters.pagina), pageCount);
-	const hasFilters = Boolean(filters.busca || filters.de || filters.ate);
+	const hasFilters = Boolean(
+		filters.busca || filters.situacao || filters.de || filters.ate,
+	);
 	const period = queryPeriod(filters);
 	const running = queries.some(({ status }) => isRunning(status));
+	const requeryRunning = queries.some((query) => query.requerying);
 
 	useEffect(() => {
-		if (!running) return;
+		if (!running && !requeryRunning) return;
 
-		const timer = setInterval(() => {
-			void revalidator.revalidate();
-		}, POLL_INTERVAL);
+		const timer = setInterval(
+			() => {
+				void revalidator.revalidate();
+			},
+			requeryRunning ? REQUERY_POLL_INTERVAL : POLL_INTERVAL,
+		);
 		return () => clearInterval(timer);
-	}, [running, revalidator]);
-
-	async function requery(query: VehicleQuery) {
-		setRequerying(query.id);
-		try {
-			await requeryQuery(query.id);
-			toast.success("Reconsulta iniciada", {
-				description: `Placa ${query.plate}. O resultado aparece aqui em instantes.`,
-			});
-			await revalidator.revalidate();
-		} catch (error) {
-			toast.error(toApiError(error).message);
-		} finally {
-			setRequerying(null);
-		}
-	}
-
-	async function openStatement(query: VehicleQuery) {
-		setOpening(query.id);
-		try {
-			const url = await getStatementUrl(query.id);
-			const tab = window.open(url, "_blank");
-			if (tab) {
-				tab.opener = null;
-			} else {
-				toast.success("Extrato pronto", {
-					description: `Placa ${query.plate}. O navegador bloqueou a nova aba.`,
-					duration: Number.POSITIVE_INFINITY,
-					action: {
-						label: "Abrir extrato",
-						onClick: () => window.open(url, "_blank", "noopener"),
-					},
-				});
-			}
-		} catch (error) {
-			toast.error("Não foi possível abrir o extrato", {
-				description: toApiError(error).message,
-			});
-		} finally {
-			setOpening(null);
-		}
-	}
+	}, [running, requeryRunning, revalidator]);
 
 	return (
 		<section aria-label="Consultas realizadas" className="flex flex-col gap-4">
-			<fieldset className="grid grid-cols-2 gap-3 rounded-3xl border border-border bg-card p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end">
+			<fieldset className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:items-end lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
 				<legend className="sr-only">Filtrar consultas</legend>
 				<Field className="col-span-2 sm:col-span-1">
 					<FieldLabel htmlFor={`${baseId}-busca`}>Busca</FieldLabel>
@@ -248,6 +270,30 @@ export function QueryHistory({ queries, total }: QueryPage) {
 							className="pl-10"
 						/>
 					</div>
+				</Field>
+				<Field className="col-span-2 sm:col-span-1">
+					<FieldLabel htmlFor={`${baseId}-situacao`}>Situação</FieldLabel>
+					<Select
+						value={filters.situacao || ALL_STATUSES}
+						onValueChange={(value) =>
+							void setFilters({
+								situacao: value === ALL_STATUSES ? null : value,
+								pagina: 1,
+							})
+						}
+					>
+						<SelectTrigger id={`${baseId}-situacao`}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value={ALL_STATUSES}>Todas</SelectItem>
+							{orderStatuses.map(({ value, label }) => (
+								<SelectItem key={value} value={value}>
+									{label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</Field>
 				<Field className="col-span-2 sm:col-span-1">
 					<FieldLabel htmlFor={`${baseId}-periodo`}>Período</FieldLabel>
@@ -275,14 +321,20 @@ export function QueryHistory({ queries, total }: QueryPage) {
 					size="sm"
 					disabled={!hasFilters}
 					onClick={() =>
-						void setFilters({ busca: null, de: null, ate: null, pagina: 1 })
+						void setFilters({
+							busca: null,
+							situacao: null,
+							de: null,
+							ate: null,
+							pagina: 1,
+						})
 					}
 					className="col-span-2 sm:col-span-1"
 				>
 					Limpar filtros
 				</Button>
 				{period.exceeded && (
-					<p className="col-span-2 px-1 text-xs/5 text-muted-foreground sm:col-span-3">
+					<p className="col-span-2 px-1 text-xs/5 text-muted-foreground lg:col-span-4">
 						O período máximo é de {MAX_QUERY_MONTHS} meses. Mostrando as
 						consultas dos {MAX_QUERY_MONTHS} meses anteriores à data final.
 					</p>
@@ -305,7 +357,7 @@ export function QueryHistory({ queries, total }: QueryPage) {
 					</EmptyTitle>
 					<EmptyDescription>
 						{hasFilters
-							? "Confira a busca ou o período e tente de novo."
+							? "Confira a busca, a situação ou o período e tente de novo."
 							: `As consultas dos últimos ${MAX_QUERY_MONTHS} meses aparecem aqui.`}
 					</EmptyDescription>
 				</Empty>
@@ -321,7 +373,7 @@ export function QueryHistory({ queries, total }: QueryPage) {
 						<thead className="border-b border-border text-xs font-medium tracking-wide text-muted-foreground uppercase">
 							<tr>
 								<th scope="col" className="py-3 pl-6 font-medium">
-									Código
+									Pedido
 								</th>
 								<th scope="col" className="px-4 py-3 font-medium">
 									Placa
@@ -329,11 +381,14 @@ export function QueryHistory({ queries, total }: QueryPage) {
 								<th scope="col" className="px-4 py-3 font-medium">
 									Pacote
 								</th>
+								<th scope="col" className="px-4 py-3 text-right font-medium">
+									Valor
+								</th>
 								<th scope="col" className="px-4 py-3 font-medium">
 									Data
 								</th>
 								<th scope="col" className="px-4 py-3 font-medium">
-									Status
+									Situação
 								</th>
 								<th scope="col" className="py-3 pr-6 text-right font-medium">
 									<span className="sr-only">Ação</span>
@@ -343,8 +398,8 @@ export function QueryHistory({ queries, total }: QueryPage) {
 						<tbody className="divide-y divide-border">
 							{queries.map((query) => (
 								<tr key={query.id}>
-									<td className="py-3 pl-6 font-medium text-heading tabular-nums">
-										{query.code}
+									<td className="py-3 pl-6">
+										<OrderNumberLink query={query} />
 									</td>
 									<td className="px-4 py-3 font-semibold tracking-wider whitespace-nowrap text-heading">
 										{query.plate}
@@ -352,13 +407,14 @@ export function QueryHistory({ queries, total }: QueryPage) {
 									<td className="px-4 py-3 text-muted-foreground">
 										{query.plan}
 									</td>
+									<td className="px-4 py-3 text-right font-medium whitespace-nowrap text-heading tabular-nums">
+										{formatAmount(query.amount)}
+									</td>
 									<td className="px-4 py-3 whitespace-nowrap text-muted-foreground tabular-nums">
 										{query.date}
 									</td>
 									<td className="px-4 py-3">
-										<StatusBadge tone={queryStatus[query.status].tone}>
-											{queryStatus[query.status].label}
-										</StatusBadge>
+										<QueryStatusBadge query={query} />
 									</td>
 									<td className="py-2 pr-6">
 										<QueryActions
@@ -382,13 +438,13 @@ export function QueryHistory({ queries, total }: QueryPage) {
 										<span className="text-sm/5 font-semibold tracking-wider text-heading">
 											{query.plate}
 										</span>
-										<StatusBadge tone={queryStatus[query.status].tone}>
-											{queryStatus[query.status].label}
-										</StatusBadge>
+										<QueryStatusBadge query={query} />
 									</div>
 									<p className="text-xs/5 text-muted-foreground">
-										Consulta <span className="tabular-nums">{query.code}</span>{" "}
-										· {query.plan}
+										Pedido <OrderNumberLink query={query} /> · {query.plan} ·{" "}
+										<span className="font-medium text-heading tabular-nums">
+											{formatAmount(query.amount)}
+										</span>
 									</p>
 									<p className="text-xs/5 text-muted-foreground tabular-nums">
 										{query.date}

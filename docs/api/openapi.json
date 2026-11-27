@@ -1844,6 +1844,18 @@
 			},
 			"parameters": []
 		},
+		"/order/extrato/{id}/": {
+			"get": {
+				"operationId": "order_extrato",
+				"description": "Extrato do pedido, com o mesmo contrato de `product/report/pdf/<call>/<product>/`:\n200 {pdf_status: ready, download_url} ou 202 {pdf_status}. O pedido já aponta a consulta e o produto.",
+				"parameters": [],
+				"responses": { "200": { "description": "" } },
+				"tags": ["order"]
+			},
+			"parameters": [
+				{ "name": "id", "in": "path", "required": true, "type": "string" }
+			]
+		},
 		"/order/list/": {
 			"get": {
 				"operationId": "order_list_list",

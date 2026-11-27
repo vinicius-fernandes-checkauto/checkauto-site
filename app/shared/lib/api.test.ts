@@ -221,6 +221,25 @@ describe("envelope { user, content }", () => {
 		expect(error.code).toBeNull();
 	});
 
+	it("usa o content quando ele é só uma mensagem", () => {
+		const error = toApiError(
+			httpError(409, { user: null, content: "Consulta já está em execução." }),
+		);
+		expect(error.message).toBe("Consulta já está em execução.");
+		expect(error.status).toBe(409);
+	});
+
+	it("ignora página HTML de erro e usa a mensagem padrão", () => {
+		const error = toApiError(
+			httpError(
+				404,
+				"<!DOCTYPE html><html><title>Page not found</title></html>",
+			),
+		);
+		expect(error.message).not.toContain("<");
+		expect(error.status).toBe(404);
+	});
+
 	it("lê message e erros de campo do content", () => {
 		const error = toApiError(
 			httpError(400, {

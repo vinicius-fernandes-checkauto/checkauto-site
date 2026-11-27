@@ -1,18 +1,19 @@
 import type {
-	CallAvailability,
-	CallDetail,
-	CallList,
-	CallListParams,
-	ReportPdf,
+	OrderDetail,
+	OrderList,
+	OrderListParams,
+	OrderStatement,
 	UpdateUserBody,
 	UserDetail,
+	WalletListParams,
+	WalletMovementList,
 } from "~/domains/account/types/account.types";
 import {
-	callAvailabilitySchema,
-	callDetailSchema,
-	callListSchema,
-	reportPdfSchema,
+	orderDetailSchema,
+	orderListSchema,
+	orderStatementSchema,
 	userDetailSchema,
+	walletMovementListSchema,
 } from "~/domains/account/utils/account.schema";
 import { ApiError, api, unwrapContent } from "~/shared/lib/api";
 
@@ -44,30 +45,21 @@ function parse<T>(
 	throw new ApiError(message, null);
 }
 
-export async function listCalls(params: CallListParams) {
-	const { data } = await api.get<unknown>("/call/list/", { params });
-	return parse<CallList>(
-		callListSchema,
+export async function listOrders(params: OrderListParams) {
+	const { data } = await api.get<unknown>("/order/list/", { params });
+	return parse<OrderList>(
+		orderListSchema,
 		data,
 		"Não foi possível ler suas consultas. Tente novamente.",
 	);
 }
 
-export async function getCall(id: string) {
-	const { data } = await api.get<unknown>(`/call/retrieve/${id}/`);
-	return parse<CallDetail>(
-		callDetailSchema,
+export async function getOrder(id: string) {
+	const { data } = await api.get<unknown>(`/order/retrieve/${id}/`);
+	return parse<OrderDetail>(
+		orderDetailSchema,
 		data,
-		"Não foi possível ler essa consulta. Tente novamente.",
-	);
-}
-
-export async function getCallAvailability(id: string) {
-	const { data } = await api.get<unknown>(`/call/availability/${id}/`);
-	return parse<CallAvailability>(
-		callAvailabilitySchema,
-		data,
-		"Não foi possível verificar essa consulta.",
+		"Não foi possível ler esse pedido. Tente novamente.",
 	);
 }
 
@@ -75,13 +67,24 @@ export async function requeryCall(id: string) {
 	await api.post(`/call/requery/${id}/`, {});
 }
 
-export async function getReportPdf(callId: string, productId: string) {
-	const { data } = await api.get<unknown>(
-		`/product/report/pdf/${callId}/${productId}/`,
-	);
-	return parse<ReportPdf>(
-		reportPdfSchema,
+export async function getOrderStatement(orderId: string) {
+	const { data } = await api.get<unknown>(`/order/extrato/${orderId}/`);
+	return parse<OrderStatement>(
+		orderStatementSchema,
 		data,
 		"Não foi possível ler o extrato. Tente novamente.",
+	);
+}
+
+export async function cancelOrder(id: string) {
+	await api.post(`/order/cancel/${id}/`, {});
+}
+
+export async function listWalletMovements(params: WalletListParams) {
+	const { data } = await api.get<unknown>("/wallet/movements/", { params });
+	return parse<WalletMovementList>(
+		walletMovementListSchema,
+		data,
+		"Não foi possível ler o histórico de saldo. Tente novamente.",
 	);
 }

@@ -1,18 +1,21 @@
 import * as accountApi from "~/domains/account/account.api";
 import type {
 	AccountProfile,
+	OrderView,
 	QueryFilters,
 	QueryPage,
 	UserDetail,
+	WalletFilters,
+	WalletPage,
 } from "~/domains/account/types/account.types";
 import type { ProfileFormValues } from "~/domains/account/utils/account.schema";
 import {
-	failedStatusCodes,
-	isRequeryEligible,
-	statementProductId,
-	toCallListParams,
+	toAmount,
+	toOrderDetail,
+	toOrderListParams,
 	toVehicleQueries,
 } from "~/domains/account/utils/queries";
+import { toWalletPage, toWalletParams } from "~/domains/account/utils/wallet";
 import { ApiError, toApiError } from "~/shared/lib/api";
 import { getSession } from "~/shared/lib/session";
 
@@ -81,76 +84,129 @@ export async function saveProfile(
 	return toProfile(user);
 }
 
-export async function getQueries(filters: QueryFilters): Promise<QueryPage> {
-	requireSession();
-	const list = await accountApi.listCalls(toCallListParams(filters));
-
-	const failed = list.results.filter((call) =>
-		failedStatusCodes.includes(call.status),
-	);
-	const checks = await Promise.allSettled(
-		failed.map((call) => accountApi.getCallAvailability(call.id)),
-	);
-	const requeryable = new Set(
-		failed
-			.filter((_, index) => {
-				const check = checks[index];
-				return check.status === "fulfilled" && isRequeryEligible(check.value);
-			})
-			.map((call) => call.id),
-	);
-
-	return { queries: toVehicleQueries(list, requeryable), total: list.count };
-}
-
-export function requeryQuery(id: string) {
-	return accountApi.requeryCall(id);
-}
-
-const statementErrors: Record<number, string> = {
-	403: "Essa consulta não pertence à sua conta.",
-	404: "Essa consulta não tem extrato disponível.",
-	503: "Não foi possível carregar o extrato agora. Tente de novo em instantes.",
+const orderErrors: Record<number, string> = {
+	403: "Você não tem acesso a esse pedido.",
+	404: "Pedido não encontrado.",
 };
 
-function toStatementError(error: unknown) {
+function toOrderError(error: unknown) {
 	const apiError = toApiError(error);
-	const message = apiError.status
-		? statementErrors[apiError.status]
-		: undefined;
+	const message = apiError.status ? orderErrors[apiError.status] : undefined;
 	return message
 		? new ApiError(message, apiError.status, apiError.code)
 		: apiError;
 }
 
-const STATEMENT_POLL_INTERVAL = 3_000;
-const STATEMENT_MAX_TRIES = 30;
+async function callIdOf(orderId: string) {
+	const order = await accountApi.getOrder(orderId);
+	if (!order.call) {
+		throw new ApiError("Esse pedido ainda não tem consulta.", 404);
+	}
+	return order.call.id;
+}
+
+export async function getQueries(filters: QueryFilters): Promise<QueryPage> {
+	requireSession();
+	const list = await accountApi.listOrders(toOrderListParams(filters));
+
+	const partial = list.results.filter(
+		(order) => order.status === "completed_partial",
+	);
+	const details = await Promise.allSettled(
+		partial.map((order) => accountApi.getOrder(order.id)),
+	);
+	const callStatuses = new Map<string, string>();
+	details.forEach((detail, index) => {
+		const status =
+			detail.status === "fulfilled" ? detail.value.call?.status : null;
+		if (status) callStatuses.set(partial[index].id, status);
+	});
+
+	return {
+		queries: toVehicleQueries(list, callStatuses),
+		total: list.count,
+	};
+}
+
+export async function getOrder(orderId: string): Promise<OrderView> {
+	requireSession();
+	try {
+		return toOrderDetail(await accountApi.getOrder(orderId));
+	} catch (error) {
+		throw toOrderError(error);
+	}
+}
+
+export async function cancelOrder(orderId: string) {
+	try {
+		await accountApi.cancelOrder(orderId);
+	} catch (error) {
+		const apiError = toOrderError(error);
+		if (apiError.status === 409) {
+			throw new ApiError(
+				"Esse pedido não pode mais ser cancelado.",
+				409,
+				apiError.code,
+			);
+		}
+		throw apiError;
+	}
+}
+
+export async function requeryQuery(orderId: string) {
+	try {
+		await accountApi.requeryCall(await callIdOf(orderId));
+	} catch (error) {
+		throw toOrderError(error);
+	}
+}
+
+const STATEMENT_POLL_INTERVAL = 2_500;
+const STATEMENT_MAX_TRIES = 40;
 
 const wait = (ms: number) =>
 	new Promise<void>((resolve) => {
 		setTimeout(resolve, ms);
 	});
 
-export async function getStatementUrl(callId: string) {
+export async function getStatementUrl(orderId: string) {
 	try {
-		const productId = statementProductId(await accountApi.getCall(callId));
-		if (!productId) {
-			throw new ApiError("Essa consulta não tem extrato disponível.", 404);
-		}
-
 		for (let tries = 0; tries < STATEMENT_MAX_TRIES; tries++) {
-			const report = await accountApi.getReportPdf(callId, productId);
-			if (report.pdf_status === "ready" && report.download_url) {
-				return report.download_url;
+			const statement = await accountApi.getOrderStatement(orderId);
+			if (statement.pdf_status === "ready" && statement.download_url) {
+				return statement.download_url;
 			}
 			await wait(STATEMENT_POLL_INTERVAL);
 		}
 	} catch (error) {
-		throw toStatementError(error);
+		throw toOrderError(error);
 	}
 
 	throw new ApiError(
 		"O extrato está demorando mais que o normal. Tente de novo em instantes.",
 		null,
 	);
+}
+
+export async function getWallet(filters: WalletFilters): Promise<WalletPage> {
+	const { user } = requireSession();
+	try {
+		const page = toWalletPage(
+			await accountApi.listWalletMovements(toWalletParams(filters)),
+		);
+		if (page.balance !== null) return page;
+
+		const profile = await accountApi.getUser(user.id).catch(() => null);
+		return { ...page, balance: toAmount(profile?.balance) };
+	} catch (error) {
+		const apiError = toApiError(error);
+		if (apiError.status === 403) {
+			throw new ApiError(
+				"Você não tem acesso ao histórico de saldo.",
+				403,
+				apiError.code,
+			);
+		}
+		throw apiError;
+	}
 }

@@ -1,11 +1,11 @@
 import type { z } from "zod";
 
 import type {
-	callAvailabilitySchema,
-	callDetailSchema,
-	callListSchema,
-	reportPdfSchema,
+	orderDetailSchema,
+	orderListSchema,
+	orderStatementSchema,
 	userDetailSchema,
+	walletMovementListSchema,
 } from "~/domains/account/utils/account.schema";
 
 export type AccountUser = {
@@ -55,25 +55,58 @@ export type AccountProfile = {
 	termsAcceptedAt: string;
 };
 
-export type QueryStatus =
-	| "queued"
+export type OrderStatus =
+	| "created"
+	| "awaiting_payment"
+	| "paid"
 	| "processing"
-	| "done"
-	| "error"
-	| "unavailable";
+	| "completed"
+	| "completed_partial"
+	| "failed"
+	| "cancelled"
+	| "expired";
+
+export type QueryStatus = OrderStatus | "unknown";
 
 export type VehicleQuery = {
 	id: string;
+	number: string;
 	code: string;
 	plate: string;
 	plan: string;
+	amount: number | null;
 	date: string;
 	status: QueryStatus;
+	statusLabel: string;
 	canRequery: boolean;
+	requerying: boolean;
+};
+
+export type OrderEventView = {
+	id: string;
+	label: string;
+	group: string;
+	date: string;
+	note: string;
+	tone: "success" | "warning" | "danger" | "neutral";
+};
+
+export type OrderPayment = {
+	method: "card" | "pix" | "other";
+	brand: string;
+	last4: string;
+};
+
+export type OrderView = VehicleQuery & {
+	canCancel: boolean;
+	expiresAt: string;
+	payment: OrderPayment | null;
+	events: OrderEventView[];
 };
 
 export type QueryFilters = {
 	busca: string;
+	situacao: string;
 	de: string;
 	ate: string;
 	pagina: number;
@@ -85,40 +118,47 @@ export type QueryPage = {
 	total: number;
 };
 
-export type CallList = z.infer<typeof callListSchema>;
-export type CallDetail = z.infer<typeof callDetailSchema>;
-export type CallAvailability = z.infer<typeof callAvailabilitySchema>;
-export type ReportPdf = z.infer<typeof reportPdfSchema>;
+export type OrderList = z.infer<typeof orderListSchema>;
+export type OrderDetail = z.infer<typeof orderDetailSchema>;
+export type OrderStatement = z.infer<typeof orderStatementSchema>;
 
-export type CallListParams = {
-	initial_date: string;
-	final_date: string;
+export type OrderListParams = {
+	date_from: string;
+	date_to: string;
 	page: number;
 	page_size: number;
 	search?: string;
+	status?: OrderStatus;
 };
 
-export type TransactionStatus = "paid" | "pending" | "refunded";
+export type WalletMovementList = z.infer<typeof walletMovementListSchema>;
 
-export type Transaction = {
-	id: string;
-	date: string;
-	queryCode: string;
-	plate: string;
-	plan: string;
-	amount: number;
-	status: TransactionStatus;
+export type WalletListParams = {
+	date_from: string;
+	date_to: string;
+	page: number;
+	page_size: number;
 };
 
-export type CreditEntryKind = "credit" | "debit";
+export type WalletFilters = {
+	de: string;
+	ate: string;
+	pagina: number;
+	itens: number;
+};
 
-export type CreditEntry = {
+export type WalletMovement = {
 	id: string;
 	date: string;
-	description: string;
-	detail?: string;
-	category: string;
-	kind: CreditEntryKind;
+	label: string;
+	reason: string;
 	amount: number;
-	expiresAt?: string;
+	balanceAfter: number | null;
+	direction: "in" | "out" | "none";
+};
+
+export type WalletPage = {
+	movements: WalletMovement[];
+	total: number;
+	balance: number | null;
 };

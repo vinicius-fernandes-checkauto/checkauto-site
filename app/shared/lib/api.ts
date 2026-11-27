@@ -52,6 +52,9 @@ export function unwrapContent(data: unknown): unknown {
 	return isRecord(data) && "content" in data ? data.content : data;
 }
 
+const isPlainMessage = (value: string) =>
+	value.length <= 300 && !value.trimStart().startsWith("<");
+
 export function toApiError(error: unknown): ApiError {
 	if (error instanceof ApiError) return error;
 
@@ -67,8 +70,13 @@ export function toApiError(error: unknown): ApiError {
 			? serverErrorMessage
 			: (messagesByStatus[status] ?? "Algo deu errado. Tente de novo.");
 
+	const message =
+		status < 500 && typeof body === "string" && isPlainMessage(body)
+			? text(body)
+			: null;
+
 	return new ApiError(
-		text(fields.detail) ?? text(fields.message) ?? fallback,
+		message ?? text(fields.detail) ?? text(fields.message) ?? fallback,
 		status,
 		text(fields.code),
 		body,

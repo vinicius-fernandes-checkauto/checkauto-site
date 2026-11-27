@@ -10,11 +10,11 @@ Contexto, regras e critérios para qualquer IA (ou pessoa) que for mexer neste p
 
 Site público da **Checkauto** (grupo Forrisk): consulta de histórico veicular pela placa, vendida em pacotes (Standard, Master, Plus). O projeto é o **redesign** do site, com três áreas:
 
-| Área            | Rotas                                                                                        | Layout                 |
-| --------------- | -------------------------------------------------------------------------------------------- | ---------------------- |
-| Site público    | `/`, `/pacotes/:planId`, `/faq`, `/contato`, `/carrinho`, páginas institucionais e jurídicas | `app/routes/_site.tsx` |
-| Autenticação    | `/entrar`, `/cadastro`, `/completar-cadastro`, `/redefinir-senha`                            | `app/routes/_auth.tsx` |
-| Área do cliente | `/conta` (redireciona), `/conta/consultas`, `/conta/meus-dados`, `/conta/transacoes`         | `app/routes/conta.tsx` |
+| Área            | Rotas                                                                                                                      | Layout                 |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| Site público    | `/`, `/pacotes/:planId`, `/faq`, `/contato`, `/carrinho`, páginas institucionais e jurídicas                               | `app/routes/_site.tsx` |
+| Autenticação    | `/entrar`, `/cadastro`, `/completar-cadastro`, `/redefinir-senha`                                                          | `app/routes/_auth.tsx` |
+| Área do cliente | `/conta` (redireciona), `/conta/consultas`, `/conta/consultas/:orderId` (pedido), `/conta/meus-dados`, `/conta/transacoes` | `app/routes/conta.tsx` |
 
 **Fase atual: interface pronta e integração com a API em andamento, começando pelo auth** (o que já está integrado fica no `PRODUCT.md` §5). O resto ainda usa dados de demonstração (`<domínio>.mock.ts` e `useState`). Ao entregar, diga quando a tela sugere um comportamento real que ainda não existe, como "Mensagem enviada".
 

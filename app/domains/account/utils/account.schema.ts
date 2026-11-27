@@ -61,6 +61,7 @@ export const userDetailSchema = z.object({
 		})
 		.nullish(),
 	marketing_consent: z.boolean().nullish(),
+	balance: z.coerce.string().nullish(),
 	terms_accepted_version: text,
 	terms_accepted_at: text,
 });
@@ -89,45 +90,71 @@ export const newQuerySchema = z.object({
 export type NewQueryValues = z.input<typeof newQuerySchema>;
 export type NewQuery = z.output<typeof newQuerySchema>;
 
-export const callListSchema = z.object({
-	count: z.number(),
-	results: z.array(
-		z.object({
-			id: z.coerce.string().min(1),
-			query_code: z.coerce.string().nullish(),
-			products: z.array(z.unknown()).default([]),
-			status: z.coerce.string(),
-			data: z.unknown().optional(),
-			created_at: z.string().nullish(),
-		}),
-	),
-});
-
-export const callDetailSchema = z.object({
+const orderSchema = z.object({
 	id: z.coerce.string().min(1),
-	extrato_products: z
-		.array(
-			z.object({
-				id: z.coerce.string().min(1),
-				extrato_enabled: z.boolean().default(false),
-			}),
-		)
-		.nullish(),
+	number: z.coerce.string().nullish(),
+	status: z.coerce.string(),
+	status_label: z.string().nullish(),
+	plate: z.string().nullish(),
+	product: z.object({ name: z.string().nullish() }).nullish(),
+	amount: z.coerce.string().nullish(),
+	created_at: z.string().nullish(),
+	query_code: z.coerce.string().nullish(),
 });
 
-export const callAvailabilitySchema = z.object({
-	products: z
+export const orderListSchema = z.object({
+	count: z.number(),
+	results: z.array(orderSchema),
+});
+
+export const orderDetailSchema = orderSchema.partial().extend({
+	id: z.coerce.string().min(1),
+	call: z
+		.object({
+			id: z.coerce.string().min(1),
+			status: z.coerce.string().nullish(),
+		})
+		.nullish(),
+	expires_at: z.string().nullish(),
+	events: z
 		.array(
 			z.object({
-				apis: z
-					.array(z.object({ requery_eligible: z.boolean().default(false) }))
-					.default([]),
+				type: z.string(),
+				status_after: z.string().nullish(),
+				group: z.string().nullish(),
+				label: z.string().nullish(),
+				created_at: z.string().nullish(),
+				data: z
+					.object({
+						method: z.string().nullish(),
+						brand: z.string().nullish(),
+						last4: z.string().nullish(),
+						error_code: z.string().nullish(),
+						reason: z.string().nullish(),
+					})
+					.nullish(),
 			}),
 		)
 		.default([]),
 });
 
-export const reportPdfSchema = z.object({
+export const orderStatementSchema = z.object({
 	pdf_status: z.enum(["pending", "processing", "failed", "ready"]),
 	download_url: z.string().nullish(),
+});
+
+export const walletMovementSchema = z.object({
+	id: z.coerce.string().min(1),
+	type: z.string().nullish(),
+	origin: z.string().nullish(),
+	amount: z.coerce.string().nullish(),
+	balance_after: z.coerce.string().nullish(),
+	reason: z.string().nullish(),
+	created_at: z.string().nullish(),
+});
+
+export const walletMovementListSchema = z.object({
+	count: z.number().default(0),
+	results: z.array(walletMovementSchema).default([]),
+	summary: z.object({ balance: z.coerce.string().nullish() }).nullish(),
 });
